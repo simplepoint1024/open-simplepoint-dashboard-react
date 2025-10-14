@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "defaultBase": "master",
+  "nxCloudId": "6845297bd6342c28b00e5c40",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^default"]
+    },
+    "dev": {
+      "dependsOn": ["^dev"],
+      "inputs": ["default", "^default"]
+    }
+  }
+}

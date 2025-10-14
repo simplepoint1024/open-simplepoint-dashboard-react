@@ -1,0 +1,16 @@
+export default {
+  './ops/MicroApp': './src/views/ops/micro-app/index.tsx',
+  './ops/MicroService': './src/views/ops/micro-service/index.tsx',
+  './ac/Client': './src/views/ac/client-mgr/index.tsx',
+  './ac/Auth': './src/views/ac/auth-mgr/index.tsx',
+  './ac/Data': './src/views/ac/data-mgr/index.tsx',
+  './ac/Field': './src/views/ac/field-mgr/index.tsx',
+  './ac/Menu': './src/views/ac/menu-mgr/index.tsx',
+  './ac/Role': './src/views/ac/role-mgr/index.tsx',
+  './ac/User': './src/views/ac/user-mgr/index.tsx',
+  './ac/Endpoint': './src/views/ac/endpoint-mgr/index.tsx',
+  './locale/Language': './src/views/locale/language/index.tsx',
+  './locale/CountryRange': './src/views/locale/country-Range/index.tsx',
+  './locale/timezone': './src/views/locale/timezone/index.tsx',
+  './locale/message': './src/views/locale/message/index.tsx',
+};
