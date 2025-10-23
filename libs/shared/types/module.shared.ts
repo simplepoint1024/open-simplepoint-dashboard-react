@@ -60,5 +60,9 @@ export default {
   '@simplepoint/libs-shared': {
     singleton: true,
     eager: true,
+  },
+  '@tanstack/react-query': {
+    singleton: true,
+    eager: true,
   }
 }

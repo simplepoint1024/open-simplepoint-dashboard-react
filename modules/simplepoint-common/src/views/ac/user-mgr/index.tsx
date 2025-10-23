@@ -1,80 +1,75 @@
-import Table, {
-  getTable,
-  ParameterTypeInstance,
-  TableApiRequest,
-  TableApiRequestEmpty
-} from "@simplepoint/libs-components/Table";
-import React, {useEffect, useState} from "react";
-import {App as TableEdit} from "@simplepoint/libs-components/TableEdit";
-import {SERVICE_USER} from "@/services.ts";
-
-type DataType = {
-  key: string,
-  name: string,
-  age: number,
-  address: string,
-  na: string,
-}
+import {useState} from 'react';
+import {useSchema} from '@simplepoint/libs-shared/hooks/useSchema';
+import {get, usePageable} from '@simplepoint/libs-shared/api/methods';
+import Table from '@simplepoint/libs-components/Table';
+import SForm from '@simplepoint/libs-components/SForm';
+import {Alert, Button, Drawer, Spin} from 'antd';
 
 const App = () => {
-  const [open, setOpen] = useState(false);
-  const [edit, setEdit] = useState(false);
-  const [table, setTable] = useState<TableApiRequest<DataType>>(() => TableApiRequestEmpty);
-  const [params] = useState(() => ParameterTypeInstance);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [selectedRows, setSelectedRows] = useState<DataType[]>([]);
+  const {data: schemaData, isLoading: schemaLoading, error: schemaError} = useSchema('/common/user');
 
-  const api = SERVICE_USER;
+  const [page, setPage] = useState<number>(1);
+  const [size, setSize] = useState<number>(10);
+  const [filters, setFilters] = useState<Record<string, string>>({});
 
-  const refresh = async () => {
-    setTable(await getTable<DataType>(api, params))
-  }
+  const fetchPage = () =>
+    get<import('@simplepoint/libs-shared/types/request').Pageable<any>>('/common/user', {
+      page: page - 1,
+      size,
+      ...filters,
+    });
 
-  useEffect(() => {
-    refresh().then()
-  }, [])
+  const {data: pageData, isLoading: pageLoading, refetch: refetchPage} = usePageable(
+    ['users', page, size, filters],
+    fetchPage
+  );
+
+  const loading = schemaLoading || pageLoading;
+
+  const handleTableChange = (pagination: any) => {
+    const nextPage = pagination?.current ?? 1;
+    const nextSize = pagination?.pageSize ?? size;
+    setPage(nextPage);
+    setSize(nextSize);
+    void refetchPage();
+  };
+
+  const handleFilterChange = (nextFilters: Record<string, string>) => {
+    setFilters(nextFilters);
+    setPage(1);
+    void refetchPage();
+  };
 
   return (
     <div>
-      <Table<DataType>
-        conf={{
-          columns: table.schema,
-          data: table.pageable,
-          buttons: table.buttons,
-          params: params,
-          rowKey: 'id',
-          rowSelection: {
-            type: 'checkbox',
-            onChange: (selectedRowKeys, selectedRows) => {
-              setSelectedRowKeys(selectedRowKeys);
-              setSelectedRows(selectedRows);
-            }
+      <Table<any>
+        props={{
+          refresh: () => {
+            void refetchPage();
           },
-          buttonEventProps: {
-            api: api,
-            selectedRowKeys: selectedRowKeys,
-            selectedRows: selectedRows,
-            openEdit: (open: boolean, edit: boolean) => {
-              setOpen(open);
-              setEdit(edit);
-            }
+          pageable: pageData ?? {
+            content: [],
+            page: {number: 0, size: 10, totalElements: 0, totalPages: 0},
           },
-          refresh: refresh,
+          schema: schemaData?.schema ?? [],
+          filters,
+          // 将回调放入 props 中（与 Table 的 TableProps 对应）
+          onChange: handleTableChange,
+          onFilterChange: handleFilterChange,
         }}
       />
-      <TableEdit
-        key={open ? 'open' : 'closed'}
-        open={open}
-        edit={edit}
-        api={api}
-        rowKey="id"
-        columns={table.schema}
-        setOpen={setOpen}
-        form={{
-          initialValues: selectedRows[0] || undefined,
-        }}
-        refresh={refresh}
-      />
+
+      <Button type="primary" style={{marginTop: 16}} onClick={() => { /* 打开表单逻辑 */
+      }}>
+        打开表单
+      </Button>
+
+      <Drawer title="用户表单" placement="right" width={480} open={false} onClose={() => {
+      }}>
+        {loading && <Spin/>}
+        {schemaError && <Alert type="error" message="加载失败" description={(schemaError as Error).message}/>}
+        {schemaData && <SForm schema={schemaData.schema}/>}
+      </Drawer>
     </div>
   );
 };
