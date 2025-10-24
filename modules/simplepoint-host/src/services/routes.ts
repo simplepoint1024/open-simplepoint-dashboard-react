@@ -7,7 +7,7 @@ export type Remote = {
 }
 
 export function routes(): Promise<Pageable<MenuInfo>> {
-  return get<Pageable<MenuInfo>>("/common/menus")
+  return get<Pageable<MenuInfo>>("/common/menus/routes")
 }
 
 export function modules(): Promise<Pageable<Remote>> {

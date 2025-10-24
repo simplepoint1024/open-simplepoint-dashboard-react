@@ -18,7 +18,7 @@ export const apis = [
     })
   }),
 
-  http.get('/common/menus', () => {
+  http.get('/common/menus/routes', () => {
     return HttpResponse.json(
       {
         "content": [
