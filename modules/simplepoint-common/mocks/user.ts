@@ -22,12 +22,6 @@ export const apis = [
               "minLength": 5,
               "maxLength": 255
             },
-            "birthdate": {
-              "type": "string",
-              "title": "出生日期",
-              "description": "用户的出生日期",
-              "readOnly": true
-            },
             "email": {
               "type": "string",
               "title": "邮箱",
@@ -35,28 +29,6 @@ export const apis = [
               "minLength": 5,
               "maxLength": 64,
               "format": "email"
-            },
-            "familyName": {
-              "type": "string",
-              "title": "姓氏",
-              "description": "用户的姓氏",
-              "readOnly": true,
-              "minLength": 1,
-              "maxLength": 50
-            },
-            "givenName": {
-              "type": "string",
-              "title": "名字",
-              "description": "用户的名字",
-              "minLength": 1,
-              "maxLength": 50
-            },
-            "middleName": {
-              "type": "string",
-              "title": "中间名",
-              "description": "用户的中间名",
-              "minLength": 1,
-              "maxLength": 50
             },
             "nickname": {
               "type": "string",
@@ -72,17 +44,6 @@ export const apis = [
               "minLength": 5,
               "maxLength": 50
             },
-            "picture": {
-              "type": "string",
-              "title": "头像",
-              "description": "用户的头像图片URL或路径",
-              "format": "data-url"
-            },
-            "profile": {
-              "type": "string",
-              "title": "个人资料",
-              "description": "用户的个人资料URL或路径"
-            },
             "superAdmin": {
               "type": "boolean",
               "title": "是否为管理员",
@@ -92,7 +53,10 @@ export const apis = [
               "type": "string",
               "title": "用户名",
               "description": "用户的唯一标识符",
-              "x-order": 1
+              "x-order": 1,
+              "x-ui":{
+                "x-list-visible":"true"
+              }
             }
           }
         },

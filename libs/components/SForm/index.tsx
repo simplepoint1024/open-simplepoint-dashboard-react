@@ -4,6 +4,7 @@ import {Button} from "antd";
 import "./index.css"
 import validator from "@rjsf/validator-ajv8";
 import {RJSFValidationError} from "@rjsf/utils";
+import {useEffect, useRef} from "react";
 
 type SFromProps = Omit<FormProps, "validator">;
 
@@ -41,19 +42,28 @@ const transformErrors = (errors: RJSFValidationError[]) => {
 };
 
 
-const onSubmit = (data:any) => {
-  console.log("提交的数据:", data.formData);
-  alert("提交的数据:" + JSON.stringify(data.formData, null, 2));
-}
-
 const SForm = (props: SFromProps) => {
+  const formRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (formRef.current) {
+      // 当 formData 变化时，重置表单并设置新值
+      formRef.current.reset();
+      formRef.current.setState({
+        ...formRef.current.state,
+        formData: props.formData,
+      });
+    }
+  }, [props.formData]);
+
+
   return (
     <Form
       {...props}
+      ref={formRef}
       validator={validator}
       method={"POST"}
       showErrorList={false}
-      onSubmit={onSubmit}
       transformErrors={transformErrors}
       templates={{
         ButtonTemplates: {

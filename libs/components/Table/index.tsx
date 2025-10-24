@@ -2,7 +2,7 @@
 // file: `libs/components/Table/index.tsx`
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Checkbox, Col, Input, Popover, Row, Select, Space, Table as AntTable } from 'antd';
-import { SearchOutlined, SettingOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined, SettingOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { RJSFSchema } from '@rjsf/utils';
 import { Pageable } from '@simplepoint/libs-shared/types/request';
@@ -34,6 +34,11 @@ export interface TableProps<T> {
   // 行选择相关
   rowSelection?: { selectedKeys?: React.Key[] }; // 可选受控初始选中 keys
   onSelectionChange?: (selectedRowKeys: React.Key[], selectedRows: T[]) => void;
+  // 按钮事件
+  onAdd?: () => void;
+  onEdit?: (selectedRow: T) => void;
+  onDelete?: (selectedRowKeys: React.Key[], selectedRows: T[]) => void;
+  customButtons?: React.ReactNode;
 }
 
 /* 可复用的列过滤组件，内部使用 Hook 安全 */
@@ -76,7 +81,12 @@ const parseText = (stored?: string) => {
   return idx === -1 ? '' : stored.slice(idx + 1);
 };
 
-const App = <T extends object = any>({ props }: { props: TableProps<T> }) => {
+// Helper to check for visibility flag in schema
+const isColumnVisible = (schema: any): boolean => {
+  return schema?.['x-ui']?.['x-list-visible'] == 'true'; // Use == to handle both boolean true and string 'true'
+};
+
+const App = <T extends object = any>(props: TableProps<T>) => {
   // 本地 filters 状态（受控/非受控兼容）
   const [filters, setFilters] = useState<Record<string, string>>(props.filters ?? {});
 
@@ -98,19 +108,23 @@ const App = <T extends object = any>({ props }: { props: TableProps<T> }) => {
     return (s as any)?.properties ?? s ?? {};
   }, [props.schema]);
 
+  // Get keys of properties that should be visible based on schema
+  const visibleKeys = useMemo(() => {
+    return Object.keys(properties).filter((key) => isColumnVisible(properties[key]));
+  }, [properties]);
+
   // 列可见性状态，初次根据 properties 初始化
   const [visibleCols, setVisibleCols] = useState<Record<string, boolean>>({});
   useEffect(() => {
-    const keys = Object.keys(properties);
     setVisibleCols((prev) => {
       // 保留已有设置，未设置的默认显示
       const next: Record<string, boolean> = {};
-      keys.forEach((k) => {
+      visibleKeys.forEach((k) => {
         next[k] = k in prev ? prev[k] : true;
       });
       return next;
     });
-  }, [properties]);
+  }, [visibleKeys]);
 
   const toggleCol = (key: string, checked: boolean) => {
     setVisibleCols((prev) => ({ ...prev, [key]: checked }));
@@ -118,7 +132,7 @@ const App = <T extends object = any>({ props }: { props: TableProps<T> }) => {
 
   const columns = useMemo<ColumnsType<T>>(() => {
     return Object.entries(properties)
-      .filter(([key]) => visibleCols[key]) // 修复：未显式为 false 时默认显示
+      .filter(([key, schemaDef]) => isColumnVisible(schemaDef) && (visibleCols[key] ?? true))
       .map(([key, schemaDef]) => {
         const isBoolean = (schemaDef as any)?.type === 'boolean';
         return {
@@ -164,6 +178,7 @@ const App = <T extends object = any>({ props }: { props: TableProps<T> }) => {
 
   // 行选择状态（支持受控 initial）
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>(props.rowSelection?.selectedKeys ?? []);
+  const [selectedRows, setSelectedRows] = useState<T[]>([]);
 
   // 外部受控变化同步
   useEffect(() => {
@@ -177,20 +192,27 @@ const App = <T extends object = any>({ props }: { props: TableProps<T> }) => {
     return ((record as any).id ?? (record as any).key ?? 0) as React.Key;
   }, []);
 
-  const onSelectChange = (keys: React.Key[], rows: T[]) => {
-    setSelectedRowKeys(keys);
-    props.onSelectionChange?.(keys, rows);
-  };
+  const onSelectChange = useCallback(
+    (keys: React.Key[], rows: T[]) => {
+      setSelectedRowKeys(keys);
+      setSelectedRows(rows);
+      props.onSelectionChange?.(keys, rows);
+    },
+    [props],
+  );
 
   // Popover 内容：列开关列表
   const settingsContent = (
     <div style={{ maxHeight: 320, overflow: 'auto', padding: 8 }}>
       <Checkbox
-        checked={Object.values(visibleCols).length > 0 && Object.values(visibleCols).every(Boolean)}
+        checked={visibleKeys.length > 0 && visibleKeys.every((key) => visibleCols[key] ?? true)}
+        indeterminate={
+          visibleKeys.some((key) => visibleCols[key] ?? true) && !visibleKeys.every((key) => visibleCols[key] ?? true)
+        }
         onChange={(e) => {
           const checked = e.target.checked;
           const next: Record<string, boolean> = {};
-          Object.keys(properties).forEach((k) => (next[k] = checked));
+          visibleKeys.forEach((k) => (next[k] = checked));
           setVisibleCols(next);
         }}
         style={{ marginBottom: 8 }}
@@ -198,10 +220,10 @@ const App = <T extends object = any>({ props }: { props: TableProps<T> }) => {
         全选
       </Checkbox>
       <div>
-        {Object.entries(properties).map(([key, schemaDef]) => (
+        {visibleKeys.map((key) => (
           <div key={key} style={{ padding: '4px 0' }}>
             <Checkbox checked={visibleCols[key] ?? true} onChange={(e) => toggleCol(key, e.target.checked)}>
-              {(schemaDef as any)?.title ?? key}
+              {(properties[key] as any)?.title ?? key}
             </Checkbox>
           </div>
         ))}
@@ -215,12 +237,41 @@ const App = <T extends object = any>({ props }: { props: TableProps<T> }) => {
     onChange: (keys: React.Key[], rows: T[]) => onSelectChange(keys, rows),
   };
 
+  const isAddDisabled = selectedRowKeys.length > 0;
+  const isEditDisabled = selectedRowKeys.length !== 1;
+  const isDeleteDisabled = selectedRowKeys.length === 0;
+
   return (
     <div>
-      <Row justify="space-between">
-        <Col key="table-buttons-start" />
-        <Col key="table-buttons-end">
-          <Button className="button-col" key="search" type="text" icon={<SearchOutlined />} onClick={() => props.refresh()} />
+      <Row justify="space-between" style={{ marginBottom: 16 }}>
+        <Col>
+          <Space>
+            {props.onAdd && (
+              <Button type="primary" icon={<PlusOutlined />} disabled={isAddDisabled} onClick={() => props.onAdd?.()}>
+                新增
+              </Button>
+            )}
+            {props.onEdit && (
+              <Button icon={<EditOutlined />} disabled={isEditDisabled} onClick={() => props.onEdit?.(selectedRows[0])}>
+                修改
+              </Button>
+            )}
+            {props.onDelete && (
+              <Button
+                danger
+                type="primary"
+                icon={<DeleteOutlined />}
+                disabled={isDeleteDisabled}
+                onClick={() => props.onDelete?.(selectedRowKeys, selectedRows)}
+              >
+                删除
+              </Button>
+            )}
+            {props.customButtons}
+          </Space>
+        </Col>
+        <Col>
+          <Button className="button-col" type="text" icon={<SearchOutlined />} onClick={() => props.refresh()} />
           <Popover placement="bottomRight" content={settingsContent} trigger="click">
             <Button icon={<SettingOutlined />} type="text" style={{ marginLeft: 8 }} />
           </Popover>
