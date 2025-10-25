@@ -1,13 +1,17 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {useSchema} from '@simplepoint/libs-shared/hooks/useSchema';
 import {del, get, post, put, usePageable} from '@simplepoint/libs-shared/api/methods';
-import Table from '@simplepoint/libs-components/Table';
+import Table, {TableButtonProps} from '@simplepoint/libs-components/Table';
 import SForm from '@simplepoint/libs-components/SForm';
-import { IChangeEvent } from '@rjsf/core';
+import {IChangeEvent} from '@rjsf/core';
 import {Alert, Drawer, message, Modal, Spin} from 'antd';
+import {createIcon} from '@simplepoint/libs-shared/types/icon';
 
 const App = () => {
-  const {data: schemaData, isLoading: schemaLoading, error: schemaError} = useSchema('/common/user');
+  const name = 'users'
+  const baseUrl = '/common/user';
+
+  const {data: schemaData, isLoading: schemaLoading, error: schemaError} = useSchema(baseUrl);
 
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState<number>(10);
@@ -16,14 +20,14 @@ const App = () => {
   const [editingUser, setEditingUser] = useState<any | null>(null);
 
   const fetchPage = () =>
-    get<import('@simplepoint/libs-shared/types/request').Pageable<any>>('/common/user', {
+    get<import('@simplepoint/libs-shared/types/request').Pageable<any>>(baseUrl, {
       page: page - 1,
       size,
       ...filters,
     });
 
   const {data: pageData, isLoading: pageLoading, refetch: refetchPage} = usePageable(
-    ['users', page, size, filters],
+    [name, page, size, filters],
     fetchPage
   );
 
@@ -48,18 +52,18 @@ const App = () => {
     setIsDrawerOpen(true);
   };
 
-  const handleEdit = (user: any) => {
-    setEditingUser(user);
+  const handleEdit = (_selectedRowKeys: React.Key[], selectedRows: any[], _props: TableButtonProps) => {
+    setEditingUser(selectedRows[0]);
     setIsDrawerOpen(true);
   };
 
   const handleDelete = (keys: React.Key[]) => {
     Modal.confirm({
       title: '确认删除',
-      content: `确定要删除选中的 ${keys.length} 个用户吗？`,
+      content: `确定要删除选中的 ${keys.length} 数据吗？`,
       onOk: async () => {
         try {
-          await del('/common/user', keys as string[]);
+          await del(baseUrl, keys as string[]);
           message.success('删除成功');
           await refetchPage();
         } catch (e: any) {
@@ -69,15 +73,15 @@ const App = () => {
     });
   };
 
-  const handleFormSubmit = async ({ formData }: IChangeEvent) => {
+  const handleFormSubmit = async ({formData}: IChangeEvent) => {
     try {
       if (editingUser) {
         // 修改
-        await put('/common/user', {...editingUser, ...formData});
+        await put(baseUrl, {...editingUser, ...formData});
         message.success('修改成功');
       } else {
         // 新增
-        await post('/common/user', formData);
+        await post(baseUrl, formData);
         message.success('新增成功');
       }
       setIsDrawerOpen(false);
@@ -103,18 +107,26 @@ const App = () => {
         filters={filters}
         onChange={handleTableChange}
         onFilterChange={handleFilterChange}
-        onAdd={handleAdd}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        onButtonEvents={
+          {'add': handleAdd, 'edit': handleEdit, 'delete': handleDelete}
+        }
+        buttons={schemaData?.buttons ?? []}
       />
 
       <Drawer
-        title={editingUser ? '修改用户' : '新增用户'}
+        closable={false}
+        title={
+          <span
+            style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32}}
+          >
+              {createIcon(editingUser ? 'EditOutlined' : 'PlusOutlined')}
+          </span>
+        }
         placement="right"
         width={480}
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
-        destroyOnClose // 关闭时销毁抽屉内容，确保每次打开都是新的
+        destroyOnHidden // 关闭时销毁抽屉内容，确保每次打开都是新的
       >
         {loading && <Spin/>}
         {schemaError && <Alert type="error" message="加载失败" description={(schemaError as Error).message}/>}

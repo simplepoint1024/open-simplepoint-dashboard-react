@@ -1,28 +1,35 @@
-// typescript
-// file: `libs/components/Table/index.tsx`
-import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Checkbox, Col, Input, Popover, Row, Select, Space, Table as AntTable } from 'antd';
-import { DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined, SettingOutlined } from '@ant-design/icons';
-import type { ColumnsType } from 'antd/es/table';
-import { RJSFSchema } from '@rjsf/utils';
-import { Pageable } from '@simplepoint/libs-shared/types/request';
+import React, {ChangeEvent, MouseEventHandler, useCallback, useEffect, useMemo, useState} from 'react';
+import {Button, Checkbox, Col, Input, Popover, Row, Select, Space, Table as AntTable} from 'antd';
+import {SearchOutlined, SettingOutlined} from '@ant-design/icons';
+import type {ColumnsType} from 'antd/es/table';
+import {RJSFSchema} from '@rjsf/utils';
+import {Pageable} from '@simplepoint/libs-shared/types/request';
+import {ButtonProps} from "antd/es/button/button";
+import {createIcon} from '@simplepoint/libs-shared/types/icon';
 
 const options = [
-  { value: 'equals', label: '精确' },
-  { value: 'not:equals', label: '精确取反' },
-  { value: 'like', label: '模糊' },
-  { value: 'not:like', label: '模糊取反' },
-  { value: 'in', label: '集合包含' },
-  { value: 'not:in', label: '集合不包含' },
-  { value: 'between', label: '区间' },
-  { value: 'not:between', label: '区间取反' },
-  { value: 'than:greater', label: '大于' },
-  { value: 'than:less', label: '小于' },
-  { value: 'than:equal:greater', label: '大于等于' },
-  { value: 'than:equal:less', label: '小于等于' },
-  { value: 'is:null', label: '空' },
-  { value: 'is:not:null', label: '非空' },
+  {value: 'equals', label: '精确'},
+  {value: 'not:equals', label: '精确取反'},
+  {value: 'like', label: '模糊'},
+  {value: 'not:like', label: '模糊取反'},
+  {value: 'in', label: '集合包含'},
+  {value: 'not:in', label: '集合不包含'},
+  {value: 'between', label: '区间'},
+  {value: 'not:between', label: '区间取反'},
+  {value: 'than:greater', label: '大于'},
+  {value: 'than:less', label: '小于'},
+  {value: 'than:equal:greater', label: '大于等于'},
+  {value: 'than:equal:less', label: '小于等于'},
+  {value: 'is:null', label: '空'},
+  {value: 'is:not:null', label: '非空'},
 ];
+
+export type TableButtonProps = ButtonProps & {
+  key: string;
+  sort: number;
+  argumentMaxSize?: number;
+  argumentMinSize?: number;
+};
 
 export interface TableProps<T> {
   refresh: () => void;
@@ -35,10 +42,8 @@ export interface TableProps<T> {
   rowSelection?: { selectedKeys?: React.Key[] }; // 可选受控初始选中 keys
   onSelectionChange?: (selectedRowKeys: React.Key[], selectedRows: T[]) => void;
   // 按钮事件
-  onAdd?: () => void;
-  onEdit?: (selectedRow: T) => void;
-  onDelete?: (selectedRowKeys: React.Key[], selectedRows: T[]) => void;
-  customButtons?: React.ReactNode;
+  onButtonEvents?: Record<string, (selectedRowKeys: React.Key[], selectedRows: T[], props: TableButtonProps) => void>;
+  buttons?: TableButtonProps[]
 }
 
 /* 可复用的列过滤组件，内部使用 Hook 安全 */
@@ -46,7 +51,7 @@ const ColumnFilter: React.FC<{
   initialOp?: string;
   initialText?: string;
   onChange?: (op: string, text: string) => void;
-}> = ({ initialOp = 'like', initialText = '', onChange }) => {
+}> = ({initialOp = 'like', initialText = '', onChange}) => {
   const [inputValue, setInputValue] = useState(initialText);
   const [selectValue, setSelectValue] = useState(initialOp);
 
@@ -63,8 +68,8 @@ const ColumnFilter: React.FC<{
   return (
     <div>
       <Space.Compact>
-        <Select style={{ width: 160 }} value={selectValue} options={options} onChange={(value) => setSelectValue(value)} />
-        <Input value={inputValue} onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)} />
+        <Select style={{width: 160}} value={selectValue} options={options} onChange={(value) => setSelectValue(value)}/>
+        <Input value={inputValue} onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}/>
       </Space.Compact>
     </div>
   );
@@ -127,7 +132,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
   }, [visibleKeys]);
 
   const toggleCol = (key: string, checked: boolean) => {
-    setVisibleCols((prev) => ({ ...prev, [key]: checked }));
+    setVisibleCols((prev) => ({...prev, [key]: checked}));
   };
 
   const columns = useMemo<ColumnsType<T>>(() => {
@@ -142,7 +147,8 @@ const App = <T extends object = any>(props: TableProps<T>) => {
           // 对布尔类型做可视化处理：用禁用的 Checkbox 或 是/否 文本
           render: isBoolean
             ? (val: any) => (
-              <span style={{ display: 'inline-block', width: '100%', textAlign: 'center', color: val ? '#52c41a' : '#999' }}>
+              <span
+                style={{display: 'inline-block', width: '100%', textAlign: 'center', color: val ? '#52c41a' : '#999'}}>
                 {val ? '√' : '×'}
               </span>
             )
@@ -153,7 +159,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
               initialText={parseText(filters[key])}
               onChange={(op, text) => {
                 const value = text ? `${op}:${text}` : '';
-                const next = { ...filters };
+                const next = {...filters};
                 if (value) next[key] = value;
                 else delete next[key];
                 setFilters(next);
@@ -162,7 +168,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
               }}
             />
           ),
-          filterIcon: () => <SearchOutlined style={{ color: filters[key] ? '#1677ff' : undefined }} />,
+          filterIcon: () => <SearchOutlined style={{color: filters[key] ? '#1677ff' : undefined}}/>,
         };
       });
   }, [properties, visibleCols, filters, props]);
@@ -201,9 +207,32 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     [props],
   );
 
+  const onButtonEvent = (button: TableButtonProps): MouseEventHandler<HTMLElement> | undefined => {
+    if (button.onClick) {
+      return button.onClick as MouseEventHandler<HTMLElement>;
+    }
+    if (props.onButtonEvents && props.onButtonEvents[button.key]) {
+      return () => {
+        props.onButtonEvents![button.key](selectedRowKeys, selectedRows, button);
+      };
+    }
+    return undefined;
+  }
+
+  const onButtonDisabled = (button: TableButtonProps): boolean => {
+    const {argumentMinSize, argumentMaxSize} = button;
+    // 如果都未设置，则默认不禁用；传入 -1 表示该边界不限制
+    if (argumentMinSize === undefined && argumentMaxSize === undefined) {
+      return false;
+    }
+    const size = selectedRowKeys.length;
+    if (typeof argumentMinSize === 'number' && argumentMinSize !== -1 && size < argumentMinSize) return true;
+    return typeof argumentMaxSize === 'number' && argumentMaxSize !== -1 && size > argumentMaxSize;
+  }
+
   // Popover 内容：列开关列表
   const settingsContent = (
-    <div style={{ maxHeight: 320, overflow: 'auto', padding: 8 }}>
+    <div style={{maxHeight: 320, overflow: 'auto', padding: 8}}>
       <Checkbox
         checked={visibleKeys.length > 0 && visibleKeys.every((key) => visibleCols[key] ?? true)}
         indeterminate={
@@ -215,13 +244,13 @@ const App = <T extends object = any>(props: TableProps<T>) => {
           visibleKeys.forEach((k) => (next[k] = checked));
           setVisibleCols(next);
         }}
-        style={{ marginBottom: 8 }}
+        style={{marginBottom: 8}}
       >
         全选
       </Checkbox>
       <div>
         {visibleKeys.map((key) => (
-          <div key={key} style={{ padding: '4px 0' }}>
+          <div key={key} style={{padding: '4px 0'}}>
             <Checkbox checked={visibleCols[key] ?? true} onChange={(e) => toggleCol(key, e.target.checked)}>
               {(properties[key] as any)?.title ?? key}
             </Checkbox>
@@ -237,43 +266,25 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     onChange: (keys: React.Key[], rows: T[]) => onSelectChange(keys, rows),
   };
 
-  const isAddDisabled = selectedRowKeys.length > 0;
-  const isEditDisabled = selectedRowKeys.length !== 1;
-  const isDeleteDisabled = selectedRowKeys.length === 0;
-
   return (
     <div>
-      <Row justify="space-between" style={{ marginBottom: 16 }}>
+      <Row justify="space-between" style={{marginBottom: 16}}>
         <Col>
           <Space>
-            {props.onAdd && (
-              <Button type="primary" icon={<PlusOutlined />} disabled={isAddDisabled} onClick={() => props.onAdd?.()}>
-                新增
-              </Button>
-            )}
-            {props.onEdit && (
-              <Button icon={<EditOutlined />} disabled={isEditDisabled} onClick={() => props.onEdit?.(selectedRows[0])}>
-                修改
-              </Button>
-            )}
-            {props.onDelete && (
+            {props.buttons && props.buttons.map((button) => (
               <Button
-                danger
-                type="primary"
-                icon={<DeleteOutlined />}
-                disabled={isDeleteDisabled}
-                onClick={() => props.onDelete?.(selectedRowKeys, selectedRows)}
-              >
-                删除
-              </Button>
-            )}
-            {props.customButtons}
+                {...button}
+                onClick={onButtonEvent(button)}
+                disabled={onButtonDisabled(button)}
+                icon={typeof button.icon === 'string' ? createIcon(button.icon) : button.icon}
+              >{button.title}</Button>
+            ))}
           </Space>
         </Col>
         <Col>
-          <Button className="button-col" type="text" icon={<SearchOutlined />} onClick={() => props.refresh()} />
+          <Button className="button-col" type="text" icon={<SearchOutlined/>} onClick={() => props.refresh()}/>
           <Popover placement="bottomRight" content={settingsContent} trigger="click">
-            <Button icon={<SettingOutlined />} type="text" style={{ marginLeft: 8 }} />
+            <Button icon={<SettingOutlined/>} type="text" style={{marginLeft: 8}}/>
           </Popover>
         </Col>
       </Row>
