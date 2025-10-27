@@ -271,14 +271,19 @@ const App = <T extends object = any>(props: TableProps<T>) => {
       <Row justify="space-between" style={{marginBottom: 16}}>
         <Col>
           <Space>
-            {props.buttons && props.buttons.map((button) => (
-              <Button
-                {...button}
-                onClick={onButtonEvent(button)}
-                disabled={onButtonDisabled(button)}
-                icon={typeof button.icon === 'string' ? createIcon(button.icon) : button.icon}
-              >{button.title}</Button>
-            ))}
+            {props.buttons && props.buttons.map((button) => {
+              // 剔除自定义属性，避免 React 警告
+              const { argumentMinSize, argumentMaxSize, sort, ...restButtonProps } = button;
+              return (
+                <Button
+                  {...restButtonProps}
+                  key={button.key}
+                  onClick={onButtonEvent(button)}
+                  disabled={onButtonDisabled(button)}
+                  icon={typeof button.icon === 'string' ? createIcon(button.icon) : button.icon}
+                >{button.title}</Button>
+              );
+            })}
           </Space>
         </Col>
         <Col>

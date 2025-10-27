@@ -1,13 +1,13 @@
-import { Button, Result } from 'antd';
-import { SmileOutlined } from '@ant-design/icons';
+import SimpleTable from "@simplepoint/libs-components/SimpleTable";
 
 const App = () => {
   return (
-    <Result
-      icon={<SmileOutlined />}
-      title="该页面正在建设，敬请期待!"
-      extra={<Button type="primary">Hello!</Button>}
-    />
+    <div>
+      <SimpleTable
+        baseUrl={'/common/role'}
+        name={'roles'}
+      />
+    </div>
   );
 };
 
