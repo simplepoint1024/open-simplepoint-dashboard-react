@@ -81,7 +81,7 @@ export const apis = [
         }, {
           "text": "删除",
           "title": "删除",
-          "key": "del",
+          "key": "delete",
           "type": "primary",
           "color": "danger",
           "variant": "outlined",

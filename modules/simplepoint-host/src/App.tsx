@@ -23,6 +23,28 @@ const App: React.FC = () => {
   }
 
   const data = use<MenuInfo>(() => routes());
+
+  // 将树形菜单拍平成叶子路由（有 path 且有 component 的节点）
+  type MenuNode = MenuInfo & { children?: MenuNode[] };
+  const flattenLeafRoutes = (nodes: MenuNode[] = []): MenuNode[] => {
+    const res: MenuNode[] = [];
+    const dfs = (arr: MenuNode[]) => {
+      arr.forEach((n) => {
+        const children = (n as any).children as MenuNode[] | undefined;
+        if (Array.isArray(children) && children.length > 0) {
+          dfs(children);
+        } else {
+          res.push(n);
+        }
+      });
+    };
+    dfs(nodes);
+    return res;
+  };
+
+  const leafRoutes = flattenLeafRoutes(data as unknown as MenuNode[])
+    .filter(n => !!n.path && !!n.component);
+
   return (
     <div className="content">
       <ConfigProvider theme={{
@@ -33,7 +55,7 @@ const App: React.FC = () => {
             <Routes>
               <Route key={'profile'} path={'/profile'} element={<Profile/>}/>
               <Route key={'settings'} path={'/settings'} element={<Settings/>}/>
-              {data.map(({uuid, path, component}) => {
+              {leafRoutes.map(({uuid, path, component}) => {
                 // 如果组件路径是相对路径，则直接使用，否则假设是远程模块
                 const Component = React.lazy(async () => {
                   try {
