@@ -1,14 +1,23 @@
-import React, {useMemo, useState, useEffect, useCallback} from 'react';
-import {MenuFoldOutlined, MenuUnfoldOutlined, DeleteOutlined, CloseCircleOutlined, ReloadOutlined, VerticalLeftOutlined, VerticalRightOutlined} from '@ant-design/icons';
-import {Button, Layout, Menu, theme, Tabs, Dropdown} from 'antd';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {
+  CloseCircleOutlined,
+  DeleteOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  ReloadOutlined,
+  VerticalLeftOutlined,
+  VerticalRightOutlined
+} from '@ant-design/icons';
+import {Button, Dropdown, Layout, Menu, Tabs, theme} from 'antd';
 import {useSideNavigation, useTopNavigation} from "@/hooks/routes";
-import {useNavigate, useLocation} from "react-router-dom";
-import {MenuInfo, flattenMenus} from "@/store/routes";
+import {useLocation, useNavigate} from "react-router-dom";
+import {flattenMenus, MenuInfo} from "@/store/routes";
 import './index.css'
+
 const {Header, Content, Footer, Sider} = Layout;
 
 const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInfo> }> = ({children, data}) => {
-  const { token } = theme.useToken();
+  const {token} = theme.useToken();
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,7 +50,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
       if (raw) {
         const parsed = JSON.parse(raw) as Array<{ key: string; label: string; closable?: boolean }>;
         if (Array.isArray(parsed)) {
-          setTabs(parsed.map(t => ({ key: t.key, label: t.label, closable: t.closable ?? true })));
+          setTabs(parsed.map(t => ({key: t.key, label: t.label, closable: t.closable ?? true})));
         }
       }
     } catch (_) {
@@ -54,7 +63,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
 
   // 菜单变化时，用最新映射更新已有标签文字
   useEffect(() => {
-    setTabs(prev => prev.map(t => ({ ...t, label: pathLabelMap.get(t.key) ?? t.label })));
+    setTabs(prev => prev.map(t => ({...t, label: pathLabelMap.get(t.key) ?? t.label})));
   }, [pathLabelMap]);
 
   // 路由变化时，自动把当前路由加入页签
@@ -64,7 +73,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
     setTabs((prev) => {
       if (prev.some(t => t.key === path)) return prev;
       const label = pathLabelMap.get(path) ?? path;
-      return [...prev, { key: path, label, closable: true }];
+      return [...prev, {key: path, label, closable: true}];
     });
   }, [getCurrentPath, pathLabelMap]);
 
@@ -72,7 +81,11 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   useEffect(() => {
     if (!hydrated) return;
     try {
-      const simple = tabs.map(t => ({ key: t.key, label: typeof t.label === 'string' ? t.label : String(t.label), closable: t.closable !== false }));
+      const simple = tabs.map(t => ({
+        key: t.key,
+        label: typeof t.label === 'string' ? t.label : String(t.label),
+        closable: t.closable !== false
+      }));
       localStorage.setItem(STORAGE_KEY, JSON.stringify(simple));
     } catch (_) {
       // ignore
@@ -108,10 +121,13 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
     if (target !== current) navigate(target);
   }, [allPaths, getCurrentPath, navigate]);
 
-  const onContextMenuClick = useCallback(({ key }: { key: string }) => {
+  const onContextMenuClick = useCallback(({key}: { key: string }) => {
     if (key === 'refresh') {
       const path = getCurrentPath();
-      try { window.dispatchEvent(new CustomEvent('sp-refresh-route', { detail: { path } })); } catch(_) {}
+      try {
+        window.dispatchEvent(new CustomEvent('sp-refresh-route', {detail: {path}}));
+      } catch (_) {
+      }
       return;
     }
     if (key === 'closeLeft' || key === 'closeRight') {
@@ -128,7 +144,10 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
       return;
     }
     if (key === 'clear') {
-      try { localStorage.removeItem(STORAGE_KEY); } catch(_) {}
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch (_) {
+      }
       setTabs([]);
       navigateToFirst();
     } else if (key === 'closeAll') {
@@ -139,12 +158,12 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
 
   const contextMenu = useMemo(() => ({
     items: [
-      { key: 'refresh', label: '刷新当前页', icon: <ReloadOutlined /> },
-      { key: 'closeLeft', label: '关闭左侧全部', icon: <VerticalLeftOutlined /> },
-      { key: 'closeRight', label: '关闭右侧全部', icon: <VerticalRightOutlined /> },
-      { type: 'divider' as const },
-      { key: 'clear', label: '清除缓存', icon: <DeleteOutlined /> },
-      { key: 'closeAll', label: '关闭全部', icon: <CloseCircleOutlined /> },
+      {key: 'refresh', label: '刷新当前页', icon: <ReloadOutlined/>},
+      {key: 'closeLeft', label: '关闭左侧全部', icon: <VerticalLeftOutlined/>},
+      {key: 'closeRight', label: '关闭右侧全部', icon: <VerticalRightOutlined/>},
+      {type: 'divider' as const},
+      {key: 'clear', label: '清除缓存', icon: <DeleteOutlined/>},
+      {key: 'closeAll', label: '关闭全部', icon: <CloseCircleOutlined/>},
     ],
     onClick: onContextMenuClick,
   }), [onContextMenuClick]);
@@ -186,7 +205,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
           mode="horizontal"
           items={topMenuItems}
           className="top-nav-menu"
-          style={{flex: 1, minWidth: 0 }}
+          style={{flex: 1, minWidth: 0}}
         />
       </Header>
       <Layout>
@@ -230,7 +249,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
                   onChange={onTabChange}
                   onEdit={onTabEdit as any}
                   tabBarGutter={6}
-                  tabBarStyle={{ margin: 0 }}
+                  tabBarStyle={{margin: 0}}
                 />
               </div>
             </Dropdown>
