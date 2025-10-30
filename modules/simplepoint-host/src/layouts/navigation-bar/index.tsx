@@ -40,63 +40,56 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   }, [location.pathname]);
 
   // 页签状态：key 使用路由 path
-  const [tabs, setTabs] = useState<Array<{ key: string; label: React.ReactNode; closable?: boolean }>>([]);
-  const [hydrated, setHydrated] = useState(false);
-
-  // 首次挂载：从本地持久化恢复页签
-  useEffect(() => {
+  const [tabs, setTabs] = useState<Array<{ key: string; label: React.ReactNode; closable?: boolean }>>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw) as Array<{ key: string; label: string; closable?: boolean }>;
         if (Array.isArray(parsed)) {
-          setTabs(parsed.map(t => ({key: t.key, label: t.label, closable: t.closable ?? true})));
+          return parsed.map(t => ({key: t.key, label: t.label, closable: t.closable ?? true}));
         }
       }
     } catch (_) {
       // ignore
-    } finally {
-      setHydrated(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return [];
+  });
 
   // 菜单变化时，用最新映射更新已有标签文字
   useEffect(() => {
     setTabs(prev => prev.map(t => ({...t, label: pathLabelMap.get(t.key) ?? t.label})));
   }, [pathLabelMap]);
 
-  // 路由变化时，自动把当前路由加入页签
+  // 路由变化时，自动把当前路由加入页签，并持久化
   useEffect(() => {
     const path = getCurrentPath();
     if (!path) return;
-    setTabs((prev) => {
-      if (prev.some(t => t.key === path)) return prev;
-      const label = pathLabelMap.get(path) ?? path;
-      return [...prev, {key: path, label, closable: true}];
+
+    setTabs(prev => {
+      const existing = prev.some(t => t.key === path);
+      const next = existing ? prev : [...prev, {key: path, label: pathLabelMap.get(path) ?? path, closable: true}];
+
+      try {
+        const simple = next.map(t => ({
+          key: t.key,
+          label: typeof t.label === 'string' ? t.label : String(t.label),
+          closable: t.closable !== false
+        }));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(simple));
+      } catch (_) {
+        // ignore
+      }
+
+      return next;
     });
   }, [getCurrentPath, pathLabelMap]);
 
-  // 持久化页签（等待恢复完成后再写入，避免用空数组覆盖）
-  useEffect(() => {
-    if (!hydrated) return;
-    try {
-      const simple = tabs.map(t => ({
-        key: t.key,
-        label: typeof t.label === 'string' ? t.label : String(t.label),
-        closable: t.closable !== false
-      }));
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(simple));
-    } catch (_) {
-      // ignore
-    }
-  }, [tabs, hydrated]);
 
   const activeKey = getCurrentPath();
 
   const onTabChange = useCallback((key: string) => {
-    if (key && key !== activeKey) navigate(key);
-  }, [activeKey, navigate]);
+    if (key) navigate(key);
+  }, [navigate]);
 
   const onTabEdit = useCallback((targetKey: any, action: 'add' | 'remove') => {
     if (action !== 'remove') return;
