@@ -1,6 +1,6 @@
 import type {ItemType} from "antd/es/menu/interface";
-import {Avatar, Dropdown, MenuProps} from "antd";
-import {SettingOutlined, UserOutlined} from "@ant-design/icons";
+import {Avatar, Dropdown, MenuProps, Tooltip, Button} from "antd";
+import {SettingOutlined, UserOutlined, FontSizeOutlined} from "@ant-design/icons";
 
 
 /**
@@ -45,6 +45,35 @@ function getGreetingByTime() {
   if (hour < 12) return '早上好！';
   if (hour < 18) return '下午好！';
   return '晚上好！';
+}
+
+/**
+ * 在顶部导航右侧：切换全局尺寸按钮
+ */
+export const sizeSwitcherItem = (): ItemType => {
+  const order: Array<'small'|'middle'|'large'> = ['small','middle','large'];
+  const getNext = (cur: 'small'|'middle'|'large') => order[(order.indexOf(cur) + 1) % order.length];
+  const onToggle = () => {
+    const cur = (localStorage.getItem('sp.globalSize') as 'small'|'middle'|'large') || 'middle';
+    const next = getNext(cur);
+    localStorage.setItem('sp.globalSize', next);
+    window.dispatchEvent(new CustomEvent('sp-set-size', { detail: next }));
+  };
+  return {
+    key: 'size-switcher',
+    label: (
+      <Tooltip title="切换全局尺寸(小/中/大)">
+        <Button
+          type="default"
+          size="small"
+          icon={<FontSizeOutlined/>}
+          onClick={onToggle}
+          style={{ width: 28, height: 28, padding: 0, borderRadius: 6, margin: '0 8px' }}
+        />
+      </Tooltip>
+    ),
+    style: { paddingRight: 0 }
+  };
 }
 
 /**

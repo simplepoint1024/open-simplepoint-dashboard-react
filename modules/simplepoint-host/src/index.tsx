@@ -14,7 +14,7 @@ function createRoot() {
   ReactDOM.createRoot(rootEl).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-      <App/>
+        <App/>
       </QueryClientProvider>
     </React.StrictMode>,
   );
@@ -29,4 +29,3 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   createRoot();
 }
-

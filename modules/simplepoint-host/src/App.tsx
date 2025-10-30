@@ -3,7 +3,7 @@ import '@simplepoint/libs-components/Simplepoint.css'
 import {ConfigProvider, Result, Spin} from 'antd';
 import {HashRouter, Route, Routes} from "react-router-dom";
 import NavigateBar from "@/layouts/navigation-bar";
-import React from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import zhCN from 'antd/locale/zh_CN';
 import {Profile} from "@/layouts/profile";
 import {Settings} from "@/layouts/settings";
@@ -14,13 +14,28 @@ import {init, loadRemote} from '@module-federation/enhanced/runtime';
 import 'antd/dist/reset.css';
 
 const App: React.FC = () => {
-  const module = use<Remote>(() => modules());
-  if (module.length > 0) {
-    init({
-      name: 'host',
-      remotes: module
-    });
-  }
+  // 初始化并监听全局尺寸
+  const [globalSize, setGlobalSize] = useState<'small'|'middle'|'large'>(() => (localStorage.getItem('sp.globalSize') as any) || 'middle');
+  useEffect(() => {
+    const handler = (e: any) => {
+      const next = (e?.detail as 'small'|'middle'|'large') || 'middle';
+      setGlobalSize(next);
+    };
+    window.addEventListener('sp-set-size', handler as EventListener);
+    return () => window.removeEventListener('sp-set-size', handler as EventListener);
+  }, []);
+
+  const remotes = use<Remote>(() => modules());
+  const initedRef = useRef(false);
+  useEffect(() => {
+    if (remotes.length > 0 && !initedRef.current) {
+      init({
+        name: 'host',
+        remotes
+      });
+      initedRef.current = true;
+    }
+  }, [remotes]);
 
   const data = use<MenuInfo>(() => routes());
 
@@ -30,7 +45,7 @@ const App: React.FC = () => {
     const res: MenuNode[] = [];
     const dfs = (arr: MenuNode[]) => {
       arr.forEach((n) => {
-        const children = (n as any).children as MenuNode[] | undefined;
+        const children = n.children as MenuNode[] | undefined;
         if (Array.isArray(children) && children.length > 0) {
           dfs(children);
         } else {
@@ -42,51 +57,64 @@ const App: React.FC = () => {
     return res;
   };
 
-  const leafRoutes = flattenLeafRoutes(data as unknown as MenuNode[])
-    .filter(n => !!n.path && !!n.component);
+  const leafRoutes = useMemo(() => (
+    flattenLeafRoutes(data as unknown as MenuNode[])
+      .filter(n => !!n.path && !!n.component)
+  ), [data]);
+
+  // 缓存懒加载组件，避免重复创建 React.lazy
+  const lazyCache = useRef(new Map<string, React.LazyExoticComponent<React.ComponentType<any>>>());
+  const getLazyComponent = (spec?: string): React.LazyExoticComponent<React.ComponentType<any>> => {
+    const fallback: { default: React.ComponentType<any> } = {
+      default: () => (
+        <Result status="error" title="远程资源加载失败，请稍后再试."/>
+      )
+    };
+    if (!spec) return React.lazy(async () => fallback);
+    const cached = lazyCache.current.get(spec);
+    if (cached) return cached;
+    const s = spec as string; // 保证后续为非空字符串
+    const comp = React.lazy(async () => {
+      try {
+        if (s.startsWith("./")) {
+          return await import(`${s}`) as { default: React.ComponentType<any> };
+        } else {
+          return await loadRemote(`${s}`) as { default: React.ComponentType<any> };
+        }
+      } catch (error) {
+        return fallback as any;
+      }
+    });
+    lazyCache.current.set(s, comp);
+    return comp;
+  };
 
   return (
     <div className="content">
       <ConfigProvider theme={{
         token: {colorPrimary: '#1677FF'}, components: {}
-      }} componentSize="middle" locale={zhCN}>
+      }} componentSize={globalSize} locale={zhCN}>
         <HashRouter>
           <NavigateBar data={data}>
             <Routes>
               <Route key={'profile'} path={'/profile'} element={<Profile/>}/>
               <Route key={'settings'} path={'/settings'} element={<Settings/>}/>
-              {leafRoutes.map(({uuid, path, component}) => {
-                // 如果组件路径是相对路径，则直接使用，否则假设是远程模块
-                const Component = React.lazy(async () => {
-                  try {
-                    if (component?.startsWith("./")) {
-                      return await import(`${component}`);
-                    } else {
-                      return await loadRemote(`${component}`) as { default: React.FC };
-                    }
-                  } catch (error) {
-                    return {
-                      default: () => (
-                        <Result
-                          status="error"
-                          title="远程资源加载失败，请稍后再试."
-                        />
-                      ),
-                    };
-                  }
-                });
+              {leafRoutes.map(({uuid, path, component}, idx) => {
+                const Component = getLazyComponent(component);
+                const key = uuid || path || String(idx);
                 return (
                   <Route
-                    key={uuid}
+                    key={key}
                     path={path}
                     element={
-                      <React.Suspense fallback={<Spin/>}>
+                      <React.Suspense fallback={<div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%'}}><Spin/></div>}>
                         <Component/>
                       </React.Suspense>
                     }
                   />
                 );
               })}
+              <Route path="*" element={<Result status="404" title="页面不存在"/>}/>
             </Routes>
           </NavigateBar>
         </HashRouter>

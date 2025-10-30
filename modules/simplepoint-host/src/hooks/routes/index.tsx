@@ -1,20 +1,23 @@
 import {createIcon} from "@simplepoint/libs-shared/types/icon.ts";
 import {MenuInfo, MenuItemType} from "@/store/routes";
 import {GetProps, Input, MenuProps} from "antd";
-import {aboutMeItem, logoItem} from "@/layouts/navigation-bar/top-bar.tsx";
+import {aboutMeItem, logoItem, sizeSwitcherItem} from "@/layouts/navigation-bar/top-bar.tsx";
 const {Search} = Input;
 
 /**
- * 基于拍平(parent)关系构建菜单
+ * 基于拍平(parent)关系构建菜单（同级按 sort 升序）
  */
 const buildMenusFromFlat = (menus: Array<MenuInfo>, navigate: (path: string) => void, parent: string | undefined = undefined): MenuItemType[] => {
-  return menus.reduce<MenuItemType[]>((acc, menu) => {
-    if (menu.parent !== parent) return acc;
+  const siblings = menus
+    .filter((m) => m.parent === parent)
+    .sort((a: any, b: any) => (a?.sort ?? 0) - (b?.sort ?? 0));
+
+  return siblings.map((menu) => {
     const children = buildMenusFromFlat(menus, navigate, menu.uuid);
     const existsChildren = children.length > 0;
     // @ts-ignore
     const menuItem: MenuItemType = {
-      key: menu.uuid ?? "",
+      key: menu.uuid || (menu as any).path || menu.label || "",
       label: menu.label ?? "",
       icon: (menu as any).icon ? createIcon((menu as any).icon) : undefined,
       type: (menu as any).type ?? undefined,
@@ -28,36 +31,38 @@ const buildMenusFromFlat = (menus: Array<MenuInfo>, navigate: (path: string) => 
         }
       } : {})
     };
-    return [...acc, menuItem];
-  }, []);
+    return menuItem;
+  });
 };
 
 /**
- * 基于树结构(children)构建菜单
+ * 基于树结构(children)构建菜单（同级按 sort 升序）
  */
 const buildMenusFromTree = (nodes: Array<MenuInfo>, navigate: (path: string) => void): MenuItemType[] => {
-  return (nodes || []).map((menu) => {
-    const rawChildren = (menu as any).children as Array<MenuInfo> | undefined;
-    const builtChildren = Array.isArray(rawChildren) && rawChildren.length > 0 ? buildMenusFromTree(rawChildren, navigate) : undefined;
-    const existsChildren = !!builtChildren && builtChildren.length > 0;
-    // @ts-ignore
-    const item: MenuItemType = {
-      key: menu.uuid ?? "",
-      label: menu.label ?? "",
-      icon: (menu as any).icon ? createIcon((menu as any).icon) : undefined,
-      type: (menu as any).type ?? undefined,
-      danger: (menu as any).danger ?? undefined,
-      disabled: (menu as any).disabled ?? undefined,
-      component: (menu as any).component ?? undefined,
-      ...(existsChildren ? {children: builtChildren} : {}),
-      ...(!existsChildren ? {
-        onClick: () => {
-          if ((menu as any).path) navigate(`${(menu as any).path}`)
-        }
-      } : {})
-    };
-    return item;
-  });
+  return ([...(nodes || [])] as any[])
+    .sort((a: any, b: any) => (a?.sort ?? 0) - (b?.sort ?? 0))
+    .map((menu: any) => {
+      const rawChildren = menu.children as Array<MenuInfo> | undefined;
+      const builtChildren = Array.isArray(rawChildren) && rawChildren.length > 0 ? buildMenusFromTree(rawChildren, navigate) : undefined;
+      const existsChildren = !!builtChildren && builtChildren.length > 0;
+      // @ts-ignore
+      const item: MenuItemType = {
+        key: menu.uuid || menu.path || menu.label || "",
+        label: menu.label ?? "",
+        icon: menu.icon ? createIcon(menu.icon) : undefined,
+        type: menu.type ?? undefined,
+        danger: menu.danger ?? undefined,
+        disabled: menu.disabled ?? undefined,
+        component: menu.component ?? undefined,
+        ...(existsChildren ? {children: builtChildren} : {}),
+        ...(!existsChildren ? {
+          onClick: () => {
+            if (menu.path) navigate(`${menu.path}`)
+          }
+        } : {})
+      };
+      return item;
+    });
 };
 
 /**
@@ -97,6 +102,7 @@ export const useTopNavigation = (navigate: (path: string) => void, data: Array<M
         ),
 
       },
+      sizeSwitcherItem(),
       aboutMeItem(navigate)
     ]
   }

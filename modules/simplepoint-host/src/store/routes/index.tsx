@@ -1,44 +1,38 @@
-import {createContext,useContext} from "react";
 import type {ItemType} from "antd/es/menu/interface";
 
 export type MenuItemType = ItemType & Record<string, any>;
 
-export interface RouteState {
-  top: MenuItemType[],
-  side: MenuItemType[],
-}
-
-export const RouteStoreContext = createContext<{
-  state: RouteState;
-  setTopState: (update: Partial<RouteState>) => void;
-  setSideState: (update: Partial<RouteState>) => void;
-}>({
-  state: {
-    top: [],
-    side: []
-  },
-  setTopState: () => {
-  },
-  setSideState: () => {
-  }
-});
-
-export const useRouteStore = () => {
-  return useContext(RouteStoreContext);
-};
-
 export interface MenuInfo {
-  id: string | undefined;
-  uuid: string | undefined;
-  path?: string | undefined;
-  parent?: string | undefined;
-  title?: string | undefined;
-  label?: string | undefined;
-  icon?: string | undefined;
-  danger?: boolean | undefined;
-  type?: 'group' | 'divider' | 'submenu' | 'item' | undefined;
-  disabled?: boolean | undefined;
-  component?: string | undefined;
+  id?: string | number;
+  uuid?: string;
+  path?: string;
+  parent?: string;
+  title?: string;
+  label?: string;
+  icon?: string;
+  danger?: boolean;
+  type?: 'group' | 'divider' | 'submenu' | 'item';
+  disabled?: boolean;
+  component?: string;
+  sort?: number;
+  children?: MenuInfo[];
 }
 
+// 判断是否存在子节点
+export const hasChildren = (node?: MenuInfo) => Array.isArray(node?.children) && node!.children!.length > 0;
 
+// 扁平化树形菜单（返回所有叶子节点）
+export const flattenMenus = (nodes: MenuInfo[] = []): MenuInfo[] => {
+  const res: MenuInfo[] = [];
+  const dfs = (arr: MenuInfo[]) => {
+    arr.forEach(n => {
+      if (hasChildren(n)) {
+        dfs(n!.children!);
+      } else {
+        res.push(n);
+      }
+    });
+  };
+  dfs(nodes);
+  return res;
+};
