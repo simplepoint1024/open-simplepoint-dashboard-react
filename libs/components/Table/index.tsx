@@ -171,19 +171,27 @@ const App = <T extends object = any>(props: TableProps<T>) => {
       .filter(([key]) => (visibleCols[key] ?? visibleKeys.includes(key)))
       .map(([key, schemaDef]) => {
         const isBoolean = (schemaDef as any)?.type === 'boolean';
-        return {
-          title: (schemaDef as any)?.title ?? key,
-          dataIndex: key,
-          key,
-          // 对布尔类型做可视化处理：用禁用的 Checkbox 或 是/否 文本
-          render: isBoolean
-            ? (val: any) => (
+        const renderCell = isBoolean
+          ? (val: any) => (
               <span
                 style={{display: 'inline-block', width: '100%', textAlign: 'center', color: val ? '#52c41a' : '#999'}}>
                 {val ? '√' : '×'}
               </span>
             )
-            : undefined,
+          : key === 'icon'
+            ? (val: any) => (
+                <span style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%'}}>
+                  {typeof val === 'string' ? createIcon(val) : null}
+                </span>
+              )
+            : undefined;
+
+        return {
+          title: (schemaDef as any)?.title ?? key,
+          dataIndex: key,
+          key,
+          align: key === 'icon' ? 'center' : undefined,
+          render: renderCell,
           filterDropdown: () => (
             <ColumnFilter
               initialOp={parseOp(filters[key])}

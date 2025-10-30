@@ -4,6 +4,7 @@ export default {
   './system/Auth': './src/views/system/authority/index.tsx',
   './system/Menu': './src/views/system/menu/index.tsx',
   './system/Role': './src/views/system/role/index.tsx',
+  './system/Client': './src/views/system/client/index.tsx',
   './system/User': './src/views/system/user/index.tsx',
   './locale/Language': './src/views/locale/language/index.tsx',
   './locale/CountryRange': './src/views/locale/country-Range/index.tsx',

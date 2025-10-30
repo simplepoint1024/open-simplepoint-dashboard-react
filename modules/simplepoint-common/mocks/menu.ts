@@ -52,7 +52,8 @@ export const apis = [
               "minLength": 1,
               "maxLength": 100,
               "x-ui": {
-                "x-list-visible": "true"
+                "x-list-visible": "true",
+                "widget": "IconPicker"
               }
             },
             "label": {

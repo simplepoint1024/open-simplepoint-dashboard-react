@@ -39,6 +39,18 @@ const App: React.FC = () => {
 
   const data = use<MenuInfo>(() => routes());
 
+  // 路由刷新：为不同 path 维护一个重渲染计数，用于强制 remount
+  const [refreshKeyMap, setRefreshKeyMap] = useState<Record<string, number>>({});
+  useEffect(() => {
+    const handler = (e: any) => {
+      const fromHash = window.location.hash ? window.location.hash.replace(/^#/, '') : undefined;
+      const currentPath = e?.detail?.path || fromHash || window.location.pathname || '/';
+      setRefreshKeyMap(prev => ({ ...prev, [currentPath]: (prev[currentPath] || 0) + 1 }));
+    };
+    window.addEventListener('sp-refresh-route', handler as EventListener);
+    return () => window.removeEventListener('sp-refresh-route', handler as EventListener);
+  }, []);
+
   // 将树形菜单拍平成叶子路由（有 path 且有 component 的节点）
   type MenuNode = MenuInfo & { children?: MenuNode[] };
   const flattenLeafRoutes = (nodes: MenuNode[] = []): MenuNode[] => {
@@ -113,11 +125,12 @@ const App: React.FC = () => {
               <Route key={'settings'} path={'/settings'} element={<Settings/>}/>
               {leafRoutes.map(({uuid, path, component}, idx) => {
                 const key = uuid || path || String(idx);
+                const rk = path ? (refreshKeyMap[path] || 0) : 0;
                 const isIframe = typeof component === 'string' && component.startsWith('iframe:');
                 if (isIframe) {
                   const src = (component as string).slice('iframe:'.length);
                   return (
-                    <Route key={key} path={path} element={<IframeView src={src}/>}/>
+                    <Route key={key} path={path} element={<IframeView key={`iframe-${path}-${rk}`} src={src}/>}/>
                   );
                 }
                 const Component = getLazyComponent(component);
@@ -127,7 +140,7 @@ const App: React.FC = () => {
                     path={path}
                     element={
                       <React.Suspense fallback={<div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%'}}><Spin/></div>}>
-                        <Component/>
+                        <Component key={`comp-${path}-${rk}`}/>
                       </React.Suspense>
                     }
                   />
