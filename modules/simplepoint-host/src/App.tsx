@@ -89,6 +89,18 @@ const App: React.FC = () => {
     return comp;
   };
 
+  // Iframe 渲染器：占满可视区域
+  const IframeView: React.FC<{ src: string }> = ({ src }) => (
+    <div style={{height: '100%', width: '100%'}}>
+      <iframe
+        src={src}
+        style={{border: 0, width: '100%', height: '100%'}}
+        allow="clipboard-read; clipboard-write; fullscreen; geolocation"
+        referrerPolicy="no-referrer"
+      />
+    </div>
+  );
+
   return (
     <div className="content">
       <ConfigProvider theme={{
@@ -100,8 +112,15 @@ const App: React.FC = () => {
               <Route key={'profile'} path={'/profile'} element={<Profile/>}/>
               <Route key={'settings'} path={'/settings'} element={<Settings/>}/>
               {leafRoutes.map(({uuid, path, component}, idx) => {
-                const Component = getLazyComponent(component);
                 const key = uuid || path || String(idx);
+                const isIframe = typeof component === 'string' && component.startsWith('iframe:');
+                if (isIframe) {
+                  const src = (component as string).slice('iframe:'.length);
+                  return (
+                    <Route key={key} path={path} element={<IframeView src={src}/>}/>
+                  );
+                }
+                const Component = getLazyComponent(component);
                 return (
                   <Route
                     key={key}

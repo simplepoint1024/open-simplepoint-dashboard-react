@@ -62,6 +62,17 @@ export const apis = [
                 "path": "/system/role",
                 "type": "item",
                 "component": "common/system/Role"
+              },
+              {
+                "id": "a5f2c1b0-9e3e-4a7f-8c11-2b4c6d7e8f90",
+                "updatedAt": "2025-10-29T11:33:38.800000Z",
+                "uuid": "c1d2e3f4-5678-49ab-90cd-ef0123456789",
+                "label": "百度",
+                "parent": "91639c9d-86b1-44cd-8539-1297df4f6218",
+                "icon": "LinkOutlined",
+                "path": "/system/baidu",
+                "type": "item",
+                "component": "iframe:https://www.baidu.com"
               }
             ]
           }
