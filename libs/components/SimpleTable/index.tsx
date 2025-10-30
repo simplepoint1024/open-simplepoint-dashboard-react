@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useSchema} from '@simplepoint/libs-shared/hooks/useSchema';
 import {del, get, post, put, usePageable} from '@simplepoint/libs-shared/api/methods';
 import Table, {TableButtonProps} from '../Table';
@@ -14,7 +14,19 @@ export interface SimpleTableProps<T> {
   name: string;
   baseUrl: string;
   initialFilters?: Record<string, string>;
+  // 自定义按钮事件（可覆盖内置 add/edit/delete/del）
   customButtonEvents?: Record<string, (selectedRowKeys: React.Key[], selectedRows: T[], props: TableButtonProps) => void>;
+  // 额外自定义按钮（与 schema 返回的 buttons 合并并按 sort 排序）
+  customButtons?: TableButtonProps[];
+  // 受控抽屉开关与编辑数据
+  drawerOpen?: boolean;
+  onDrawerOpenChange?: (open: boolean) => void;
+  editingRecord?: any | null;
+  onEditingRecordChange?: (record: any | null) => void;
+  // 新增初始值
+  initialValues?: any;
+  // 自定义提交（覆盖默认 post/put 行为），action: add | edit
+  onSubmit?: (action: 'add' | 'edit', formData: any, currentEditing: any | null) => Promise<void> | void;
 }
 
 const App = (props: SimpleTableProps<any>) => {
@@ -23,8 +35,20 @@ const App = (props: SimpleTableProps<any>) => {
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState<number>(10);
   const [filters, setFilters] = useState<Record<string, string>>(props.initialFilters ? props.initialFilters : {});
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState<any | null>(null);
+  // 非受控状态
+  const [innerDrawerOpen, setInnerDrawerOpen] = useState(false);
+  const [innerEditing, setInnerEditing] = useState<any | null>(null);
+  // 受控/非受控合并
+  const drawerOpen = props.drawerOpen !== undefined ? props.drawerOpen : innerDrawerOpen;
+  const setDrawerOpen = (open: boolean) => {
+    props.onDrawerOpenChange?.(open);
+    if (props.drawerOpen === undefined) setInnerDrawerOpen(open);
+  };
+  const editingRecord = props.editingRecord !== undefined ? props.editingRecord : innerEditing;
+  const setEditingRecord = (rec: any | null) => {
+    props.onEditingRecordChange?.(rec);
+    if (props.editingRecord === undefined) setInnerEditing(rec);
+  };
 
   const fetchPage = () =>
     get<import('@simplepoint/libs-shared/types/request').Pageable<any>>(props.baseUrl, {
@@ -55,13 +79,14 @@ const App = (props: SimpleTableProps<any>) => {
   };
 
   const handleAdd = () => {
-    setEditingUser(null);
-    setIsDrawerOpen(true);
+    setEditingRecord(null);
+    setDrawerOpen(true);
   };
 
-  const handleEdit = (_selectedRowKeys: React.Key[], selectedRows: any[], _props: TableButtonProps) => {
-    setEditingUser(selectedRows[0]);
-    setIsDrawerOpen(true);
+  const handleEdit = (_selectedRowKeys: React.Key[], selectedRows: any[]) => {
+    const first = selectedRows && selectedRows.length > 0 ? selectedRows[0] : null;
+    setEditingRecord(first);
+    setDrawerOpen(true);
   };
 
   const handleDelete = (keys: React.Key[]) => {
@@ -70,7 +95,7 @@ const App = (props: SimpleTableProps<any>) => {
       content: `确定要删除选中的 ${keys.length} 数据吗？`,
       onOk: async () => {
         try {
-          await del(props.baseUrl, keys as string[]);
+          await del(props.baseUrl, keys as any);
           message.success('删除成功');
           await refetchPage();
         } catch (e: any) {
@@ -82,21 +107,46 @@ const App = (props: SimpleTableProps<any>) => {
 
   const handleFormSubmit = async ({formData}: IChangeEvent) => {
     try {
-      if (editingUser) {
-        // 修改
-        await put(props.baseUrl, {...editingUser, ...formData});
-        message.success('修改成功');
+      const action: 'add' | 'edit' = editingRecord ? 'edit' : 'add';
+      if (props.onSubmit) {
+        await props.onSubmit(action, formData, editingRecord);
       } else {
-        // 新增
-        await post(props.baseUrl, formData);
-        message.success('新增成功');
+        if (action === 'edit') {
+          await put(props.baseUrl, {...editingRecord, ...formData});
+          message.success('修改成功');
+        } else {
+          await post(props.baseUrl, formData);
+          message.success('新增成功');
+        }
       }
-      setIsDrawerOpen(false);
+      setDrawerOpen(false);
+      setEditingRecord(null);
       await refetchPage();
     } catch (e: any) {
       message.error(`操作失败: ${e.message}`);
     }
   };
+
+  // 合并并排序按钮（schema 按钮 + 自定义按钮）
+  const mergedButtons: TableButtonProps[] = useMemo(() => {
+    const arr = [
+      ...(schemaData?.buttons ?? []),
+      ...(props.customButtons ?? []),
+    ];
+    return arr.sort((a: any, b: any) => {
+      const s1 = typeof a.sort === 'number' ? a.sort : Number.POSITIVE_INFINITY;
+      const s2 = typeof b.sort === 'number' ? b.sort : Number.POSITIVE_INFINITY;
+      return s1 - s2;
+    });
+  }, [schemaData?.buttons, props.customButtons]);
+
+  // 默认按钮事件 + 外部覆盖（兼容 del/delete 两种 key）
+  const defaultEvents = {
+    add: (_keys: React.Key[], _rows: any[], _btn: TableButtonProps) => handleAdd(),
+    edit: (_keys: React.Key[], rows: any[], _btn: TableButtonProps) => handleEdit(_keys, rows),
+    delete: (keys: React.Key[], _rows: any[], _btn: TableButtonProps) => handleDelete(keys),
+    del: (keys: React.Key[], _rows: any[], _btn: TableButtonProps) => handleDelete(keys),
+  } as Record<string, (selectedRowKeys: React.Key[], selectedRows: any[], props: TableButtonProps) => void>;
 
   return (
     <div>
@@ -114,10 +164,11 @@ const App = (props: SimpleTableProps<any>) => {
         filters={filters}
         onChange={handleTableChange}
         onFilterChange={handleFilterChange}
-        onButtonEvents={
-          {'add': handleAdd, 'edit': handleEdit, 'delete': handleDelete, ...(props.customButtonEvents ?? {}),}
-        }
-        buttons={schemaData?.buttons ?? []}
+        onButtonEvents={{
+          ...defaultEvents,
+          ...(props.customButtonEvents ?? {}),
+        }}
+        buttons={mergedButtons}
       />
 
       <Drawer
@@ -126,18 +177,24 @@ const App = (props: SimpleTableProps<any>) => {
           <span
             style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32}}
           >
-              {createIcon(editingUser ? 'EditOutlined' : 'PlusOutlined')}
+              {createIcon(editingRecord ? 'EditOutlined' : 'PlusOutlined')}
           </span>
         }
         placement="right"
         width={480}
-        open={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        destroyOnHidden // 关闭时销毁抽屉内容，确保每次打开都是新的
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        destroyOnClose
       >
         {loading && <Spin/>}
         {schemaError && <Alert type="error" message="加载失败" description={(schemaError as Error).message}/>}
-        {schemaData && <SForm schema={schemaData.schema} formData={editingUser} onSubmit={handleFormSubmit}/>}
+        {schemaData && (
+          <SForm
+            schema={schemaData.schema}
+            formData={editingRecord ?? (props.initialValues ?? {})}
+            onSubmit={handleFormSubmit}
+          />
+        )}
       </Drawer>
     </div>
   );

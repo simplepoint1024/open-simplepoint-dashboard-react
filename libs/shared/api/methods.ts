@@ -21,8 +21,13 @@ export function put<T>(url: string, data: any): Promise<T> {
   });
 }
 
-export function del<T>(url: string, ids: string[]): Promise<T> {
-  return request<T>(`${url}?ids=${ids.join(',')}`, {
+// 兼容 string | number | (string|number)[]
+export function del<T>(url: string, ids: string[] | number[] | string | number): Promise<T> {
+  const list = Array.isArray(ids) ? ids : [ids];
+  const flat = (list as any).flat ? (list as any).flat() : list;
+  const idsStr = flat.map((x: any) => String(x)).join(',');
+  const query = idsStr ? `?ids=${encodeURIComponent(idsStr)}` : '';
+  return request<T>(`${url}${query}`, {
     method: 'DELETE',
   });
 }

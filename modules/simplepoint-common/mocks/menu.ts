@@ -136,12 +136,12 @@ export const apis = [
             "color": "orange",
             "variant": "outlined",
             "icon": "EditOutlined",
-            "argumentMaxSize": -1,
+            "argumentMaxSize": 1,
             "sort": 1,
             "type": "primary",
             "title": "编辑",
             "danger": false,
-            "argumentMinSize": -1,
+            "argumentMinSize": 1,
             "key": "edit"
           },
           {
@@ -149,12 +149,12 @@ export const apis = [
             "color": "blue",
             "variant": "outlined",
             "icon": "PlusCircleOutlined",
-            "argumentMaxSize": -1,
+            "argumentMaxSize": 1,
             "sort": 0,
             "type": "primary",
             "title": "添加",
             "danger": false,
-            "argumentMinSize": -1,
+            "argumentMinSize": 0,
             "key": "add"
           },
           {
@@ -162,12 +162,12 @@ export const apis = [
             "color": "danger",
             "variant": "outlined",
             "icon": "MinusCircleOutlined",
-            "argumentMaxSize": -1,
+            "argumentMaxSize": 0,
             "sort": 2,
             "type": "primary",
             "title": "删除",
             "danger": false,
-            "argumentMinSize": -1,
+            "argumentMinSize": 10,
             "key": "del"
           }
         ]

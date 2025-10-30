@@ -29,6 +29,9 @@ export type TableButtonProps = ButtonProps & {
   sort: number;
   argumentMaxSize?: number;
   argumentMinSize?: number;
+  text?: string; // 兼容 schema 按钮结构
+  color?: string; // 兼容 schema 按钮结构
+  variant?: string; // 兼容 schema 按钮结构
 };
 
 export interface TableProps<T> {
@@ -86,9 +89,39 @@ const parseText = (stored?: string) => {
   return idx === -1 ? '' : stored.slice(idx + 1);
 };
 
-// Helper to check for visibility flag in schema
-const isColumnVisible = (schema: any): boolean => {
-  return schema?.['x-ui']?.['x-list-visible'] == 'true'; // Use == to handle both boolean true and string 'true'
+// Helper: 解析可见性的三态值（true/false/undefined）
+const parseVisibleTriState = (val: any): boolean | undefined => {
+  if (val === true || val === 'true' || val === 1 || val === '1') return true;
+  if (val === false || val === 'false' || val === 0 || val === '0') return false;
+  return undefined;
+};
+
+// 读取 schema 中的可见性标记，兼容多种写法：
+// - 嵌套: x-ui.x-list.visible
+// - 扁平: 'x-ui.x-list.visible'
+// - 兼容历史: x-ui.x-list-visible 或 x-list-visible
+const readVisibleFlag = (schema: any): boolean | undefined => {
+  if (!schema) return undefined;
+  const nested = schema?.['x-ui']?.['x-list']?.['visible'];
+  const flat = schema?.['x-ui.x-list.visible'];
+  const legacy1 = schema?.['x-ui']?.['x-list-visible'];
+  const legacy2 = schema?.['x-list-visible'];
+  return (
+    parseVisibleTriState(nested) ??
+    parseVisibleTriState(flat) ??
+    parseVisibleTriState(legacy1) ??
+    parseVisibleTriState(legacy2)
+  );
+};
+
+// 最终判定：当任意字段声明了可见性时，仅渲染被标记为 true 的；否则回退为全部可见
+const computeVisibleKeys = (properties: Record<string, any>): string[] => {
+  const entries = Object.keys(properties).map((key) => ({ key, flag: readVisibleFlag(properties[key]) }));
+  const anyDeclared = entries.some((e) => e.flag !== undefined);
+  if (anyDeclared) {
+    return entries.filter((e) => e.flag === true).map((e) => e.key);
+  }
+  return Object.keys(properties);
 };
 
 const App = <T extends object = any>(props: TableProps<T>) => {
@@ -105,7 +138,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     const s = props.schema;
     if (Array.isArray(s)) {
       return (s as any[]).reduce((acc, cur) => {
-        const key = cur.name ?? cur.key ?? cur.id;
+        const key = (cur as any).name ?? (cur as any).key ?? (cur as any).id;
         if (key) acc[key] = cur;
         return acc;
       }, {} as Record<string, any>);
@@ -113,10 +146,8 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     return (s as any)?.properties ?? s ?? {};
   }, [props.schema]);
 
-  // Get keys of properties that should be visible based on schema
-  const visibleKeys = useMemo(() => {
-    return Object.keys(properties).filter((key) => isColumnVisible(properties[key]));
-  }, [properties]);
+  // 基于 schema 的可见性规则，计算可见列；若无声明则全部可见
+  const visibleKeys = useMemo(() => computeVisibleKeys(properties), [properties]);
 
   // 列可见性状态，初次根据 properties 初始化
   const [visibleCols, setVisibleCols] = useState<Record<string, boolean>>({});
@@ -137,7 +168,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
 
   const columns = useMemo<ColumnsType<T>>(() => {
     return Object.entries(properties)
-      .filter(([key, schemaDef]) => isColumnVisible(schemaDef) && (visibleCols[key] ?? true))
+      .filter(([key]) => (visibleCols[key] ?? visibleKeys.includes(key)))
       .map(([key, schemaDef]) => {
         const isBoolean = (schemaDef as any)?.type === 'boolean';
         return {
@@ -160,8 +191,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
               onChange={(op, text) => {
                 const value = text ? `${op}:${text}` : '';
                 const next = {...filters};
-                if (value) next[key] = value;
-                else delete next[key];
+                if (value) next[key] = value; else delete next[key];
                 setFilters(next);
                 props.onFilterChange?.(next);
                 props.refresh();
@@ -171,7 +201,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
           filterIcon: () => <SearchOutlined style={{color: filters[key] ? '#1677ff' : undefined}}/>,
         };
       });
-  }, [properties, visibleCols, filters, props]);
+  }, [properties, visibleCols, visibleKeys, filters, props]);
 
   const dataSource = props.pageable?.content ?? [];
 
@@ -266,24 +296,36 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     onChange: (keys: React.Key[], rows: T[]) => onSelectChange(keys, rows),
   };
 
+  // 兼容 schema 按钮结构，过滤不被 antd 接受的属性，映射颜色/样式
+  const renderButtons = (buttons?: TableButtonProps[]) => {
+    if (!buttons || buttons.length === 0) return null;
+    return buttons.map((button) => {
+      const { argumentMinSize, argumentMaxSize, sort, color, variant, text, icon, ...rest } = button as any;
+      const mapped: any = { ...rest };
+      // 颜色到 danger/simple 样式映射
+      if (color === 'danger') mapped.danger = true;
+      // 轮廓样式到 ghost
+      if (variant === 'outlined') mapped.ghost = true;
+      // 图标兼容字符串
+      const iconNode = typeof icon === 'string' ? createIcon(icon) : icon;
+      return (
+        <Button
+          {...mapped}
+          key={button.key}
+          onClick={onButtonEvent(button)}
+          disabled={onButtonDisabled(button)}
+          icon={iconNode}
+        >{text ?? (button as any).title}</Button>
+      );
+    });
+  };
+
   return (
     <div>
       <Row justify="space-between" style={{marginBottom: 16}}>
         <Col>
           <Space>
-            {props.buttons && props.buttons.map((button) => {
-              // 剔除自定义属性，避免 React 警告
-              const { argumentMinSize, argumentMaxSize, sort, ...restButtonProps } = button;
-              return (
-                <Button
-                  {...restButtonProps}
-                  key={button.key}
-                  onClick={onButtonEvent(button)}
-                  disabled={onButtonDisabled(button)}
-                  icon={typeof button.icon === 'string' ? createIcon(button.icon) : button.icon}
-                >{button.title}</Button>
-              );
-            })}
+            {renderButtons(props.buttons)}
           </Space>
         </Col>
         <Col>
