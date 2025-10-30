@@ -1,6 +1,8 @@
 import type {ItemType} from "antd/es/menu/interface";
-import {Avatar, Dropdown, MenuProps, Tooltip, Button} from "antd";
-import {SettingOutlined, UserOutlined, FontSizeOutlined} from "@ant-design/icons";
+import {Avatar, Button, MenuProps, Tooltip} from "antd";
+import {CreditCardOutlined, FontSizeOutlined, LogoutOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
+import React, {useEffect, useRef, useState} from 'react';
+import {get} from "@simplepoint/libs-shared/types/request.ts";
 
 
 /**
@@ -47,17 +49,64 @@ function getGreetingByTime() {
   return '晚上好！';
 }
 
+// 从 /userinfo 获取头像与昵称（带会话缓存与卸载保护）
+const HeaderUser: React.FC = () => {
+  const [info, setInfo] = useState<any>(() => {
+    try {
+      const raw = sessionStorage.getItem('sp.userinfo');
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    mountedRef.current = true;
+    get<any>('/userinfo')
+      .then((data) => {
+        if (!mountedRef.current) return;
+        setInfo((prev: any) => {
+          try {
+            sessionStorage.setItem('sp.userinfo', JSON.stringify(data));
+          } catch {
+          }
+          return data || prev;
+        });
+      })
+      .catch(() => {/* 保留旧数据，不提示 */
+      });
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  const nickname: string = info?.nickname || info?.name || '用户';
+  const picture: string | undefined = info?.picture || undefined;
+  const isMock = typeof window !== 'undefined' && /localhost|127\.0\.0\.1/.test(window.location.hostname);
+  return (
+    <div style={{flexShrink: 0, display: 'flex', alignItems: 'center', cursor: 'pointer', gap: 6}}>
+      <Avatar size='default' alt={nickname} icon={!picture ? <UserOutlined/> : undefined} src={picture}/>
+      <span>
+        <span style={{color: 'rgba(255,142,62,0.74)'}}>{getGreetingByTime()}</span>
+        <span
+          style={{color: 'rgba(3,150,255,0.88)', textDecoration: 'underline', fontStyle: 'italic'}}> {nickname}</span>
+      </span>
+      {isMock && <span style={{marginLeft: 4, opacity: 0.65}}></span>}
+    </div>
+  );
+};
+
 /**
  * 在顶部导航右侧：切换全局尺寸按钮
  */
 export const sizeSwitcherItem = (): ItemType => {
-  const order: Array<'small'|'middle'|'large'> = ['small','middle','large'];
-  const getNext = (cur: 'small'|'middle'|'large') => order[(order.indexOf(cur) + 1) % order.length];
+  const order: Array<'small' | 'middle' | 'large'> = ['small', 'middle', 'large'];
+  const getNext = (cur: 'small' | 'middle' | 'large') => order[(order.indexOf(cur) + 1) % order.length];
   const onToggle = () => {
-    const cur = (localStorage.getItem('sp.globalSize') as 'small'|'middle'|'large') || 'middle';
+    const cur = (localStorage.getItem('sp.globalSize') as 'small' | 'middle' | 'large') || 'middle';
     const next = getNext(cur);
     localStorage.setItem('sp.globalSize', next);
-    window.dispatchEvent(new CustomEvent('sp-set-size', { detail: next }));
+    window.dispatchEvent(new CustomEvent('sp-set-size', {detail: next}));
   };
   return {
     key: 'size-switcher',
@@ -68,11 +117,11 @@ export const sizeSwitcherItem = (): ItemType => {
           size="small"
           icon={<FontSizeOutlined/>}
           onClick={onToggle}
-          style={{ width: 28, height: 28, padding: 0, borderRadius: 6, margin: '0 8px' }}
+          style={{width: 28, height: 28, padding: 0, borderRadius: 6, margin: '0 8px'}}
         />
       </Tooltip>
     ),
-    style: { paddingRight: 0 }
+    style: {paddingRight: 0}
   };
 }
 
@@ -81,34 +130,11 @@ export const sizeSwitcherItem = (): ItemType => {
  * @param navigate 路由跳转配置项
  */
 export const aboutMeItem = (navigate: (path: string) => void): ItemType => {
+  const menu = avatarConfig(navigate);
   return {
     key: 'me',
-    disabled: true,
-    label: (
-      <Dropdown menu={avatarConfig(navigate)}>
-        <div style={{
-          flexShrink: 0,
-          display: 'flex',
-          alignItems: 'center',
-        }}>
-          <Avatar size='default' icon={<UserOutlined/>}/>
-          <span>
-            <span style={{
-              color: 'rgba(255,142,62,0.74)',
-              paddingLeft: '3px'
-            }}>
-              {getGreetingByTime()}
-              </span>
-               <span style={{
-                 color: 'rgba(3,150,255,0.88)',
-                 textDecoration: 'underline',
-                 fontStyle: 'italic'
-               }}>超级管理员</span>
-             </span>
-          [mock环境]
-        </div>
-      </Dropdown>
-    ),
+    label: <HeaderUser/>,
+    children: menu.items as any,
     style: {marginRight: '24px', paddingRight: '0'}
   }
 }
@@ -119,36 +145,53 @@ export const aboutMeItem = (navigate: (path: string) => void): ItemType => {
  */
 export const avatarConfig = (navigate: (path: string) => void): MenuProps => {
   return {
-    items: [{
-      key: '1',
-      label: 'My Account',
-      disabled: true,
-    },
+    items: [
+      {
+        type: 'group',
+        label: '账户',
+        children: [
+          {
+            key: 'profile',
+            label: '个人资料',
+            icon: <UserOutlined/>,
+            onClick: () => navigate('/profile')
+          },
+          {
+            key: 'billing',
+            label: '账单信息',
+            icon: <CreditCardOutlined/>,
+            onClick: () => navigate('/billing'), // 假设跳转到 /billing
+            disabled: true, // 如果功能未实现，可以先禁用
+          },
+        ]
+      },
+      {
+        type: 'group',
+        label: '应用',
+        children: [
+          {
+            key: 'settings',
+            label: '系统设置',
+            icon: <SettingOutlined/>,
+            onClick: () => navigate('/settings')
+          },
+        ]
+      },
       {
         type: 'divider',
       },
       {
-        key: '2',
-        label: 'Profile',
-        extra: '⌘P',
-        onClick: (event) => {
-          event.domEvent.preventDefault();
-          navigate('/profile')
-        }
-      },
-      {
-        key: '3',
-        label: 'Billing',
-        extra: '⌘B',
-      },
-      {
-        key: '4',
-        label: 'Settings',
-        icon: <SettingOutlined/>,
-        extra: '⌘S',
+        key: 'logout',
+        label: '退出登录',
+        icon: <LogoutOutlined/>,
         onClick: () => {
-          navigate('/settings')
+          // 在这里处理退出登录逻辑，例如清除 token、跳转到登录页
+          console.log('User logged out');
+          sessionStorage.clear();
+          localStorage.clear();
+          navigate('/login');
         }
-      },]
-  }
+      },
+    ]
+  };
 }

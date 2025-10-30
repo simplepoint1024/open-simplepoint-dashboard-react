@@ -4,7 +4,7 @@ import {Button, Layout, Menu, theme, Tabs, Dropdown} from 'antd';
 import {useSideNavigation, useTopNavigation} from "@/hooks/routes";
 import {useNavigate, useLocation} from "react-router-dom";
 import {MenuInfo, flattenMenus} from "@/store/routes";
-
+import './index.css'
 const {Header, Content, Footer, Sider} = Layout;
 
 const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInfo> }> = ({children, data}) => {
@@ -185,7 +185,8 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
         <Menu
           mode="horizontal"
           items={topMenuItems}
-          style={{flex: 1, minWidth: 0}}
+          className="top-nav-menu"
+          style={{flex: 1, minWidth: 0 }}
         />
       </Header>
       <Layout>

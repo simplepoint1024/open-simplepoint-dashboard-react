@@ -91,6 +91,40 @@ export const apis = [
       })
   }),
 
+  http.get('/userinfo', () => {
+    return HttpResponse.json(
+      {
+        "sub": "system",
+        "zoneinfo": null,
+        "address": null,
+        "gender": null,
+        "roles": [
+          "SYSTEM_ADMIN"
+        ],
+        "iss": "http://127.0.0.1:9000",
+        "locale": "zh_CN",
+        "middle_name": "System",
+        "given_name": "管理员",
+        "nonce": "hzmoVmvL15YR9w_QRpGf0iQKYhqT8N2ArMsY-vxejnU",
+        "picture": null,
+        "sid": "xGZqVY3VZiWZ_36TTXezOW0Ricez8jpCApiNC5F03BU",
+        "aud": [
+          "simplepoint-client"
+        ],
+        "phone": "18288888888",
+        "super_admin": true,
+        "azp": "simplepoint-client",
+        "auth_time": "2025-10-30T12:55:14Z",
+        "name": "管理员",
+        "nickname": "系统用户",
+        "exp": "2025-10-30T13:43:59Z",
+        "iat": "2025-10-30T13:13:59Z",
+        "email": "xxxx@gmail.com",
+        "jti": "17d8b4f6-898d-4045-a9c4-adc44c93074a"
+      }
+      )
+  }),
+
   http.get('/common/user', () => {
     return HttpResponse.json(
       {

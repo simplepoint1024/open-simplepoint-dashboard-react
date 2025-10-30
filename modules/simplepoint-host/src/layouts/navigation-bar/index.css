@@ -1,0 +1,6 @@
+.top-nav-menu.ant-menu-horizontal > .ant-menu-item::after,
+.top-nav-menu.ant-menu-horizontal > .ant-menu-submenu::after,
+.top-nav-menu.ant-menu-horizontal > .ant-menu-item-selected::after,
+.top-nav-menu.ant-menu-horizontal > .ant-menu-submenu-selected::after {
+    border-bottom: none !important;
+}

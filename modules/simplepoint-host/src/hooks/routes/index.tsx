@@ -1,8 +1,7 @@
 import {createIcon} from "@simplepoint/libs-shared/types/icon.ts";
 import {MenuInfo, MenuItemType} from "@/store/routes";
-import {GetProps, Input, MenuProps} from "antd";
+import {MenuProps} from "antd";
 import {aboutMeItem, logoItem, sizeSwitcherItem} from "@/layouts/navigation-bar/top-bar.tsx";
-const {Search} = Input;
 
 /**
  * 基于拍平(parent)关系构建菜单（同级按 sort 升序）
@@ -75,9 +74,6 @@ export const buildMenus = (menus: Array<MenuInfo>, navigate: (path: string) => v
   return isTreeData ? buildMenusFromTree(menus, navigate) : buildMenusFromFlat(menus, navigate, undefined);
 };
 
-type SearchProps = GetProps<typeof Input.Search>;
-const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
-
 // 顶部菜单数据
 export const useTopNavigation = (navigate: (path: string) => void, data: Array<MenuInfo>): MenuProps => {
   return {
@@ -88,19 +84,6 @@ export const useTopNavigation = (navigate: (path: string) => void, data: Array<M
         key: 'spacer',
         label: '',
         style: {marginLeft: 'auto', pointerEvents: 'none'},
-      }, {
-        key: 'search',
-        disabled: true,
-        label: (
-          <div style={{
-            flexShrink: 0,
-            display: 'flex',
-            paddingTop: '15px'
-          }}>
-            <Search placeholder="input search text" onSearch={onSearch} enterButton/>
-          </div>
-        ),
-
       },
       sizeSwitcherItem(),
       aboutMeItem(navigate)
