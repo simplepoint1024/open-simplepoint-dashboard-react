@@ -14,26 +14,40 @@ const APP_I18N_VERSION = '1';
 const VERSION_KEY = 'sp.i18n.version';
 const FORCE_REMOUNT_ON_LOCALE_CHANGE = true;
 const isForceRemount = () => {
-  try { const v = localStorage.getItem('sp.i18n.forceRemount'); if (v === 'false') return false; if (v === 'true') return true; } catch {}
+  try {
+    const v = localStorage.getItem('sp.i18n.forceRemount');
+    return v == null ? FORCE_REMOUNT_ON_LOCALE_CHANGE : v === 'true';
+  } catch {}
   return FORCE_REMOUNT_ON_LOCALE_CHANGE;
 };
 
 const isRTL = (lng: string) => /^(ar|he|fa|ur)(-|$)/i.test(lng);
 
 const mapDayjsLocale = (lng: string) => {
-  const norm = (lng || '').toLowerCase();
-  if (norm.startsWith('zh-cn')) return 'zh-cn';
-  if (norm.startsWith('zh-tw')) return 'zh-tw';
-  if (norm.startsWith('en-gb')) return 'en-gb';
-  if (norm.startsWith('en')) return 'en';
-  if (norm.startsWith('ja')) return 'ja';
-  if (norm.startsWith('ko')) return 'ko';
-  if (norm.startsWith('fr')) return 'fr';
-  if (norm.startsWith('de')) return 'de';
-  if (norm.startsWith('es')) return 'es';
-  if (norm.startsWith('pt-br')) return 'pt-br';
-  if (norm.startsWith('ru')) return 'ru';
-  return 'en';
+  const raw = (lng || 'en-US').toLowerCase();
+  const [lang, region] = raw.split(/[-_]/);
+  const key = region ? `${lang}-${region}` : lang;
+  const overrides: Record<string, string> = {
+    'zh-cn': 'zh-cn',
+    'zh-tw': 'zh-tw',
+    'en-gb': 'en-gb',
+    'pt-br': 'pt-br',
+  };
+  return overrides[key] || lang || 'en';
+};
+
+// 规范化语言码（表驱动 + 通用规则）：en -> en-US, ja -> ja-JP, zh -> zh-CN，其它按语言-地区格式规范
+const normalizeLocale = (code?: string): string => {
+  const raw = (code || '').trim();
+  if (!raw) return 'zh-CN';
+  const map: Record<string, string> = { en: 'en-US', 'en-us': 'en-US', ja: 'ja-JP', 'ja-jp': 'ja-JP', zh: 'zh-CN', 'zh-cn': 'zh-CN', 'zh-tw': 'zh-TW' };
+  const low = raw.toLowerCase();
+  if (map[low]) return map[low];
+  // 通用：lang[-region] -> ll-CC
+  const m = low.split(/[-_]/);
+  const lang = (m[0] || 'en').toLowerCase();
+  const region = (m[1] || '').toUpperCase();
+  return region ? `${lang}-${region}` : (lang === 'zh' ? 'zh-CN' : lang === 'ja' ? 'ja-JP' : lang === 'en' ? 'en-US' : `${lang}-US`);
 };
 
 export type I18nContextValue = {
@@ -52,7 +66,7 @@ const I18nContext = createContext<I18nContextValue | undefined>(undefined);
 
 export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const getInitialLocale = () => {
-    try { return localStorage.getItem('sp.locale') || 'zh-CN'; } catch { return 'zh-CN'; }
+    try { return normalizeLocale(localStorage.getItem('sp.locale') || undefined); } catch { return 'zh-CN'; }
   };
   const initialLocale = getInitialLocale();
 
@@ -118,40 +132,35 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     if (Object.keys(initialMessages).length > 0) {
       cache.current.set(initialLocale, initialMessages);
       (window as any).spI18n = {
-        t: mkT(initialMessages, initialLocale),
+        t: mkT(initialMessages),
         locale: initialLocale,
         setLocale: (code: string) => applyLocale(code),
         messages: initialMessages,
         ensure,
       };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const applyLocale = useCallback((code: string) => {
-    try { localStorage.setItem('sp.locale', code); } catch {}
-    setLocaleState(code);
-    try {
-      // 广播语言变化（antd 等监听者用）
-      window.dispatchEvent(new CustomEvent('sp-set-locale', { detail: code }));
-      // 不在此处刷新路由，等消息拉取完成后再刷新
-    } catch {}
+    const norm = normalizeLocale(code);
+    try { localStorage.setItem('sp.locale', norm); } catch {}
+    setLocaleState(norm);
+    try { window.dispatchEvent(new CustomEvent('sp-set-locale', { detail: norm })); } catch {}
   }, []);
 
   // expose setter that also persists and emits event
-  const setLocale = useCallback((code: string) => {
-    applyLocale(code);
-  }, [applyLocale]);
+  const setLocale = useCallback((code: string) => { applyLocale(code); }, [applyLocale]);
 
   // listen external locale changes (e.g., from other micro apps)
   useEffect(() => {
     const handler = (e: any) => {
-      const next = (e?.detail as string) || 'zh-CN';
+      const next = normalizeLocale((e?.detail as string) || 'zh-CN');
+      if (next === locale) return; // 避免重复更新
       setLocaleState(next);
     };
     window.addEventListener('sp-set-locale', handler as EventListener);
     return () => window.removeEventListener('sp-set-locale', handler as EventListener);
-  }, []);
+  }, [locale]);
 
   // load languages once
   useEffect(() => {
@@ -162,57 +171,40 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
   }, []);
 
   const loadMessages = useCallback(async (lng: string) => {
+    const lang = normalizeLocale(lng);
     const mySeq = ++loadSeqRef.current;
     // 1) 内存缓存（忽略空对象）
-    if (cache.current.has(lng)) {
-      const cached = cache.current.get(lng)!;
+    if (cache.current.has(lang)) {
+      const cached = cache.current.get(lang)!;
       if (cached && Object.keys(cached).length > 0) {
         if (mySeq !== loadSeqRef.current) return;
         setMessages(cached);
-        (window as any).spI18n = {
-          t: mkT(cached, lng),
-          locale: lng,
-          setLocale,
-          messages: cached,
-          ensure,
-        };
-        try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
+        (window as any).spI18n = { t: mkT(cached), locale: lang, setLocale, messages: cached, ensure };
+        try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lang } })); } catch {}
         return;
       }
     }
     // 2) 本地存储缓存（忽略空对象 + TTL）
-    const stored = readStoredMessages(lng);
+    const stored = readStoredMessages(lang);
     if (stored && Object.keys(stored).length > 0) {
-      cache.current.set(lng, stored);
+      cache.current.set(lang, stored);
       if (mySeq !== loadSeqRef.current) return;
       setMessages(stored);
-      (window as any).spI18n = {
-        t: mkT(stored, lng),
-        locale: lng,
-        setLocale,
-        messages: stored,
-        ensure,
-      };
-      try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
+      (window as any).spI18n = { t: mkT(stored), locale: lang, setLocale, messages: stored, ensure };
+      try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lang } })); } catch {}
       return;
     }
 
     // 3) 网络请求
     setLoading(true);
     try {
-      const data = await fetchMessages(lng);
+      const data = await fetchMessages(lang);
       if (mySeq !== loadSeqRef.current) return; // 仅应用最后一次
-      cache.current.set(lng, data);
+      cache.current.set(lang, data);
       setMessages(data);
-      writeStoredMessages(lng, data);
-      (window as any).spI18n = {
-        t: mkT(data, lng),
-        locale: lng,
-        setLocale,
-        messages: data,
-        ensure,
-      };
-      try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
+      writeStoredMessages(lang, data);
+      (window as any).spI18n = { t: mkT(data), locale: lang, setLocale, messages: data, ensure };
+      try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lang } })); } catch {}
     } finally {
       setLoading(false);
     }
@@ -228,7 +220,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
         const merged = { ...prev, ...data } as Messages;
         cache.current.set(lng, merged);
         writeStoredMessages(lng, merged);
-        (window as any).spI18n = { t: mkT(merged, lng), locale: lng, setLocale, messages: merged, ensure };
+        (window as any).spI18n = { t: mkT(merged), locale: lng, setLocale, messages: merged, ensure };
         try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
         return merged;
       });
@@ -251,38 +243,30 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     return () => { cancelled = true; };
   }, [locale, loadMessages]);
 
-  // 维护 html 的 lang 与 dir 属性
+  // 维护 html 的 lang 与 dir 属性 + 同步 dayjs locale
   useEffect(() => {
     try {
       const el = document.documentElement;
-      if (el) {
-        el.setAttribute('lang', locale);
-        el.setAttribute('dir', isRTL(locale) ? 'rtl' : 'ltr');
-      }
+      if (el) { el.setAttribute('lang', locale); el.setAttribute('dir', isRTL(locale) ? 'rtl' : 'ltr'); }
     } catch {}
-    // 同步 dayjs locale（动态按需加载）
     (async () => {
-      try {
-        const dlc = mapDayjsLocale(locale);
-        await import(/* @vite-ignore */ `dayjs/locale/${dlc}.js`);
-        dayjs.locale(dlc as any);
-      } catch {}
+      try { const dlc = mapDayjsLocale(locale); await import(/* @vite-ignore */ `dayjs/locale/${dlc}.js`); dayjs.locale(dlc as any); } catch {}
     })();
   }, [locale]);
 
   // 简单占位符插值：将 {name} 替换为 params.name
   const interpolate = (tpl: string, params?: Record<string, any>) =>
-    params ? tpl.replace(/\{(\w+)\}/g, (_: any, k: string) => (params[k] !== undefined ? String(params[k]) : `{${k}}`)) : tpl;
+    params ? tpl.replace(/{(\w+)}/g, (_: any, k: string) => (params[k] !== undefined ? String(params[k]) : `{${k}}`)) : tpl;
 
-  // 基于给定 messages 与语言生成 t 函数（不包含缺失上报，由 Provider 的 t 负责）
-  const mkT = (msgs: Messages, lng: string): I18nContextValue['t'] =>
+  // 基于给定 messages 生成 t 函数（统一 fallback，不区分语言）
+  const mkT = (msgs: Messages): I18nContextValue['t'] =>
     (key, fallbackOrParams, maybeParams) => {
       let params: Record<string, any> | undefined;
       let fallback: string | undefined;
       if (typeof fallbackOrParams === 'string') fallback = fallbackOrParams;
       else if (fallbackOrParams && typeof fallbackOrParams === 'object') params = fallbackOrParams as any;
       if (maybeParams && typeof maybeParams === 'object') params = maybeParams as any;
-      const raw = msgs[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key);
+      const raw = msgs[key] ?? (fallback ?? key);
       return interpolate(raw, params);
     };
 
@@ -294,7 +278,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     if (maybeParams && typeof maybeParams === 'object') params = maybeParams as any;
 
     const has = Object.prototype.hasOwnProperty.call(messages, key);
-    const raw = (has ? messages[key] : (locale === 'zh-CN' ? (fallback ?? key) : key));
+    const raw = has ? messages[key] : (fallback ?? key);
 
     if (!has && process.env.NODE_ENV !== 'production') {
       const mk = `${locale}::${key}`;
@@ -334,7 +318,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
 
   // 暴露到全局，便于微前端直接使用 window.spI18n.t
   useEffect(() => {
-    (window as any).spI18n = { t: mkT(messages, locale), locale, setLocale, messages, ensure };
+    (window as any).spI18n = { t: mkT(messages), locale, setLocale, messages, ensure };
   }, [messages, locale, setLocale, ensure]);
 
   return (
