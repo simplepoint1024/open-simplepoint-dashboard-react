@@ -1,19 +1,47 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { fetchLanguages, fetchMessages, Language, Messages } from '@/services/i18n';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import calendar from 'dayjs/plugin/calendar';
+
+dayjs.extend(localizedFormat);
+dayjs.extend(relativeTime);
+dayjs.extend(calendar);
 
 // 版本化缓存（部署后可手动提升版本使缓存失效）
 const APP_I18N_VERSION = '1';
 const VERSION_KEY = 'sp.i18n.version';
 const FORCE_REMOUNT_ON_LOCALE_CHANGE = true;
+const isForceRemount = () => {
+  try { const v = localStorage.getItem('sp.i18n.forceRemount'); if (v === 'false') return false; if (v === 'true') return true; } catch {}
+  return FORCE_REMOUNT_ON_LOCALE_CHANGE;
+};
 
 const isRTL = (lng: string) => /^(ar|he|fa|ur)(-|$)/i.test(lng);
+
+const mapDayjsLocale = (lng: string) => {
+  const norm = (lng || '').toLowerCase();
+  if (norm.startsWith('zh-cn')) return 'zh-cn';
+  if (norm.startsWith('zh-tw')) return 'zh-tw';
+  if (norm.startsWith('en-gb')) return 'en-gb';
+  if (norm.startsWith('en')) return 'en';
+  if (norm.startsWith('ja')) return 'ja';
+  if (norm.startsWith('ko')) return 'ko';
+  if (norm.startsWith('fr')) return 'fr';
+  if (norm.startsWith('de')) return 'de';
+  if (norm.startsWith('es')) return 'es';
+  if (norm.startsWith('pt-br')) return 'pt-br';
+  if (norm.startsWith('ru')) return 'ru';
+  return 'en';
+};
 
 export type I18nContextValue = {
   locale: string;
   setLocale: (code: string) => void;
   languages: Language[];
   messages: Messages;
-  t: (key: string, fallback?: string) => string;
+  t: (key: string, fallbackOrParams?: string | Record<string, any>, maybeParams?: Record<string, any>) => string;
   loading: boolean;
   refresh: () => Promise<void>;
   ready: boolean;
@@ -90,10 +118,11 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     if (Object.keys(initialMessages).length > 0) {
       cache.current.set(initialLocale, initialMessages);
       (window as any).spI18n = {
-        t: (key: string, fallback?: string) => initialMessages[key] ?? (initialLocale === 'zh-CN' ? (fallback ?? key) : key),
+        t: mkT(initialMessages, initialLocale),
         locale: initialLocale,
         setLocale: (code: string) => applyLocale(code),
         messages: initialMessages,
+        ensure,
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,10 +170,11 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
         if (mySeq !== loadSeqRef.current) return;
         setMessages(cached);
         (window as any).spI18n = {
-          t: (key: string, fallback?: string) => cached[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key),
+          t: mkT(cached, lng),
           locale: lng,
           setLocale,
           messages: cached,
+          ensure,
         };
         try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
         return;
@@ -157,10 +187,11 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
       if (mySeq !== loadSeqRef.current) return;
       setMessages(stored);
       (window as any).spI18n = {
-        t: (key: string, fallback?: string) => stored[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key),
+        t: mkT(stored, lng),
         locale: lng,
         setLocale,
         messages: stored,
+        ensure,
       };
       try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
       return;
@@ -175,10 +206,11 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
       setMessages(data);
       writeStoredMessages(lng, data);
       (window as any).spI18n = {
-        t: (key: string, fallback?: string) => data[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key),
+        t: mkT(data, lng),
         locale: lng,
         setLocale,
         messages: data,
+        ensure,
       };
       try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
     } finally {
@@ -196,7 +228,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
         const merged = { ...prev, ...data } as Messages;
         cache.current.set(lng, merged);
         writeStoredMessages(lng, merged);
-        (window as any).spI18n = { t: (key: string, fallback?: string) => merged[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key), locale: lng, setLocale, messages: merged };
+        (window as any).spI18n = { t: mkT(merged, lng), locale: lng, setLocale, messages: merged, ensure };
         try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
         return merged;
       });
@@ -209,7 +241,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     (async () => {
       await loadMessages(locale).catch(() => {});
       if (cancelled) return;
-      if (!FORCE_REMOUNT_ON_LOCALE_CHANGE) return;
+      if (!isForceRemount()) return;
       try {
         const fromHash = typeof window !== 'undefined' && window.location.hash ? window.location.hash.replace(/^#/, '') : undefined;
         const currentPath = fromHash || (typeof window !== 'undefined' ? window.location.pathname : '/') || '/';
@@ -228,13 +260,43 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
         el.setAttribute('dir', isRTL(locale) ? 'rtl' : 'ltr');
       }
     } catch {}
+    // 同步 dayjs locale（动态按需加载）
+    (async () => {
+      try {
+        const dlc = mapDayjsLocale(locale);
+        await import(/* @vite-ignore */ `dayjs/locale/${dlc}.js`);
+        dayjs.locale(dlc as any);
+      } catch {}
+    })();
   }, [locale]);
 
-  const t = useCallback((key: string, fallback?: string) => {
-    const v = messages[key];
-    if (v !== undefined) return v;
-    // 记录缺失键（开发环境）并做简单批量上报
-    if (process.env.NODE_ENV !== 'production') {
+  // 简单占位符插值：将 {name} 替换为 params.name
+  const interpolate = (tpl: string, params?: Record<string, any>) =>
+    params ? tpl.replace(/\{(\w+)\}/g, (_: any, k: string) => (params[k] !== undefined ? String(params[k]) : `{${k}}`)) : tpl;
+
+  // 基于给定 messages 与语言生成 t 函数（不包含缺失上报，由 Provider 的 t 负责）
+  const mkT = (msgs: Messages, lng: string): I18nContextValue['t'] =>
+    (key, fallbackOrParams, maybeParams) => {
+      let params: Record<string, any> | undefined;
+      let fallback: string | undefined;
+      if (typeof fallbackOrParams === 'string') fallback = fallbackOrParams;
+      else if (fallbackOrParams && typeof fallbackOrParams === 'object') params = fallbackOrParams as any;
+      if (maybeParams && typeof maybeParams === 'object') params = maybeParams as any;
+      const raw = msgs[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key);
+      return interpolate(raw, params);
+    };
+
+  const t = useCallback<I18nContextValue['t']>((key, fallbackOrParams, maybeParams) => {
+    let params: Record<string, any> | undefined;
+    let fallback: string | undefined;
+    if (typeof fallbackOrParams === 'string') fallback = fallbackOrParams;
+    else if (fallbackOrParams && typeof fallbackOrParams === 'object') params = fallbackOrParams as any;
+    if (maybeParams && typeof maybeParams === 'object') params = maybeParams as any;
+
+    const has = Object.prototype.hasOwnProperty.call(messages, key);
+    const raw = (has ? messages[key] : (locale === 'zh-CN' ? (fallback ?? key) : key));
+
+    if (!has && process.env.NODE_ENV !== 'production') {
       const mk = `${locale}::${key}`;
       if (!missingKeysRef.current.has(mk)) {
         missingKeysRef.current.add(mk);
@@ -248,7 +310,8 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
         }, 1200);
       }
     }
-    return locale === 'zh-CN' ? (fallback ?? key) : key;
+
+    return interpolate(raw, params);
   }, [messages, locale]);
 
   const refresh = useCallback(async () => {
@@ -271,8 +334,8 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
 
   // 暴露到全局，便于微前端直接使用 window.spI18n.t
   useEffect(() => {
-    (window as any).spI18n = { t, locale, setLocale, messages };
-  }, [t, locale, setLocale, messages]);
+    (window as any).spI18n = { t: mkT(messages, locale), locale, setLocale, messages, ensure };
+  }, [messages, locale, setLocale, ensure]);
 
   return (
     <I18nContext.Provider value={value}>{children}</I18nContext.Provider>

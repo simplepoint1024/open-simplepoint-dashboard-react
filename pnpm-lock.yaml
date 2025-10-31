@@ -113,6 +113,9 @@ importers:
       '@simplepoint/libs-shared':
         specifier: workspace:*
         version: link:../../libs/shared
+      dayjs:
+        specifier: ^1.11.11
+        version: 1.11.18
 
 packages:
 

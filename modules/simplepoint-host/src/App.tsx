@@ -6,6 +6,23 @@ import NavigateBar from "@/layouts/navigation-bar";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import zhCN from 'antd/locale/zh_CN';
 import enUS from 'antd/locale/en_US';
+import zhTW from 'antd/locale/zh_TW';
+// @ts-ignore
+import enGB from 'antd/locale/en_GB';
+// @ts-ignore
+import jaJP from 'antd/locale/ja_JP';
+// @ts-ignore
+import koKR from 'antd/locale/ko_KR';
+// @ts-ignore
+import frFR from 'antd/locale/fr_FR';
+// @ts-ignore
+import deDE from 'antd/locale/de_DE';
+// @ts-ignore
+import esES from 'antd/locale/es_ES';
+// @ts-ignore
+import ptBR from 'antd/locale/pt_BR';
+// @ts-ignore
+import ruRU from 'antd/locale/ru_RU';
 import {Profile} from "@/layouts/profile";
 import {Settings} from "@/layouts/settings";
 import {use} from "@simplepoint/libs-shared/types/request.ts";
@@ -58,9 +75,23 @@ const App: React.FC = () => {
   }, [themeMode]);
 
   // 使用全局 I18n 的 locale
-  const { locale } = useI18n();
-  const antdLocale = locale === 'zh-CN' ? zhCN : enUS;
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
+  const mapAntdLocale = (code: string) => {
+    const c = (code || '').toLowerCase();
+    if (c.startsWith('zh-cn')) return zhCN;
+    if (c.startsWith('zh-tw')) return zhTW;
+    if (c.startsWith('en-gb')) return enGB;
+    if (c.startsWith('en')) return enUS;
+    if (c.startsWith('ja')) return jaJP;
+    if (c.startsWith('ko')) return koKR;
+    if (c.startsWith('fr')) return frFR;
+    if (c.startsWith('de')) return deDE;
+    if (c.startsWith('es')) return esES;
+    if (c.startsWith('pt-br')) return ptBR;
+    if (c.startsWith('ru')) return ruRU;
+    return enUS;
+  };
+  const antdLocale = useMemo(() => mapAntdLocale(locale), [locale]);
 
   const remotes = use<Remote>(() => modules());
   const initedRef = useRef(false);

@@ -129,6 +129,14 @@ export const apis = [
       'settings.resetLangApplied': '已恢复默认语言：简体中文',
       'settings.sampleItem': '示例条目',
       'settings.sampleDesc': '这是一个示例描述',
+      // 表单常用
+      'form.submit': '提交',
+      'form.required': '这是必填项',
+      'form.minLength': '长度不能少于 {limit} 个字符',
+      'form.maximum': '不能大于 {limit}',
+      'form.invalid': '输入不合法',
+      'form.jsonInvalid': 'JSON格式不正确',
+      'form.passwordMismatch': '两次输入的密码不一致',
     } as Record<string, string>;
 
     const enUS = {
@@ -242,6 +250,14 @@ export const apis = [
       'settings.resetLangApplied': 'Default language applied: Chinese (Simplified)',
       'settings.sampleItem': 'Sample Item',
       'settings.sampleDesc': 'This is a sample description',
+      // Form commons
+      'form.submit': 'Submit',
+      'form.required': 'This field is required',
+      'form.minLength': 'Minimum length is {limit} characters',
+      'form.maximum': 'Must be less than or equal to {limit}',
+      'form.invalid': 'Invalid input',
+      'form.jsonInvalid': 'Invalid JSON format',
+      'form.passwordMismatch': 'Passwords do not match',
     } as Record<string, string>;
 
     const jaJP = {
@@ -355,6 +371,14 @@ export const apis = [
       'settings.resetLangApplied': '既定の言語に戻しました（簡体字中国語）',
       'settings.sampleItem': 'サンプル項目',
       'settings.sampleDesc': 'これはサンプルの説明です',
+      // フォーム共通
+      'form.submit': '送信',
+      'form.required': '必須項目です',
+      'form.minLength': '{limit} 文字以上で入力してください',
+      'form.maximum': '{limit} 以下で入力してください',
+      'form.invalid': '無効な入力です',
+      'form.jsonInvalid': 'JSON 形式が正しくありません',
+      'form.passwordMismatch': 'パスワードが一致しません',
     } as Record<string, string>;
 
     const dict = locale === 'en-US' ? enUS : locale === 'ja-JP' ? jaJP : zhCN;
@@ -367,7 +391,8 @@ export const apis = [
     const nsMap: Record<string, string[]> = {
       profile: ['profile.', 'field.', 'rule.', 'ph.', 'user.'],
       settings: ['settings.', 'size.', 'about.', 'label.language', 'tooltip.size'],
-      common: ['app.', 'error.', 'nav.', 'greeting.', 'dashboard.'],
+      common: ['app.', 'error.', 'nav.', 'greeting.', 'dashboard.', 'form.'],
+      form: ['form.'],
     };
     const allowPrefixes = nsList.flatMap(name => nsMap[name] || [`${name}.`]);
     const filtered: Record<string, string> = {};

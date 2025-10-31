@@ -19,6 +19,10 @@ export default {
     singleton: true,
     eager: true,
   },
+  'dayjs': {
+    singleton: true,
+    eager: true,
+  },
   '@ant-design/icons':{
     singleton: true,
     requiredVersion: '^6.0.0',

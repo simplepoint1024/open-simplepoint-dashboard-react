@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@simplepoint/libs-shared": "workspace:*",
-    "@simplepoint/libs-components": "workspace:*"
+    "@simplepoint/libs-components": "workspace:*",
+    "dayjs": "^1.11.11"
   }
 }
