@@ -7,7 +7,6 @@ import {Pageable} from '@simplepoint/libs-shared/types/request';
 import {ButtonProps} from "antd/es/button/button";
 import {createIcon} from '@simplepoint/libs-shared/types/icon';
 
-
 export type TableButtonProps = ButtonProps & {
   key: string;
   sort: number;
@@ -34,20 +33,6 @@ export interface TableProps<T> {
   // 可选：列可见性持久化 key（localStorage）
   storageKey?: string;
 }
-
-// 轻量 i18n t() 获取
-const useI18nT = () => {
-  const [tick, setTick] = useState(0);
-  useEffect(() => {
-    const h = () => setTick(v => v + 1);
-    try { window.addEventListener('sp-i18n-updated', h as any); } catch {}
-    return () => { try { window.removeEventListener('sp-i18n-updated', h as any); } catch {} };
-  }, []);
-  const t: (key: string, fallback?: string) => string = (window as any)?.spI18n?.t || ((k: string, f?: string) => f ?? k);
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  tick; // 让语言切换触发重渲染
-  return t;
-};
 
 /* 可复用的列过滤组件，内部使用 Hook 安全 */
 const ColumnFilter: React.FC<{
@@ -128,7 +113,7 @@ const readListProp = (schema: any, key: string) => {
 
 // 最终判定：当任意字段声明了可见性时，仅渲染被标记为 true 的；否则回退为全部可见
 const computeVisibleKeys = (properties: Record<string, any>): string[] => {
-  const entries = Object.keys(properties).map((key) => ({ key, flag: readVisibleFlag(properties[key]) }));
+  const entries = Object.keys(properties).map((key) => ({key, flag: readVisibleFlag(properties[key])}));
   const anyDeclared = entries.some((e) => e.flag !== undefined);
   if (anyDeclared) {
     return entries.filter((e) => e.flag === true).map((e) => e.key);
@@ -136,27 +121,27 @@ const computeVisibleKeys = (properties: Record<string, any>): string[] => {
   return Object.keys(properties);
 };
 
-const App = <T extends object = any>(props: TableProps<T>) => {
-  const t = useI18nT();
-  useEffect(() => { try { (window as any)?.spI18n?.ensure?.(['table']); } catch {} }, []);
+// 工具：去除以 "i18n:" 开头的前缀
+const stripI18nPrefix = (v: any): any => (typeof v === 'string' && v.startsWith('i18n:')) ? v.slice('i18n:'.length) : v;
 
-  // 本地化过滤器选项
+const App = <T extends object = any>(props: TableProps<T>) => {
+  // 固定中文过滤器选项
   const localizedOptions = useMemo(() => ([
-    {value: 'equals', label: t('table.filter.equals', '精确')},
-    {value: 'not:equals', label: t('table.filter.notEquals', '精确取反')},
-    {value: 'like', label: t('table.filter.like', '模糊')},
-    {value: 'not:like', label: t('table.filter.notLike', '模糊取反')},
-    {value: 'in', label: t('table.filter.in', '集合包含')},
-    {value: 'not:in', label: t('table.filter.notIn', '集合不包含')},
-    {value: 'between', label: t('table.filter.between', '区间')},
-    {value: 'not:between', label: t('table.filter.notBetween', '区间取反')},
-    {value: 'than:greater', label: t('table.filter.greater', '大于')},
-    {value: 'than:less', label: t('table.filter.less', '小于')},
-    {value: 'than:equal:greater', label: t('table.filter.ge', '大于等于')},
-    {value: 'than:equal:less', label: t('table.filter.le', '小于等于')},
-    {value: 'is:null', label: t('table.filter.isNull', '空')},
-    {value: 'is:not:null', label: t('table.filter.notNull', '非空')},
-  ]), [t]);
+    {value: 'equals', label: '精确'},
+    {value: 'not:equals', label: '精确取反'},
+    {value: 'like', label: '模糊'},
+    {value: 'not:like', label: '模糊取反'},
+    {value: 'in', label: '集合包含'},
+    {value: 'not:in', label: '集合不包含'},
+    {value: 'between', label: '区间'},
+    {value: 'not:between', label: '区间取反'},
+    {value: 'than:greater', label: '大于'},
+    {value: 'than:less', label: '小于'},
+    {value: 'than:equal:greater', label: '大于等于'},
+    {value: 'than:equal:less', label: '小于等于'},
+    {value: 'is:null', label: '空'},
+    {value: 'is:not:null', label: '非空'},
+  ]), []);
 
   // 本地 filters 状态（受控/非受控兼容）
   const [filters, setFilters] = useState<Record<string, string>>(props.filters ?? {});
@@ -191,16 +176,21 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     setVisibleCols((prev) => {
       const base: Record<string, boolean> = {};
       // 默认可见
-      visibleKeys.forEach((k) => { base[k] = k in prev ? prev[k] : true; });
+      visibleKeys.forEach((k) => {
+        base[k] = k in prev ? prev[k] : true;
+      });
       try {
         if (storageKey) {
           const raw = localStorage.getItem(storageKey);
           if (raw) {
             const saved = JSON.parse(raw) as Record<string, boolean>;
-            visibleKeys.forEach((k) => { if (typeof saved[k] === 'boolean') base[k] = saved[k]; });
+            visibleKeys.forEach((k) => {
+              if (typeof saved[k] === 'boolean') base[k] = saved[k];
+            });
           }
         }
-      } catch {}
+      } catch {
+      }
       return base;
     });
   }, [visibleKeys, storageKey]);
@@ -210,10 +200,13 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     try {
       if (storageKey && Object.keys(visibleCols).length) {
         const payload: Record<string, boolean> = {};
-        visibleKeys.forEach((k) => { if (typeof visibleCols[k] === 'boolean') payload[k] = visibleCols[k]; });
+        visibleKeys.forEach((k) => {
+          if (typeof visibleCols[k] === 'boolean') payload[k] = visibleCols[k];
+        });
         localStorage.setItem(storageKey, JSON.stringify(payload));
       }
-    } catch {}
+    } catch {
+    }
   }, [visibleCols, visibleKeys, storageKey]);
 
   const toggleCol = (key: string, checked: boolean) => {
@@ -234,7 +227,8 @@ const App = <T extends object = any>(props: TableProps<T>) => {
       .filter(({key}) => (visibleCols[key] ?? visibleKeys.includes(key)))
       .map(({key, schemaDef}) => {
         const listTitle = readListProp(schemaDef, 'title');
-        const title = listTitle ?? (schemaDef as any)?.title ?? key;
+        const baseTitle = listTitle ?? (schemaDef as any)?.title ?? key;
+        const cleanedTitle = stripI18nPrefix(baseTitle);
         const alignFromSchema = readListProp(schemaDef, 'align');
         const fixed = readListProp(schemaDef, 'fixed');
         const width = readListProp(schemaDef, 'width');
@@ -252,21 +246,21 @@ const App = <T extends object = any>(props: TableProps<T>) => {
 
         const renderCell = isBoolean
           ? (val: any) => (
-              <span
-                style={{display: 'inline-block', width: '100%', textAlign: 'center', color: val ? '#52c41a' : '#999'}}>
+            <span
+              style={{display: 'inline-block', width: '100%', textAlign: 'center', color: val ? '#52c41a' : '#999'}}>
                 {val ? '√' : '×'}
               </span>
-            )
+          )
           : key === 'icon'
             ? (val: any) => (
-                <span style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%'}}>
+              <span style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%'}}>
                   {typeof val === 'string' ? createIcon(val) : null}
                 </span>
-              )
+            )
             : undefined;
 
         const column: any = {
-          title,
+          title: cleanedTitle,
           dataIndex,
           key,
           align,
@@ -375,23 +369,34 @@ const App = <T extends object = any>(props: TableProps<T>) => {
         }}
         style={{marginBottom: 8}}
       >
-        {t('table.checkAll', '全选')}
+        全选
       </Checkbox>
       <div>
-        {visibleKeys.map((key) => (
-          <div key={key} style={{padding: '4px 0'}}>
-            <Checkbox checked={visibleCols[key] ?? true} onChange={(e) => toggleCol(key, e.target.checked)}>
-              {(properties[key] as any)?.title ?? key}
-            </Checkbox>
-          </div>
-        ))}
+        {visibleKeys.map((key) => {
+          const sd: any = (properties as any)[key] || {};
+          const listTitle = readListProp(sd, 'title');
+          const baseTitle = listTitle ?? sd?.title ?? key;
+          const label = stripI18nPrefix(baseTitle) ?? key;
+          return (
+            <div key={key} style={{padding: '4px 0'}}>
+              <Checkbox checked={visibleCols[key] ?? true} onChange={(e) => toggleCol(key, e.target.checked)}>
+                {label}
+              </Checkbox>
+            </div>
+          );
+        })}
       </div>
       {storageKey ? (
         <div style={{marginTop: 8, textAlign: 'right'}}>
           <Button type="link" size="small" onClick={() => {
-            try { if (storageKey) localStorage.removeItem(storageKey); } catch {}
-            const next: Record<string, boolean> = {}; visibleKeys.forEach((k) => next[k] = true); setVisibleCols(next);
-          }}>{t('table.resetColumns', '重置列')}</Button>
+            try {
+              if (storageKey) localStorage.removeItem(storageKey);
+            } catch {
+            }
+            const next: Record<string, boolean> = {};
+            visibleKeys.forEach((k) => next[k] = true);
+            setVisibleCols(next);
+          }}>重置列</Button>
         </div>
       ) : null}
     </div>
@@ -406,15 +411,29 @@ const App = <T extends object = any>(props: TableProps<T>) => {
   // 兼容 schema 按钮结构，过滤不被 antd 接受的属性，映射颜色/样式
   const renderButtons = (buttons?: TableButtonProps[]) => {
     if (!buttons || buttons.length === 0) return null;
+
+    const strip = (v: any): any => (typeof v === 'string' && v.startsWith('i18n:')) ? v.slice('i18n:'.length) : v;
+
+    const getButtonText = (button: TableButtonProps) => {
+      const anyBtn: any = button as any;
+      const raw = anyBtn.text ?? anyBtn.title ?? button.key;
+      return strip(raw);
+    };
+
+    const getButtonTitleAttr = (button: TableButtonProps): string | undefined => {
+      const anyBtn: any = button as any;
+      const raw = anyBtn.title as any;
+      return typeof raw === 'string' ? strip(raw) : undefined;
+    };
+
     return buttons.map((button) => {
-      const { argumentMinSize, argumentMaxSize, sort, color, variant, text, icon, ...rest } = button as any;
-      const mapped: any = { ...rest };
-      // 颜色到 danger/simple 样式映射
+      const {argumentMinSize, argumentMaxSize, sort, color, variant, text, icon, title, ...rest} = button as any;
+      const mapped: any = {...rest};
       if (color === 'danger') mapped.danger = true;
-      // 轮廓样式到 ghost
       if (variant === 'outlined') mapped.ghost = true;
-      // 图标兼容字符串
       const iconNode = typeof icon === 'string' ? createIcon(icon) : icon;
+      const localizedTitle = getButtonTitleAttr(button);
+      if (localizedTitle) mapped.title = localizedTitle;
       return (
         <Button
           {...mapped}
@@ -422,7 +441,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
           onClick={onButtonEvent(button)}
           disabled={onButtonDisabled(button)}
           icon={iconNode}
-        >{text ?? (button as any).title}</Button>
+        >{getButtonText(button)}</Button>
       );
     });
   };

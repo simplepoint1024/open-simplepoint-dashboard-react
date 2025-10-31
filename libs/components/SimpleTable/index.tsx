@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useSchema} from '@simplepoint/libs-shared/hooks/useSchema';
 import {del, get, post, put, usePageable} from '@simplepoint/libs-shared/api/methods';
 import Table, {TableButtonProps} from '../Table';
@@ -29,26 +29,7 @@ export interface SimpleTableProps<T> {
   onSubmit?: (action: 'add' | 'edit', formData: any, currentEditing: any | null) => Promise<void> | void;
 }
 
-// 轻量 t() 获取：来自 Host 的 window.spI18n
-const useI18nT = () => {
-  const [tick, setTick] = useState(0);
-  useEffect(() => {
-    const h = () => setTick(v => v + 1);
-    try { window.addEventListener('sp-i18n-updated', h as any); } catch {}
-    return () => { try { window.removeEventListener('sp-i18n-updated', h as any); } catch {} };
-  }, []);
-  const t: (key: string, fallback?: string, params?: Record<string, any>) => string = (window as any)?.spI18n?.t || ((k: string, f?: string) => f ?? k);
-  // 保证语言切换后能刷新
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  tick;
-  return t;
-};
-
 const App = (props: SimpleTableProps<any>) => {
-  const t = useI18nT();
-  // 首次挂载时按需加载 table 命名空间
-  useEffect(() => { try { (window as any)?.spI18n?.ensure?.(['table']); } catch {} }, []);
-
   const {data: schemaData, isLoading: schemaLoading, error: schemaError} = useSchema(props.baseUrl);
 
   const [page, setPage] = useState<number>(1);
@@ -110,15 +91,15 @@ const App = (props: SimpleTableProps<any>) => {
 
   const handleDelete = (keys: React.Key[]) => {
     Modal.confirm({
-      title: t('table.confirmDeleteTitle', '确认删除'),
-      content: t('table.confirmDeleteContent', '确定要删除选中的 {count} 条数据吗？', { count: keys.length }),
+      title: '确认删除',
+      content: `确定要删除选中的 ${keys.length} 条数据吗？`,
       onOk: async () => {
         try {
           await del(props.baseUrl, keys as any);
-          message.success(t('table.deleteSuccess', '删除成功'));
+          message.success('删除成功');
           await refetchPage();
         } catch (e: any) {
-          message.error(t('table.deleteFail', `删除失败: {msg}`, { msg: e?.message || '' }));
+          message.error(`删除失败: ${e?.message || ''}`);
         }
       },
     });
@@ -132,17 +113,17 @@ const App = (props: SimpleTableProps<any>) => {
       } else {
         if (action === 'edit') {
           await put(props.baseUrl, {...editingRecord, ...formData});
-          message.success(t('table.editSuccess', '修改成功'));
+          message.success('修改成功');
         } else {
           await post(props.baseUrl, formData);
-          message.success(t('table.addSuccess', '新增成功'));
+          message.success('新增成功');
         }
       }
       setDrawerOpen(false);
       setEditingRecord(null);
       await refetchPage();
     } catch (e: any) {
-      message.error(t('table.actionFail', `操作失败: {msg}`, { msg: e?.message || '' }));
+      message.error(`操作失败: ${e?.message || ''}`);
     }
   };
 
@@ -206,7 +187,8 @@ const App = (props: SimpleTableProps<any>) => {
         destroyOnClose
       >
         {loading && <Spin/>}
-        {schemaError && <Alert type="error" message={t('table.loadFail','加载失败')} description={(schemaError as Error).message}/>}
+        {schemaError &&
+          <Alert type="error" message={'加载失败'} description={(schemaError as Error).message}/>}
         {schemaData && (
           <SForm
             schema={schemaData.schema}
