@@ -137,6 +137,30 @@ export const apis = [
       'form.invalid': '输入不合法',
       'form.jsonInvalid': 'JSON格式不正确',
       'form.passwordMismatch': '两次输入的密码不一致',
+      // 表格 Table/SimpleTable
+      'table.confirmDeleteTitle': '确认删除',
+      'table.confirmDeleteContent': '确定要删除选中的 {count} 条数据吗？',
+      'table.deleteSuccess': '删除成功',
+      'table.deleteFail': '删除失败: {msg}',
+      'table.editSuccess': '修改成功',
+      'table.addSuccess': '新增成功',
+      'table.actionFail': '操作失败: {msg}',
+      'table.loadFail': '加载失败',
+      'table.checkAll': '全选',
+      'table.filter.equals': '精确',
+      'table.filter.notEquals': '精确取反',
+      'table.filter.like': '模糊',
+      'table.filter.notLike': '模糊取反',
+      'table.filter.in': '集合包含',
+      'table.filter.notIn': '集合不包含',
+      'table.filter.between': '区间',
+      'table.filter.notBetween': '区间取反',
+      'table.filter.greater': '大于',
+      'table.filter.less': '小于',
+      'table.filter.ge': '大于等于',
+      'table.filter.le': '小于等于',
+      'table.filter.isNull': '空',
+      'table.filter.notNull': '非空',
     } as Record<string, string>;
 
     const enUS = {
@@ -258,6 +282,30 @@ export const apis = [
       'form.invalid': 'Invalid input',
       'form.jsonInvalid': 'Invalid JSON format',
       'form.passwordMismatch': 'Passwords do not match',
+      // Table/SimpleTable
+      'table.confirmDeleteTitle': 'Confirm Deletion',
+      'table.confirmDeleteContent': 'Are you sure to delete {count} selected item(s)?',
+      'table.deleteSuccess': 'Deleted successfully',
+      'table.deleteFail': 'Delete failed: {msg}',
+      'table.editSuccess': 'Updated successfully',
+      'table.addSuccess': 'Created successfully',
+      'table.actionFail': 'Operation failed: {msg}',
+      'table.loadFail': 'Load failed',
+      'table.checkAll': 'Select All',
+      'table.filter.equals': 'Equals',
+      'table.filter.notEquals': 'Not equals',
+      'table.filter.like': 'Contains',
+      'table.filter.notLike': 'Not contains',
+      'table.filter.in': 'In',
+      'table.filter.notIn': 'Not in',
+      'table.filter.between': 'Between',
+      'table.filter.notBetween': 'Not between',
+      'table.filter.greater': 'Greater than',
+      'table.filter.less': 'Less than',
+      'table.filter.ge': 'Greater or equal',
+      'table.filter.le': 'Less or equal',
+      'table.filter.isNull': 'Is null',
+      'table.filter.notNull': 'Not null',
     } as Record<string, string>;
 
     const jaJP = {
@@ -379,6 +427,30 @@ export const apis = [
       'form.invalid': '無効な入力です',
       'form.jsonInvalid': 'JSON 形式が正しくありません',
       'form.passwordMismatch': 'パスワードが一致しません',
+      // テーブル Table/SimpleTable
+      'table.confirmDeleteTitle': '削除の確認',
+      'table.confirmDeleteContent': '選択した {count} 件のデータを削除しますか？',
+      'table.deleteSuccess': '削除しました',
+      'table.deleteFail': '削除に失敗しました: {msg}',
+      'table.editSuccess': '更新しました',
+      'table.addSuccess': '追加しました',
+      'table.actionFail': '操作に失敗しました: {msg}',
+      'table.loadFail': '読み込みに失敗しました',
+      'table.checkAll': '全選択',
+      'table.filter.equals': '完全一致',
+      'table.filter.notEquals': '完全一致の反対',
+      'table.filter.like': '部分一致',
+      'table.filter.notLike': '部分一致の反対',
+      'table.filter.in': '含む',
+      'table.filter.notIn': '含まない',
+      'table.filter.between': '範囲',
+      'table.filter.notBetween': '範囲の反対',
+      'table.filter.greater': 'より大きい',
+      'table.filter.less': 'より小さい',
+      'table.filter.ge': '以上',
+      'table.filter.le': '以下',
+      'table.filter.isNull': '空',
+      'table.filter.notNull': '非空',
     } as Record<string, string>;
 
     const dict = locale === 'en-US' ? enUS : locale === 'ja-JP' ? jaJP : zhCN;
@@ -391,8 +463,9 @@ export const apis = [
     const nsMap: Record<string, string[]> = {
       profile: ['profile.', 'field.', 'rule.', 'ph.', 'user.'],
       settings: ['settings.', 'size.', 'about.', 'label.language', 'tooltip.size'],
-      common: ['app.', 'error.', 'nav.', 'greeting.', 'dashboard.', 'form.'],
+      common: ['app.', 'error.', 'nav.', 'greeting.', 'dashboard.', 'form.', 'table.'],
       form: ['form.'],
+      table: ['table.'],
     };
     const allowPrefixes = nsList.flatMap(name => nsMap[name] || [`${name}.`]);
     const filtered: Record<string, string> = {};
