@@ -39,7 +39,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     if (Object.keys(initialMessages).length > 0) {
       cache.current.set(initialLocale, initialMessages);
       (window as any).spI18n = {
-        t: (key: string, fallback?: string) => initialMessages[key] ?? fallback ?? key,
+        t: (key: string, fallback?: string) => initialMessages[key] ?? (initialLocale === 'zh-CN' ? (fallback ?? key) : key),
         locale: initialLocale,
         setLocale: (code: string) => applyLocale(code),
         messages: initialMessages,
@@ -82,25 +82,27 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
   }, []);
 
   const loadMessages = useCallback(async (lng: string) => {
-    // 1) 内存缓存
+    // 1) 内存缓存（忽略空对象）
     if (cache.current.has(lng)) {
       const cached = cache.current.get(lng)!;
-      setMessages(cached);
-      (window as any).spI18n = {
-        t: (key: string, fallback?: string) => cached[key] ?? fallback ?? key,
-        locale: lng,
-        setLocale,
-        messages: cached,
-      };
-      return;
+      if (cached && Object.keys(cached).length > 0) {
+        setMessages(cached);
+        (window as any).spI18n = {
+          t: (key: string, fallback?: string) => cached[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key),
+          locale: lng,
+          setLocale,
+          messages: cached,
+        };
+        return;
+      }
     }
-    // 2) 本地存储缓存
+    // 2) 本地存储缓存（忽略空对象）
     const stored = readStoredMessages(lng);
-    if (stored) {
+    if (stored && Object.keys(stored).length > 0) {
       cache.current.set(lng, stored);
       setMessages(stored);
       (window as any).spI18n = {
-        t: (key: string, fallback?: string) => stored[key] ?? fallback ?? key,
+        t: (key: string, fallback?: string) => stored[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key),
         locale: lng,
         setLocale,
         messages: stored,
@@ -116,7 +118,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
       setMessages(data);
       try { localStorage.setItem(`sp.i18n.messages.${lng}`, JSON.stringify(data)); } catch {}
       (window as any).spI18n = {
-        t: (key: string, fallback?: string) => data[key] ?? fallback ?? key,
+        t: (key: string, fallback?: string) => data[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key),
         locale: lng,
         setLocale,
         messages: data,
@@ -142,11 +144,14 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
   }, [locale, loadMessages]);
 
   const t = useCallback((key: string, fallback?: string) => {
-    return messages[key] ?? fallback ?? key;
-  }, [messages]);
+    const v = messages[key];
+    if (v !== undefined) return v;
+    return locale === 'zh-CN' ? (fallback ?? key) : key;
+  }, [messages, locale]);
 
   const refresh = useCallback(async () => {
     cache.current.delete(locale);
+    try { localStorage.removeItem(`sp.i18n.messages.${locale}`); } catch {}
     await loadMessages(locale);
   }, [locale, loadMessages]);
 
