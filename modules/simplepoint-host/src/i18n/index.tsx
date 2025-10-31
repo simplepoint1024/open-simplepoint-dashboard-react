@@ -1,6 +1,13 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { fetchLanguages, fetchMessages, Language, Messages } from '@/services/i18n';
 
+// 版本化缓存（部署后可手动提升版本使缓存失效）
+const APP_I18N_VERSION = '1';
+const VERSION_KEY = 'sp.i18n.version';
+const FORCE_REMOUNT_ON_LOCALE_CHANGE = true;
+
+const isRTL = (lng: string) => /^(ar|he|fa|ur)(-|$)/i.test(lng);
+
 export type I18nContextValue = {
   locale: string;
   setLocale: (code: string) => void;
@@ -25,6 +32,17 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
   const cacheKey = (lng: string) => `sp.i18n.messages.${lng}`;
   const cacheTsKey = (lng: string) => `sp.i18n.cachedAt.${lng}`;
 
+  const clearI18nCaches = () => {
+    try {
+      const rm: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i) || '';
+        if (k.startsWith('sp.i18n.messages.') || k.startsWith('sp.i18n.cachedAt.')) rm.push(k);
+      }
+      rm.forEach(k => localStorage.removeItem(k));
+    } catch {}
+  };
+
   const readStoredMessages = (lng: string): Messages | undefined => {
     try {
       const tsRaw = localStorage.getItem(cacheTsKey(lng));
@@ -44,6 +62,17 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     } catch {}
   };
 
+  // 初始化时进行版本校验，必要时清理旧缓存
+  useEffect(() => {
+    try {
+      const storedV = localStorage.getItem(VERSION_KEY);
+      if (storedV !== APP_I18N_VERSION) {
+        clearI18nCaches();
+        localStorage.setItem(VERSION_KEY, APP_I18N_VERSION);
+      }
+    } catch {}
+  }, []);
+
   const [locale, setLocaleState] = useState<string>(initialLocale);
   const [languages, setLanguages] = useState<Language[]>([]);
   const cache = useRef(new Map<string, Messages>());
@@ -51,6 +80,10 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
   const [messages, setMessages] = useState<Messages>(initialMessages);
   const [loading, setLoading] = useState<boolean>(false);
   const missingKeysRef = useRef<Set<string>>(new Set());
+  const missingDebounceRef = useRef<number | null>(null);
+
+  // 同一时刻仅处理最后一次加载结果
+  const loadSeqRef = useRef(0);
 
   // 若本地有缓存，预先注入 cache 与 window，减少首屏闪烁
   useEffect(() => {
@@ -100,10 +133,12 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
   }, []);
 
   const loadMessages = useCallback(async (lng: string) => {
+    const mySeq = ++loadSeqRef.current;
     // 1) 内存缓存（忽略空对象）
     if (cache.current.has(lng)) {
       const cached = cache.current.get(lng)!;
       if (cached && Object.keys(cached).length > 0) {
+        if (mySeq !== loadSeqRef.current) return;
         setMessages(cached);
         (window as any).spI18n = {
           t: (key: string, fallback?: string) => cached[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key),
@@ -111,6 +146,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
           setLocale,
           messages: cached,
         };
+        try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
         return;
       }
     }
@@ -118,6 +154,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     const stored = readStoredMessages(lng);
     if (stored && Object.keys(stored).length > 0) {
       cache.current.set(lng, stored);
+      if (mySeq !== loadSeqRef.current) return;
       setMessages(stored);
       (window as any).spI18n = {
         t: (key: string, fallback?: string) => stored[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key),
@@ -125,6 +162,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
         setLocale,
         messages: stored,
       };
+      try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
       return;
     }
 
@@ -132,6 +170,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     setLoading(true);
     try {
       const data = await fetchMessages(lng);
+      if (mySeq !== loadSeqRef.current) return; // 仅应用最后一次
       cache.current.set(lng, data);
       setMessages(data);
       writeStoredMessages(lng, data);
@@ -141,32 +180,36 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
         setLocale,
         messages: data,
       };
+      try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
     } finally {
       setLoading(false);
     }
   }, [setLocale]);
 
-  // 按命名空间增量加载与合并
+  // 按命名空间增量加载与合并（合并后写回缓存并广播）
   const ensure = useCallback(async (ns: string[]) => {
     const lng = locale;
     if (!Array.isArray(ns) || ns.length === 0) return;
-    // 简单的去重：若已存在对应前缀的 key，则跳过网络；这里仍发起请求以便覆盖更新
     const data = await fetchMessages(lng, ns).catch(() => ({}));
     if (data && typeof data === 'object' && Object.keys(data).length > 0) {
       setMessages(prev => {
         const merged = { ...prev, ...data } as Messages;
         cache.current.set(lng, merged);
+        writeStoredMessages(lng, merged);
+        (window as any).spI18n = { t: (key: string, fallback?: string) => merged[key] ?? (lng === 'zh-CN' ? (fallback ?? key) : key), locale: lng, setLocale, messages: merged };
+        try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
         return merged;
       });
     }
-  }, [locale]);
+  }, [locale, setLocale]);
 
-  // load messages when locale changes，并在加载完成后刷新当前路由以强制重挂载
+  // 切换语言后：加载完成再决定是否强制 remount
   useEffect(() => {
     let cancelled = false;
     (async () => {
       await loadMessages(locale).catch(() => {});
       if (cancelled) return;
+      if (!FORCE_REMOUNT_ON_LOCALE_CHANGE) return;
       try {
         const fromHash = typeof window !== 'undefined' && window.location.hash ? window.location.hash.replace(/^#/, '') : undefined;
         const currentPath = fromHash || (typeof window !== 'undefined' ? window.location.pathname : '/') || '/';
@@ -176,16 +219,33 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     return () => { cancelled = true; };
   }, [locale, loadMessages]);
 
+  // 维护 html 的 lang 与 dir 属性
+  useEffect(() => {
+    try {
+      const el = document.documentElement;
+      if (el) {
+        el.setAttribute('lang', locale);
+        el.setAttribute('dir', isRTL(locale) ? 'rtl' : 'ltr');
+      }
+    } catch {}
+  }, [locale]);
+
   const t = useCallback((key: string, fallback?: string) => {
     const v = messages[key];
     if (v !== undefined) return v;
-    // 记录缺失键（开发环境）
+    // 记录缺失键（开发环境）并做简单批量上报
     if (process.env.NODE_ENV !== 'production') {
       const mk = `${locale}::${key}`;
       if (!missingKeysRef.current.has(mk)) {
         missingKeysRef.current.add(mk);
-        try { console.warn(`[i18n] Missing key: ${key} (locale: ${locale})`); } catch {}
-        try { window.dispatchEvent(new CustomEvent('sp-i18n-missing', { detail: { locale, key } })); } catch {}
+        if (missingDebounceRef.current) window.clearTimeout(missingDebounceRef.current);
+        missingDebounceRef.current = window.setTimeout(() => {
+          const list = Array.from(missingKeysRef.current.values());
+          if (list.length > 0) {
+            try { console.warn(`[i18n] Missing keys(${locale}):`, list); } catch {}
+            try { window.dispatchEvent(new CustomEvent('sp-i18n-missing-batch', { detail: { locale, keys: list } })); } catch {}
+          }
+        }, 1200);
       }
     }
     return locale === 'zh-CN' ? (fallback ?? key) : key;
