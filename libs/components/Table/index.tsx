@@ -1,4 +1,5 @@
-import React, {ChangeEvent, MouseEventHandler, useCallback, useEffect, useMemo, useState} from 'react';
+import React, {ChangeEvent, MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import type { TableRowSelection } from 'antd/es/table/interface';
 import {Button, Checkbox, Col, Input, Popover, Row, Select, Space, Table as AntTable} from 'antd';
 import {SearchOutlined, SettingOutlined} from '@ant-design/icons';
 import type {ColumnsType} from 'antd/es/table';
@@ -113,16 +114,18 @@ const readListProp = (schema: any, key: string) => {
 
 // 最终判定：当任意字段声明了可见性时，仅渲染被标记为 true 的；否则回退为全部可见
 const computeVisibleKeys = (properties: Record<string, any>): string[] => {
-  const entries = Object.keys(properties).map((key) => ({key, flag: readVisibleFlag(properties[key])}));
-  const anyDeclared = entries.some((e) => e.flag !== undefined);
-  if (anyDeclared) {
-    return entries.filter((e) => e.flag === true).map((e) => e.key);
+  const keys = Object.keys(properties);
+  let anyDeclared = false;
+  const visible: string[] = [];
+  for (const key of keys) {
+    const flag = readVisibleFlag(properties[key]);
+    if (flag !== undefined) {
+      anyDeclared = true;
+      if (flag) visible.push(key);
+    }
   }
-  return Object.keys(properties);
+  return anyDeclared ? visible : keys;
 };
-
-// 工具：去除以 "i18n:" 开头的前缀
-const stripI18nPrefix = (v: any): any => (typeof v === 'string' && v.startsWith('i18n:')) ? v.slice('i18n:'.length) : v;
 
 const App = <T extends object = any>(props: TableProps<T>) => {
   // 固定中文过滤器选项
@@ -228,7 +231,6 @@ const App = <T extends object = any>(props: TableProps<T>) => {
       .map(({key, schemaDef}) => {
         const listTitle = readListProp(schemaDef, 'title');
         const baseTitle = listTitle ?? (schemaDef as any)?.title ?? key;
-        const cleanedTitle = stripI18nPrefix(baseTitle);
         const alignFromSchema = readListProp(schemaDef, 'align');
         const fixed = readListProp(schemaDef, 'fixed');
         const width = readListProp(schemaDef, 'width');
@@ -260,7 +262,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
             : undefined;
 
         const column: any = {
-          title: cleanedTitle,
+          title: baseTitle,
           dataIndex,
           key,
           align,
@@ -294,7 +296,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
 
         return column;
       });
-  }, [properties, visibleCols, visibleKeys, filters, props, localizedOptions]);
+  }, [properties, visibleCols, visibleKeys, filters, localizedOptions, props.onFilterChange, props.refresh]);
 
   const dataSource = props.pageable?.content ?? [];
 
@@ -316,9 +318,17 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     }
   }, [props.rowSelection?.selectedKeys]);
 
-  // 根据 key 来寻找对应的行（用于回调） - 不使用 index 参数以避免 Antd 的 deprecation 警告
+  // 根据 key 来寻找对应的行（用于回调） - 提升健壮性：无 id/key 时用 WeakMap 分配稳定临时键
+  const anonKeyMapRef = useRef(new WeakMap<object, number>());
+  const anonKeySeqRef = useRef(1);
   const keyOfRecord = useCallback((record: T): React.Key => {
-    return ((record as any).id ?? (record as any).key ?? 0) as React.Key;
+    const anyRec: any = record as any;
+    const k = anyRec.id ?? anyRec.key;
+    if (k !== undefined && k !== null) return k as React.Key;
+    const map = anonKeyMapRef.current;
+    let n = map.get(anyRec as object);
+    if (!n) { n = anonKeySeqRef.current++; map.set(anyRec as object, n); }
+    return `~${n}`;
   }, []);
 
   const onSelectChange = useCallback(
@@ -376,7 +386,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
           const sd: any = (properties as any)[key] || {};
           const listTitle = readListProp(sd, 'title');
           const baseTitle = listTitle ?? sd?.title ?? key;
-          const label = stripI18nPrefix(baseTitle) ?? key;
+          const label = baseTitle ?? key;
           return (
             <div key={key} style={{padding: '4px 0'}}>
               <Checkbox checked={visibleCols[key] ?? true} onChange={(e) => toggleCol(key, e.target.checked)}>
@@ -389,46 +399,38 @@ const App = <T extends object = any>(props: TableProps<T>) => {
       {storageKey ? (
         <div style={{marginTop: 8, textAlign: 'right'}}>
           <Button type="link" size="small" onClick={() => {
-            try {
-              if (storageKey) localStorage.removeItem(storageKey);
-            } catch {
-            }
-            const next: Record<string, boolean> = {};
-            visibleKeys.forEach((k) => next[k] = true);
-            setVisibleCols(next);
+            try { if (storageKey) localStorage.removeItem(storageKey); } catch {}
+            const next: Record<string, boolean> = {}; visibleKeys.forEach((k) => next[k] = true); setVisibleCols(next);
           }}>重置列</Button>
         </div>
       ) : null}
     </div>
   );
 
-  // Antd rowSelection 配置
-  const rowSelection = {
+  // Antd rowSelection 配置（标注类型以避免告警）
+  const rowSelection: TableRowSelection<T> = {
     selectedRowKeys,
     onChange: (keys: React.Key[], rows: T[]) => onSelectChange(keys, rows),
   };
 
-  // 兼容 schema 按钮结构，过滤不被 antd 接受的属性，映射颜色/样式
+  // 兼容 schema 按钮结构
   const renderButtons = (buttons?: TableButtonProps[]) => {
     if (!buttons || buttons.length === 0) return null;
 
-    const strip = (v: any): any => (typeof v === 'string' && v.startsWith('i18n:')) ? v.slice('i18n:'.length) : v;
-
     const getButtonText = (button: TableButtonProps) => {
       const anyBtn: any = button as any;
-      const raw = anyBtn.text ?? anyBtn.title ?? button.key;
-      return strip(raw);
+      return anyBtn.text ?? anyBtn.title ?? button.key;
     };
 
     const getButtonTitleAttr = (button: TableButtonProps): string | undefined => {
       const anyBtn: any = button as any;
       const raw = anyBtn.title as any;
-      return typeof raw === 'string' ? strip(raw) : undefined;
+      return typeof raw === 'string' ? raw : undefined;
     };
 
     return buttons.map((button) => {
-      const {argumentMinSize, argumentMaxSize, sort, color, variant, text, icon, title, ...rest} = button as any;
-      const mapped: any = {...rest};
+      const { argumentMinSize, argumentMaxSize, sort, color, variant, text, icon, title, ...rest } = button as any;
+      const mapped: any = { ...rest };
       if (color === 'danger') mapped.danger = true;
       if (variant === 'outlined') mapped.ghost = true;
       const iconNode = typeof icon === 'string' ? createIcon(icon) : icon;

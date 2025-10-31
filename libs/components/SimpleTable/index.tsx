@@ -27,6 +27,9 @@ export interface SimpleTableProps<T> {
   initialValues?: any;
   // 自定义提交（覆盖默认 post/put 行为），action: add | edit
   onSubmit?: (action: 'add' | 'edit', formData: any, currentEditing: any | null) => Promise<void> | void;
+
+  // 需要加载的 i18n 命名空间
+  i18nNamespaces: string[];
 }
 
 const App = (props: SimpleTableProps<any>) => {

@@ -1,21 +1,23 @@
-import { Form } from "@rjsf/antd";
-import { FormProps } from "@rjsf/core";
-import { Button } from "antd";
+import {Form} from "@rjsf/antd";
+import {FormProps} from "@rjsf/core";
+import {Button} from "antd";
 import "./index.css";
 import validator from "@rjsf/validator-ajv8";
-import { RJSFValidationError, SubmitButtonProps } from "@rjsf/utils";
-import { memo, useMemo } from "react";
+import {RJSFValidationError, SubmitButtonProps} from "@rjsf/utils";
+import {memo, useMemo} from "react";
 import IconPicker from "./widgets/IconPicker";
 
-type SFormProps = Omit<FormProps, "validator">;
+type SFormProps = Omit<FormProps, "validator">& {
+  i18nNamespaces?: string[];
+};
 
-// 自定义提交按钮（移除 i18n，只使用 uiSchema 中的 submitText 或默认文案）
+// 自定义提交按钮
 const CustomSubmitButton = (props: SubmitButtonProps) => {
-  const { uiSchema } = props;
-  const { "ui:submitButtonOptions": { submitText } = {} } = (uiSchema || {}) as any;
+  const {uiSchema} = props;
+  const {"ui:submitButtonOptions": {submitText} = {}} = (uiSchema || {}) as any;
   const text = submitText || '提交';
   return (
-    <Button type="primary" htmlType="submit" style={{ backgroundColor: '#00b96b' }}>
+    <Button type="primary" htmlType="submit" style={{backgroundColor: '#00b96b'}}>
       {text}
     </Button>
   );
@@ -27,46 +29,53 @@ const formTemplates = {
   },
 };
 
-const defaultWidgets = { IconPicker } as const;
+const defaultWidgets = {IconPicker} as const;
+
+// 抽离 textarea 的 autosize 常量，避免重复创建对象
+const TEXTAREA_AUTOSIZE = { minRows: 4, maxRows: 16 } as const;
 
 const SForm = (props: SFormProps) => {
-  const { schema, uiSchema, validate, ...rest } = props as any;
+  const {schema, uiSchema, validate, ...rest} = props as any;
 
   // 从 schema.x-ui.widget 自动生成基础 uiSchema（含通用映射与 textarea 特例）
   const autoUiSchema = useMemo(() => {
     const result: any = {};
     if (!schema || typeof schema !== 'object') return result;
     const propsDef = (schema as any).properties || {};
-    Object.keys(propsDef).forEach((k) => {
+    for (const k of Object.keys(propsDef)) {
       const xui = propsDef[k]?.['x-ui'];
-      const widget = xui?.widget || xui?.['ui:widget'];
-      if (widget) {
-        if (widget === 'textarea') {
-          result[k] = {
-            'ui:widget': 'textarea',
-            'ui:options': { autoSize: { minRows: 4, maxRows: 16 } }
-          };
-        } else if (typeof widget === 'string') {
-          result[k] = { 'ui:widget': widget };
-        }
+      if (!xui || typeof xui !== 'object') continue;
+      const widget = xui['ui:widget'] ?? xui.widget;
+      const uiOptions = xui['ui:options'] ?? xui.options;
+      if (!widget || typeof widget !== 'string') continue;
+      if (widget === 'textarea') {
+        result[k] = {
+          'ui:widget': 'textarea',
+          'ui:options': { autoSize: TEXTAREA_AUTOSIZE, ...(uiOptions || {}) },
+        };
+      } else {
+        result[k] = {
+          'ui:widget': widget,
+          ...(uiOptions ? { 'ui:options': uiOptions } : {}),
+        };
       }
-    });
+    }
     return result;
   }, [schema]);
 
   // 若未显式设置 icon 的 widget，则默认启用 IconPicker
   const withIconPicker = useMemo(() => {
-    const result: any = { ...autoUiSchema };
+    const result: any = {...autoUiSchema};
     const iconExists = !!(schema && typeof schema === 'object' && (((schema as any).properties?.icon) || (schema as any).icon));
     if (iconExists) {
       if (!uiSchema?.icon && !result.icon) {
-        result.icon = { 'ui:widget': 'IconPicker' };
+        result.icon = {'ui:widget': 'IconPicker'};
       }
     }
     return result;
   }, [schema, autoUiSchema, uiSchema]);
 
-  // 合并优先级：props.uiSchema > 自动生成（移除 x-i18n.submitText 注入）
+  // 合并优先级：props.uiSchema >
   const mergedUiSchema = useMemo(() => ({
     ...withIconPicker,
     ...(uiSchema || {})
@@ -90,7 +99,11 @@ const SForm = (props: SFormProps) => {
     jsonKeys.forEach((k) => {
       const v = formData?.[k];
       if (v && typeof v === 'string') {
-        try { JSON.parse(v); } catch (_) { errors[k]?.addError?.('JSON格式不正确'); }
+        try {
+          JSON.parse(v);
+        } catch (_) {
+          errors[k]?.addError?.('JSON格式不正确');
+        }
       }
     });
     // 外部自定义校验
@@ -98,7 +111,6 @@ const SForm = (props: SFormProps) => {
     return errors;
   };
 
-  // 保持错误信息为默认（不做 i18n 转换）
   const transformErrors = (errors: RJSFValidationError[]) => errors;
 
   return (
