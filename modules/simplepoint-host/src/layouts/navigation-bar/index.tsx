@@ -47,11 +47,11 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   const pathLabelMap = useMemo(() => {
     const map = new Map<string, string>();
     leafNodes.forEach((n) => {
-      if (n.path) map.set(n.path, n.label || n.title || n.path!);
+      if (n.path) map.set(n.path, t(n.title || '', n.label || n.title || n.path!));
     });
     extraTabs.forEach(it => map.set(it.path, it.label));
     return map;
-  }, [leafNodes, extraTabs]);
+  }, [leafNodes, extraTabs, t, locale]);
 
   // 构建 path -> 图标 的映射（复用 leafNodes + extras）
   const pathIconMap = useMemo(() => {
