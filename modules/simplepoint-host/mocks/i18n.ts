@@ -161,6 +161,27 @@ export const apis = [
       'table.filter.le': '小于等于',
       'table.filter.isNull': '空',
       'table.filter.notNull': '非空',
+      // 菜单 Menu
+      'menu.dashboard': '仪表盘',
+      'menu.i18n': '国际化管理',
+      'menu.i18n.countryRange': '国家和地区',
+      'menu.i18n.message': '国际化消息',
+      'menu.monitoring': '监控审计',
+      'menu.monitoring.loginLog': '登录日志',
+      'menu.monitoring.operationLog': '操作日志',
+      'menu.ops': '系统维护',
+      'menu.ops.microService': '微服务管理',
+      'menu.ops.microPlugin': '插件市场',
+      'menu.ops.microApplication': '微应用管理',
+      'menu.system': '系统配置',
+      'menu.system.client': '应用管理',
+      'menu.system.endpoints': '端点管理',
+      'menu.system.role': '角色管理',
+      'menu.system.auth': '授权管理',
+      'menu.system.field': '字段权限',
+      'menu.system.data': '数据权限',
+      'menu.system.menu': '菜单管理',
+      'menu.system.user': '用户管理',
     } as Record<string, string>;
 
     const enUS = {
@@ -306,6 +327,27 @@ export const apis = [
       'table.filter.le': 'Less or equal',
       'table.filter.isNull': 'Is null',
       'table.filter.notNull': 'Not null',
+      // Menu
+      'menu.dashboard': 'Dashboard',
+      'menu.i18n': 'Internationalization',
+      'menu.i18n.countryRange': 'Countries & Regions',
+      'menu.i18n.message': 'I18n Messages',
+      'menu.monitoring': 'Monitoring & Audit',
+      'menu.monitoring.loginLog': 'Login Logs',
+      'menu.monitoring.operationLog': 'Operation Logs',
+      'menu.ops': 'Operations',
+      'menu.ops.microService': 'Microservices',
+      'menu.ops.microPlugin': 'Plugin Market',
+      'menu.ops.microApplication': 'Micro Apps',
+      'menu.system': 'System Settings',
+      'menu.system.client': 'Client Management',
+      'menu.system.endpoints': 'Endpoint Management',
+      'menu.system.role': 'Role Management',
+      'menu.system.auth': 'Authorization',
+      'menu.system.field': 'Field Permission',
+      'menu.system.data': 'Data Permission',
+      'menu.system.menu': 'Menu Management',
+      'menu.system.user': 'User Management',
     } as Record<string, string>;
 
     const jaJP = {
@@ -451,6 +493,27 @@ export const apis = [
       'table.filter.le': '以下',
       'table.filter.isNull': '空',
       'table.filter.notNull': '非空',
+      // メニュー Menu
+      'menu.dashboard': 'ダッシュボード',
+      'menu.i18n': '国際化管理',
+      'menu.i18n.countryRange': '国と地域',
+      'menu.i18n.message': '国際化メッセージ',
+      'menu.monitoring': '監視・監査',
+      'menu.monitoring.loginLog': 'ログインログ',
+      'menu.monitoring.operationLog': '操作ログ',
+      'menu.ops': '運用保守',
+      'menu.ops.microService': 'マイクロサービス',
+      'menu.ops.microPlugin': 'プラグインマーケット',
+      'menu.ops.microApplication': 'マイクロアプリ',
+      'menu.system': 'システム設定',
+      'menu.system.client': 'アプリ管理',
+      'menu.system.endpoints': 'エンドポイント管理',
+      'menu.system.role': 'ロール管理',
+      'menu.system.auth': '認可管理',
+      'menu.system.field': 'フィールド権限',
+      'menu.system.data': 'データ権限',
+      'menu.system.menu': 'メニュー管理',
+      'menu.system.user': 'ユーザー管理',
     } as Record<string, string>;
 
     const dict = locale === 'en-US' ? enUS : locale === 'ja-JP' ? jaJP : zhCN;
@@ -466,6 +529,7 @@ export const apis = [
       common: ['app.', 'error.', 'nav.', 'greeting.', 'dashboard.', 'form.', 'table.'],
       form: ['form.'],
       table: ['table.'],
+      menu: ['menu.'],
     };
     const allowPrefixes = nsList.flatMap(name => nsMap[name] || [`${name}.`]);
     const filtered: Record<string, string> = {};

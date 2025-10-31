@@ -8,3 +8,16 @@ body {
   flex-direction: column;
   justify-content: center;
 }
+
+/* 主题切换全局颜色过渡动画 */
+html.theme-transition, html.theme-transition body, html.theme-transition * {
+  transition-property: background-color, color, border-color, box-shadow, fill, stroke;
+  transition-duration: 240ms;
+  transition-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theme-transition, html.theme-transition * {
+    transition: none !important;
+  }
+}

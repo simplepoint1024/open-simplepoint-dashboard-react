@@ -5,6 +5,15 @@ import React, {useEffect, useRef, useState} from 'react';
 import {get, post} from "@simplepoint/libs-shared/types/request.ts";
 import { useI18n } from '@/i18n';
 
+// 为主题切换提供短暂的全局颜色过渡动画
+function startThemeTransition(duration = 240) {
+  try {
+    const el = document.documentElement;
+    if (!el || el.classList.contains('theme-transition')) return;
+    el.classList.add('theme-transition');
+    window.setTimeout(() => el.classList.remove('theme-transition'), duration + 60);
+  } catch {}
+}
 
 // 简单的文本组件，便于在任意位置渲染 t()
 const I18nText: React.FC<{ k: string; fallback?: string }> = ({ k, fallback }) => {
@@ -129,6 +138,7 @@ const ThemeButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
   const nextOf = (m: 'light'|'dark'|'system'): 'light'|'dark'|'system' => (m === 'light' ? 'dark' : m === 'dark' ? 'system' : 'light');
   const toggle = () => {
     const next = nextOf(mode);
+    startThemeTransition(240);
     try { localStorage.setItem('sp.theme', next); } catch {}
     window.dispatchEvent(new CustomEvent('sp-set-theme', { detail: next }));
     setMode(next);

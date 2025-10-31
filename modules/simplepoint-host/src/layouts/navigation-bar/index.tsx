@@ -309,8 +309,8 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   }), [onContextMenuClick, t, locale]);
 
   // 顶部、侧边菜单 items 缓存
-  const topMenuItems = useMemo(() => useTopNavigation(navigate, []).items, [navigate]);
-  const sideMenuItems = useMemo(() => useSideNavigation(navigate, data).items, [navigate, data]);
+  const topMenuItems = useMemo(() => useTopNavigation(navigate, []).items, [navigate, locale, t]);
+  const sideMenuItems = useMemo(() => useSideNavigation(navigate, data).items, [navigate, data, locale, t]);
 
   return (
     <Layout className={`nb-root ${themeMode === 'dark' ? 'theme-dark' : 'theme-light'}`}>
