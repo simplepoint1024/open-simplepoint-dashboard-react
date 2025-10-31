@@ -17,11 +17,36 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
   const getInitialLocale = () => {
     try { return localStorage.getItem('sp.locale') || 'zh-CN'; } catch { return 'zh-CN'; }
   };
-  const [locale, setLocaleState] = useState<string>(getInitialLocale);
+  const initialLocale = getInitialLocale();
+
+  const readStoredMessages = (lng: string): Messages | undefined => {
+    try {
+      const raw = localStorage.getItem(`sp.i18n.messages.${lng}`);
+      if (raw) return JSON.parse(raw) as Messages;
+    } catch {}
+    return undefined;
+  };
+
+  const [locale, setLocaleState] = useState<string>(initialLocale);
   const [languages, setLanguages] = useState<Language[]>([]);
   const cache = useRef(new Map<string, Messages>());
-  const [messages, setMessages] = useState<Messages>({});
+  const initialMessages = readStoredMessages(initialLocale) || {};
+  const [messages, setMessages] = useState<Messages>(initialMessages);
   const [loading, setLoading] = useState<boolean>(false);
+
+  // 若本地有缓存，预先注入 cache 与 window，减少首屏闪烁
+  useEffect(() => {
+    if (Object.keys(initialMessages).length > 0) {
+      cache.current.set(initialLocale, initialMessages);
+      (window as any).spI18n = {
+        t: (key: string, fallback?: string) => initialMessages[key] ?? fallback ?? key,
+        locale: initialLocale,
+        setLocale: (code: string) => applyLocale(code),
+        messages: initialMessages,
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const applyLocale = useCallback((code: string) => {
     try { localStorage.setItem('sp.locale', code); } catch {}
@@ -57,10 +82,10 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
   }, []);
 
   const loadMessages = useCallback(async (lng: string) => {
+    // 1) 内存缓存
     if (cache.current.has(lng)) {
       const cached = cache.current.get(lng)!;
       setMessages(cached);
-      // 先同步更新全局，确保后续刷新时可见
       (window as any).spI18n = {
         t: (key: string, fallback?: string) => cached[key] ?? fallback ?? key,
         locale: lng,
@@ -69,12 +94,27 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
       };
       return;
     }
+    // 2) 本地存储缓存
+    const stored = readStoredMessages(lng);
+    if (stored) {
+      cache.current.set(lng, stored);
+      setMessages(stored);
+      (window as any).spI18n = {
+        t: (key: string, fallback?: string) => stored[key] ?? fallback ?? key,
+        locale: lng,
+        setLocale,
+        messages: stored,
+      };
+      return;
+    }
+
+    // 3) 网络请求
     setLoading(true);
     try {
       const data = await fetchMessages(lng);
       cache.current.set(lng, data);
       setMessages(data);
-      // 先同步更新全局，确保后续刷新时可见
+      try { localStorage.setItem(`sp.i18n.messages.${lng}`, JSON.stringify(data)); } catch {}
       (window as any).spI18n = {
         t: (key: string, fallback?: string) => data[key] ?? fallback ?? key,
         locale: lng,

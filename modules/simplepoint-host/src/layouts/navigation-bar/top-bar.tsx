@@ -1,6 +1,6 @@
 import type {ItemType} from "antd/es/menu/interface";
 import {Avatar, Button, Dropdown, MenuProps, Tooltip} from "antd";
-import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
+import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined} from "@ant-design/icons";
 import React, {useEffect, useRef, useState} from 'react';
 import {get, post} from "@simplepoint/libs-shared/types/request.ts";
 import { useI18n } from '@/i18n';
@@ -83,11 +83,11 @@ const HeaderUser: React.FC = () => {
   const isMock = typeof window !== 'undefined' && /localhost|127\.0\.0\.1/.test(window.location.hostname);
   const greeting = t(getGreetingKeyByTime());
   return (
-    <div style={{flexShrink: 0, display: 'flex', alignItems: 'center', cursor: 'pointer', gap: 6}}>
+    <div className="nb-header-user">
       <Avatar size='default' alt={nickname} icon={!picture ? <UserOutlined/> : undefined} src={picture}/>
-      <span>
-        <span style={{color: 'rgba(255,142,62,0.74)'}}>{greeting}</span>
-        <span style={{color: 'rgba(3,150,255,0.88)', textDecoration: 'underline', fontStyle: 'italic'}}> {nickname}</span>
+      <span className="nb-header-user-text">
+        <span className="nb-greeting">{greeting}</span>
+        <span className="nb-name"> {nickname}</span>
       </span>
       {isMock && <span style={{marginLeft: 4, opacity: 0.65}}></span>}
     </div>
@@ -111,6 +111,33 @@ const SizeButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' })
     <Tooltip title={t('tooltip.size','切换全局尺寸(小/中/大)')}>
       <Button type={type} size="small" icon={<FontSizeOutlined/>} onClick={onToggleSize}
               style={{width:28,height:28,padding:0,borderRadius:6,margin: type==='text'?0:'0 8px'}}/>
+    </Tooltip>
+  );
+};
+
+/**
+ * 主题模式切换（亮/暗）
+ */
+const ThemeButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
+  const { t } = useI18n();
+  const [mode, setMode] = useState<'light'|'dark'>(() => (localStorage.getItem('sp.theme') as any) || 'light');
+  useEffect(() => {
+    const handler = (e: any) => setMode((e?.detail as 'light'|'dark') || 'light');
+    window.addEventListener('sp-set-theme', handler as EventListener);
+    return () => window.removeEventListener('sp-set-theme', handler as EventListener);
+  }, []);
+  const toggle = () => {
+    const next: 'light'|'dark' = mode === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('sp.theme', next); } catch {}
+    window.dispatchEvent(new CustomEvent('sp-set-theme', { detail: next }));
+    setMode(next);
+  };
+  const tip = t('tooltip.theme', '切换主题(亮/暗)');
+  const Icon = mode === 'dark' ? SunOutlined : MoonOutlined;
+  return (
+    <Tooltip title={tip}>
+      <Button type={compact ? 'text' : 'default'} size="small" icon={<Icon/>} onClick={toggle}
+              style={{width:28,height:28,padding:0,borderRadius:6,margin: compact ? 0 : '0 4px'}}/>
     </Tooltip>
   );
 };
@@ -144,15 +171,16 @@ const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
 export const languageSwitcherItem = (): ItemType => ({ key: 'language-switcher', label: (<LanguageButton/>) });
 
 /**
- * 紧凑工具组：语言 + 尺寸（放在一起，间距更小）
+ * 紧凑工具组：语言 + 尺寸 + 主题
  */
 export const toolsSwitcherGroupItem = (): ItemType => {
   return {
     key: 'tools-switcher',
-    style: { paddingInline: 4, minWidth: 80, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' },
+    style: { paddingInline: 4, minWidth: 120, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' },
     label: (
-      <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,width:'100%' ,marginTop: '30%'}}>
+      <div className="nb-tools-item">
         <LanguageButton compact/>
+        <ThemeButton compact/>
         <SizeButton type='text'/>
       </div>
     )

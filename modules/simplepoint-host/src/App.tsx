@@ -1,6 +1,6 @@
 import '@/App.css';
 import '@simplepoint/libs-components/Simplepoint.css'
-import {ConfigProvider, Result, Spin} from 'antd';
+import {ConfigProvider, Result, Spin, theme as antdTheme} from 'antd';
 import {HashRouter, Route, Routes, Navigate} from "react-router-dom";
 import NavigateBar from "@/layouts/navigation-bar";
 import React, {useEffect, useMemo, useRef, useState} from "react";
@@ -25,6 +25,17 @@ const App: React.FC = () => {
     };
     window.addEventListener('sp-set-size', handler as EventListener);
     return () => window.removeEventListener('sp-set-size', handler as EventListener);
+  }, []);
+
+  // 全局主题模式：light / dark
+  const [themeMode, setThemeMode] = useState<'light'|'dark'>(() => (localStorage.getItem('sp.theme') as any) || 'light');
+  useEffect(() => {
+    const handler = (e: any) => {
+      const next = (e?.detail as 'light'|'dark') || 'light';
+      setThemeMode(next);
+    };
+    window.addEventListener('sp-set-theme', handler as EventListener);
+    return () => window.removeEventListener('sp-set-theme', handler as EventListener);
   }, []);
 
   // 使用全局 I18n 的 locale
@@ -124,7 +135,9 @@ const App: React.FC = () => {
   return (
     <div className="content">
       <ConfigProvider theme={{
-        token: {colorPrimary: '#1677FF'}, components: {}
+        algorithm: themeMode === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
+        token: {colorPrimary: '#1677FF'},
+        components: {}
       }} componentSize={globalSize} locale={antdLocale}>
         <HashRouter>
           <NavigateBar data={data}>
