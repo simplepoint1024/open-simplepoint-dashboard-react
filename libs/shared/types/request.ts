@@ -1,6 +1,15 @@
 import {useEffect, useState} from "react";
 
 export async function request<T>(url: string, options?: RequestInit): Promise<T> {
+  const notify = (title: string, desc?: string) => {
+    try {
+      // @ts-ignore
+      import('antd').then(({ notification }) => {
+        notification.error({ message: title || '请求失败', description: desc, duration: 4 });
+      }).catch(() => {});
+    } catch {}
+  };
+
   return await fetch(url, {
     credentials: 'include', // 保持 session
     headers: {
@@ -10,11 +19,21 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
     ...options,
   }).then( async (response) => {
     if (!response.ok) {
-      return response.text().then(text => {
-        throw new Error(`Request failed with status ${response.status}: ${text}`);
-      });
+      const text = await response.text();
+      const method = (options?.method || 'GET').toUpperCase();
+      const msg = `HTTP ${response.status} ${response.statusText}`;
+      notify('请求失败', `${method} ${url}\n${msg}\n${text?.slice(0,500)}`);
+      const err: any = new Error(`Request failed with status ${response.status}: ${text}`);
+      err.__notified = true;
+      throw err;
     }
     return response.json();
+  }).catch((error: any) => {
+    if (!error?.__notified) {
+      const method = (options?.method || 'GET').toUpperCase();
+      notify('网络错误', `${method} ${url}\n${String(error?.message || error)}`);
+    }
+    throw error;
   });
 }
 

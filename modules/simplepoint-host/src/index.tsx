@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import '@ant-design/v5-patch-for-react-19';
 import App from '@/App';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { I18nProvider } from '@/i18n';
 
 function createRoot() {
   const rootEl = document.getElementById('root');
@@ -14,7 +15,9 @@ function createRoot() {
   ReactDOM.createRoot(rootEl).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <App/>
+        <I18nProvider>
+          <App/>
+        </I18nProvider>
       </QueryClientProvider>
     </React.StrictMode>,
   );

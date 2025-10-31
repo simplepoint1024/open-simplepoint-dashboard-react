@@ -13,6 +13,7 @@ import {MenuInfo} from "@/store/routes";
 import {modules, Remote, routes} from "@/services/routes.ts";
 import {init, loadRemote} from '@module-federation/enhanced/runtime';
 import 'antd/dist/reset.css';
+import { useI18n } from '@/i18n';
 
 const App: React.FC = () => {
   // 初始化并监听全局尺寸
@@ -26,17 +27,10 @@ const App: React.FC = () => {
     return () => window.removeEventListener('sp-set-size', handler as EventListener);
   }, []);
 
-  // 初始化并监听全局语言
-  const [localeKey, setLocaleKey] = useState<'zh-CN'|'en-US'>(() => (localStorage.getItem('sp.locale') as any) || 'zh-CN');
-  useEffect(() => {
-    const handler = (e: any) => {
-      const next = (e?.detail as 'zh-CN'|'en-US') || 'zh-CN';
-      setLocaleKey(next);
-    };
-    window.addEventListener('sp-set-locale', handler as EventListener);
-    return () => window.removeEventListener('sp-set-locale', handler as EventListener);
-  }, []);
-  const antdLocale = localeKey === 'zh-CN' ? zhCN : enUS;
+  // 使用全局 I18n 的 locale
+  const { locale } = useI18n();
+  const antdLocale = locale === 'zh-CN' ? zhCN : enUS;
+  const { t } = useI18n();
 
   const remotes = use<Remote>(() => modules());
   const initedRef = useRef(false);
@@ -92,7 +86,7 @@ const App: React.FC = () => {
   const getLazyComponent = (spec?: string): React.LazyExoticComponent<React.ComponentType<any>> => {
     const fallback: { default: React.ComponentType<any> } = {
       default: () => (
-        <Result status="error" title="远程资源加载失败，请稍后再试."/>
+        <Result status="error" title={t('error.remoteLoadFail','远程资源加载失败，请稍后再试.')}/>
       )
     };
     if (!spec) return React.lazy(async () => fallback);
@@ -102,6 +96,7 @@ const App: React.FC = () => {
     const comp = React.lazy(async () => {
       try {
         if (s.startsWith("./")) {
+          // @ts-ignore
           return await import(`${s}`) as { default: React.ComponentType<any> };
         } else {
           return await loadRemote(`${s}`) as { default: React.ComponentType<any> };
@@ -161,7 +156,7 @@ const App: React.FC = () => {
                   />
                 );
               })}
-              <Route path="*" element={<Result status="404" title="页面不存在"/>}/>
+              <Route path="*" element={<Result status="404" title={t('error.404','页面不存在')}/>}/>
             </Routes>
           </NavigateBar>
         </HashRouter>

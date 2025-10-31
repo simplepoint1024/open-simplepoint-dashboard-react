@@ -14,6 +14,7 @@ import {useSideNavigation, useTopNavigation} from "@/hooks/routes";
 import {useLocation, useNavigate} from "react-router-dom";
 import {flattenMenus, MenuInfo} from "@/store/routes";
 import './index.css'
+import { useI18n } from '@/i18n';
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -22,6 +23,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { t, locale } = useI18n();
 
   const STORAGE_KEY = 'sp.nav.tabs';
   const DASHBOARD_PATH = '/dashboard';
@@ -264,15 +266,15 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
 
   const contextMenu = useMemo(() => ({
     items: [
-      {key: 'refresh', label: '刷新当前页', icon: <ReloadOutlined/>},
-      {key: 'closeLeft', label: '关闭左侧全部', icon: <VerticalLeftOutlined/>},
-      {key: 'closeRight', label: '关闭右侧全部', icon: <VerticalRightOutlined/>},
+      {key: 'refresh', label: t('nav.refresh','刷新当前页'), icon: <ReloadOutlined/>},
+      {key: 'closeLeft', label: t('nav.closeLeft','关闭左侧全部'), icon: <VerticalLeftOutlined/>},
+      {key: 'closeRight', label: t('nav.closeRight','关闭右侧全部'), icon: <VerticalRightOutlined/>},
       {type: 'divider' as const},
-      {key: 'clear', label: '清除缓存', icon: <DeleteOutlined/>},
-      {key: 'closeAll', label: '关闭全部', icon: <CloseCircleOutlined/>},
+      {key: 'clear', label: t('nav.clear','清除缓存'), icon: <DeleteOutlined/>},
+      {key: 'closeAll', label: t('nav.closeAll','关闭全部'), icon: <CloseCircleOutlined/>},
     ],
     onClick: onContextMenuClick,
-  }), [onContextMenuClick]);
+  }), [onContextMenuClick, t, locale]);
 
   // 顶部、侧边菜单 items 缓存
   const topMenuItems = useMemo(() => useTopNavigation(navigate, []).items, [navigate]);

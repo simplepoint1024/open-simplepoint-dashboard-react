@@ -1,10 +1,16 @@
 import {setupWorker} from 'msw/browser';
 
-// @ts-ignore
-// const modules = require.context('./modules', true, /\.ts$/);
-const modules = require.context('../modules', true, /mocks\/.*\.ts$/);
-const handlers = modules.keys().map((key: any) => (modules(key) as { default: any }).default);
-export const worker = setupWorker(
-  ...handlers.flatMap((module: { apis: any[] }) => module),
-);
+// 聚合 modules/**/mocks/*.ts 中导出的 handlers
+const ctx = require.context('../modules', true, /mocks\/.*\.ts$/);
+const handlers = ctx.keys().flatMap((key: any) => {
+  const mod = ctx(key) as any;
+  // 兼容多种导出方式：默认导出数组、命名导出 apis、默认导出对象.apis
+  if (Array.isArray(mod?.default)) return mod.default;
+  if (Array.isArray(mod?.apis)) return mod.apis;
+  if (Array.isArray(mod?.default?.apis)) return mod.default.apis;
+  return [];
+});
 
+export const worker = setupWorker(
+  ...handlers,
+);
