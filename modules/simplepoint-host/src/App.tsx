@@ -1,10 +1,11 @@
 import '@/App.css';
 import '@simplepoint/libs-components/Simplepoint.css'
 import {ConfigProvider, Result, Spin} from 'antd';
-import {HashRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes, Navigate} from "react-router-dom";
 import NavigateBar from "@/layouts/navigation-bar";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import zhCN from 'antd/locale/zh_CN';
+import enUS from 'antd/locale/en_US';
 import {Profile} from "@/layouts/profile";
 import {Settings} from "@/layouts/settings";
 import {use} from "@simplepoint/libs-shared/types/request.ts";
@@ -24,6 +25,18 @@ const App: React.FC = () => {
     window.addEventListener('sp-set-size', handler as EventListener);
     return () => window.removeEventListener('sp-set-size', handler as EventListener);
   }, []);
+
+  // 初始化并监听全局语言
+  const [localeKey, setLocaleKey] = useState<'zh-CN'|'en-US'>(() => (localStorage.getItem('sp.locale') as any) || 'zh-CN');
+  useEffect(() => {
+    const handler = (e: any) => {
+      const next = (e?.detail as 'zh-CN'|'en-US') || 'zh-CN';
+      setLocaleKey(next);
+    };
+    window.addEventListener('sp-set-locale', handler as EventListener);
+    return () => window.removeEventListener('sp-set-locale', handler as EventListener);
+  }, []);
+  const antdLocale = localeKey === 'zh-CN' ? zhCN : enUS;
 
   const remotes = use<Remote>(() => modules());
   const initedRef = useRef(false);
@@ -117,10 +130,12 @@ const App: React.FC = () => {
     <div className="content">
       <ConfigProvider theme={{
         token: {colorPrimary: '#1677FF'}, components: {}
-      }} componentSize={globalSize} locale={zhCN}>
+      }} componentSize={globalSize} locale={antdLocale}>
         <HashRouter>
           <NavigateBar data={data}>
             <Routes>
+              {/* 默认进入时重定向到 /dashboard */}
+              <Route path="/" element={<Navigate to="/dashboard" replace/>}/>
               <Route key={'profile'} path={'/profile'} element={<Profile/>}/>
               <Route key={'settings'} path={'/settings'} element={<Settings/>}/>
               {leafRoutes.map(({uuid, path, component}, idx) => {

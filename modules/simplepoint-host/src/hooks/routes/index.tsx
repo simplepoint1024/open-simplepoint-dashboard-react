@@ -1,7 +1,7 @@
 import {createIcon} from "@simplepoint/libs-shared/types/icon.ts";
 import {MenuInfo, MenuItemType} from "@/store/routes";
 import {MenuProps} from "antd";
-import {aboutMeItem, logoItem, sizeSwitcherItem} from "@/layouts/navigation-bar/top-bar.tsx";
+import {aboutMeItem, logoItem, toolsSwitcherGroupItem} from "@/layouts/navigation-bar/top-bar.tsx";
 
 /**
  * 基于拍平(parent)关系构建菜单（同级按 sort 升序）
@@ -85,7 +85,7 @@ export const useTopNavigation = (navigate: (path: string) => void, data: Array<M
         label: '',
         style: {marginLeft: 'auto', pointerEvents: 'none'},
       },
-      sizeSwitcherItem(),
+      toolsSwitcherGroupItem(),
       aboutMeItem(navigate)
     ]
   }

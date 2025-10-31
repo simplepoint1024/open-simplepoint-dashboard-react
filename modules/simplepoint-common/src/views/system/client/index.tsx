@@ -1,11 +1,11 @@
+import {apis} from "@/api";
 import SimpleTable from "@simplepoint/libs-components/SimpleTable";
 
 const App = () => {
   return (
     <div>
       <SimpleTable
-        baseUrl={'/common/oidc/clients'}
-        name={'oidc-clients'}
+        {...apis['oidc-clients']}
       />
     </div>
   );

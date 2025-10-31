@@ -23,6 +23,15 @@ export const apis = [
       {
         "content": [
           {
+            "id": "5f3f3f6e-B7c5-4d3e-8f4a-2c1e5d6f7a8b",
+            "updatedAt": "2025-10-30T06:05:28.455Z",
+            "uuid": "de233e0c-7b13-4ffb-9754-0857a59a8f09",
+            "label": "Dashboard",
+            "icon": "DashboardOutlined",
+            "path": "/dashboard",
+            "component": "common/dashboard"
+          },
+          {
             "id": "e9985023-f307-44de-aae4-88b6ebc2d37e",
             "updatedAt": "2025-10-30T06:07:42.549409Z",
             "uuid": "de233e0c-7b13-4ffb-9754-0857a59a8f69",
@@ -150,7 +159,7 @@ export const apis = [
                 "icon": "KeyOutlined",
                 "path": "/system/client",
                 "type": "item",
-                "component": "common/system/Client",
+                "component": "common/system/client",
                 "children": []
               },
               {
@@ -162,7 +171,7 @@ export const apis = [
                 "icon": "ApiOutlined",
                 "path": "/system/endpoints",
                 "type": "item",
-                "component": "common/system/Endpoint",
+                "component": "common/system/endpoint",
                 "children": []
               },
               {
@@ -174,7 +183,7 @@ export const apis = [
                 "icon": "UsergroupAddOutlined",
                 "path": "/system/role",
                 "type": "item",
-                "component": "common/system/Role",
+                "component": "common/system/role",
                 "children": []
               },
               {
@@ -186,7 +195,7 @@ export const apis = [
                 "icon": "AppstoreOutlined",
                 "path": "/system/auth",
                 "type": "item",
-                "component": "common/system/Auth",
+                "component": "common/system/auth",
                 "children": []
               },
               {
@@ -198,7 +207,7 @@ export const apis = [
                 "icon": "TableOutlined",
                 "path": "/system/field",
                 "type": "item",
-                "component": "common/system/Field",
+                "component": "common/system/field",
                 "children": []
               },
               {
@@ -210,7 +219,7 @@ export const apis = [
                 "icon": "BarsOutlined",
                 "path": "/system/data",
                 "type": "item",
-                "component": "common/system/Data",
+                "component": "common/system/data",
                 "children": []
               },
               {
@@ -222,7 +231,7 @@ export const apis = [
                 "icon": "MenuOutlined",
                 "path": "/system/menu",
                 "type": "item",
-                "component": "common/system/Menu",
+                "component": "common/system/menu",
                 "children": []
               },
               {
@@ -234,7 +243,7 @@ export const apis = [
                 "icon": "UserOutlined",
                 "path": "/system/user",
                 "type": "item",
-                "component": "common/system/User",
+                "component": "common/system/user",
                 "children": []
               }
             ]

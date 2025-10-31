@@ -1,6 +1,6 @@
 import type {ItemType} from "antd/es/menu/interface";
-import {Avatar, Button, MenuProps, Tooltip} from "antd";
-import {CreditCardOutlined, FontSizeOutlined, LogoutOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
+import {Avatar, Button, Dropdown, MenuProps, Tooltip} from "antd";
+import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
 import React, {useEffect, useRef, useState} from 'react';
 import {get} from "@simplepoint/libs-shared/types/request.ts";
 
@@ -126,10 +126,91 @@ export const sizeSwitcherItem = (): ItemType => {
 }
 
 /**
+ * 顶部导航右侧：语言切换
+ * 放在“全局尺寸”左侧，支持 zh-CN / en-US
+ */
+export const languageSwitcherItem = (): ItemType => {
+  const onSelect = (lng: 'zh-CN' | 'en-US') => {
+    try { localStorage.setItem('sp.locale', lng); } catch (_) {}
+    window.dispatchEvent(new CustomEvent('sp-set-locale', { detail: lng }));
+  };
+  const menu: MenuProps = {
+    items: [
+      { key: 'zh-CN', label: '中文（简体）' },
+      { key: 'en-US', label: 'English' },
+    ],
+    onClick: ({ key }) => onSelect(key as 'zh-CN' | 'en-US')
+  };
+  // 读取已选语言，仅用于按钮提示（不依赖状态，以避免无效重渲染）
+  let tip = '切换语言';
+  try {
+    const cur = localStorage.getItem('sp.locale') || 'zh-CN';
+    tip = `语言：${cur}`;
+  } catch (_) {}
+  return {
+    key: 'language-switcher',
+    label: (
+      <Tooltip title={tip}>
+        <Dropdown menu={menu} trigger={["click"]} placement="bottomRight">
+          <Button type="default" size="small" icon={<GlobalOutlined/>} style={{width: 28, height: 28, padding: 0, borderRadius: 6, margin: '0 4px'}}/>
+        </Dropdown>
+      </Tooltip>
+    ),
+  };
+};
+
+/**
+ * 紧凑工具组：语言 + 尺寸（放在一起，间距更小）
+ */
+export const toolsSwitcherGroupItem = (): ItemType => {
+  // 语言切换
+  const onSelect = (lng: 'zh-CN' | 'en-US') => {
+    try { localStorage.setItem('sp.locale', lng); } catch (_) {}
+    window.dispatchEvent(new CustomEvent('sp-set-locale', { detail: lng }));
+  };
+  const langMenu: MenuProps = {
+    items: [
+      { key: 'zh-CN', label: '中文（简体）' },
+      { key: 'en-US', label: 'English' },
+    ],
+    onClick: ({ key }) => onSelect(key as 'zh-CN'|'en-US')
+  };
+  let tip = '切换语言';
+  try { tip = `语言：${localStorage.getItem('sp.locale') || 'zh-CN'}` } catch(_) {}
+
+  // 尺寸切换
+  const order: Array<'small'|'middle'|'large'> = ['small','middle','large'];
+  const getNext = (cur: 'small'|'middle'|'large') => order[(order.indexOf(cur)+1)%order.length];
+  const onToggleSize = () => {
+    const cur = (localStorage.getItem('sp.globalSize') as any) || 'middle';
+    const next = getNext(cur);
+    try { localStorage.setItem('sp.globalSize', next); } catch(_) {}
+    window.dispatchEvent(new CustomEvent('sp-set-size', { detail: next }));
+  };
+
+  return {
+    key: 'tools-switcher',
+    style: { paddingInline: 4, minWidth: 80, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' },
+    label: (
+      <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,width:'100%' ,marginTop: '30%'}}>
+        <Tooltip title={tip}>
+          <Dropdown menu={langMenu} trigger={["click"]} placement="bottomRight">
+            <Button type="text" icon={<GlobalOutlined/>} style={{width:28,height:28,padding:0,borderRadius:6,margin:0}} />
+          </Dropdown>
+        </Tooltip>
+        <Tooltip title="切换全局尺寸(小/中/大)">
+          <Button type="text" icon={<FontSizeOutlined/>} onClick={onToggleSize} style={{width:28,height:28,padding:0,borderRadius:6,margin:0}} />
+        </Tooltip>
+      </div>
+    )
+  };
+};
+
+/**
  * 关于我配置
  * @param navigate 路由跳转配置项
  */
-export const aboutMeItem = (navigate: (path: string) => void): ItemType => {
+ export const aboutMeItem = (navigate: (path: string) => void): ItemType => {
   const menu = avatarConfig(navigate);
   return {
     key: 'me',

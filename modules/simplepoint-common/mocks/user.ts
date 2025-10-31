@@ -1,7 +1,7 @@
 import {http, HttpResponse} from 'msw';
 
 export const apis = [
-  http.get('/common/user/schema', () => {
+  http.get('/common/users/schema', () => {
     return HttpResponse.json(
       {
         "access": {
@@ -125,7 +125,7 @@ export const apis = [
       )
   }),
 
-  http.get('/common/user', () => {
+  http.get('/common/users', () => {
     return HttpResponse.json(
       {
         "content": [{

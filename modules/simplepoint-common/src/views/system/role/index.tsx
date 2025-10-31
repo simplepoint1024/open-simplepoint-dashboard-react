@@ -1,11 +1,11 @@
 import SimpleTable from "@simplepoint/libs-components/SimpleTable";
+import {apis} from "@/api";
 
 const App = () => {
   return (
     <div>
       <SimpleTable
-        baseUrl={'/common/role'}
-        name={'roles'}
+        {...apis['rbac-roles']}
       />
     </div>
   );

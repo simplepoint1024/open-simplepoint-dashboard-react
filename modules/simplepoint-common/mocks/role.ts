@@ -1,7 +1,7 @@
 import {http, HttpResponse} from 'msw';
 
 export const apis = [
-  http.get('/common/role/schema', () => {
+  http.get('/common/roles/schema', () => {
     return HttpResponse.json(
       {
         "buttons": [
@@ -96,7 +96,7 @@ export const apis = [
       )
   }),
 
-  http.get('/common/role', () => {
+  http.get('/common/roles', () => {
     return HttpResponse.json(
       {
         "content": [
