@@ -27,16 +27,35 @@ const App: React.FC = () => {
     return () => window.removeEventListener('sp-set-size', handler as EventListener);
   }, []);
 
-  // 全局主题模式：light / dark
-  const [themeMode, setThemeMode] = useState<'light'|'dark'>(() => (localStorage.getItem('sp.theme') as any) || 'light');
+  // 全局主题模式：light / dark / system
+  const getSystemTheme = (): 'light'|'dark' => {
+    try { return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; } catch { return 'light'; }
+  };
+  const [themeMode, setThemeMode] = useState<'light'|'dark'|'system'>(() => (localStorage.getItem('sp.theme') as any) || 'light');
+  const [resolvedTheme, setResolvedTheme] = useState<'light'|'dark'>(() => themeMode === 'system' ? getSystemTheme() : (themeMode as 'light'|'dark'));
   useEffect(() => {
     const handler = (e: any) => {
-      const next = (e?.detail as 'light'|'dark') || 'light';
+      const next = (e?.detail as 'light'|'dark'|'system') || 'light';
       setThemeMode(next);
     };
     window.addEventListener('sp-set-theme', handler as EventListener);
     return () => window.removeEventListener('sp-set-theme', handler as EventListener);
   }, []);
+  useEffect(() => {
+    if (themeMode === 'system') {
+      const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : (null as any);
+      const apply = () => setResolvedTheme(getSystemTheme());
+      apply();
+      if (mq && mq.addEventListener) mq.addEventListener('change', apply);
+      else if (mq && (mq as any).addListener) (mq as any).addListener(apply);
+      return () => {
+        if (mq && mq.removeEventListener) mq.removeEventListener('change', apply);
+        else if (mq && (mq as any).removeListener) (mq as any).removeListener(apply);
+      };
+    } else {
+      setResolvedTheme(themeMode as 'light'|'dark');
+    }
+  }, [themeMode]);
 
   // 使用全局 I18n 的 locale
   const { locale } = useI18n();
@@ -135,7 +154,7 @@ const App: React.FC = () => {
   return (
     <div className="content">
       <ConfigProvider theme={{
-        algorithm: themeMode === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
+        algorithm: resolvedTheme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
         token: {colorPrimary: '#1677FF'},
         components: {}
       }} componentSize={globalSize} locale={antdLocale}>

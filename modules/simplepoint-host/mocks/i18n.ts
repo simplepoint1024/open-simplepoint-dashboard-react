@@ -11,10 +11,12 @@ export const apis = [
     ]);
   }),
 
-  // 指定语言的消息键值对
+  // 指定语言的消息键值对（支持可选命名空间 ns=profile,settings）
   http.get('/i18n/messages', ({ request }) => {
     const url = new URL(request.url);
     const locale = url.searchParams.get('locale') || 'zh-CN';
+    const nsParam = url.searchParams.get('ns');
+    const nsList = nsParam ? nsParam.split(',').map(s => s.trim()).filter(Boolean) : undefined;
 
     const zhCN = {
       'app.title': 'Simple·Point 平台',
@@ -78,7 +80,7 @@ export const apis = [
       'dashboard.quick.clients': '应用管理',
       'dashboard.quick.services': '微服务',
       'dashboard.quick.i18n': '国际化',
-      // 新增：通用/操作
+      // 通用/操作
       'action.refresh': '刷新',
       'action.edit': '编辑',
       'action.save': '保存',
@@ -86,7 +88,7 @@ export const apis = [
       'action.reset': '恢复默认',
       'action.resetLang': '恢复默认语言',
       'tooltip.theme': '切换主题(亮/暗)',
-      // 新增：个人资料 Profile
+      // 个人资料 Profile
       'profile.basic': '基本信息',
       'profile.saveSuccess': '保存成功',
       'profile.noEmail': '未绑定邮箱',
@@ -101,9 +103,10 @@ export const apis = [
       'ph.nickname': '请输入昵称',
       'ph.email': '请输入邮箱',
       'ph.phone': '请输入手机号',
-      // 新增：设置 Settings
+      // 设置 Settings
       'settings.appearance': '外观设置',
       'settings.theme': '主题模式',
+      'settings.system': '跟随系统',
       'settings.size': '全局尺寸',
       'settings.light': '浅色',
       'settings.dark': '深色',
@@ -118,6 +121,7 @@ export const apis = [
       'about.license': '许可',
       'about.repo': '仓库',
       'about.ui': 'UI',
+      'about.licenseValue': 'Apache-2.0 许可',
       'settings.themeUpdated': '主题已更新',
       'settings.sizeUpdated': '尺寸已更新',
       'settings.langUpdated': '语言已更新',
@@ -151,7 +155,7 @@ export const apis = [
       'greeting.morning': 'Good morning!',
       'greeting.afternoon': 'Good afternoon!',
       'greeting.evening': 'Good evening!',
-      // Dashboard texts
+      // Dashboard
       'dashboard.welcomeTitle': 'Welcome to Simple·Point',
       'dashboard.welcomeSub': 'Overview to help you quickly understand the current status and common entries.',
       'dashboard.stats.totalUsers': 'Total Users',
@@ -189,7 +193,7 @@ export const apis = [
       'dashboard.quick.clients': 'App Management',
       'dashboard.quick.services': 'Microservices',
       'dashboard.quick.i18n': 'Internationalization',
-      // New: common/actions
+      // Common/actions
       'action.refresh': 'Refresh',
       'action.edit': 'Edit',
       'action.save': 'Save',
@@ -197,7 +201,7 @@ export const apis = [
       'action.reset': 'Reset to default',
       'action.resetLang': 'Reset to default language',
       'tooltip.theme': 'Toggle theme (Light/Dark)',
-      // New: Profile
+      // Profile
       'profile.basic': 'Basic Info',
       'profile.saveSuccess': 'Saved successfully',
       'profile.noEmail': 'No email bound',
@@ -212,9 +216,10 @@ export const apis = [
       'ph.nickname': 'Enter nickname',
       'ph.email': 'Enter email',
       'ph.phone': 'Enter phone',
-      // New: Settings
+      // Settings
       'settings.appearance': 'Appearance',
       'settings.theme': 'Theme',
+      'settings.system': 'System',
       'settings.size': 'Global Size',
       'settings.light': 'Light',
       'settings.dark': 'Dark',
@@ -229,6 +234,7 @@ export const apis = [
       'about.license': 'License',
       'about.repo': 'Repository',
       'about.ui': 'UI',
+      'about.licenseValue': 'Apache-2.0 license',
       'settings.themeUpdated': 'Theme updated',
       'settings.sizeUpdated': 'Size updated',
       'settings.langUpdated': 'Language updated',
@@ -300,7 +306,7 @@ export const apis = [
       'dashboard.quick.clients': 'アプリ管理',
       'dashboard.quick.services': 'マイクロサービス',
       'dashboard.quick.i18n': '国際化',
-      // 追加：共通/操作
+      // 共通/操作
       'action.refresh': '更新',
       'action.edit': '編集',
       'action.save': '保存',
@@ -308,7 +314,7 @@ export const apis = [
       'action.reset': '既定に戻す',
       'action.resetLang': '既定の言語に戻す',
       'tooltip.theme': 'テーマを切り替え（ライト/ダーク）',
-      // 追加：プロフィール
+      // プロフィール
       'profile.basic': '基本情報',
       'profile.saveSuccess': '保存しました',
       'profile.noEmail': 'メール未連携',
@@ -323,9 +329,10 @@ export const apis = [
       'ph.nickname': 'ニックネームを入力',
       'ph.email': 'メールを入力',
       'ph.phone': '電話番号を入力',
-      // 追加：設定
+      // 設定
       'settings.appearance': '外観設定',
       'settings.theme': 'テーマ',
+      'settings.system': 'システムに従う',
       'settings.size': '全体サイズ',
       'settings.light': 'ライト',
       'settings.dark': 'ダーク',
@@ -340,6 +347,7 @@ export const apis = [
       'about.license': 'ライセンス',
       'about.repo': 'リポジトリ',
       'about.ui': 'UI',
+      'about.licenseValue': 'Apache-2.0 ライセンス',
       'settings.themeUpdated': 'テーマを更新しました',
       'settings.sizeUpdated': 'サイズを更新しました',
       'settings.langUpdated': '言語を更新しました',
@@ -349,7 +357,25 @@ export const apis = [
       'settings.sampleDesc': 'これはサンプルの説明です',
     } as Record<string, string>;
 
-    const data = locale === 'en-US' ? enUS : locale === 'ja-JP' ? jaJP : zhCN;
-    return HttpResponse.json(data);
+    const dict = locale === 'en-US' ? enUS : locale === 'ja-JP' ? jaJP : zhCN;
+
+    if (!nsList || nsList.length === 0) {
+      return HttpResponse.json(dict);
+    }
+
+    // 命名空间前缀映射
+    const nsMap: Record<string, string[]> = {
+      profile: ['profile.', 'field.', 'rule.', 'ph.', 'user.'],
+      settings: ['settings.', 'size.', 'about.', 'label.language', 'tooltip.size'],
+      common: ['app.', 'error.', 'nav.', 'greeting.', 'dashboard.'],
+    };
+    const allowPrefixes = nsList.flatMap(name => nsMap[name] || [`${name}.`]);
+    const filtered: Record<string, string> = {};
+    Object.keys(dict).forEach((k) => {
+      if (allowPrefixes.some(p => k.startsWith(p))) filtered[k] = (dict as any)[k];
+    });
+    return HttpResponse.json(filtered);
   }),
 ];
+
+export default apis;

@@ -1,6 +1,6 @@
 import type {ItemType} from "antd/es/menu/interface";
 import {Avatar, Button, Dropdown, MenuProps, Tooltip} from "antd";
-import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined} from "@ant-design/icons";
+import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined, DesktopOutlined} from "@ant-design/icons";
 import React, {useEffect, useRef, useState} from 'react';
 import {get, post} from "@simplepoint/libs-shared/types/request.ts";
 import { useI18n } from '@/i18n';
@@ -108,7 +108,7 @@ const SizeButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' })
     window.dispatchEvent(new CustomEvent('sp-set-size', { detail: next }));
   };
   return (
-    <Tooltip title={t('tooltip.size','切换全局尺寸(小/中/大)')}>
+    <Tooltip title={<span>{t('tooltip.size','切换全局尺寸(小/中/大)')} · <a href="https://github.com/simplepoint1024/open-simplepoint-dashboard-react" target="_blank" rel="noopener noreferrer">GitHub</a></span>}>
       <Button type={type} size="small" icon={<FontSizeOutlined/>} onClick={onToggleSize}
               style={{width:28,height:28,padding:0,borderRadius:6,margin: type==='text'?0:'0 8px'}}/>
     </Tooltip>
@@ -116,27 +116,28 @@ const SizeButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' })
 };
 
 /**
- * 主题模式切换（亮/暗）
+ * 主题模式切换（亮/暗/跟随系统）
  */
 const ThemeButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
   const { t } = useI18n();
-  const [mode, setMode] = useState<'light'|'dark'>(() => (localStorage.getItem('sp.theme') as any) || 'light');
+  const [mode, setMode] = useState<'light'|'dark'|'system'>(() => (localStorage.getItem('sp.theme') as any) || 'light');
   useEffect(() => {
-    const handler = (e: any) => setMode((e?.detail as 'light'|'dark') || 'light');
+    const handler = (e: any) => setMode((e?.detail as 'light'|'dark'|'system') || 'light');
     window.addEventListener('sp-set-theme', handler as EventListener);
     return () => window.removeEventListener('sp-set-theme', handler as EventListener);
   }, []);
+  const nextOf = (m: 'light'|'dark'|'system'): 'light'|'dark'|'system' => (m === 'light' ? 'dark' : m === 'dark' ? 'system' : 'light');
   const toggle = () => {
-    const next: 'light'|'dark' = mode === 'dark' ? 'light' : 'dark';
+    const next = nextOf(mode);
     try { localStorage.setItem('sp.theme', next); } catch {}
     window.dispatchEvent(new CustomEvent('sp-set-theme', { detail: next }));
     setMode(next);
   };
-  const tip = t('tooltip.theme', '切换主题(亮/暗)');
-  const Icon = mode === 'dark' ? SunOutlined : MoonOutlined;
+  const tip = `${t('settings.theme','主题模式')}: ${mode === 'system' ? t('settings.system','跟随系统') : (mode === 'dark' ? t('settings.dark','深色') : t('settings.light','浅色'))}`;
+  const Icon = mode === 'system' ? DesktopOutlined : (mode === 'dark' ? SunOutlined : MoonOutlined);
   return (
     <Tooltip title={tip}>
-      <Button type={compact ? 'text' : 'default'} size="small" icon={<Icon/>} onClick={toggle}
+      <Button aria-label="toggle-theme" type={compact ? 'text' : 'default'} size="small" icon={<Icon/>} onClick={toggle}
               style={{width:28,height:28,padding:0,borderRadius:6,margin: compact ? 0 : '0 4px'}}/>
     </Tooltip>
   );

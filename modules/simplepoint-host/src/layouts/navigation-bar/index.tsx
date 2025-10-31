@@ -37,16 +37,23 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   // 统一拍平叶子菜单，供后续映射复用
   const leafNodes = useMemo(() => flattenMenus(data || []), [data]);
 
-  // 根据菜单构建 path -> label 映射（复用 leafNodes）
+  // 补充：对未在菜单中的内部路由，提供固定的名称与图标
+  const extraTabs = useMemo(() => ([
+    { path: '/profile', label: t('menu.profile', '个人资料'), icon: 'UserOutlined' },
+    { path: '/settings', label: t('menu.settings', '系统设置'), icon: 'SettingOutlined' },
+  ]), [t, locale]);
+
+  // 根据菜单构建 path -> label 映射（复用 leafNodes + extras）
   const pathLabelMap = useMemo(() => {
     const map = new Map<string, string>();
     leafNodes.forEach((n) => {
       if (n.path) map.set(n.path, n.label || n.title || n.path!);
     });
+    extraTabs.forEach(it => map.set(it.path, it.label));
     return map;
-  }, [leafNodes]);
+  }, [leafNodes, extraTabs]);
 
-  // 构建 path -> 图标 的映射
+  // 构建 path -> 图标 的映射（复用 leafNodes + extras）
   const pathIconMap = useMemo(() => {
     const map = new Map<string, React.ReactNode>();
     leafNodes.forEach((n: any) => {
@@ -54,10 +61,11 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
         map.set(n.path, createIcon(n.icon));
       }
     });
+    extraTabs.forEach(it => map.set(it.path, createIcon(it.icon)));
     return map;
-  }, [leafNodes]);
+  }, [leafNodes, extraTabs]);
 
-  // 构建 path -> 图标名 的映射（用于持久化）
+  // 构建 path -> 图标名 的映射（用于持久化）（复用 leafNodes + extras）
   const pathIconNameMap = useMemo(() => {
     const map = new Map<string, string>();
     leafNodes.forEach((n: any) => {
@@ -65,8 +73,9 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
         map.set(n.path, n.icon);
       }
     });
+    extraTabs.forEach(it => map.set(it.path, it.icon));
     return map;
-  }, [leafNodes]);
+  }, [leafNodes, extraTabs]);
 
   // 从本地存储读取上次的标签文本，作为名称降级来源
   const storedLabelMap = useMemo(() => {

@@ -6,7 +6,10 @@ import { get } from "@simplepoint/libs-shared/types/request.ts";
 import './index.css'
 
 export const Profile: React.FC = () => {
-  const { t } = useI18n();
+  const { t, ensure } = useI18n();
+  // 增量加载 profile 命名空间
+  useEffect(() => { ensure(['profile']).catch(() => {}); }, [ensure]);
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [data, setData] = useState<any | null>(null);

@@ -21,13 +21,14 @@ export async function fetchLanguages(): Promise<Language[]> {
   ];
 }
 
-// 获取指定语言的消息键值对
-export async function fetchMessages(locale: string): Promise<Messages> {
+// 获取指定语言的消息键值对（可选按命名空间）
+export async function fetchMessages(locale: string, ns?: string[]): Promise<Messages> {
   try {
-    const data = await get<Messages>('/i18n/messages', { locale });
+    const params: any = { locale };
+    if (Array.isArray(ns) && ns.length > 0) params.ns = ns.join(',');
+    const data = await get<Messages>('/i18n/messages', params);
     if (data && typeof data === 'object') return data;
   } catch (_) {}
   // 兜底：返回空，让调用方使用 key 或默认文案
   return {};
 }
-
