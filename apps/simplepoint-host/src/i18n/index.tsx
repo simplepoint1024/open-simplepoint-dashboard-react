@@ -151,8 +151,12 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
   const applyLocale = useCallback((code: string) => {
     const norm = normalizeLocale(code);
     try { localStorage.setItem('sp.locale', norm); } catch {}
-    setLocaleState(norm);
-    try { window.dispatchEvent(new CustomEvent('sp-set-locale', { detail: norm })); } catch {}
+    // 将更新与事件广播放入微任务，避免在渲染阶段同步 setState
+    const schedule = typeof queueMicrotask === 'function' ? queueMicrotask : (fn: () => void) => Promise.resolve().then(fn);
+    schedule(() => {
+      setLocaleState(norm);
+      try { window.dispatchEvent(new CustomEvent('sp-set-locale', { detail: norm })); } catch {}
+    });
   }, []);
 
   // expose setter that also persists and emits event
@@ -160,10 +164,12 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
 
   // listen external locale changes (e.g., from other micro apps)
   useEffect(() => {
+    const schedule = typeof queueMicrotask === 'function' ? queueMicrotask : (fn: () => void) => Promise.resolve().then(fn);
     const handler = (e: any) => {
       const next = normalizeLocale((e?.detail as string) || 'zh-CN');
       if (next === locale) return; // 避免重复更新
-      setLocaleState(next);
+      // 避免在渲染阶段同步 setState，放入微任务
+      schedule(() => setLocaleState(next));
     };
     window.addEventListener('sp-set-locale', handler as EventListener);
     return () => window.removeEventListener('sp-set-locale', handler as EventListener);
