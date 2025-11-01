@@ -10,7 +10,7 @@ dayjs.extend(relativeTime);
 dayjs.extend(calendar);
 
 // 版本化缓存（部署后可手动提升版本使缓存失效）
-const APP_I18N_VERSION = '1';
+const APP_I18N_VERSION = '2';
 const VERSION_KEY = 'sp.i18n.version';
 const FORCE_REMOUNT_ON_LOCALE_CHANGE = true;
 const isForceRemount = () => {

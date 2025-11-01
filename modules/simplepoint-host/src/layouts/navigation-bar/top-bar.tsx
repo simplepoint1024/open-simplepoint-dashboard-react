@@ -278,7 +278,7 @@ const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
         menu={menu}
         trigger={["click"]}
         placement="bottomRight"
-        destroyPopupOnHide
+        destroyOnHidden
         open={open}
         onOpenChange={(next) => {
           // 如果刚刚因选择而关闭，忽略一帧内的反向打开

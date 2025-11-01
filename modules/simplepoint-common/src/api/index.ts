@@ -1,12 +1,12 @@
 export const apis = {
   'oidc-clients': {
     baseUrl: '/common/oidc/clients',
-    i18nNamespaces: ['table','oidc-clients'],
+    i18nNamespaces: ['table','clients'],
     name: 'oidc-clients',
   },
   'rbac-menus':{
     baseUrl: '/common/menus',
-    i18nNamespaces: ['table','oidc-clients'],
+    i18nNamespaces: ['table','menus'],
     name: 'rbac-menus',
   },
   'rbac-roles':{
@@ -16,7 +16,7 @@ export const apis = {
   },
   'rbac-users':{
     baseUrl: '/common/users',
-    i18nNamespaces: ['table','oidc-clients'],
+    i18nNamespaces: ['table','users'],
     name: 'users'
   },
 }
