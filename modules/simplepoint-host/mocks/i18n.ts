@@ -109,6 +109,15 @@ export const apis = [
       'action.reset': '恢复默认',
       'action.resetLang': '恢复默认语言',
       'tooltip.theme': '切换主题(亮/暗)',
+      // 工具与确认类
+      'tools.fullscreen.enter': '进入全屏',
+      'tools.fullscreen.exit': '退出全屏',
+      'tools.fullscreen.notAllowed': '当前环境不支持全屏或被浏览器拦截',
+      'tools.clearCache': '清理缓存',
+      'tools.clearCacheConfirm': '确认清理全局缓存？',
+      'tools.clearDone': '已清理全局缓存',
+      'ok': '确定',
+      'cancel': '取消',
       // 个人资料 Profile
       'profile.basic': '基本信息',
       'profile.saveSuccess': '保存成功',
@@ -293,6 +302,15 @@ export const apis = [
       'action.reset': 'Reset to default',
       'action.resetLang': 'Reset to default language',
       'tooltip.theme': 'Toggle theme (Light/Dark)',
+      // tools and confirms
+      'tools.fullscreen.enter': 'Enter Fullscreen',
+      'tools.fullscreen.exit': 'Exit Fullscreen',
+      'tools.fullscreen.notAllowed': 'Fullscreen not supported or blocked by browser',
+      'tools.clearCache': 'Clear Cache',
+      'tools.clearCacheConfirm': 'Are you sure to clear all caches?',
+      'tools.clearDone': 'Global caches have been cleared',
+      'ok': 'OK',
+      'cancel': 'Cancel',
       // 个人资料 Profile
       'profile.basic': 'Basic Info',
       'profile.saveSuccess': 'Saved successfully',
@@ -477,6 +495,15 @@ export const apis = [
       'action.reset': '既定に戻す',
       'action.resetLang': '既定の言語に戻す',
       'tooltip.theme': 'テーマを切り替え（ライト/ダーク）',
+      // tools と確認
+      'tools.fullscreen.enter': '全画面表示にする',
+      'tools.fullscreen.exit': '全画面表示を終了',
+      'tools.fullscreen.notAllowed': '全画面はサポートされていないか、ブラウザによりブロックされました',
+      'tools.clearCache': 'キャッシュをクリア',
+      'tools.clearCacheConfirm': '全体のキャッシュをクリアしますか？',
+      'tools.clearDone': 'グローバルキャッシュをクリアしました',
+      'ok': '確認',
+      'cancel': 'キャンセル',
       // プロフィール
       'profile.basic': '基本情報',
       'profile.saveSuccess': '保存しました',
@@ -580,7 +607,7 @@ export const apis = [
     const nsMap: Record<string, string[]> = {
       profile: ['profile.', 'field.', 'rule.', 'ph.', 'user.'],
       settings: ['settings.', 'size.', 'about.', 'label.language', 'tooltip.size'],
-      common: ['app.', 'error.', 'nav.', 'greeting.', 'dashboard.', 'form.', 'table.'],
+      common: ['app.', 'error.', 'nav.', 'greeting.', 'dashboard.', 'form.', 'table.', 'tools.', 'ok', 'cancel'],
       form: ['form.'],
       table: ['table.'],
       menu: ['menu.'],

@@ -229,7 +229,8 @@ const FullscreenButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'defau
  * 顶部导航右侧：语言切换（动态从后端获取语言列表）
  */
 const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
-  const { languages, locale, setLocale, t } = useI18n();
+  const { languages, locale, setLocale, t, ensure } = useI18n();
+  useEffect(() => { try { void ensure(['common']); } catch {} }, [ensure]);
   const [open, setOpen] = useState(false);
   const [switching, setSwitching] = useState(false);
   const closingRef = useRef(false);
