@@ -242,20 +242,22 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
 
   const onTabEdit = useCallback((targetKey: any, action: 'add' | 'remove') => {
     if (action !== 'remove') return;
-    setTabs((prev) => {
-      const idx = prev.findIndex(t => t.key === targetKey);
-      if (idx === -1) return prev;
-      const next = prev.filter(t => t.key !== targetKey);
-      // 关闭的是当前激活页，跳转到相邻的一个
-      if (targetKey === activeKey) {
-        const fallback = next[idx - 1] || next[idx] || next[0] || {key: DASHBOARD_PATH} as any;
-        if (fallback) navigate(fallback.key);
-      }
-      const normalized = normalizeTabs(next);
-      persistTabs(normalized);
-      return normalized;
-    });
-  }, [activeKey, navigate, normalizeTabs, persistTabs]);
+    // 基于当前 tabs 计算下一状态与应跳转的 fallbackKey，避免在 setState 回调内直接 navigate
+    const prevTabs = tabs;
+    const idx = prevTabs.findIndex(t => t.key === targetKey);
+    if (idx === -1) return;
+    const nextTabs = prevTabs.filter(t => t.key !== targetKey);
+    const fallbackKey = targetKey === activeKey
+      ? (nextTabs[idx - 1]?.key || nextTabs[idx]?.key || nextTabs[0]?.key || DASHBOARD_PATH)
+      : undefined;
+    const normalized = normalizeTabs(nextTabs);
+    setTabs(normalized);
+    persistTabs(normalized);
+    if (fallbackKey) {
+      // 延后到提交后再跳转，避免在渲染其他组件时更新 HashRouter
+      window.setTimeout(() => navigate(fallbackKey), 0);
+    }
+  }, [tabs, activeKey, navigate, normalizeTabs, persistTabs]);
 
   // 右键菜单：清除缓存 / 关闭全部（保留 dashboard）
 
@@ -263,7 +265,10 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
     if (key === 'refresh') {
       const path = getCurrentPath();
       try {
-        window.dispatchEvent(new CustomEvent('sp-refresh-route', {detail: {path}}));
+        // 异步派发，避免同步事件引起的链式更新
+        window.setTimeout(() => {
+          try { window.dispatchEvent(new CustomEvent('sp-refresh-route', {detail: {path}})); } catch {}
+        }, 0);
       } catch (_) {
       }
       return;
@@ -292,7 +297,8 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
       const onlyDashboard = [getDashboardTab()];
       setTabs(onlyDashboard);
       persistTabs(onlyDashboard);
-      navigate(DASHBOARD_PATH);
+      // 延后跳转，避免在当前渲染过程中触发 HashRouter 同步更新
+      window.setTimeout(() => navigate(DASHBOARD_PATH), 0);
     }
   }, [getCurrentPath, normalizeTabs, persistTabs, getDashboardTab, navigate]);
 
