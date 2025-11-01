@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Avatar, Button, Card, Col, Descriptions, Empty, Form, Input, message, Row, Skeleton, Space, Tag, Typography } from "antd";
 import { UserOutlined, EditOutlined, SaveOutlined, ReloadOutlined } from "@ant-design/icons";
 import { useI18n } from '@/i18n';
-import { get } from "@simplepoint/libs-shared/types/request.ts";
+import { useUserInfo } from '@/services/user';
 import './index.css'
 
 export const Profile: React.FC = () => {
@@ -10,33 +10,23 @@ export const Profile: React.FC = () => {
   // 增量加载 profile 命名空间
   useEffect(() => { ensure(['profile']).catch(() => {}); }, [ensure]);
 
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading, refetch } = useUserInfo();
   const [saving, setSaving] = useState(false);
-  const [data, setData] = useState<any | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [form] = Form.useForm();
 
-  const load = async () => {
-    setLoading(true);
-    try {
-      const res = await get<any>('/userinfo');
-      setData(res || null);
-      form.setFieldsValue({
-        nickname: res?.nickname || res?.name || '',
-        email: res?.email || '',
-        phone: res?.phone || '',
-      });
-    } catch (_) {
-      setData(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => { load(); }, []);
+  // 数据变化时同步到表单
+  useEffect(() => {
+    if (!data) return;
+    form.setFieldsValue({
+      nickname: (data as any)?.nickname || (data as any)?.name || '',
+      email: (data as any)?.email || '',
+      phone: (data as any)?.phone || '',
+    });
+  }, [data, form]);
 
   const roles: string[] = useMemo(() => {
-    const r = data?.roles;
+    const r = (data as any)?.roles;
     if (Array.isArray(r)) return r as string[];
     if (typeof r === 'string') return r.split(',').map((s: string) => s.trim()).filter(Boolean);
     return [];
@@ -44,15 +34,13 @@ export const Profile: React.FC = () => {
 
   const onSave = async () => {
     try {
-      const values = await form.validateFields();
+      await form.validateFields();
       setSaving(true);
-      // 此处可对接真实更新接口，例如：await post('/profile/update', values)
       await new Promise(r => setTimeout(r, 600));
-      setData((prev: any) => ({ ...prev, ...values }));
       message.success(t('profile.saveSuccess','保存成功'));
       setEditMode(false);
     } catch (_) {
-      // 校验失败或用户取消
+      // ignore
     } finally {
       setSaving(false);
     }
@@ -63,19 +51,19 @@ export const Profile: React.FC = () => {
       <Row gutter={[16, 16]}>
         <Col xs={24} md={8}>
           <Card className="profile-card">
-            {loading ? (
+            {isLoading ? (
               <Skeleton avatar active paragraph={{ rows: 2 }} />
             ) : data ? (
               <div className="avatar-card">
-                <Avatar size={72} icon={!data?.picture ? <UserOutlined /> : undefined} src={data?.picture} />
+                <Avatar size={72} icon={!(data as any)?.picture ? <UserOutlined /> : undefined} src={(data as any)?.picture} />
                 <Typography.Title className="profile-name" level={5}>
-                  {data?.nickname || data?.name || t('user.defaultName','用户')}
+                  {(data as any)?.nickname || (data as any)?.name || t('user.defaultName','用户')}
                 </Typography.Title>
                 <Typography.Paragraph className="profile-sub">
-                  {data?.email || t('profile.noEmail','未绑定邮箱')}
+                  {(data as any)?.email || t('profile.noEmail','未绑定邮箱')}
                 </Typography.Paragraph>
                 <Space>
-                  <Button icon={<ReloadOutlined />} onClick={load} size="small">
+                  <Button icon={<ReloadOutlined />} onClick={() => refetch()} size="small">
                     {t('action.refresh','刷新')}
                   </Button>
                   {!editMode ? (
@@ -95,7 +83,7 @@ export const Profile: React.FC = () => {
           </Card>
         </Col>
         <Col xs={24} md={16}>
-          <Card className="profile-card" title={t('profile.basic','基本信息')} extra={!loading && data ? (
+          <Card className="profile-card" title={t('profile.basic','基本信息')} extra={!isLoading && data ? (
             !editMode ? <Button type="link" icon={<EditOutlined />} onClick={() => setEditMode(true)}>{t('action.edit','编辑')}</Button> :
             <Space>
               <Button onClick={() => { form.resetFields(); setEditMode(false); }}>
@@ -106,29 +94,29 @@ export const Profile: React.FC = () => {
               </Button>
             </Space>
           ) : undefined}>
-            {loading ? (
+            {isLoading ? (
               <Skeleton active paragraph={{ rows: 6 }} />
             ) : !data ? (
               <Empty />
             ) : !editMode ? (
               <Descriptions column={1} size="middle" labelStyle={{ width: 120 }}>
                 <Descriptions.Item label={t('field.username','用户名')}>
-                  {data?.username || data?.name || '-'}
+                  {(data as any)?.username || (data as any)?.name || '-'}
                 </Descriptions.Item>
                 <Descriptions.Item label={t('field.nickname','昵称')}>
-                  {data?.nickname || '-'}
+                  {(data as any)?.nickname || '-'}
                 </Descriptions.Item>
                 <Descriptions.Item label={t('field.email','邮箱')}>
-                  {data?.email || '-'}
+                  {(data as any)?.email || '-'}
                 </Descriptions.Item>
                 <Descriptions.Item label={t('field.phone','手机号')}>
-                  {data?.phone || '-'}
+                  {(data as any)?.phone || '-'}
                 </Descriptions.Item>
                 <Descriptions.Item label={t('field.roles','角色')}>
                   {roles.length > 0 ? roles.map(r => (<Tag key={r} color="blue">{r}</Tag>)) : '-'}
                 </Descriptions.Item>
                 <Descriptions.Item label={t('field.joinedAt','加入时间')}>
-                  {data?.joinedAt || data?.createTime || '-'}
+                  {(data as any)?.joinedAt || (data as any)?.createTime || '-'}
                 </Descriptions.Item>
               </Descriptions>
             ) : (

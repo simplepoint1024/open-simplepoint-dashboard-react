@@ -2,8 +2,9 @@ import type {ItemType} from "antd/es/menu/interface";
 import {Avatar, Button, Dropdown, MenuProps, Tooltip, Popconfirm, message} from "antd";
 import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined, DesktopOutlined, DeleteOutlined, FullscreenOutlined, FullscreenExitOutlined} from "@ant-design/icons";
 import React, {useEffect, useRef, useState} from 'react';
-import {get, post} from "@simplepoint/libs-shared/types/request.ts";
+import {post} from "@simplepoint/libs-shared/types/request.ts";
 import { useI18n } from '@/i18n';
+import { useUserInfo } from '@/services/user';
 
 // 为主题切换提供短暂的全局颜色过渡动画
 function startThemeTransition(duration = 240) {
@@ -64,29 +65,7 @@ function getGreetingKeyByTime() {
 // 从 /userinfo 获取头像与昵称（带会话缓存与卸载保护）
 const HeaderUser: React.FC = () => {
   const { t } = useI18n();
-  const [info, setInfo] = useState<any>(() => {
-    try {
-      const raw = sessionStorage.getItem('sp.userinfo');
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
-  });
-  const mountedRef = useRef(true);
-  useEffect(() => {
-    mountedRef.current = true;
-    get<any>('/userinfo')
-      .then((data) => {
-        if (!mountedRef.current) return;
-        setInfo((prev: any) => {
-          try { sessionStorage.setItem('sp.userinfo', JSON.stringify(data)); } catch {}
-          return data || prev;
-        });
-      })
-      .catch(() => {/* 保留旧数据，不提示 */});
-    return () => { mountedRef.current = false; };
-  }, []);
-
+  const { data: info } = useUserInfo();
   const nickname: string = info?.nickname || info?.name || t('user.defaultName', '用户');
   const picture: string | undefined = info?.picture || undefined;
   const isMock = typeof window !== 'undefined' && /localhost|127\.0\.0\.1/.test(window.location.hostname);
