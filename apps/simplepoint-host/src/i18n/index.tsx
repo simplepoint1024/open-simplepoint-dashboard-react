@@ -21,6 +21,15 @@ const isForceRemount = () => {
   return FORCE_REMOUNT_ON_LOCALE_CHANGE;
 };
 
+// 统一异步事件派发，避免在渲染期间触发其他组件更新
+const emitAsync = (type: string, detail?: any) => {
+  try {
+    window.setTimeout(() => {
+      try { window.dispatchEvent(new CustomEvent(type, { detail })); } catch {}
+    }, 0);
+  } catch {}
+};
+
 const isRTL = (lng: string) => /^(ar|he|fa|ur)(-|$)/i.test(lng);
 
 const mapDayjsLocale = (lng: string) => {
@@ -155,7 +164,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     const schedule = typeof queueMicrotask === 'function' ? queueMicrotask : (fn: () => void) => Promise.resolve().then(fn);
     schedule(() => {
       setLocaleState(norm);
-      try { window.dispatchEvent(new CustomEvent('sp-set-locale', { detail: norm })); } catch {}
+      emitAsync('sp-set-locale', norm);
     });
   }, []);
 
@@ -193,7 +202,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
         if (mySeq !== loadSeqRef.current) return;
         setMessages(cached);
         (window as any).spI18n = { t: mkT(cached), locale: lang, setLocale, messages: cached, ensure };
-        try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lang } })); } catch {}
+        emitAsync('sp-i18n-updated', { locale: lang });
         return;
       }
     }
@@ -204,7 +213,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
       if (mySeq !== loadSeqRef.current) return;
       setMessages(stored);
       (window as any).spI18n = { t: mkT(stored), locale: lang, setLocale, messages: stored, ensure };
-      try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lang } })); } catch {}
+      emitAsync('sp-i18n-updated', { locale: lang });
       return;
     }
 
@@ -217,7 +226,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
       setMessages(data);
       writeStoredMessages(lang, data);
       (window as any).spI18n = { t: mkT(data), locale: lang, setLocale, messages: data, ensure };
-      try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lang } })); } catch {}
+      emitAsync('sp-i18n-updated', { locale: lang });
       // 切换语言后重置已加载命名空间记录
       loadedNsRef.current.clear();
     } finally {
@@ -249,7 +258,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
               cache.current.set(lng, merged);
               writeStoredMessages(lng, merged);
               (window as any).spI18n = { t: mkT(merged), locale: lng, setLocale, messages: merged, ensure };
-              try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
+              emitAsync('sp-i18n-updated', { locale: lng });
               return merged;
             });
             list.forEach(k => loadedNsRef.current.add(k));
@@ -287,7 +296,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
       try {
         const fromHash = typeof window !== 'undefined' && window.location.hash ? window.location.hash.replace(/^#/, '') : undefined;
         const currentPath = fromHash || (typeof window !== 'undefined' ? window.location.pathname : '/') || '/';
-        window.dispatchEvent(new CustomEvent('sp-refresh-route', { detail: { path: currentPath } }));
+        emitAsync('sp-refresh-route', { path: currentPath });
       } catch {}
     })();
     return () => { cancelled = true; ensurePendingNsRef.current.clear(); if (ensureTimerRef.current) { window.clearTimeout(ensureTimerRef.current); ensureTimerRef.current = null; } };
