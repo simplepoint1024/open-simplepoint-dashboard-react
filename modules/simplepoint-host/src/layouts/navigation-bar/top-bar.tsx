@@ -1,6 +1,6 @@
 import type {ItemType} from "antd/es/menu/interface";
-import {Avatar, Button, Dropdown, MenuProps, Tooltip} from "antd";
-import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined, DesktopOutlined} from "@ant-design/icons";
+import {Avatar, Button, Dropdown, MenuProps, Tooltip, Popconfirm, message} from "antd";
+import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined, DesktopOutlined, DeleteOutlined, FullscreenOutlined, FullscreenExitOutlined} from "@ant-design/icons";
 import React, {useEffect, useRef, useState} from 'react';
 import {get, post} from "@simplepoint/libs-shared/types/request.ts";
 import { useI18n } from '@/i18n';
@@ -125,6 +125,39 @@ const SizeButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' })
 };
 
 /**
+ * 清理全局缓存按钮
+ */
+const ClearCacheButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' }) => {
+  const { t } = useI18n();
+  const [loading, setLoading] = useState(false);
+
+  const onConfirm = async () => {
+    setLoading(true);
+    try {
+      await clearAllCaches();
+      message.success(t('tools.clearDone','已清理全局缓存'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Popconfirm
+      placement="bottomRight"
+      title={t('tools.clearCache','清理缓存')}
+      description={t('tools.clearCacheConfirm','确认清理全局缓存？')}
+      okText={t('ok','确定')}
+      cancelText={t('cancel','取消')}
+      onConfirm={onConfirm}
+      disabled={loading}
+    >
+      <Button type={type} size="small" icon={<DeleteOutlined/>} loading={loading}
+              style={{width:28,height:28,padding:0,borderRadius:6,margin: type==='text'?0:'0 4px'}}/>
+    </Popconfirm>
+  );
+};
+
+/**
  * 主题模式切换（亮/暗/跟随系统）
  */
 const ThemeButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
@@ -154,22 +187,109 @@ const ThemeButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
 };
 
 /**
+ * 全屏切换按钮
+ */
+const FullscreenButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' }) => {
+  const { t } = useI18n();
+  const [isFull, setIsFull] = useState<boolean>(() => {
+    try { return !!document.fullscreenElement; } catch { return false; }
+  });
+
+  useEffect(() => {
+    const onChange = () => {
+      try { setIsFull(!!document.fullscreenElement); } catch {}
+    };
+    document.addEventListener('fullscreenchange', onChange);
+    return () => document.removeEventListener('fullscreenchange', onChange);
+  }, []);
+
+  const toggle = async () => {
+    try {
+      if (!isFull) {
+        await document.documentElement.requestFullscreen?.();
+      } else {
+        await document.exitFullscreen?.();
+      }
+    } catch (e: any) {
+      message.warning(t('tools.fullscreen.notAllowed','当前环境不支持全屏或被浏览器拦截'));
+    }
+  };
+
+  const tip = isFull ? t('tools.fullscreen.exit','退出全屏') : t('tools.fullscreen.enter','进入全屏');
+  const Icon = isFull ? FullscreenExitOutlined : FullscreenOutlined;
+  return (
+    <Tooltip title={tip}>
+      <Button type={type} size="small" icon={<Icon/>} onClick={toggle}
+              style={{width:28,height:28,padding:0,borderRadius:6,margin: type==='text'?0:'0 4px'}}/>
+    </Tooltip>
+  );
+};
+
+/**
  * 顶部导航右侧：语言切换（动态从后端获取语言列表）
  */
 const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
   const { languages, locale, setLocale, t } = useI18n();
-  const onSelect = (lng: string) => { setLocale(lng); };
+  const [open, setOpen] = useState(false);
+  const [switching, setSwitching] = useState(false);
+  const closingRef = useRef(false);
+  const hasLanguages = (languages || []).length > 0;
+  const onSelect = (lng: string) => {
+    if (!lng || lng === locale) { setOpen(false); return; }
+    setSwitching(true);
+    // 标记正在关闭，忽略随后 Dropdown 可能触发的一次 open=true 事件
+    closingRef.current = true;
+    setOpen(false);
+     // 监听一次 i18n 更新事件，切换完成后关闭 loading
+     const handler = () => {
+       try {
+         const g: any = (window as any)?.spI18n;
+         if (g?.locale === lng) {
+           setSwitching(false);
+           window.removeEventListener('sp-i18n-updated', handler as any);
+         }
+       } catch {}
+     };
+     try { window.addEventListener('sp-i18n-updated', handler as any, { once: true } as any); } catch { /* older browsers */ }
+     // 兜底超时，避免极端情况下 loading 不消失
+     const tm = window.setTimeout(() => { setSwitching(false); try { window.removeEventListener('sp-i18n-updated', handler as any); } catch {} }, 3000);
+     // 当事件到了也清除兜底
+     const clearFallback = () => { try { window.clearTimeout(tm); } catch {} };
+     try { window.addEventListener('sp-i18n-updated', clearFallback as any, { once: true } as any); } catch {}
+     setLocale(lng);
+    // 下一帧允许下次打开
+    window.setTimeout(() => { closingRef.current = false; }, 120);
+   };
   const menu: MenuProps = {
     items: (languages || []).map(l => ({ key: l.code, label: l.name })),
-    onClick: ({ key }) => onSelect(String(key)),
+    onClick: (info: any) => {
+       try { info?.domEvent?.stopPropagation(); info?.domEvent?.preventDefault(); } catch {}
+       onSelect(String(info?.key));
+      // 这里不再重复 setOpen(false)，交给 onSelect 控制 + closingRef
+     },
   };
   const current = languages.find(l => l.code === locale);
   const tip = `${t('label.language','语言')}：${current ? `${current.name}(${current.code})` : locale}`;
+  // 语言变化时强制关闭下拉并结束 loading（多一层保险）
+  useEffect(() => { setOpen(false); setSwitching(false); }, [locale]);
   return (
     <Tooltip title={tip}>
-      <Dropdown menu={menu} trigger={["click"]} placement="bottomRight">
-        <Button type={compact ? 'text' : 'default'} size="small" icon={<GlobalOutlined/>}
-                style={{width: 28, height: 28, padding: 0, borderRadius: 6, margin: compact ? 0 : '0 4px'}}/>
+      <Dropdown
+        menu={menu}
+        trigger={["click"]}
+        placement="bottomRight"
+        destroyPopupOnHide
+        open={open}
+        onOpenChange={(next) => {
+          // 如果刚刚因选择而关闭，忽略一帧内的反向打开
+          if (next && closingRef.current) return;
+          setOpen(next);
+        }}
+      >
+         <Button type={compact ? 'text' : 'default'} size="small" icon={<GlobalOutlined/>}
+                 disabled={!hasLanguages}
+                 loading={switching}
+                 style={{width: 28, height: 28, padding: 0, borderRadius: 6, margin: compact ? 0 : '0 4px'}}/>
       </Dropdown>
     </Tooltip>
   );
@@ -193,6 +313,8 @@ export const toolsSwitcherGroupItem = (): ItemType => {
         <LanguageButton compact/>
         <ThemeButton compact/>
         <SizeButton type='text'/>
+        <FullscreenButton type='text'/>
+        <ClearCacheButton type='text'/>
       </div>
     )
   };
@@ -251,25 +373,45 @@ export const avatarConfig = (navigate: (path: string) => void): MenuProps => {
 }
 
 async function clearAllCaches() {
-  try { localStorage.clear(); } catch {}
-  try { sessionStorage.clear(); } catch {}
+  // 1) storage（同步且可能抖动，但体量较小）
+  try { if (typeof localStorage !== 'undefined') localStorage.clear(); } catch {}
+  try { if (typeof sessionStorage !== 'undefined') sessionStorage.clear(); } catch {}
+
+  const tasks: Promise<any>[] = [];
+
+  // 2) caches 并行删除
   try {
-    if (typeof caches !== 'undefined') {
+    if (typeof caches !== 'undefined' && caches?.keys) {
       const keys = await caches.keys();
-      await Promise.all(keys.map(k => caches.delete(k)));
+      tasks.push(Promise.allSettled(keys.map((k) => caches.delete(k))));
     }
   } catch {}
+
+  // 3) service worker 注销
   try {
-    if ('serviceWorker' in navigator && navigator.serviceWorker.getRegistrations) {
+    if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator && navigator.serviceWorker.getRegistrations) {
       const regs = await navigator.serviceWorker.getRegistrations();
-      await Promise.all(regs.map(r => r.unregister()));
+      tasks.push(Promise.allSettled(regs.map((r) => r.unregister())));
     }
   } catch {}
+
+  // 4) IndexedDB 数据库删除（仅在支持 databases() 的浏览器执行）
   try {
-    const idb: any = indexedDB as any;
+    const idb: any = typeof indexedDB !== 'undefined' ? (indexedDB as any) : undefined;
     if (idb && typeof idb.databases === 'function') {
       const dbs = await idb.databases();
-      await Promise.all((dbs || []).map((d: any) => d?.name ? new Promise<void>((resolve) => { const req = indexedDB.deleteDatabase(d.name); req.onsuccess = () => resolve(); req.onerror = () => resolve(); req.onblocked = () => resolve(); }) : Promise.resolve()));
+      const del = (name: string) => new Promise<void>((resolve) => {
+        try {
+          const req = indexedDB.deleteDatabase(name);
+          req.onsuccess = () => resolve();
+          req.onerror = () => resolve();
+          req.onblocked = () => resolve();
+        } catch { resolve(); }
+      });
+      tasks.push(Promise.allSettled((dbs || []).map((d: any) => (d?.name ? del(d.name) : Promise.resolve()))));
     }
   } catch {}
+
+  // 5) 等待所有清理完成（单个失败不影响整体）
+  await Promise.allSettled(tasks);
 }

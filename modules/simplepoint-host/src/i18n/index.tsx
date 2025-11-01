@@ -124,6 +124,13 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
   const missingKeysRef = useRef<Set<string>>(new Set());
   const missingDebounceRef = useRef<number | null>(null);
 
+  // 批量 ensure 队列与状态
+  const loadedNsRef = useRef<Set<string>>(new Set());
+  const ensurePendingNsRef = useRef<Set<string>>(new Set());
+  const ensureTimerRef = useRef<number | null>(null);
+  const ensureWaitersRef = useRef<Array<() => void>>([]);
+  const ensureInflightRef = useRef<Promise<void> | null>(null);
+
   // 同一时刻仅处理最后一次加载结果
   const loadSeqRef = useRef(0);
 
@@ -205,6 +212,8 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
       writeStoredMessages(lang, data);
       (window as any).spI18n = { t: mkT(data), locale: lang, setLocale, messages: data, ensure };
       try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lang } })); } catch {}
+      // 切换语言后重置已加载命名空间记录
+      loadedNsRef.current.clear();
     } finally {
       setLoading(false);
     }
@@ -212,19 +221,54 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
 
   // 按命名空间增量加载与合并（合并后写回缓存并广播）
   const ensure = useCallback(async (ns: string[]) => {
-    const lng = locale;
     if (!Array.isArray(ns) || ns.length === 0) return;
-    const data = await fetchMessages(lng, ns).catch(() => ({}));
-    if (data && typeof data === 'object' && Object.keys(data).length > 0) {
-      setMessages(prev => {
-        const merged = { ...prev, ...data } as Messages;
-        cache.current.set(lng, merged);
-        writeStoredMessages(lng, merged);
-        (window as any).spI18n = { t: mkT(merged), locale: lng, setLocale, messages: merged, ensure };
-        try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
-        return merged;
-      });
-    }
+    // 加入待加载队列（去重 + 过滤已加载）
+    const already = loadedNsRef.current;
+    ns.forEach(k => { if (k && !already.has(k)) ensurePendingNsRef.current.add(k); });
+
+    // 返回一个在本批 flush 完成后 resolve 的 Promise（调用方多为 fire-and-forget）
+    const p = new Promise<void>(resolve => { ensureWaitersRef.current.push(resolve); });
+
+    const flush = async () => {
+      if (ensureInflightRef.current) return; // 有进行中的请求，等待下一轮
+      const list = Array.from(ensurePendingNsRef.current.values());
+      if (list.length === 0) return;
+      ensurePendingNsRef.current.clear();
+      const lng = locale;
+      ensureInflightRef.current = fetchMessages(lng, list)
+        .then((data) => {
+          if (data && typeof data === 'object' && Object.keys(data).length > 0) {
+            setMessages(prev => {
+              const merged = { ...prev, ...data } as Messages;
+              cache.current.set(lng, merged);
+              writeStoredMessages(lng, merged);
+              (window as any).spI18n = { t: mkT(merged), locale: lng, setLocale, messages: merged, ensure };
+              try { window.dispatchEvent(new CustomEvent('sp-i18n-updated', { detail: { locale: lng } })); } catch {}
+              return merged;
+            });
+            list.forEach(k => loadedNsRef.current.add(k));
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          ensureInflightRef.current = null;
+          // 本轮所有等待者统一 resolve
+          const waiters = ensureWaitersRef.current.splice(0, ensureWaitersRef.current.length);
+          waiters.forEach(fn => { try { fn(); } catch {} });
+          // 若在请求过程中又加入了新 ns，短延迟继续下一轮
+          if (ensurePendingNsRef.current.size > 0) {
+            if (ensureTimerRef.current) window.clearTimeout(ensureTimerRef.current);
+            ensureTimerRef.current = window.setTimeout(() => { ensureTimerRef.current = null; void flush(); }, 30);
+          }
+        });
+      await ensureInflightRef.current;
+    };
+
+    // 轻微防抖，合并相近时刻的多次调用
+    if (ensureTimerRef.current) window.clearTimeout(ensureTimerRef.current);
+    ensureTimerRef.current = window.setTimeout(() => { ensureTimerRef.current = null; void flush(); }, 30);
+
+    return p;
   }, [locale, setLocale]);
 
   // 切换语言后：加载完成再决定是否强制 remount
@@ -240,7 +284,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
         window.dispatchEvent(new CustomEvent('sp-refresh-route', { detail: { path: currentPath } }));
       } catch {}
     })();
-    return () => { cancelled = true; };
+    return () => { cancelled = true; ensurePendingNsRef.current.clear(); if (ensureTimerRef.current) { window.clearTimeout(ensureTimerRef.current); ensureTimerRef.current = null; } };
   }, [locale, loadMessages]);
 
   // 维护 html 的 lang 与 dir 属性 + 同步 dayjs locale
