@@ -24,6 +24,7 @@ export const apis = [
       'tooltip.size': '切换全局尺寸(小/中/大)',
       'group.account': '账户',
       'group.app': '应用',
+      'menu.dashboard': '仪表盘',
       'menu.profile': '个人资料',
       'menu.billing': '账单信息',
       'menu.settings': '系统设置',
@@ -187,6 +188,7 @@ export const apis = [
       'tooltip.size': 'Toggle global size (S/M/L)',
       'group.account': 'Account',
       'group.app': 'Application',
+      'menu.dashboard': 'Dashboard',
       'menu.profile': 'Profile',
       'menu.billing': 'Billing',
       'menu.settings': 'Settings',
@@ -243,7 +245,7 @@ export const apis = [
       'dashboard.quick.clients': 'App Management',
       'dashboard.quick.services': 'Microservices',
       'dashboard.quick.i18n': 'Internationalization',
-      // Common/actions
+      // 通用/操作
       'action.refresh': 'Refresh',
       'action.edit': 'Edit',
       'action.save': 'Save',
@@ -251,7 +253,7 @@ export const apis = [
       'action.reset': 'Reset to default',
       'action.resetLang': 'Reset to default language',
       'tooltip.theme': 'Toggle theme (Light/Dark)',
-      // Profile
+      // 个人资料 Profile
       'profile.basic': 'Basic Info',
       'profile.saveSuccess': 'Saved successfully',
       'profile.noEmail': 'No email bound',
@@ -292,7 +294,7 @@ export const apis = [
       'settings.resetLangApplied': 'Default language applied: Chinese (Simplified)',
       'settings.sampleItem': 'Sample Item',
       'settings.sampleDesc': 'This is a sample description',
-      // Form commons
+      // 表单常用
       'form.submit': 'Submit',
       'form.required': 'This field is required',
       'form.minLength': 'Minimum length is {limit} characters',
@@ -300,7 +302,7 @@ export const apis = [
       'form.invalid': 'Invalid input',
       'form.jsonInvalid': 'Invalid JSON format',
       'form.passwordMismatch': 'Passwords do not match',
-      // Table/SimpleTable
+      // 表格 Table/SimpleTable
       'table.confirmDeleteTitle': 'Confirm Deletion',
       'table.confirmDeleteContent': 'Are you sure to delete {count} selected item(s)?',
       'table.deleteSuccess': 'Deleted successfully',
@@ -350,6 +352,7 @@ export const apis = [
       'tooltip.size': 'グローバルサイズを切り替え（小/中/大）',
       'group.account': 'アカウント',
       'group.app': 'アプリ',
+      'menu.dashboard': 'ダッシュボード',
       'menu.profile': 'プロフィール',
       'menu.billing': '請求情報',
       'menu.settings': '設定',
