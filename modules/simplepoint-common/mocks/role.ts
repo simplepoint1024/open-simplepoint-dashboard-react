@@ -13,7 +13,7 @@ export const apis = [
             "argumentMaxSize": 0,
             "sort": 0,
             "type": "primary",
-            "title": "添加",
+            "title": "i18n:table.button.add",
             "danger": false,
             "argumentMinSize": 0,
             "key": "add"
@@ -26,7 +26,7 @@ export const apis = [
             "argumentMaxSize": 1,
             "sort": 1,
             "type": "primary",
-            "title": "编辑",
+            "title": "i18n:table.button.edit",
             "danger": false,
             "argumentMinSize": 1,
             "key": "edit"
@@ -39,7 +39,7 @@ export const apis = [
             "argumentMaxSize": 10,
             "sort": 2,
             "type": "primary",
-            "title": "删除",
+            "title": "i18n:table.button.delete",
             "danger": true,
             "argumentMinSize": 1,
             "key": "delete"
@@ -54,8 +54,8 @@ export const apis = [
                 "string",
                 "null"
               ],
-              "title": "角色权限",
-              "description": "定义角色的权限标识",
+              "schema": "i18n:roles.field.authority",
+              "description": "i18n:roles.field.authority.desc",
               "x-ui":{
                 "x-list-visible":"true"
               }
@@ -65,16 +65,16 @@ export const apis = [
                 "string",
                 "null"
               ],
-              "title": "角色描述",
-              "description": "对角色的简要描述",
+              "title": "i18n:roles.field.description",
+              "description": "i18n:roles.field.description.desc",
               "x-ui":{
                 "x-list-visible":"true"
               }
             },
             "priority": {
               "type": "integer",
-              "title": "角色优先级",
-              "description": "定义角色的优先级，数值越大优先级越高",
+              "title": "i18n:roles.field.priority",
+              "description": "i18n:roles.field.priority.desc",
               "x-ui":{
                 "x-list-visible":"true"
               }
@@ -84,8 +84,8 @@ export const apis = [
                 "string",
                 "null"
               ],
-              "title": "角色名称",
-              "description": "定义角色的名称",
+              "title": "i18n:roles.field.roleName",
+              "description": "i18n:roles.field.roleName.desc",
               "x-ui":{
                 "x-list-visible":"true"
               }

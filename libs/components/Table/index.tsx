@@ -7,6 +7,7 @@ import {RJSFSchema} from '@rjsf/utils';
 import {Pageable} from '@simplepoint/libs-shared/types/request';
 import {ButtonProps} from "antd/es/button/button";
 import {createIcon} from '@simplepoint/libs-shared/types/icon';
+import { useI18n } from '@simplepoint/libs-shared/hooks/useI18n';
 
 export type TableButtonProps = ButtonProps & {
   key: string;
@@ -128,23 +129,24 @@ const computeVisibleKeys = (properties: Record<string, any>): string[] => {
 };
 
 const App = <T extends object = any>(props: TableProps<T>) => {
+  const { t } = useI18n();
   // 固定中文过滤器选项
   const localizedOptions = useMemo(() => ([
-    {value: 'equals', label: '精确'},
-    {value: 'not:equals', label: '精确取反'},
-    {value: 'like', label: '模糊'},
-    {value: 'not:like', label: '模糊取反'},
-    {value: 'in', label: '集合包含'},
-    {value: 'not:in', label: '集合不包含'},
-    {value: 'between', label: '区间'},
-    {value: 'not:between', label: '区间取反'},
-    {value: 'than:greater', label: '大于'},
-    {value: 'than:less', label: '小于'},
-    {value: 'than:equal:greater', label: '大于等于'},
-    {value: 'than:equal:less', label: '小于等于'},
-    {value: 'is:null', label: '空'},
-    {value: 'is:not:null', label: '非空'},
-  ]), []);
+    {value: 'equals', label: t('table.filter.equals','精确')},
+    {value: 'not:equals', label: t('table.filter.notEquals','精确取反')},
+    {value: 'like', label: t('table.filter.like','模糊')},
+    {value: 'not:like', label: t('table.filter.notLike','模糊取反')},
+    {value: 'in', label: t('table.filter.in','集合包含')},
+    {value: 'not:in', label: t('table.filter.notIn','集合不包含')},
+    {value: 'between', label: t('table.filter.between','区间')},
+    {value: 'not:between', label: t('table.filter.notBetween','区间取反')},
+    {value: 'than:greater', label: t('table.filter.greater','大于')},
+    {value: 'than:less', label: t('table.filter.less','小于')},
+    {value: 'than:equal:greater', label: t('table.filter.greaterOrEqual','大于等于')},
+    {value: 'than:equal:less', label: t('table.filter.lessOrEqual','小于等于')},
+    {value: 'is:null', label: t('table.filter.null','空')},
+    {value: 'is:not:null', label: t('table.filter.notNull','非空')},
+  ]), [t]);
 
   // 本地 filters 状态（受控/非受控兼容）
   const [filters, setFilters] = useState<Record<string, string>>(props.filters ?? {});
@@ -379,7 +381,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
         }}
         style={{marginBottom: 8}}
       >
-        全选
+        {t('table.selectAll','全选')}
       </Checkbox>
       <div>
         {visibleKeys.map((key) => {
@@ -401,7 +403,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
           <Button type="link" size="small" onClick={() => {
             try { if (storageKey) localStorage.removeItem(storageKey); } catch {}
             const next: Record<string, boolean> = {}; visibleKeys.forEach((k) => next[k] = true); setVisibleCols(next);
-          }}>重置列</Button>
+          }}>{t('table.resetColumns','重置列')}</Button>
         </div>
       ) : null}
     </div>
@@ -419,13 +421,14 @@ const App = <T extends object = any>(props: TableProps<T>) => {
 
     const getButtonText = (button: TableButtonProps) => {
       const anyBtn: any = button as any;
-      return anyBtn.text ?? anyBtn.title ?? button.key;
+      const raw = anyBtn.text ?? anyBtn.title ?? button.key;
+      return t(`table.button.${button.key}`, raw);
     };
 
     const getButtonTitleAttr = (button: TableButtonProps): string | undefined => {
       const anyBtn: any = button as any;
       const raw = anyBtn.title as any;
-      return typeof raw === 'string' ? raw : undefined;
+      return typeof raw === 'string' ? t(`table.button.${button.key}.title`, raw) : undefined;
     };
 
     return buttons.map((button) => {
