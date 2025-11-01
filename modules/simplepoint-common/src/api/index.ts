@@ -11,7 +11,7 @@ export const apis = {
   },
   'rbac-roles':{
     baseUrl: '/common/roles',
-    i18nNamespaces: ['table','oidc-clients'],
+    i18nNamespaces: ['table','roles'],
     name: 'roles',
   },
   'rbac-users':{
