@@ -1,7 +1,7 @@
 import '@/App.css';
 import '@simplepoint/libs-components/Simplepoint.css'
 import {ConfigProvider, Result, Spin, theme as antdTheme} from 'antd';
-import {HashRouter, Route, Routes, Navigate} from "react-router-dom";
+import {HashRouter, Route, Routes, Navigate, useLocation} from "react-router-dom";
 import NavigateBar from "@/layouts/navigation-bar";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import zhCN from 'antd/locale/zh_CN';
@@ -182,6 +182,20 @@ const App: React.FC = () => {
     </div>
   );
 
+  // 根据当前路由设置浏览器页签标题（放在 Router 内部）
+  const TitleSync: React.FC = () => {
+    const location = useLocation();
+    useEffect(() => {
+      const current = leafRoutes.find(n => n.path === location.pathname);
+      const keyOrText = (current?.title || current?.label || '') as string;
+      if (keyOrText) {
+        const localized = t(keyOrText, keyOrText);
+        if (localized) document.title = localized;
+      }
+    }, [location.pathname, leafRoutes, t]);
+    return null;
+  };
+
   return (
     <div className="content">
       <ConfigProvider theme={{
@@ -190,6 +204,7 @@ const App: React.FC = () => {
         components: {}
       }} componentSize={globalSize} locale={antdLocale}>
         <HashRouter>
+          <TitleSync/>
           <NavigateBar data={data}>
             <Routes>
               {/* 默认进入时重定向到 /dashboard */}
