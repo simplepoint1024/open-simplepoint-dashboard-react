@@ -88,15 +88,7 @@ importers:
         specifier: ^5.8.3
         version: 5.9.2
 
-  libs/components:
-    dependencies:
-      '@simplepoint/libs-shared':
-        specifier: workspace:*
-        version: link:../shared
-
-  libs/shared: {}
-
-  modules/simplepoint-common:
+  apps/simplepoint-common:
     dependencies:
       '@simplepoint/libs-components':
         specifier: workspace:*
@@ -105,7 +97,7 @@ importers:
         specifier: workspace:*
         version: link:../../libs/shared
 
-  modules/simplepoint-host:
+  apps/simplepoint-host:
     dependencies:
       '@simplepoint/libs-components':
         specifier: workspace:*
@@ -116,6 +108,14 @@ importers:
       dayjs:
         specifier: ^1.11.11
         version: 1.11.18
+
+  libs/components:
+    dependencies:
+      '@simplepoint/libs-shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  libs/shared: {}
 
 packages:
 
