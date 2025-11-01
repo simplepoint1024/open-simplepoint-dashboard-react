@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo, useState, useEffect} from 'react';
 import {useSchema} from '@simplepoint/libs-shared/hooks/useSchema';
 import {del, get, post, put, usePageable} from '@simplepoint/libs-shared/api/methods';
 import Table, {TableButtonProps} from '../Table';
@@ -6,6 +6,7 @@ import SForm from '../SForm';
 import {IChangeEvent} from '@rjsf/core';
 import {Alert, Drawer, message, Modal, Spin} from 'antd';
 import {createIcon} from '@simplepoint/libs-shared/types/icon';
+import { useI18n } from '@simplepoint/libs-shared/hooks/useI18n';
 
 /**
  * 一个通用的表格组件，支持增删改查功能
@@ -34,6 +35,14 @@ export interface SimpleTableProps<T> {
 
 const App = (props: SimpleTableProps<any>) => {
   const {data: schemaData, isLoading: schemaLoading, error: schemaError} = useSchema(props.baseUrl);
+  const { t, ensure } = useI18n();
+
+  // 初次挂载时按需加载表格相关的 i18n 命名空间
+  useEffect(() => {
+    const ns = Array.isArray(props.i18nNamespaces) ? props.i18nNamespaces : [];
+    const merged = Array.from(new Set(["table", ...ns]));
+    void ensure(merged);
+  }, [props.i18nNamespaces, ensure]);
 
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState<number>(10);
@@ -94,15 +103,15 @@ const App = (props: SimpleTableProps<any>) => {
 
   const handleDelete = (keys: React.Key[]) => {
     Modal.confirm({
-      title: '确认删除',
-      content: `确定要删除选中的 ${keys.length} 条数据吗？`,
+      title: t('table.confirmDeleteTitle', '确认删除'),
+      content: t('table.confirmDeleteContent', '确定要删除选中的 {count} 条数据吗？', { count: keys.length }),
       onOk: async () => {
         try {
           await del(props.baseUrl, keys as any);
-          message.success('删除成功');
+          message.success(t('table.deleteSuccess', '删除成功'));
           await refetchPage();
         } catch (e: any) {
-          message.error(`删除失败: ${e?.message || ''}`);
+          message.error(t('table.deleteFail', '删除失败: {msg}', { msg: e?.message || '' }));
         }
       },
     });
@@ -116,17 +125,17 @@ const App = (props: SimpleTableProps<any>) => {
       } else {
         if (action === 'edit') {
           await put(props.baseUrl, {...editingRecord, ...formData});
-          message.success('修改成功');
+          message.success(t('table.editSuccess', '修改成功'));
         } else {
           await post(props.baseUrl, formData);
-          message.success('新增成功');
+          message.success(t('table.addSuccess', '新增成功'));
         }
       }
       setDrawerOpen(false);
       setEditingRecord(null);
       await refetchPage();
     } catch (e: any) {
-      message.error(`操作失败: ${e?.message || ''}`);
+      message.error(t('table.actionFail', '操作失败: {msg}', { msg: e?.message || '' }));
     }
   };
 
@@ -191,7 +200,7 @@ const App = (props: SimpleTableProps<any>) => {
       >
         {loading && <Spin/>}
         {schemaError &&
-          <Alert type="error" message={'加载失败'} description={(schemaError as Error).message}/>}
+          <Alert type="error" message={t('table.loadFail', '加载失败')} description={(schemaError as Error).message} />}
         {schemaData && (
           <SForm
             schema={schemaData.schema}
@@ -205,4 +214,3 @@ const App = (props: SimpleTableProps<any>) => {
 };
 
 export default App;
-
