@@ -12,7 +12,7 @@ export const apis = [
   }),
 
   // 指定语言的消息键值对（支持可选命名空间 ns=profile,settings）
-  http.get('/i18n/messages', ({ request }) => {
+  http.get('/common/i18n/messages/mapping', ({ request }) => {
     const url = new URL(request.url);
     const locale = url.searchParams.get('locale') || 'zh-CN';
     const nsParam = url.searchParams.get('ns');

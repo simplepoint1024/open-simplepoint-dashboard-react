@@ -26,7 +26,7 @@ export async function fetchMessages(locale: string, ns?: string[]): Promise<Mess
   try {
     const params: any = { locale };
     if (Array.isArray(ns) && ns.length > 0) params.ns = ns.join(',');
-    const data = await get<Messages>('/i18n/messages', params);
+    const data = await get<Messages>('/common/i18n/messages/mapping', params);
     if (data && typeof data === 'object') return data;
   } catch (_) {}
   // 兜底：返回空，让调用方使用 key 或默认文案
