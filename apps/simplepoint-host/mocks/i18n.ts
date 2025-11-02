@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw';
 
 export const apis = [
   // 语言列表
-  http.get('/i18n/languages', () => {
+  http.get('/common/i18n/languages/mapping', () => {
     return HttpResponse.json([
       { code: 'zh-CN', name: '中文（简体）' },
       { code: 'en-US', name: 'English' },

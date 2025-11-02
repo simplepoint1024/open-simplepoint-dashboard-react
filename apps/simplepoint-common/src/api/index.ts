@@ -19,4 +19,34 @@ export const apis = {
     i18nNamespaces: ['table','users'],
     name: 'users'
   },
+  'i18n-countries': {
+    baseUrl: '/common/i18n/countries',
+    i18nNamespaces: ['table','countries'],
+    name: 'countries'
+  },
+  'i18n-languages': {
+    baseUrl: '/common/i18n/languages',
+    i18nNamespaces: ['table','languages'],
+    name: 'languages'
+  },
+  'i18n-namespaces': {
+    baseUrl: '/common/i18n/namespaces',
+    i18nNamespaces: ['table','namespaces'],
+    name: 'namespaces'
+  },
+  'i18n-regions': {
+    baseUrl: '/common/i18n/regions',
+    i18nNamespaces: ['table','regions'],
+    name: 'regions'
+  },
+  'i18n-messages': {
+    baseUrl: '/common/i18n/messages',
+    i18nNamespaces: ['table','messages'],
+    name: 'messages'
+  },
+  'i18n-timezones': {
+    baseUrl: '/common/i18n/timezones',
+    i18nNamespaces: ['table','timezones'],
+    name: 'timezones'
+  },
 }
