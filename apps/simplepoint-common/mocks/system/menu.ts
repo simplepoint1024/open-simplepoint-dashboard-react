@@ -3,7 +3,121 @@ import {http, HttpResponse} from 'msw';
 export const apis = [
   http.get('/common/menus/schema', () => {
     return HttpResponse.json(
-      {"schema":{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","properties":{"component":{"type":["string","null"],"title":"i18n:menus.title.component","description":"i18n:menus.description.component","minLength":5,"maxLength":100,"x-order":4,"x-ui":{"x-list-visible":"true"}},"danger":{"type":"boolean","title":"i18n:menus.title.danger","description":"i18n:menus.description.danger"},"disabled":{"type":"boolean","title":"i18n:menus.title.disabled","description":"i18n:menus.description.disabled","x-ui":{"x-list-visible":"true"}},"icon":{"type":["string","null"],"title":"i18n:menus.title.icon","description":"i18n:menus.description.icon","minLength":1,"maxLength":100,"x-order":1,"x-ui":{"x-list-visible":"true","widget":"IconPicker"}},"label":{"type":["string","null"],"title":"i18n:menus.title.label","description":"i18n:menus.description.label","minLength":1,"maxLength":50,"x-order":0,"x-ui":{"x-list-visible":"true"}},"path":{"type":["string","null"],"title":"i18n:menus.title.path","description":"i18n:menus.description.path","minLength":1,"maxLength":200,"x-order":3,"x-ui":{"x-list-visible":"true"}},"sort":{"type":"integer","title":"i18n:menus.title.sort","description":"i18n:menus.description.sort","x-order":1,"x-ui":{"x-list-visible":"true"}},"title":{"type":["string","null"],"title":"i18n:menus.title.title","description":"i18n:menus.description.title","minLength":1,"maxLength":100,"x-order":0,"x-ui":{"x-list-visible":"true"}},"type":{"type":["string","null"],"title":"i18n:menus.title.type","description":"i18n:menus.description.type","minLength":1,"maxLength":32,"x-order":2,"x-ui":{"x-list-visible":"true"}}}},"buttons":[{"path":"[default]","color":"danger","variant":"outlined","icon":"MinusCircleOutlined","argumentMaxSize":10,"sort":2,"type":"primary","title":"i18n:table.button.delete","danger":true,"argumentMinSize":1,"key":"delete"},{"path":"[default]","color":"orange","variant":"outlined","icon":"EditOutlined","argumentMaxSize":1,"sort":1,"type":"primary","title":"i18n:table.button.edit","danger":false,"argumentMinSize":1,"key":"edit"},{"path":"[default]","color":"blue","variant":"outlined","icon":"PlusCircleOutlined","argumentMaxSize":1,"sort":0,"type":"primary","title":"i18n:table.button.add","danger":false,"argumentMinSize":0,"key":"add"}]}
+      {
+        "schema": {
+          "$schema": "http://json-schema.org/draft-07/schema#", "type": "object", "properties": {
+            "component": {
+              "type": ["string", "null"],
+              "title": "i18n:menus.title.component",
+              "description": "i18n:menus.description.component",
+              "minLength": 5,
+              "maxLength": 100,
+              "x-order": 4,
+              "x-ui": {"x-list-visible": "true"}
+            },
+            "danger": {
+              "type": "boolean",
+              "title": "i18n:menus.title.danger",
+              "description": "i18n:menus.description.danger"
+            },
+            "disabled": {
+              "type": "boolean",
+              "title": "i18n:menus.title.disabled",
+              "description": "i18n:menus.description.disabled",
+              "x-ui": {"x-list-visible": "true"}
+            },
+            "icon": {
+              "type": ["string", "null"],
+              "title": "i18n:menus.title.icon",
+              "description": "i18n:menus.description.icon",
+              "minLength": 1,
+              "maxLength": 100,
+              "x-order": 1,
+              "x-ui": {"x-list-visible": "true", "widget": "IconPicker"}
+            },
+            "label": {
+              "type": ["string", "null"],
+              "title": "i18n:menus.title.label",
+              "description": "i18n:menus.description.label",
+              "minLength": 1,
+              "maxLength": 50,
+              "x-order": 0,
+              "x-ui": {"x-list-visible": "true"}
+            },
+            "path": {
+              "type": ["string", "null"],
+              "title": "i18n:menus.title.path",
+              "description": "i18n:menus.description.path",
+              "minLength": 1,
+              "maxLength": 200,
+              "x-order": 3,
+              "x-ui": {"x-list-visible": "true"}
+            },
+            "sort": {
+              "type": "integer",
+              "title": "i18n:menus.title.sort",
+              "description": "i18n:menus.description.sort",
+              "x-order": 1,
+              "x-ui": {"x-list-visible": "true"}
+            },
+            "title": {
+              "type": ["string", "null"],
+              "title": "i18n:menus.title.title",
+              "description": "i18n:menus.description.title",
+              "minLength": 1,
+              "maxLength": 100,
+              "x-order": 0,
+              "x-ui": {"x-list-visible": "true"}
+            },
+            "type": {
+              "type": ["string", "null"],
+              "title": "i18n:menus.title.type",
+              "description": "i18n:menus.description.type",
+              "minLength": 1,
+              "maxLength": 32,
+              "x-order": 2,
+              "x-ui": {"x-list-visible": "true"}
+            }
+          }
+        },
+        "buttons": [{
+          "path": "[default]",
+          "color": "danger",
+          "variant": "outlined",
+          "icon": "MinusCircleOutlined",
+          "argumentMaxSize": 10,
+          "sort": 2,
+          "type": "primary",
+          "title": "i18n:table.button.delete",
+          "danger": true,
+          "argumentMinSize": 1,
+          "key": "delete"
+        }, {
+          "path": "[default]",
+          "color": "orange",
+          "variant": "outlined",
+          "icon": "EditOutlined",
+          "argumentMaxSize": 1,
+          "sort": 1,
+          "type": "primary",
+          "title": "i18n:table.button.edit",
+          "danger": false,
+          "argumentMinSize": 1,
+          "key": "edit"
+        }, {
+          "path": "[default]",
+          "color": "blue",
+          "variant": "outlined",
+          "icon": "PlusCircleOutlined",
+          "argumentMaxSize": 1,
+          "sort": 0,
+          "type": "primary",
+          "title": "i18n:table.button.add",
+          "danger": false,
+          "argumentMinSize": 0,
+          "key": "add"
+        }]
+      }
     )
   }),
 
