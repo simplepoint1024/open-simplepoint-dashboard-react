@@ -19,6 +19,11 @@ export const apis = {
     i18nNamespaces: ['table','users'],
     name: 'users'
   },
+  'rbac-permissions':{
+    baseUrl: '/common/permissions',
+    i18nNamespaces: ['table','permissions'],
+    name: 'permissions'
+  },
   'i18n-countries': {
     baseUrl: '/common/i18n/countries',
     i18nNamespaces: ['table','countries'],

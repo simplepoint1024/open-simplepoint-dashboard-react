@@ -27,7 +27,8 @@ export const apis = [
             "title": "menu.dashboard",
             "icon": "DashboardOutlined",
             "path": "/dashboard",
-            "component": "common/dashboard",
+            "sort": 0,
+            "component": "common/Dashboard",
             "disabled": false,
             "children": []
           },
@@ -36,6 +37,7 @@ export const apis = [
             "title": "menu.system",
             "icon": "SettingOutlined",
             "path": "/system",
+            "sort": 1,
             "type": "item",
             "disabled": false,
             "children": [
@@ -44,8 +46,9 @@ export const apis = [
                 "title": "menu.system.user",
                 "icon": "UserOutlined",
                 "path": "/system/user",
+                "sort": 0,
                 "type": "item",
-                "component": "common/system/user",
+                "component": "common/system/User",
                 "disabled": false,
                 "children": []
               },
@@ -54,8 +57,9 @@ export const apis = [
                 "title": "menu.system.menu",
                 "icon": "MenuOutlined",
                 "path": "/system/menu",
+                "sort": 1,
                 "type": "item",
-                "component": "common/system/menu",
+                "component": "common/system/Menu",
                 "disabled": false,
                 "children": []
               },
@@ -64,58 +68,31 @@ export const apis = [
                 "title": "menu.system.role",
                 "icon": "UsergroupAddOutlined",
                 "path": "/system/role",
+                "sort": 2,
                 "type": "item",
-                "component": "common/system/role",
+                "component": "common/system/Role",
                 "disabled": false,
                 "children": []
               },
               {
-                "label": "应用管理",
-                "title": "menu.system.client",
-                "icon": "KeyOutlined",
-                "path": "/system/client",
+                "label": "权限管理",
+                "title": "menu.system.permission",
+                "icon": "SafetyCertificateOutlined",
+                "path": "/system/permission",
+                "sort": 3,
                 "type": "item",
-                "component": "common/system/client",
+                "component": "common/system/Permission",
                 "disabled": false,
                 "children": []
               },
               {
-                "label": "授权管理",
-                "title": "menu.system.auth",
-                "icon": "AppstoreOutlined",
-                "path": "/system/auth",
-                "type": "item",
-                "component": "common/system/auth",
-                "disabled": false,
-                "children": []
-              },
-              {
-                "label": "字段权限",
-                "title": "menu.system.field",
-                "icon": "TableOutlined",
-                "path": "/system/field",
-                "type": "item",
-                "component": "common/system/field",
-                "disabled": false,
-                "children": []
-              },
-              {
-                "label": "端点管理",
-                "title": "menu.system.endpoints",
+                "label": "客户端管理",
+                "title": "menu.system.oauthClient",
                 "icon": "ApiOutlined",
-                "path": "/system/endpoints",
+                "path": "/system/oauth-client",
+                "sort": 3,
                 "type": "item",
-                "component": "common/system/endpoint",
-                "disabled": false,
-                "children": []
-              },
-              {
-                "label": "数据权限",
-                "title": "menu.system.data",
-                "icon": "BarsOutlined",
-                "path": "/system/data",
-                "type": "item",
-                "component": "common/system/data",
+                "component": "common/system/OAuthClient",
                 "disabled": false,
                 "children": []
               }
@@ -127,6 +104,7 @@ export const apis = [
             "icon": "GlobalOutlined",
             "path": "/i18n",
             "type": "item",
+            "sort": 2,
             "disabled": false,
             "children": [
               {
@@ -134,7 +112,8 @@ export const apis = [
                 "title": "menu.i18n.countries",
                 "icon": "GlobalOutlined",
                 "path": "/i18n/countries",
-                "component": "common/i18n/countries",
+                "sort": 0,
+                "component": "common/i18n/Countries",
                 "type": "item",
                 "disabled": false,
                 "children": []
@@ -144,7 +123,8 @@ export const apis = [
                 "title": "menu.i18n.regions",
                 "icon": "CompassOutlined",
                 "path": "/i18n/regions",
-                "component": "common/i18n/region",
+                "sort": 1,
+                "component": "common/i18n/Region",
                 "type": "item",
                 "disabled": false,
                 "children": []
@@ -154,7 +134,8 @@ export const apis = [
                 "title": "menu.i18n.timezones",
                 "icon": "ClockCircleOutlined",
                 "path": "/i18n/timezones",
-                "component": "common/i18n/timezone",
+                "sort": 2,
+                "component": "common/i18n/Timezone",
                 "type": "item",
                 "disabled": false,
                 "children": []
@@ -163,7 +144,8 @@ export const apis = [
                 "title": "menu.i18n.languages",
                 "icon": "TranslationOutlined",
                 "path": "/i18n/languages",
-                "component": "common/i18n/language",
+                "sort": 3,
+                "component": "common/i18n/Language",
                 "type": "item",
                 "disabled": false,
                 "children": []
@@ -173,7 +155,8 @@ export const apis = [
                 "title": "menu.i18n.namespace",
                 "icon": "FolderOpenOutlined",
                 "path": "/i18n/namespace",
-                "component": "common/i18n/namespace",
+                "sort": 4,
+                "component": "common/i18n/Namespace",
                 "type": "item",
                 "disabled": false,
                 "children": []
@@ -183,7 +166,8 @@ export const apis = [
                 "title": "menu.i18n.message",
                 "icon": "CommentOutlined",
                 "path": "/i18n/message",
-                "component": "common/i18n/message",
+                "sort": 5,
+                "component": "common/i18n/Message",
                 "type": "item",
                 "disabled": false,
                 "children": []
