@@ -5,7 +5,7 @@ import {aboutMeItem, logoItem, toolsSwitcherGroupItem} from "@/layouts/navigatio
 import I18nText from '@/i18n/Text';
 
 /**
- * 基于拍平(parent)关系构建菜单（同级按 sort 升序）
+ * 基于拍平(parent)关系构建菜单（保持返回数据原始顺序）
  */
 const buildMenusFromFlat = (
   menus: Array<MenuInfo>,
@@ -13,8 +13,7 @@ const buildMenusFromFlat = (
   parent: string | undefined = undefined,
 ): MenuItemType[] => {
   const siblings = menus
-    .filter((m) => m.parent === parent)
-    .sort((a: any, b: any) => (a?.sort ?? 0) - (b?.sort ?? 0));
+    .filter((m) => m.parent === parent);
 
   return siblings.map((menu) => {
     const children = buildMenusFromFlat(menus, navigate, menu.uuid);
@@ -41,14 +40,13 @@ const buildMenusFromFlat = (
 };
 
 /**
- * 基于树结构(children)构建菜单（同级按 sort 升序）
+ * 基于树结构(children)构建菜单（保持返回数据原始顺序）
  */
 const buildMenusFromTree = (
   nodes: Array<MenuInfo>,
   navigate: (path: string) => void,
 ): MenuItemType[] => {
   return ([...(nodes || [])] as any[])
-    .sort((a: any, b: any) => (a?.sort ?? 0) - (b?.sort ?? 0))
     .map((menu: any) => {
       const rawChildren = menu.children as Array<MenuInfo> | undefined;
       const builtChildren = Array.isArray(rawChildren) && rawChildren.length > 0 ? buildMenusFromTree(rawChildren, navigate) : undefined;
