@@ -129,7 +129,16 @@ const computeVisibleKeys = (properties: Record<string, any>): string[] => {
 };
 
 const App = <T extends object = any>(props: TableProps<T>) => {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  // 辅助：运行时解析 i18n: 前缀
+  const isI18nKey = (v: any): v is string => typeof v === 'string' && v.startsWith('i18n:');
+  const tr = (v: any) => {
+    if (isI18nKey(v)) {
+      const key = v.slice(5);
+      return t(key, key);
+    }
+    return v;
+  };
   // 固定中文过滤器选项
   const localizedOptions = useMemo(() => ([
     {value: 'equals', label: t('table.filter.equals','精确')},
@@ -146,7 +155,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     {value: 'than:equal:less', label: t('table.filter.lessOrEqual','小于等于')},
     {value: 'is:null', label: t('table.filter.null','空')},
     {value: 'is:not:null', label: t('table.filter.notNull','非空')},
-  ]), [t]);
+  ]), [t, locale]);
 
   // 本地 filters 状态（受控/非受控兼容）
   const [filters, setFilters] = useState<Record<string, string>>(props.filters ?? {});
@@ -232,7 +241,8 @@ const App = <T extends object = any>(props: TableProps<T>) => {
       .filter(({key}) => (visibleCols[key] ?? visibleKeys.includes(key)))
       .map(({key, schemaDef}) => {
         const listTitle = readListProp(schemaDef, 'title');
-        const baseTitle = listTitle ?? (schemaDef as any)?.title ?? key;
+        const baseTitleRaw = listTitle ?? (schemaDef as any)?.title ?? key;
+        const baseTitle = tr(baseTitleRaw);
         const alignFromSchema = readListProp(schemaDef, 'align');
         const fixed = readListProp(schemaDef, 'fixed');
         const width = readListProp(schemaDef, 'width');
@@ -298,7 +308,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
 
         return column;
       });
-  }, [properties, visibleCols, visibleKeys, filters, localizedOptions, props.onFilterChange, props.refresh]);
+  }, [properties, visibleCols, visibleKeys, filters, localizedOptions, props.onFilterChange, props.refresh, locale]);
 
   const dataSource = props.pageable?.content ?? [];
 
@@ -387,8 +397,8 @@ const App = <T extends object = any>(props: TableProps<T>) => {
         {visibleKeys.map((key) => {
           const sd: any = (properties as any)[key] || {};
           const listTitle = readListProp(sd, 'title');
-          const baseTitle = listTitle ?? sd?.title ?? key;
-          const label = baseTitle ?? key;
+          const baseTitleRaw = listTitle ?? sd?.title ?? key;
+          const label = tr(baseTitleRaw) ?? key;
           return (
             <div key={key} style={{padding: '4px 0'}}>
               <Checkbox checked={visibleCols[key] ?? true} onChange={(e) => toggleCol(key, e.target.checked)}>
@@ -422,12 +432,20 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     const getButtonText = (button: TableButtonProps) => {
       const anyBtn: any = button as any;
       const raw = anyBtn.text ?? anyBtn.title ?? button.key;
+      if (typeof raw === 'string' && raw.startsWith('i18n:')) {
+        const key = raw.slice(5);
+        return t(key, key);
+      }
       return t(`table.button.${button.key}`, raw);
     };
 
     const getButtonTitleAttr = (button: TableButtonProps): string | undefined => {
       const anyBtn: any = button as any;
       const raw = anyBtn.title as any;
+      if (typeof raw === 'string' && raw.startsWith('i18n:')) {
+        const key = raw.slice(5);
+        return t(key, key);
+      }
       return typeof raw === 'string' ? t(`table.button.${button.key}.title`, raw) : undefined;
     };
 

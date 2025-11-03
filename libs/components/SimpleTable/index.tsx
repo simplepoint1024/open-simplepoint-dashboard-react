@@ -4,9 +4,12 @@ import {del, get, post, put, usePageable} from '@simplepoint/libs-shared/api/met
 import Table, {TableButtonProps} from '../Table';
 import SForm from '../SForm';
 import {IChangeEvent} from '@rjsf/core';
-import {Alert, Drawer, message, Modal, Spin} from 'antd';
+import {Alert, Drawer, message, Modal, Spin, Skeleton} from 'antd';
 import {createIcon} from '@simplepoint/libs-shared/types/icon';
 import { useI18n } from '@simplepoint/libs-shared/hooks/useI18n';
+
+// 缓存已加载过的 i18n 命名空间，避免重复 ensure 导致二次进入空白
+const nsLoadedCache = new Set<string>();
 
 /**
  * 一个通用的表格组件，支持增删改查功能
@@ -34,15 +37,32 @@ export interface SimpleTableProps<T> {
 }
 
 const App = (props: SimpleTableProps<any>) => {
-  const {data: schemaData, isLoading: schemaLoading, error: schemaError} = useSchema(props.baseUrl);
-  const { t, ensure } = useI18n();
+  const {data: schemaData, isLoading: schemaLoading, error: schemaError, refetch: refetchSchema} = useSchema(props.baseUrl);
+  const { t, ensure, locale } = useI18n();
 
-  // 初次挂载时按需加载表格相关的 i18n 命名空间
+  // 仅在本组件所需命名空间加载完成后再渲染，避免首屏 key 闪烁
+  const [i18nNsReady, setI18nNsReady] = useState(false);
+
   useEffect(() => {
     const ns = Array.isArray(props.i18nNamespaces) ? props.i18nNamespaces : [];
-    const merged = Array.from(new Set(["table", ...ns]));
-    void ensure(merged);
-  }, [props.i18nNamespaces, ensure]);
+    const merged = Array.from(new Set(["table", ...ns])).sort();
+    const cacheKey = `${locale}::${merged.join(',')}`;
+    if (nsLoadedCache.has(cacheKey)) {
+      setI18nNsReady(true);
+      return;
+    }
+    setI18nNsReady(false);
+    (async () => {
+      try {
+        await ensure(merged as string[]);
+        nsLoadedCache.add(cacheKey);
+        setI18nNsReady(true);
+        await refetchSchema?.();
+      } catch {
+        setI18nNsReady(true);
+      }
+    })();
+  }, [props.i18nNamespaces, ensure, refetchSchema, locale]);
 
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState<number>(10);
@@ -74,7 +94,7 @@ const App = (props: SimpleTableProps<any>) => {
     fetchPage
   );
 
-  const loading = schemaLoading || pageLoading;
+  const loading = !i18nNsReady || schemaLoading || pageLoading;
 
   const handleTableChange = (pagination: any) => {
     const nextPage = pagination?.current ?? 1;
@@ -162,26 +182,34 @@ const App = (props: SimpleTableProps<any>) => {
 
   return (
     <div>
-      <Table<any>
-        refresh={() => {
-          void refetchPage();
-        }}
-        pageable={
-          pageData ?? {
-            content: [],
-            page: {number: 0, size: 10, totalElements: 0, totalPages: 0},
+      {loading ? (
+        <div style={{padding: 16}}>
+          <Skeleton active paragraph={{ rows: 1 }} />
+          <div style={{height: 12}} />
+          <Skeleton active title={false} paragraph={{ rows: 8 }} />
+        </div>
+      ) : (
+        <Table<any>
+          refresh={() => {
+            void refetchPage();
+          }}
+          pageable={
+            pageData ?? {
+              content: [],
+              page: {number: 0, size: 10, totalElements: 0, totalPages: 0},
+            }
           }
-        }
-        schema={schemaData?.schema ?? []}
-        filters={filters}
-        onChange={handleTableChange}
-        onFilterChange={handleFilterChange}
-        onButtonEvents={{
-          ...defaultEvents,
-          ...(props.customButtonEvents ?? {}),
-        }}
-        buttons={mergedButtons}
-      />
+          schema={schemaData?.schema ?? []}
+          filters={filters}
+          onChange={handleTableChange}
+          onFilterChange={handleFilterChange}
+          onButtonEvents={{
+            ...defaultEvents,
+            ...(props.customButtonEvents ?? {}),
+          }}
+          buttons={mergedButtons}
+        />
+      )}
 
       <Drawer
         closable={false}
@@ -201,7 +229,7 @@ const App = (props: SimpleTableProps<any>) => {
         {loading && <Spin/>}
         {schemaError &&
           <Alert type="error" message={t('table.loadFail', '加载失败')} description={(schemaError as Error).message} />}
-        {schemaData && (
+        {(!loading && schemaData) && (
           <SForm
             schema={schemaData.schema}
             formData={editingRecord ?? (props.initialValues ?? {})}
