@@ -1,12 +1,9 @@
 import {http, HttpResponse} from 'msw';
-import {zhCN} from './local/zh-CN';
-import {enUS} from "./local/en-US";
-import {jaJP} from "./local/ja-JP";
 
 const languageMap: Record<string, any> = {
-  'zh-CN': zhCN,
-  'en-US': enUS,
-  'ja-JP': jaJP
+  'zh-CN': require("./local/zh-CN.json"),
+  'en-US': require("./local/en-US.json"),
+  'ja-JP': require("./local/ja-JP.json"),
 }
 
 export const apis = [

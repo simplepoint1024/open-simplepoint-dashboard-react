@@ -1,5 +1,5 @@
-export const enUS = {
-  'common': {
+{
+  "common": {
     "app.title": "Simple·Point Platform",
     "error.remoteLoadFail": "Failed to load remote resources. Please try again later.",
     "error.404": "Page not found",
@@ -69,7 +69,7 @@ export const enUS = {
     "ok": "OK",
     "cancel": "Cancel"
   },
-  'table': {
+  "table": {
     "table.confirmDeleteTitle": "Confirm Deletion",
     "table.confirmDeleteContent": "Are you sure you want to delete the selected {count} items?",
     "table.deleteSuccess": "Deleted successfully",
@@ -117,7 +117,11 @@ export const enUS = {
     "ph.phone": "Enter phone number",
     "user.defaultName": "User",
     "group.account": "Account",
-    "group.app": "Application"
+    "group.app": "Application",
+    "action.refresh": "Refresh",
+    "action.edit": "Edit",
+    "action.save": "Save",
+    "action.cancel": "Cancel"
   },
   "settings": {
     "settings.appearance": "Appearance Settings",
