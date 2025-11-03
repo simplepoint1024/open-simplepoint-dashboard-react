@@ -38,28 +38,22 @@ export interface SimpleTableProps<T> {
 
 const App = (props: SimpleTableProps<any>) => {
   const {data: schemaData, isLoading: schemaLoading, error: schemaError, refetch: refetchSchema} = useSchema(props.baseUrl);
-  const { t, ensure, locale } = useI18n();
+  const { t, ensure, locale, ready } = useI18n();
 
-  // 仅在本组件所需命名空间加载完成后再渲染，避免首屏 key 闪烁
-  const [i18nNsReady, setI18nNsReady] = useState(false);
-
+  // 仅确保需要的命名空间被加载，但不阻塞渲染，防止偶发卡在骨架屏
   useEffect(() => {
     const ns = Array.isArray(props.i18nNamespaces) ? props.i18nNamespaces : [];
     const merged = Array.from(new Set(["table", ...ns])).sort();
     const cacheKey = `${locale}::${merged.join(',')}`;
-    if (nsLoadedCache.has(cacheKey)) {
-      setI18nNsReady(true);
-      return;
-    }
-    setI18nNsReady(false);
+    // 已加载过则跳过
+    if (nsLoadedCache.has(cacheKey)) return;
     (async () => {
       try {
         await ensure(merged as string[]);
+      } finally {
         nsLoadedCache.add(cacheKey);
-        setI18nNsReady(true);
+        // 命名空间到位后，尝试刷新 schema 以获得正确的多语言标题
         await refetchSchema?.();
-      } catch {
-        setI18nNsReady(true);
       }
     })();
   }, [props.i18nNamespaces, ensure, refetchSchema, locale]);
@@ -94,7 +88,8 @@ const App = (props: SimpleTableProps<any>) => {
     fetchPage
   );
 
-  const loading = !i18nNsReady || schemaLoading || pageLoading;
+  // 仅在全局 i18n 基础消息就绪时渲染；命名空间异步到达时会自动更新文案
+  const loading = !ready || schemaLoading || pageLoading;
 
   const handleTableChange = (pagination: any) => {
     const nextPage = pagination?.current ?? 1;
@@ -226,7 +221,7 @@ const App = (props: SimpleTableProps<any>) => {
         onClose={() => setDrawerOpen(false)}
         destroyOnClose
       >
-        {loading && <Spin/>}
+        {(schemaLoading || pageLoading) && <Spin/>}
         {schemaError &&
           <Alert type="error" message={t('table.loadFail', '加载失败')} description={(schemaError as Error).message} />}
         {(!loading && schemaData) && (

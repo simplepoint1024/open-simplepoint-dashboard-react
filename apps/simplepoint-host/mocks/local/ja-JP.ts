@@ -272,17 +272,17 @@ export const jaJP = {
     'menus.description.type': 'メニューの種類（ディレクトリ／グループ／項目など）',
   },
   'roles': {
-    'roles.field.authority': '権限識別子',
-    'roles.field.authority.desc': 'システム認可検証に使用される一意の識別子',
+    'roles.title.authority': '権限識別子',
+    'roles.title.authority.desc': 'システム認可検証に使用される一意の識別子',
 
-    'roles.field.description': '説明',
-    'roles.field.description.desc': 'このロールの簡単な説明',
+    'roles.title.description': '説明',
+    'roles.title.description.desc': 'このロールの簡単な説明',
 
-    'roles.field.priority': '優先度',
-    'roles.field.priority.desc': '数値が大きいほど優先度が高い',
+    'roles.title.priority': '優先度',
+    'roles.title.priority.desc': '数値が大きいほど優先度が高い',
 
-    'roles.field.roleName': 'ロール名',
-    'roles.field.roleName.desc': '例：スーパー管理者',
+    'roles.title.roleName': 'ロール名',
+    'roles.title.roleName.desc': '例：スーパー管理者',
 
   },
   'permissions': {
