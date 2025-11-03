@@ -243,7 +243,8 @@
     "roles.title.priority": "Priority",
     "roles.description.priority": "Higher values indicate higher priority",
     "roles.title.roleName": "Role Name",
-    "roles.description.roleName": "e.g., Super Administrator"
+    "roles.description.roleName": "e.g., Super Administrator",
+    "table.button.permissionConfig": "Permission Configuration"
   },
   "permissions": {
     "permissions.title.authority": "Authority Identifier",

@@ -43,6 +43,19 @@ export const apis = [
             "danger": false,
             "argumentMinSize": 1,
             "key": "edit"
+          },
+          {
+            "path": "[default]",
+            "color": "orange",
+            "variant": "outlined",
+            "icon": "SafetyOutlined",
+            "argumentMaxSize": 1,
+            "sort": 2,
+            "type": "primary",
+            "title": "i18n:table.button.permissionConfig",
+            "danger": false,
+            "argumentMinSize": 1,
+            "key": "permissionConfig"
           }
         ],
         "schema": {

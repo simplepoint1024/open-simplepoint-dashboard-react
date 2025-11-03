@@ -241,7 +241,8 @@
     "roles.title.priority": "優先度",
     "roles.description.priority": "数値が大きいほど優先度が高い",
     "roles.title.roleName": "ロール名",
-    "roles.description.roleName": "例：スーパー管理者"
+    "roles.description.roleName": "例：スーパー管理者",
+    "table.button.permissionConfig": "権限設定"
   },
   "permissions": {
     "permissions.title.authority": "権限識別子",
