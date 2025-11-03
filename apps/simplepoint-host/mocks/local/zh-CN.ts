@@ -242,13 +242,13 @@ export const zhCN = {
   },
   'roles':{
     'roles.title.authority': '权限标识',
-    'roles.title.authority.desc': '用于系统授权校验的唯一标识',
+    'roles.description.authority': '用于系统授权校验的唯一标识',
     'roles.title.description': '描述',
-    'roles.title.description.desc': '该角色的简要说明',
+    'roles.description.description': '该角色的简要说明',
     'roles.title.priority': '优先级',
-    'roles.title.priority.desc': '数值越大优先级越高',
+    'roles.description.priority': '数值越大优先级越高',
     'roles.title.roleName': '角色名称',
-    'roles.title.roleName.desc': '例如：超级管理员',
+    'roles.description.roleName': '例如：超级管理员',
   },
   'permissions':{
     'permissions.title.authority': '权限标识',

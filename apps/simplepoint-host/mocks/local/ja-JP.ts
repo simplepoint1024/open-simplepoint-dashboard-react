@@ -273,16 +273,16 @@ export const jaJP = {
   },
   'roles': {
     'roles.title.authority': '権限識別子',
-    'roles.title.authority.desc': 'システム認可検証に使用される一意の識別子',
+    'roles.description.authority': 'システム認可検証に使用される一意の識別子',
 
     'roles.title.description': '説明',
-    'roles.title.description.desc': 'このロールの簡単な説明',
+    'roles.description.description': 'このロールの簡単な説明',
 
     'roles.title.priority': '優先度',
-    'roles.title.priority.desc': '数値が大きいほど優先度が高い',
+    'roles.description.priority': '数値が大きいほど優先度が高い',
 
     'roles.title.roleName': 'ロール名',
-    'roles.title.roleName.desc': '例：スーパー管理者',
+    'roles.description.roleName': '例：スーパー管理者',
 
   },
   'permissions': {
