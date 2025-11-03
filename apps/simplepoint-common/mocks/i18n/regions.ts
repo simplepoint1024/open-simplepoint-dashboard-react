@@ -10,44 +10,44 @@ export const apis = [
           "$schema": "http://json-schema.org/draft-07/schema#", "type": "object", "properties": {
             "code": {
               "type": ["string", "null"],
-              "title": "i18n:region.title.code",
-              "description": "i18n:region.description.code",
+              "title": "i18n:regions.title.code",
+              "description": "i18n:regions.description.code",
               "x-ui": {"x-list-visible": "true"}
             },
             "countryCode": {
               "type": ["string", "null"],
-              "title": "i18n:region.title.countryCode",
-              "description": "i18n:region.description.countryCode",
+              "title": "i18n:regions.title.countryCode",
+              "description": "i18n:regions.description.countryCode",
               "x-ui": {"x-list-visible": "true"}
             },
             "level": {
               "type": ["string", "null"],
-              "title": "i18n:region.title.level",
-              "description": "i18n:region.description.level",
+              "title": "i18n:regions.title.level",
+              "description": "i18n:regions.description.level",
               "x-ui": {"x-list-visible": "true"}
             },
             "nameEnglish": {
               "type": ["string", "null"],
-              "title": "i18n:region.title.nameEnglish",
-              "description": "i18n:region.description.nameEnglish",
+              "title": "i18n:regions.title.nameEnglish",
+              "description": "i18n:regions.description.nameEnglish",
               "x-ui": {"x-list-visible": "true"}
             },
             "nameNative": {
               "type": ["string", "null"],
-              "title": "i18n:region.title.nameNative",
-              "description": "i18n:region.description.nameNative",
+              "title": "i18n:regions.title.nameNative",
+              "description": "i18n:regions.description.nameNative",
               "x-ui": {"x-list-visible": "true"}
             },
             "parentId": {
               "type": ["string", "null"],
-              "title": "i18n:region.title.parentCode",
-              "description": "i18n:region.description.parentCode",
+              "title": "i18n:regions.title.parentCode",
+              "description": "i18n:regions.description.parentCode",
               "x-ui": {"x-list-visible": "true"}
             },
             "postalCode": {
               "type": ["string", "null"],
-              "title": "i18n:region.title.postalCode",
-              "description": "i18n:region.description.postalCode",
+              "title": "i18n:regions.title.postalCode",
+              "description": "i18n:regions.description.postalCode",
               "x-ui": {"x-list-visible": "true"}
             }
           }

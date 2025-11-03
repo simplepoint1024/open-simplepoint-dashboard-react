@@ -12,26 +12,26 @@ export const apis = [
           "properties": {
             "code": {
               "type": ["string", "null"],
-              "title": "i18n:namespace.title.code",
-              "description": "i18n:namespace.description.code",
+              "title": "i18n:namespaces.title.code",
+              "description": "i18n:namespaces.description.code",
               "x-ui": {"x-list-visible": "true"}
             },
             "description": {
               "type": ["string", "null"],
-              "title": "i18n:namespace.title.description",
-              "description": "i18n:namespace.description.description",
+              "title": "i18n:namespaces.title.description",
+              "description": "i18n:namespaces.description.description",
               "x-ui": {"x-list-visible": "true"}
             },
             "module": {
               "type": ["string", "null"],
-              "title": "i18n:namespace.title.module",
-              "description": "i18n:namespace.description.module",
+              "title": "i18n:namespaces.title.module",
+              "description": "i18n:namespaces.description.module",
               "x-ui": {"x-list-visible": "true"}
             },
             "name": {
               "type": ["string", "null"],
-              "title": "i18n:namespace.title.name",
-              "description": "i18n:namespace.description.name",
+              "title": "i18n:namespaces.title.name",
+              "description": "i18n:namespaces.description.name",
               "x-ui": {"x-list-visible": "true"}
             }
           }

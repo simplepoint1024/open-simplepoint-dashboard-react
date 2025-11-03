@@ -1,7 +1,13 @@
 import {http, HttpResponse} from 'msw';
 import {zhCN} from './local/zh-CN';
-import {enUS} from './local/en-US';
-import {jaJP} from './local/ja-JP';
+import {enUS} from "./local/en-US";
+import {jaJP} from "./local/ja-JP";
+
+const languageMap: Record<string, any> = {
+  'zh-CN': zhCN,
+  'en-US': enUS,
+  'ja-JP': jaJP
+}
 
 export const apis = [
   // 语言列表
@@ -19,31 +25,22 @@ export const apis = [
     const locale = url.searchParams.get('locale') || 'zh-CN';
     const nsParam = url.searchParams.get('ns');
     const nsList = nsParam ? nsParam.split(',').map(s => s.trim()).filter(Boolean) : undefined;
+    const pack = languageMap[locale] || {};
 
-    const dict = locale === 'en-US' ? enUS : locale === 'ja-JP' ? jaJP : zhCN;
+    let messages: Record<string, any> = {};
 
-    if (!nsList || nsList.length === 0) {
-      return HttpResponse.json(dict);
+    if (nsList && nsList.length) {
+      for (const ns of nsList) {
+        const data = pack[ns];
+        if (data && typeof data === 'object') {
+          Object.assign(messages, data);
+        }
+      }
+    } else {
+      messages = {...pack.common,...pack.menu};
     }
-
-    // 命名空间前缀映射
-    const nsMap: Record<string, string[]> = {
-      profile: ['profile.', 'field.', 'rule.', 'ph.', 'user.'],
-      settings: ['settings.', 'size.', 'about.', 'label.language', 'tooltip.size'],
-      common: ['app.', 'error.', 'nav.', 'greeting.', 'dashboard.', 'form.', 'table.', 'tools.', 'ok', 'cancel'],
-      form: ['form.'],
-      table: ['table.'],
-      menu: ['menu.'],
-      clients: ['clients.'],
-      users: ['users.'],
-      permissions: ['permissions.'],
-    };
-    const allowPrefixes = nsList.flatMap(name => nsMap[name] || [`${name}.`]);
-    const filtered: Record<string, string> = {};
-    Object.keys(dict).forEach((k) => {
-      if (allowPrefixes.some(p => k.startsWith(p))) filtered[k] = (dict as any)[k];
-    });
-    return HttpResponse.json(filtered);
+    console.log('[i18n] messages for', locale, nsList, messages);
+    return HttpResponse.json(messages);
   }),
 ];
 
