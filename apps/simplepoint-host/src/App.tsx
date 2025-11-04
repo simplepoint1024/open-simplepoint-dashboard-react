@@ -4,25 +4,8 @@ import {ConfigProvider, Result, Spin, theme as antdTheme} from 'antd';
 import {HashRouter, Route, Routes, Navigate, useLocation} from "react-router-dom";
 import NavigateBar from "@/layouts/navigation-bar";
 import React, {useEffect, useMemo, useRef, useState} from "react";
-import zhCN from 'antd/locale/zh_CN';
+// 只静态引入一个作为初始/类型基准，其他按需动态加载以减少首屏体积
 import enUS from 'antd/locale/en_US';
-import zhTW from 'antd/locale/zh_TW';
-// @ts-ignore
-import enGB from 'antd/locale/en_GB';
-// @ts-ignore
-import jaJP from 'antd/locale/ja_JP';
-// @ts-ignore
-import koKR from 'antd/locale/ko_KR';
-// @ts-ignore
-import frFR from 'antd/locale/fr_FR';
-// @ts-ignore
-import deDE from 'antd/locale/de_DE';
-// @ts-ignore
-import esES from 'antd/locale/es_ES';
-// @ts-ignore
-import ptBR from 'antd/locale/pt_BR';
-// @ts-ignore
-import ruRU from 'antd/locale/ru_RU';
 import {Profile} from "@/layouts/profile";
 import {Settings} from "@/layouts/settings";
 import {use} from "@simplepoint/libs-shared/types/request.ts";
@@ -31,6 +14,20 @@ import {modules, Remote, routes} from "@/services/routes.ts";
 import {init, loadRemote} from '@module-federation/enhanced/runtime';
 import 'antd/dist/reset.css';
 import { useI18n } from '@/i18n';
+
+// 简单错误边界，捕获远程组件运行期错误并给出友好提示
+class ErrorBoundary extends React.Component<{ children?: React.ReactNode; fallback?: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch() { /* 可在此上报 */ }
+  render() {
+    if (this.state.hasError) return this.props.fallback ?? null;
+    return this.props.children as React.ReactNode;
+  }
+}
 
 const App: React.FC = () => {
   // 初始化并监听全局尺寸
@@ -43,6 +40,8 @@ const App: React.FC = () => {
     window.addEventListener('sp-set-size', handler as EventListener);
     return () => window.removeEventListener('sp-set-size', handler as EventListener);
   }, []);
+  // 持久化全局尺寸
+  useEffect(() => { try { localStorage.setItem('sp.globalSize', globalSize); } catch {} }, [globalSize]);
 
   // 全局主题模式：light / dark / system
   const getSystemTheme = (): 'light'|'dark' => {
@@ -73,25 +72,38 @@ const App: React.FC = () => {
       setResolvedTheme(themeMode as 'light'|'dark');
     }
   }, [themeMode]);
+  // 持久化主题偏好 + 将解析后的主题写入 html 属性，便于自定义样式使用
+  useEffect(() => { try { localStorage.setItem('sp.theme', themeMode); } catch {} }, [themeMode]);
+  useEffect(() => { try { document.documentElement.setAttribute('data-theme', resolvedTheme); } catch {} }, [resolvedTheme]);
 
-  // 使用全局 I18n 的 locale
+  // 使用全局 I18n 的 locale（动态按需加载 Antd locale，避免一次性引入全部）
   const { locale, t } = useI18n();
-  const mapAntdLocale = (code: string) => {
-    const c = (code || '').toLowerCase();
-    if (c.startsWith('zh-cn')) return zhCN;
-    if (c.startsWith('zh-tw')) return zhTW;
-    if (c.startsWith('en-gb')) return enGB;
-    if (c.startsWith('en')) return enUS;
-    if (c.startsWith('ja')) return jaJP;
-    if (c.startsWith('ko')) return koKR;
-    if (c.startsWith('fr')) return frFR;
-    if (c.startsWith('de')) return deDE;
-    if (c.startsWith('es')) return esES;
-    if (c.startsWith('pt-br')) return ptBR;
-    if (c.startsWith('ru')) return ruRU;
-    return enUS;
-  };
-  const antdLocale = useMemo(() => mapAntdLocale(locale), [locale]);
+  type AntdLocale = typeof enUS;
+  const [antdLocale, setAntdLocale] = useState<AntdLocale>(enUS);
+  useEffect(() => {
+    const c = (locale || '').toLowerCase().replace(/_/g,'-');
+    const load = async (): Promise<AntdLocale> => {
+      try {
+        if (c.startsWith('zh-cn')) return (await import('antd/locale/zh_CN')).default as AntdLocale;
+        if (c.startsWith('zh-tw') || c.startsWith('zh-hk')) return (await import('antd/locale/zh_TW')).default as AntdLocale;
+        if (c.startsWith('en-gb')) return (await import('antd/locale/en_GB')).default as AntdLocale;
+        if (c.startsWith('en')) return enUS as AntdLocale; // 已静态引入
+        if (c.startsWith('ja')) return (await import('antd/locale/ja_JP')).default as AntdLocale;
+        if (c.startsWith('ko')) return (await import('antd/locale/ko_KR')).default as AntdLocale;
+        if (c.startsWith('fr')) return (await import('antd/locale/fr_FR')).default as AntdLocale;
+        if (c.startsWith('de')) return (await import('antd/locale/de_DE')).default as AntdLocale;
+        if (c.startsWith('es')) return (await import('antd/locale/es_ES')).default as AntdLocale;
+        if (c.startsWith('pt-br') || c === 'pt') return (await import('antd/locale/pt_BR')).default as AntdLocale;
+        if (c.startsWith('ru')) return (await import('antd/locale/ru_RU')).default as AntdLocale;
+        return enUS as AntdLocale;
+      } catch {
+        return enUS as AntdLocale;
+      }
+    };
+    let mounted = true;
+    load().then(l => { if (mounted) setAntdLocale(l); });
+    return () => { mounted = false; };
+  }, [locale]);
 
   const remotes = use<Remote>(() => modules());
   const initedRef = useRef(false);
@@ -142,12 +154,13 @@ const App: React.FC = () => {
       .filter(n => !!n.path && !!n.component)
   ), [data]);
 
-  // 缓存懒加载组件，避免重复创建 React.lazy
+  // 缓存懒加载组件，避免重复创建 React.lazy，并限制缓存大小防止内存增长
   const lazyCache = useRef(new Map<string, React.LazyExoticComponent<React.ComponentType<any>>>());
+  const LAZY_CACHE_MAX = 50;
   const getLazyComponent = (spec?: string): React.LazyExoticComponent<React.ComponentType<any>> => {
     const fallback: { default: React.ComponentType<any> } = {
       default: () => (
-        <Result status="error" title={t('error.remoteLoadFail','远程资源加载失败，请稍后再试.')}/>
+        <Result status="error" title={t('error.remoteLoadFail','远程资源加载失败，请稍后再试。')}/>
       )
     };
     if (!spec) return React.lazy(async () => fallback);
@@ -166,21 +179,38 @@ const App: React.FC = () => {
         return fallback as any;
       }
     });
+    // 简单 LRU：超过上限时移除最早的一个
+    if (lazyCache.current.size >= LAZY_CACHE_MAX) {
+      const firstKey = lazyCache.current.keys().next().value as string | undefined;
+      if (firstKey) lazyCache.current.delete(firstKey);
+    }
     lazyCache.current.set(s, comp);
     return comp;
   };
 
-  // Iframe 渲染器：占满可视区域
-  const IframeView: React.FC<{ src: string }> = ({ src }) => (
-    <div style={{height: '100%', width: '100%'}}>
-      <iframe
-        src={src}
-        style={{border: 0, width: '100%', height: '100%'}}
-        allow="clipboard-read; clipboard-write; fullscreen; geolocation"
-        referrerPolicy="no-referrer"
-      />
-    </div>
-  );
+  // Iframe 渲染器：占满可视区域 + 加载态
+  const IframeView: React.FC<{ src: string }> = ({ src }) => {
+    const [loading, setLoading] = useState(true);
+    return (
+      <div style={{height: '100%', width: '100%', position:'relative'}}>
+        {loading && (
+          <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',background:'transparent'}}>
+            <Spin/>
+          </div>
+        )}
+        <iframe
+          src={src}
+          title={src}
+          style={{border: 0, width: '100%', height: '100%'}}
+          allow="clipboard-read; clipboard-write; fullscreen; geolocation"
+          referrerPolicy="no-referrer"
+          loading="lazy"
+          onLoad={() => setLoading(false)}
+          onError={() => setLoading(false)}
+        />
+      </div>
+    );
+  };
 
   // 根据当前路由设置浏览器页签标题（放在 Router 内部）
   const TitleSync: React.FC = () => {
@@ -228,7 +258,9 @@ const App: React.FC = () => {
                     path={path}
                     element={
                       <React.Suspense fallback={<div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%'}}><Spin/></div>}>
-                        <Component key={`comp-${path}-${rk}`}/>
+                        <ErrorBoundary key={`eb-${path}-${rk}`} fallback={<Result status="error" title={t('error.componentCrashed','页面加载出错')}/> }>
+                          <Component key={`comp-${path}-${rk}`}/>
+                        </ErrorBoundary>
                       </React.Suspense>
                     }
                   />
