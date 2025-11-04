@@ -6,6 +6,9 @@ import NavigateBar from "@/layouts/navigation-bar";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 // 只静态引入一个作为初始/类型基准，其他按需动态加载以减少首屏体积
 import enUS from 'antd/locale/en_US';
+// 常用语言静态引入，降低首屏英文闪烁
+import zhCN from 'antd/locale/zh_CN';
+import jaJP from 'antd/locale/ja_JP';
 import {Profile} from "@/layouts/profile";
 import {Settings} from "@/layouts/settings";
 import {use} from "@simplepoint/libs-shared/types/request.ts";
@@ -79,16 +82,27 @@ const App: React.FC = () => {
   // 使用全局 I18n 的 locale（动态按需加载 Antd locale，避免一次性引入全部）
   const { locale, t } = useI18n();
   type AntdLocale = typeof enUS;
-  const [antdLocale, setAntdLocale] = useState<AntdLocale>(enUS);
+  // 首屏同步选择常用语言，减少英文文案闪烁
+  const initialAntdLocale: AntdLocale = (() => {
+    try {
+      const raw = (localStorage.getItem('sp.locale') || '').toLowerCase().replace(/_/g, '-');
+      if (raw.startsWith('zh-cn')) return zhCN as AntdLocale;
+      if (raw.startsWith('ja')) return jaJP as AntdLocale;
+      if (raw.startsWith('en')) return enUS as AntdLocale;
+    } catch {}
+    // 与 I18nProvider 的默认语言保持一致
+    return zhCN as AntdLocale;
+  })();
+  const [antdLocale, setAntdLocale] = useState<AntdLocale>(initialAntdLocale);
   useEffect(() => {
     const c = (locale || '').toLowerCase().replace(/_/g,'-');
     const load = async (): Promise<AntdLocale> => {
       try {
-        if (c.startsWith('zh-cn')) return (await import('antd/locale/zh_CN')).default as AntdLocale;
+        if (c.startsWith('zh-cn')) return (zhCN as AntdLocale);
         if (c.startsWith('zh-tw') || c.startsWith('zh-hk')) return (await import('antd/locale/zh_TW')).default as AntdLocale;
         if (c.startsWith('en-gb')) return (await import('antd/locale/en_GB')).default as AntdLocale;
         if (c.startsWith('en')) return enUS as AntdLocale; // 已静态引入
-        if (c.startsWith('ja')) return (await import('antd/locale/ja_JP')).default as AntdLocale;
+        if (c.startsWith('ja')) return (jaJP as AntdLocale); // 已静态引入
         if (c.startsWith('ko')) return (await import('antd/locale/ko_KR')).default as AntdLocale;
         if (c.startsWith('fr')) return (await import('antd/locale/fr_FR')).default as AntdLocale;
         if (c.startsWith('de')) return (await import('antd/locale/de_DE')).default as AntdLocale;
