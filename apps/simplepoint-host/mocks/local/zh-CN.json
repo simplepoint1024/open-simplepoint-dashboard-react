@@ -211,7 +211,8 @@
     "users.title.superAdmin": "超级管理员",
     "users.description.superAdmin": "是否为超级管理员",
     "users.title.username": "用户名",
-    "users.description.username": "登录用户名"
+    "users.description.username": "登录用户名",
+    "users.button.configRoles": "配置角色"
   },
   "menus": {
     "menus.title.component": "组件",
