@@ -74,7 +74,7 @@ const computeVisibleKeys = (properties: Record<string, any>): string[] => {
 };
 
 const App = <T extends object = any>(props: TableProps<T>) => {
-  const {t} = useI18n();
+  const {t, locale} = useI18n();
   const [filters, setFilters] = useState<Record<string, string>>(props.filters ?? {});
 
   useEffect(() => {
@@ -170,19 +170,26 @@ const App = <T extends object = any>(props: TableProps<T>) => {
           align,
         };
 
-        column.filterDropdown = () => (
-          <ColumnFilter
-            initialOp={parseOp(filters[key])}
-            initialText={parseText(filters[key])}
-            onChange={(op: string, text: string) => {
-              const value = text ? `${op}:${text}` : '';
-              const next = {...filters};
-              if (value) next[key] = value; else delete next[key];
-              setFilters(next);
-              props.onFilterChange?.(next);
-              props.refresh();
-            }}
-          />
+        column.filterDropdown = ({close}: any) => (
+          <div onKeyDown={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}
+               onClick={(e) => e.stopPropagation()}>
+            <ColumnFilter
+              initialOp={parseOp(filters[key])}
+              initialText={parseText(filters[key])}
+              onChange={(op: string, text: string) => {
+                const value = text ? `${op}:${text}` : '';
+                const next = {...filters};
+                if (value) next[key] = value; else delete next[key];
+                setFilters(next);
+                props.onFilterChange?.(next);
+                props.refresh();
+                try {
+                  close?.();
+                } catch {
+                }
+              }}
+            />
+          </div>
         );
         column.filterIcon = () => <SearchOutlined style={{color: filters[key] ? '#1677ff' : undefined}}/>;
 
@@ -190,7 +197,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
 
         return column;
       });
-  }, [properties, visibleCols, visibleKeys, filters, props.onFilterChange, props.refresh]);
+  }, [properties, visibleCols, visibleKeys, filters, props.onFilterChange, props.refresh, t, locale]);
 
   const dataSource = props.pageable?.content ?? [];
 

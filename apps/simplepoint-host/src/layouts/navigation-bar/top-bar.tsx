@@ -216,10 +216,13 @@ const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
   const hasLanguages = (languages || []).length > 0;
   const onSelect = (lng: string) => {
     if (!lng || lng === locale) { setOpen(false); return; }
+    // 后续如果表格组件动态加载语言正常后，这里可以去掉强制刷新
+    window.location.reload();
     setSwitching(true);
     // 标记正在关闭，忽略随后 Dropdown 可能触发的一次 open=true 事件
     closingRef.current = true;
     setOpen(false);
+
      // 监听一次 i18n 更新事件，切换完成后关闭 loading
      const handler = () => {
        try {
@@ -227,7 +230,6 @@ const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
          if (g?.locale === lng) {
            window.removeEventListener('sp-i18n-updated', handler as any);
            // 确保语言生效
-           window.location.reload();
            setSwitching(false);
          }
        } catch {}

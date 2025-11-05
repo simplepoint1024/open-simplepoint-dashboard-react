@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useEffect, useMemo, useState} from 'react';
-import {Input, Select, Space} from 'antd';
+import {Input, Select, Space, Button} from 'antd';
 import { useI18n } from '@simplepoint/libs-shared/hooks/useI18n';
 
 export interface ColumnFilterProps {
@@ -34,21 +34,27 @@ const ColumnFilter: React.FC<ColumnFilterProps> = ({initialOp = 'like', initialT
   const [inputValue, setInputValue] = useState(initialText);
   const [selectValue, setSelectValue] = useState(initialOp);
 
-  useEffect(() => {
-    onChange?.(selectValue, inputValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectValue, inputValue]);
-
+  // 仅在 props 变化时同步本地值
   useEffect(() => {
     setSelectValue(initialOp);
     setInputValue(initialText);
   }, [initialOp, initialText]);
 
+  const apply = () => {
+    onChange?.(selectValue, inputValue);
+  };
+
   return (
     <div>
       <Space.Compact>
         <Select style={{width: 160}} value={selectValue} options={finalOptions} onChange={(value) => setSelectValue(value)}/>
-        <Input value={inputValue} onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}/>
+        <Input
+          value={inputValue}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
+          onPressEnter={apply}
+          allowClear
+        />
+        <Button type="primary" onClick={apply}>{t('table.apply','应用')}</Button>
       </Space.Compact>
     </div>
   );
