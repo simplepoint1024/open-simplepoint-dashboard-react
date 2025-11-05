@@ -36,7 +36,7 @@ const App = () => {
 
   // 确保本页所需命名空间加载（users/roles），语言切换后也会自动增量加载
   useEffect(() => {
-    void ensure(['users', 'roles']);
+    void ensure(['roles']);
   }, [ensure, locale]);
 
   const columns: TableColumnsType<DataType> = useMemo(() => ([
