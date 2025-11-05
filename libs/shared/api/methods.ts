@@ -46,10 +46,10 @@ export function del<T>(url: string, ids: string | number | (string | number)[]):
 export function usePageable<T>(
   key: string | readonly unknown[],
   fetchFn: () => Promise<Pageable<T>>,
-  options?: UseQueryOptions<Pageable<T>>
+  options?: Omit<UseQueryOptions<Pageable<T>, Error, Pageable<T>, readonly unknown[]>, 'queryKey' | 'queryFn'>
 ) {
   const queryKey = Array.isArray(key) ? key : [key];
-  return useQuery<Pageable<T>>({
+  return useQuery<Pageable<T>, Error, Pageable<T>, readonly unknown[]>({
     queryKey,
     queryFn: fetchFn,
     ...options,
@@ -62,10 +62,10 @@ export function usePageable<T>(
 export function useData<T>(
   key: string | readonly unknown[],
   fetchFn: () => Promise<T>,
-  options?: UseQueryOptions<T>
+  options?: Omit<UseQueryOptions<T, Error, T, readonly unknown[]>, 'queryKey' | 'queryFn'>
 ) {
   const queryKey = Array.isArray(key) ? key : [key];
-  return useQuery<T>({
+  return useQuery<T, Error, T, readonly unknown[]>({
     queryKey,
     queryFn: fetchFn,
     ...options,

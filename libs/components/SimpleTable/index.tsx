@@ -1,76 +1,72 @@
-import React, {useMemo, useState, useEffect} from 'react';
-import {useSchema} from '@simplepoint/libs-shared/hooks/useSchema';
-import {del, get, post, put, usePageable} from '@simplepoint/libs-shared/api/methods';
-import Table, {TableButtonProps} from '../Table';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useSchema } from '@simplepoint/libs-shared/hooks/useSchema';
+import { del, get, post, put, usePageable } from '@simplepoint/libs-shared/api/methods';
+import Table, { TableButtonProps } from '../Table';
 import SForm from '../SForm';
-import {IChangeEvent} from '@rjsf/core';
-import {Alert, Drawer, message, Modal, Spin, Skeleton} from 'antd';
-import {createIcon} from '@simplepoint/libs-shared/types/icon';
+import { IChangeEvent } from '@rjsf/core';
+import { Alert, Drawer, message, Modal, Spin, Skeleton } from 'antd';
+import { createIcon } from '@simplepoint/libs-shared/types/icon';
 import { useI18n } from '@simplepoint/libs-shared/hooks/useI18n';
 
-// 缓存已加载过的 i18n 命名空间，避免重复 ensure 导致二次进入空白
 const nsLoadedCache = new Set<string>();
 
-/**
- * 一个通用的表格组件，支持增删改查功能
- */
 export interface SimpleTableProps<T> {
   name: string;
   baseUrl: string;
   initialFilters?: Record<string, string>;
-  // 自定义按钮事件（可覆盖内置 add/edit/delete/del）
   customButtonEvents?: Record<string, (selectedRowKeys: React.Key[], selectedRows: T[], props: TableButtonProps) => void>;
-  // 额外自定义按钮（与 schema 返回的 buttons 合并并按 sort 排序）
   customButtons?: TableButtonProps[];
-  // 受控抽屉开关与编辑数据
   drawerOpen?: boolean;
   onDrawerOpenChange?: (open: boolean) => void;
   editingRecord?: any | null;
   onEditingRecordChange?: (record: any | null) => void;
-  // 新增初始值
   initialValues?: any;
-  // 自定义提交（覆盖默认 post/put 行为），action: add | edit
   onSubmit?: (action: 'add' | 'edit', formData: any, currentEditing: any | null) => Promise<void> | void;
-
-  // 需要加载的 i18n 命名空间
   i18nNamespaces: string[];
 }
 
 const App = (props: SimpleTableProps<any>) => {
-  const {data: schemaData, isLoading: schemaLoading, error: schemaError, refetch: refetchSchema} = useSchema(props.baseUrl);
   const { t, ensure, locale, ready } = useI18n();
+  const [i18nReady, setI18nReady] = useState(false);
 
-  // 仅确保需要的命名空间被加载，但不阻塞渲染，防止偶发卡在骨架屏
   useEffect(() => {
     const ns = Array.isArray(props.i18nNamespaces) ? props.i18nNamespaces : [];
-    const merged = Array.from(new Set(["table", ...ns])).sort();
+    const merged = Array.from(new Set(['table', ...ns])).sort();
     const cacheKey = `${locale}::${merged.join(',')}`;
-    // 已加载过则跳过
-    if (nsLoadedCache.has(cacheKey)) return;
+    if (nsLoadedCache.has(cacheKey)) {
+      setI18nReady(true);
+      return;
+    }
     (async () => {
       try {
+        console.log('[SimpleTable] loading i18n namespaces:', merged, 'for locale:', locale);
         await ensure(merged as string[]);
+        console.log("[SimpleTable] i18n namespaces loaded:", merged);
       } finally {
         nsLoadedCache.add(cacheKey);
-        // 命名空间到位后，尝试刷新 schema 以获得正确的多语言标题
-        await refetchSchema?.();
+        setI18nReady(true);
       }
     })();
-  }, [props.i18nNamespaces, ensure, refetchSchema, locale]);
+  }, [props.i18nNamespaces, ensure, locale]);
+
+  const { data: schemaData, isLoading: schemaLoading, error: schemaError } = useSchema(
+    props.baseUrl,
+    { enabled: i18nReady }
+  );
 
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState<number>(10);
-  const [filters, setFilters] = useState<Record<string, string>>(props.initialFilters ? props.initialFilters : {});
-  // 非受控状态
+  const [filters, setFilters] = useState<Record<string, string>>(props.initialFilters ?? {});
   const [innerDrawerOpen, setInnerDrawerOpen] = useState(false);
   const [innerEditing, setInnerEditing] = useState<any | null>(null);
-  // 受控/非受控合并
-  const drawerOpen = props.drawerOpen !== undefined ? props.drawerOpen : innerDrawerOpen;
+
+  const drawerOpen = props.drawerOpen ?? innerDrawerOpen;
   const setDrawerOpen = (open: boolean) => {
     props.onDrawerOpenChange?.(open);
     if (props.drawerOpen === undefined) setInnerDrawerOpen(open);
   };
-  const editingRecord = props.editingRecord !== undefined ? props.editingRecord : innerEditing;
+
+  const editingRecord = props.editingRecord ?? innerEditing;
   const setEditingRecord = (rec: any | null) => {
     props.onEditingRecordChange?.(rec);
     if (props.editingRecord === undefined) setInnerEditing(rec);
@@ -83,19 +79,16 @@ const App = (props: SimpleTableProps<any>) => {
       ...filters,
     });
 
-  const {data: pageData, isLoading: pageLoading, refetch: refetchPage} = usePageable(
+  const { data: pageData, isLoading: pageLoading, refetch: refetchPage } = usePageable(
     [props.name, page, size, filters],
     fetchPage
   );
 
-  // 仅在全局 i18n 基础消息就绪时渲染；命名空间异步到达时会自动更新文案
-  const loading = !ready || schemaLoading || pageLoading;
+  const loading = !ready || !i18nReady || schemaLoading || pageLoading;
 
   const handleTableChange = (pagination: any) => {
-    const nextPage = pagination?.current ?? 1;
-    const nextSize = pagination?.pageSize ?? size;
-    setPage(nextPage);
-    setSize(nextSize);
+    setPage(pagination?.current ?? 1);
+    setSize(pagination?.pageSize ?? size);
     void refetchPage();
   };
 
@@ -110,9 +103,8 @@ const App = (props: SimpleTableProps<any>) => {
     setDrawerOpen(true);
   };
 
-  const handleEdit = (_selectedRowKeys: React.Key[], selectedRows: any[]) => {
-    const first = selectedRows && selectedRows.length > 0 ? selectedRows[0] : null;
-    setEditingRecord(first);
+  const handleEdit = (_keys: React.Key[], rows: any[]) => {
+    setEditingRecord(rows?.[0] ?? null);
     setDrawerOpen(true);
   };
 
@@ -132,14 +124,14 @@ const App = (props: SimpleTableProps<any>) => {
     });
   };
 
-  const handleFormSubmit = async ({formData}: IChangeEvent) => {
+  const handleFormSubmit = async ({ formData }: IChangeEvent) => {
     try {
       const action: 'add' | 'edit' = editingRecord ? 'edit' : 'add';
       if (props.onSubmit) {
         await props.onSubmit(action, formData, editingRecord);
       } else {
         if (action === 'edit') {
-          await put(props.baseUrl, {...editingRecord, ...formData});
+          await put(props.baseUrl, { ...editingRecord, ...formData });
           message.success(t('table.editSuccess', '修改成功'));
         } else {
           await post(props.baseUrl, formData);
@@ -154,44 +146,37 @@ const App = (props: SimpleTableProps<any>) => {
     }
   };
 
-  // 合并并排序按钮（schema 按钮 + 自定义按钮）
   const mergedButtons: TableButtonProps[] = useMemo(() => {
-    const arr = [
-      ...(schemaData?.buttons ?? []),
-      ...(props.customButtons ?? []),
-    ];
-    return arr.sort((a: any, b: any) => {
-      const s1 = typeof a.sort === 'number' ? a.sort : Number.POSITIVE_INFINITY;
-      const s2 = typeof b.sort === 'number' ? b.sort : Number.POSITIVE_INFINITY;
+    const arr = [...(schemaData?.buttons ?? []), ...(props.customButtons ?? [])];
+    return arr.sort((a, b) => {
+      const s1 = typeof a.sort === 'number' ? a.sort : Infinity;
+      const s2 = typeof b.sort === 'number' ? b.sort : Infinity;
       return s1 - s2;
     });
   }, [schemaData?.buttons, props.customButtons]);
 
-  // 默认按钮事件 + 外部覆盖（兼容 del/delete 两种 key）
   const defaultEvents = {
-    add: (_keys: React.Key[], _rows: any[], _btn: TableButtonProps) => handleAdd(),
-    edit: (_keys: React.Key[], rows: any[], _btn: TableButtonProps) => handleEdit(_keys, rows),
-    delete: (keys: React.Key[], _rows: any[], _btn: TableButtonProps) => handleDelete(keys),
-    del: (keys: React.Key[], _rows: any[], _btn: TableButtonProps) => handleDelete(keys),
-  } as Record<string, (selectedRowKeys: React.Key[], selectedRows: any[], props: TableButtonProps) => void>;
+    add: handleAdd,
+    edit: handleEdit,
+    delete: handleDelete,
+    del: handleDelete,
+  };
 
   return (
     <div>
       {loading ? (
-        <div style={{padding: 16}}>
+        <div style={{ padding: 16 }}>
           <Skeleton active paragraph={{ rows: 1 }} />
-          <div style={{height: 12}} />
+          <div style={{ height: 12 }} />
           <Skeleton active title={false} paragraph={{ rows: 8 }} />
         </div>
       ) : (
         <Table<any>
-          refresh={() => {
-            void refetchPage();
-          }}
+          refresh={() => void refetchPage()}
           pageable={
             pageData ?? {
               content: [],
-              page: {number: 0, size: 10, totalElements: 0, totalPages: 0},
+              page: { number: 0, size: 10, totalElements: 0, totalPages: 0 },
             }
           }
           schema={schemaData?.schema ?? []}
@@ -209,10 +194,8 @@ const App = (props: SimpleTableProps<any>) => {
       <Drawer
         closable={false}
         title={
-          <span
-            style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32}}
-          >
-              {createIcon(editingRecord ? 'EditOutlined' : 'PlusOutlined')}
+          <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32 }}>
+            {createIcon(editingRecord ? 'EditOutlined' : 'PlusOutlined')}
           </span>
         }
         placement="right"
@@ -221,13 +204,12 @@ const App = (props: SimpleTableProps<any>) => {
         onClose={() => setDrawerOpen(false)}
         destroyOnHidden
       >
-        {(schemaLoading || pageLoading) && <Spin/>}
-        {schemaError &&
-          <Alert type="error" message={t('table.loadFail', '加载失败')} description={(schemaError as Error).message} />}
-        {(!loading && schemaData) && (
+        {(schemaLoading || pageLoading) && <Spin />}
+        {schemaError && <Alert type="error" message={t('table.loadFail', '加载失败')} description={(schemaError as Error).message} />}
+        {!loading && schemaData && (
           <SForm
             schema={schemaData.schema}
-            formData={editingRecord ?? (props.initialValues ?? {})}
+            formData={editingRecord ?? props.initialValues ?? {}}
             onSubmit={handleFormSubmit}
           />
         )}

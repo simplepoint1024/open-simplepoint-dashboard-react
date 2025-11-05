@@ -16,7 +16,7 @@ export const apis = {
   },
   'rbac-users':{
     baseUrl: '/common/users',
-    i18nNamespaces: ['users','roles'],
+    i18nNamespaces: ['users'],
     name: 'users'
   },
   'rbac-permissions':{

@@ -1,70 +1,38 @@
-import React, {ChangeEvent, MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import type { TableRowSelection } from 'antd/es/table/interface';
-import {Button, Checkbox, Col, Input, Popover, Row, Select, Space, Table as AntTable} from 'antd';
+import React, {MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import type {TableRowSelection} from 'antd/es/table/interface';
+import {Button, Checkbox, Col, Popover, Row, Space, Table as AntTable} from 'antd';
 import {SearchOutlined, SettingOutlined} from '@ant-design/icons';
 import type {ColumnsType} from 'antd/es/table';
 import {RJSFSchema} from '@rjsf/utils';
 import {Pageable} from '@simplepoint/libs-shared/types/request';
 import {ButtonProps} from "antd/es/button/button";
 import {createIcon} from '@simplepoint/libs-shared/types/icon';
-import { useI18n } from '@simplepoint/libs-shared/hooks/useI18n';
+import {useI18n} from '@simplepoint/libs-shared/hooks/useI18n';
+import ColumnFilter from './ColumnFilter';
 
 export type TableButtonProps = ButtonProps & {
   key: string;
   sort: number;
   argumentMaxSize?: number;
   argumentMinSize?: number;
-  text?: string; // 兼容 schema 按钮结构
-  color?: string; // 兼容 schema 按钮结构
-  variant?: string; // 兼容 schema 按钮结构
+  text?: string;
+  color?: string;
+  variant?: string;
 };
 
 export interface TableProps<T> {
   refresh: () => void;
   pageable: Pageable<T>;
-  schema: RJSFSchema | any[]; // 支持 schema 为对象或数组
-  filters?: Record<string, string>; // 初始过滤器，例如 { username: 'like:张' }
+  schema: RJSFSchema | any[];
+  filters?: Record<string, string>;
   onFilterChange?: (filters: Record<string, string>) => void;
   onChange?: (pagination: any, filters?: any, sorter?: any, extra?: any) => void;
-  // 行选择相关
-  rowSelection?: { selectedKeys?: React.Key[] }; // 可选受控初始选中 keys
+  rowSelection?: { selectedKeys?: React.Key[] };
   onSelectionChange?: (selectedRowKeys: React.Key[], selectedRows: T[]) => void;
-  // 按钮事件
   onButtonEvents?: Record<string, (selectedRowKeys: React.Key[], selectedRows: T[], props: TableButtonProps) => void>;
   buttons?: TableButtonProps[]
-  // 可选：列可见性持久化 key（localStorage）
   storageKey?: string;
 }
-
-/* 可复用的列过滤组件，内部使用 Hook 安全 */
-const ColumnFilter: React.FC<{
-  initialOp?: string;
-  initialText?: string;
-  onChange?: (op: string, text: string) => void;
-  options: Array<{ value: string; label: string }>;
-}> = ({initialOp = 'like', initialText = '', onChange, options}) => {
-  const [inputValue, setInputValue] = useState(initialText);
-  const [selectValue, setSelectValue] = useState(initialOp);
-
-  useEffect(() => {
-    onChange?.(selectValue, inputValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectValue, inputValue]);
-
-  useEffect(() => {
-    setSelectValue(initialOp);
-    setInputValue(initialText);
-  }, [initialOp, initialText]);
-
-  return (
-    <div>
-      <Space.Compact>
-        <Select style={{width: 160}} value={selectValue} options={options} onChange={(value) => setSelectValue(value)}/>
-        <Input value={inputValue} onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}/>
-      </Space.Compact>
-    </div>
-  );
-};
 
 const parseOp = (stored?: string) => {
   if (!stored) return 'like';
@@ -77,43 +45,20 @@ const parseText = (stored?: string) => {
   return idx === -1 ? '' : stored.slice(idx + 1);
 };
 
-// Helper: 解析可见性的三态值（true/false/undefined）
 const parseVisibleTriState = (val: any): boolean | undefined => {
   if (val === true || val === 'true' || val === 1 || val === '1') return true;
   if (val === false || val === 'false' || val === 0 || val === '0') return false;
   return undefined;
 };
 
-// 读取 schema 中的可见性标记，兼容多种写法：
-// - 嵌套: x-ui.x-list.visible
-// - 扁平: 'x-ui.x-list.visible'
-// - 兼容历史: x-ui.x-list-visible 或 x-list-visible
 const readVisibleFlag = (schema: any): boolean | undefined => {
   if (!schema) return undefined;
-  const nested = schema?.['x-ui']?.['x-list']?.['visible'];
-  const flat = schema?.['x-ui.x-list.visible'];
   const legacy1 = schema?.['x-ui']?.['x-list-visible'];
-  const legacy2 = schema?.['x-list-visible'];
   return (
-    parseVisibleTriState(nested) ??
-    parseVisibleTriState(flat) ??
-    parseVisibleTriState(legacy1) ??
-    parseVisibleTriState(legacy2)
+    parseVisibleTriState(legacy1)
   );
 };
 
-// 读取 x-ui.x-list.* 元数据（兼容多种写法）
-const readListProp = (schema: any, key: string) => {
-  if (!schema) return undefined;
-  const xui = schema?.['x-ui'] ?? {};
-  const nested = xui?.['x-list']?.[key];
-  const flat = schema?.[`x-ui.x-list.${key}`];
-  const legacy1 = xui?.[`x-list-${key}`];
-  const legacy2 = schema?.[`x-list-${key}`];
-  return nested ?? flat ?? legacy1 ?? legacy2;
-};
-
-// 最终判定：当任意字段声明了可见性时，仅渲染被标记为 true 的；否则回退为全部可见
 const computeVisibleKeys = (properties: Record<string, any>): string[] => {
   const keys = Object.keys(properties);
   let anyDeclared = false;
@@ -129,43 +74,13 @@ const computeVisibleKeys = (properties: Record<string, any>): string[] => {
 };
 
 const App = <T extends object = any>(props: TableProps<T>) => {
-  const { t, locale } = useI18n();
-  // 辅助：运行时解析 i18n: 前缀
-  const isI18nKey = (v: any): v is string => typeof v === 'string' && v.startsWith('i18n:');
-  const tr = (v: any) => {
-    if (isI18nKey(v)) {
-      const key = v.slice(5);
-      return t(key, key);
-    }
-    return v;
-  };
-  // 固定中文过滤器选项
-  const localizedOptions = useMemo(() => ([
-    {value: 'equals', label: t('table.filter.equals','精确')},
-    {value: 'not:equals', label: t('table.filter.notEquals','精确取反')},
-    {value: 'like', label: t('table.filter.like','模糊')},
-    {value: 'not:like', label: t('table.filter.notLike','模糊取反')},
-    {value: 'in', label: t('table.filter.in','集合包含')},
-    {value: 'not:in', label: t('table.filter.notIn','集合不包含')},
-    {value: 'between', label: t('table.filter.between','区间')},
-    {value: 'not:between', label: t('table.filter.notBetween','区间取反')},
-    {value: 'than:greater', label: t('table.filter.greater','大于')},
-    {value: 'than:less', label: t('table.filter.less','小于')},
-    {value: 'than:equal:greater', label: t('table.filter.greaterOrEqual','大于等于')},
-    {value: 'than:equal:less', label: t('table.filter.lessOrEqual','小于等于')},
-    {value: 'is:null', label: t('table.filter.null','空')},
-    {value: 'is:not:null', label: t('table.filter.notNull','非空')},
-  ]), [t, locale]);
-
-  // 本地 filters 状态（受控/非受控兼容）
+  const {t} = useI18n();
   const [filters, setFilters] = useState<Record<string, string>>(props.filters ?? {});
 
-  // 外部 filters 更新时同步
   useEffect(() => {
     setFilters(props.filters ?? {});
   }, [props.filters]);
 
-  // 将 schema 转换为 properties 对象，兼容数组或对象
   const properties = useMemo(() => {
     const s = props.schema;
     if (Array.isArray(s)) {
@@ -178,18 +93,14 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     return (s as any)?.properties ?? s ?? {};
   }, [props.schema]);
 
-  // 基于 schema 的可见性规则，计算可见列；若无声明则全部可见
   const visibleKeys = useMemo(() => computeVisibleKeys(properties), [properties]);
 
-  // 列可见性状态，初次根据 properties 初始化 + 本地持久化
   const storageKey = useMemo(() => (props.storageKey ? `sp.table.cols.${props.storageKey}` : undefined), [props.storageKey]);
   const [visibleCols, setVisibleCols] = useState<Record<string, boolean>>({});
 
-  // 初次/visibleKeys 变化：从 localStorage 恢复
   useEffect(() => {
     setVisibleCols((prev) => {
       const base: Record<string, boolean> = {};
-      // 默认可见
       visibleKeys.forEach((k) => {
         base[k] = k in prev ? prev[k] : true;
       });
@@ -209,7 +120,6 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     });
   }, [visibleKeys, storageKey]);
 
-  // 持久化 visibleCols
   useEffect(() => {
     try {
       if (storageKey && Object.keys(visibleCols).length) {
@@ -227,88 +137,60 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     setVisibleCols((prev) => ({...prev, [key]: checked}));
   };
 
-  // 生成列（支持从 schema 的 x-ui.x-list.* 读取元信息）
   const columns = useMemo<ColumnsType<T>>(() => {
-    const ordered = Object.entries(properties)
-      .map(([key, schemaDef]) => ({
-        key,
-        schemaDef,
-        order: readListProp(schemaDef, 'order') ?? Number.MAX_SAFE_INTEGER,
-      }))
-      .sort((a, b) => (a.order as number) - (b.order as number));
+    const entries = Object.entries(properties);
 
-    return ordered
-      .filter(({key}) => (visibleCols[key] ?? visibleKeys.includes(key)))
-      .map(({key, schemaDef}) => {
-        const listTitle = readListProp(schemaDef, 'title');
-        const baseTitleRaw = listTitle ?? (schemaDef as any)?.title ?? key;
-        const baseTitle = tr(baseTitleRaw);
-        const alignFromSchema = readListProp(schemaDef, 'align');
-        const fixed = readListProp(schemaDef, 'fixed');
-        const width = readListProp(schemaDef, 'width');
-        const ellipsis = readListProp(schemaDef, 'ellipsis');
-        const sortable = readListProp(schemaDef, 'sortable');
-        const filterableRaw = readListProp(schemaDef, 'filterable');
-        const filterable = filterableRaw === undefined ? true : !!filterableRaw;
-        const di = readListProp(schemaDef, 'dataIndex');
-        const dataIndex = typeof di === 'string' ? (di.includes('.') ? di.split('.') : di) : (di ?? key);
-
+    return entries
+      .filter(([key]) => (visibleCols[key] ?? visibleKeys.includes(key)))
+      .map(([key, schemaDef]) => {
+        const baseTitle = (schemaDef as any)?.title ?? key;
         const isBoolean = (schemaDef as any)?.type === 'boolean';
         const isNumber = (schemaDef as any)?.type === 'number' || (schemaDef as any)?.type === 'integer';
-
-        const align = key === 'icon' ? 'center' : (alignFromSchema ?? (isNumber ? 'right' : undefined));
+        const align = key === 'icon' ? 'center' : (isNumber ? 'right' : undefined);
 
         const renderCell = isBoolean
           ? (val: any) => (
             <span
               style={{display: 'inline-block', width: '100%', textAlign: 'center', color: val ? '#52c41a' : '#999'}}>
-                {val ? '√' : '×'}
-              </span>
+              {val ? '√' : '×'}
+            </span>
           )
           : key === 'icon'
             ? (val: any) => (
               <span style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-                  {typeof val === 'string' ? createIcon(val) : null}
-                </span>
+                {typeof val === 'string' ? createIcon(val) : null}
+              </span>
             )
             : undefined;
 
         const column: any = {
           title: baseTitle,
-          dataIndex,
+          dataIndex: key,
           key,
           align,
-          fixed,
-          width,
-          ellipsis,
         };
 
-        if (sortable) column.sorter = true;
-
-        if (filterable) {
-          column.filterDropdown = () => (
-            <ColumnFilter
-              initialOp={parseOp(filters[key])}
-              initialText={parseText(filters[key])}
-              onChange={(op, text) => {
-                const value = text ? `${op}:${text}` : '';
-                const next = {...filters};
-                if (value) next[key] = value; else delete next[key];
-                setFilters(next);
-                props.onFilterChange?.(next);
-                props.refresh();
-              }}
-              options={localizedOptions}
-            />
-          );
-          column.filterIcon = () => <SearchOutlined style={{color: filters[key] ? '#1677ff' : undefined}}/>;
-        }
+        column.filterDropdown = () => (
+          <ColumnFilter
+            initialOp={parseOp(filters[key])}
+            initialText={parseText(filters[key])}
+            onChange={(op: string, text: string) => {
+              const value = text ? `${op}:${text}` : '';
+              const next = {...filters};
+              if (value) next[key] = value; else delete next[key];
+              setFilters(next);
+              props.onFilterChange?.(next);
+              props.refresh();
+            }}
+          />
+        );
+        column.filterIcon = () => <SearchOutlined style={{color: filters[key] ? '#1677ff' : undefined}}/>;
 
         if (renderCell) column.render = renderCell;
 
         return column;
       });
-  }, [properties, visibleCols, visibleKeys, filters, localizedOptions, props.onFilterChange, props.refresh, locale]);
+  }, [properties, visibleCols, visibleKeys, filters, props.onFilterChange, props.refresh]);
 
   const dataSource = props.pageable?.content ?? [];
 
@@ -319,18 +201,15 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     showSizeChanger: true,
   };
 
-  // 行选择状态（支持受控 initial）
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>(props.rowSelection?.selectedKeys ?? []);
   const [selectedRows, setSelectedRows] = useState<T[]>([]);
 
-  // 外部受控变化同步
   useEffect(() => {
     if (props.rowSelection?.selectedKeys) {
       setSelectedRowKeys(props.rowSelection.selectedKeys);
     }
   }, [props.rowSelection?.selectedKeys]);
 
-  // 根据 key 来寻找对应的行（用于回调） - 提升健壮性：无 id/key 时用 WeakMap 分配稳定临时键
   const anonKeyMapRef = useRef(new WeakMap<object, number>());
   const anonKeySeqRef = useRef(1);
   const keyOfRecord = useCallback((record: T): React.Key => {
@@ -339,7 +218,10 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     if (k !== undefined && k !== null) return k as React.Key;
     const map = anonKeyMapRef.current;
     let n = map.get(anyRec as object);
-    if (!n) { n = anonKeySeqRef.current++; map.set(anyRec as object, n); }
+    if (!n) {
+      n = anonKeySeqRef.current++;
+      map.set(anyRec as object, n);
+    }
     return `~${n}`;
   }, []);
 
@@ -353,35 +235,29 @@ const App = <T extends object = any>(props: TableProps<T>) => {
   );
 
   const onButtonEvent = (button: TableButtonProps): MouseEventHandler<HTMLElement> | undefined => {
-    if (button.onClick) {
-      return button.onClick as MouseEventHandler<HTMLElement>;
-    }
+    if (button.onClick) return button.onClick as MouseEventHandler<HTMLElement>;
     if (props.onButtonEvents && props.onButtonEvents[button.key]) {
       return () => {
         props.onButtonEvents![button.key](selectedRowKeys, selectedRows, button);
       };
     }
     return undefined;
-  }
+  };
 
   const onButtonDisabled = (button: TableButtonProps): boolean => {
     const {argumentMinSize, argumentMaxSize} = button;
-    // 如果都未设置，则默认不禁用；传入 -1 表示该边界不限制
-    if (argumentMinSize === undefined && argumentMaxSize === undefined) {
-      return false;
-    }
+    if (argumentMinSize === undefined && argumentMaxSize === undefined) return false;
     const size = selectedRowKeys.length;
     if (typeof argumentMinSize === 'number' && argumentMinSize !== -1 && size < argumentMinSize) return true;
     return typeof argumentMaxSize === 'number' && argumentMaxSize !== -1 && size > argumentMaxSize;
-  }
+  };
 
-  // Popover 内容：列开关列表 + 重置
   const settingsContent = (
     <div style={{maxHeight: 320, overflow: 'auto', padding: 8}}>
       <Checkbox
-        checked={visibleKeys.length > 0 && visibleKeys.every((key) => visibleCols[key] ?? true)}
+        checked={visibleKeys.length > 0 && visibleKeys.every((key) => (visibleCols[key] ?? true))}
         indeterminate={
-          visibleKeys.some((key) => visibleCols[key] ?? true) && !visibleKeys.every((key) => visibleCols[key] ?? true)
+          visibleKeys.some((key) => (visibleCols[key] ?? true)) && !visibleKeys.every((key) => (visibleCols[key] ?? true))
         }
         onChange={(e) => {
           const checked = e.target.checked;
@@ -391,14 +267,12 @@ const App = <T extends object = any>(props: TableProps<T>) => {
         }}
         style={{marginBottom: 8}}
       >
-        {t('table.selectAll','全选')}
+        {t('table.selectAll', '全选')}
       </Checkbox>
       <div>
         {visibleKeys.map((key) => {
           const sd: any = (properties as any)[key] || {};
-          const listTitle = readListProp(sd, 'title');
-          const baseTitleRaw = listTitle ?? sd?.title ?? key;
-          const label = tr(baseTitleRaw) ?? key;
+          const label = (sd as any)?.title ?? key;
           return (
             <div key={key} style={{padding: '4px 0'}}>
               <Checkbox checked={visibleCols[key] ?? true} onChange={(e) => toggleCol(key, e.target.checked)}>
@@ -411,21 +285,24 @@ const App = <T extends object = any>(props: TableProps<T>) => {
       {storageKey ? (
         <div style={{marginTop: 8, textAlign: 'right'}}>
           <Button type="link" size="small" onClick={() => {
-            try { if (storageKey) localStorage.removeItem(storageKey); } catch {}
-            const next: Record<string, boolean> = {}; visibleKeys.forEach((k) => next[k] = true); setVisibleCols(next);
-          }}>{t('table.resetColumns','重置列')}</Button>
+            try {
+              if (storageKey) localStorage.removeItem(storageKey);
+            } catch {
+            }
+            const next: Record<string, boolean> = {};
+            visibleKeys.forEach((k) => next[k] = true);
+            setVisibleCols(next);
+          }}>{t('table.resetColumns', '重置列')}</Button>
         </div>
       ) : null}
     </div>
   );
 
-  // Antd rowSelection 配置（标注类型以避免告警）
   const rowSelection: TableRowSelection<T> = {
     selectedRowKeys,
     onChange: (keys: React.Key[], rows: T[]) => onSelectChange(keys, rows),
   };
 
-  // 兼容 schema 按钮结构
   const renderButtons = (buttons?: TableButtonProps[]) => {
     if (!buttons || buttons.length === 0) return null;
 
@@ -450,8 +327,8 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     };
 
     return buttons.map((button) => {
-      const { argumentMinSize, argumentMaxSize, sort, color, variant, text, icon, title, ...rest } = button as any;
-      const mapped: any = { ...rest };
+      const {argumentMinSize, argumentMaxSize, sort, color, variant, text, icon, title, ...rest} = button as any;
+      const mapped: any = {...rest};
       if (color === 'danger') mapped.danger = true;
       if (variant === 'outlined') mapped.ghost = true;
       const iconNode = typeof icon === 'string' ? createIcon(icon) : icon;

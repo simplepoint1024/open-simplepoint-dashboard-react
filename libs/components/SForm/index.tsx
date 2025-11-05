@@ -112,7 +112,6 @@ const SForm = (props: SFormProps) => {
   };
 
   const transformErrors = (errors: RJSFValidationError[]) => errors;
-
   return (
     <Form
       {...rest}

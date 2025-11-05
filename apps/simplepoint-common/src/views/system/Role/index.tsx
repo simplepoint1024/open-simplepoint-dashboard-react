@@ -11,7 +11,6 @@ const App = () => {
 
   const customButtonEvents = {
     permissionConfig: (_keys: React.Key[], rows: any[]) => {
-      console.log(rows);
       setOpen(true);
       setRows(rows);
     },
