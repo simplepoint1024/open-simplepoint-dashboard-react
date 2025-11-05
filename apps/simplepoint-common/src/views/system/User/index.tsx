@@ -9,8 +9,11 @@ type TransferItem = GetProp<TransferProps, 'dataSource'>[number];
 type TableRowSelection<T extends object> = TableProps<T>['rowSelection'];
 
 interface DataType {
+  id: string,
   roleName: string;
   description: string;
+  // 可选：是否禁用该行选择
+  disabled?: boolean;
 }
 
 interface TableTransferProps extends TransferProps<TransferItem> {
@@ -22,8 +25,12 @@ interface TableTransferProps extends TransferProps<TransferItem> {
 // Customize Table Transfer
 const TableTransfer: React.FC<TableTransferProps> = (props) => {
   const {leftColumns, rightColumns, ...restProps} = props;
+
+  // 统一行主键：优先使用 id，其次使用 key
+  const getRowKey = (item: any) => String(item?.id ?? item?.key);
+
   return (
-    <Transfer style={{width: '100%'}} {...restProps}>
+    <Transfer style={{width: '100%'}} rowKey={getRowKey} {...restProps}>
       {({
           direction,
           filteredItems,
@@ -44,13 +51,17 @@ const TableTransfer: React.FC<TableTransferProps> = (props) => {
 
         return (
           <Table
+            // 确保 Table 与 Transfer 使用相同的 rowKey
+            rowKey={getRowKey}
             rowSelection={rowSelection}
             columns={columns}
-            dataSource={filteredItems}
+            dataSource={filteredItems as any}
             size="small"
             style={{pointerEvents: listDisabled ? 'none' : undefined}}
-            onRow={({key, disabled: itemDisabled}) => ({
+            onRow={(record: any) => ({
               onClick: () => {
+                const key = getRowKey(record);
+                const itemDisabled = record?.disabled;
                 if (itemDisabled || listDisabled) {
                   return;
                 }
@@ -66,6 +77,7 @@ const TableTransfer: React.FC<TableTransferProps> = (props) => {
 
 const mockData = [
   {
+    id: '1',
     roleName: 'Admin',
     description: 'Administrator role with full permissions',
   }
@@ -86,10 +98,12 @@ const App = () => {
 
   const columns: TableColumnsType<DataType> = useMemo(() => ([
     {
+      key: 'roleName',
       dataIndex: 'roleName',
       title: t('roles.title.roleName'),
     },
     {
+      key: 'description',
       dataIndex: 'description',
       title: t('roles.title.description'),
     },
@@ -103,8 +117,15 @@ const App = () => {
 
   const [targetKeys, setTargetKeys] = useState<TransferProps['targetKeys']>([]);
 
-  const onChange: TableTransferProps['onChange'] = (nextTargetKeys) => {
+  const onChange: TableTransferProps['onChange'] = (nextTargetKeys, direction, moveKeys) => {
     setTargetKeys(nextTargetKeys);
+    if (direction === 'right') {
+      // 分配角色的逻辑处理
+      console.log('Assign roles:', moveKeys);
+    }else {
+      // 移除角色的逻辑处理
+      console.log('Remove roles:', moveKeys);
+    }
   };
 
   return (
@@ -124,7 +145,6 @@ const App = () => {
           <TableTransfer
             dataSource={mockData}
             targetKeys={targetKeys}
-            showSearch
             showSelectAll={false}
             onChange={onChange}
             filterOption={filterOption}

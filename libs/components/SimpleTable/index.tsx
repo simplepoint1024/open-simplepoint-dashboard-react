@@ -219,7 +219,7 @@ const App = (props: SimpleTableProps<any>) => {
         width={480}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        destroyOnClose
+        destroyOnHidden
       >
         {(schemaLoading || pageLoading) && <Spin/>}
         {schemaError &&

@@ -11,7 +11,7 @@ export type I18nLike = {
 };
 
 const interpolate = (tpl: string, params?: Record<string, any>) =>
-  params ? tpl.replace(/\{(\w+)\}/g, (_: any, k: string) => (params[k] !== undefined ? String(params[k]) : `{${k}}`)) : tpl;
+  params ? tpl.replace(/\{(\w+)}/g, (_: any, k: string) => (params[k] !== undefined ? String(params[k]) : `{${k}}`)) : tpl;
 
 const mkT = (msgs: Messages): I18nLike['t'] => (key, fallbackOrParams, maybeParams) => {
   let params: Record<string, any> | undefined;
