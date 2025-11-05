@@ -52,7 +52,7 @@ export function useI18n() {
     try {
       await globalRef?.ensure?.(ns);
     } catch {
-      // silent fail or log
+      console.log('[i18n] ensure not implemented in global i18n');
     }
   }, [globalRef]);
 

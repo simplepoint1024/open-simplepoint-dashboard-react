@@ -1,4 +1,3 @@
-// context/useI18n.ts
 import { useContext } from 'react';
 import { I18nContext, I18nContextValue } from './I18nProvider';
 
