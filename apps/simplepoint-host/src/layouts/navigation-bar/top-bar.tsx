@@ -276,12 +276,6 @@ const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
 };
 
 /**
- * 顶部导航右侧：语言切换
- * 放在“全局尺寸”左侧，语言列表从后端接口加载
- */
-export const languageSwitcherItem = (): ItemType => ({ key: 'language-switcher', label: (<LanguageButton/>) });
-
-/**
  * 紧凑工具组：语言 + 尺寸 + 主题
  */
 export const toolsSwitcherGroupItem = (): ItemType => {

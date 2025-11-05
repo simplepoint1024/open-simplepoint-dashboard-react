@@ -4,11 +4,6 @@ import {ConfigProvider, Result, Spin, theme as antdTheme} from 'antd';
 import {HashRouter, Route, Routes, Navigate, useLocation} from "react-router-dom";
 import NavigateBar from "@/layouts/navigation-bar";
 import React, {useEffect, useMemo, useRef, useState} from "react";
-// 只静态引入一个作为初始/类型基准，其他按需动态加载以减少首屏体积
-import enUS from 'antd/locale/en_US';
-// 常用语言静态引入，降低首屏英文闪烁
-import zhCN from 'antd/locale/zh_CN';
-import jaJP from 'antd/locale/ja_JP';
 import {Profile} from "@/layouts/profile";
 import {Settings} from "@/layouts/settings";
 import {MenuInfo} from "@/store/routes";
@@ -107,44 +102,7 @@ const App: React.FC = () => {
   useEffect(() => { try { document.documentElement.setAttribute('data-theme', resolvedTheme); } catch {} }, [resolvedTheme]);
 
   // 使用全局 I18n 的 locale（动态按需加载 Antd locale，避免一次性引入全部）
-  const { locale, t, ready: i18nReady, loading: i18nLoading } = useI18n();
-  type AntdLocale = typeof enUS;
-  // 首屏同步选择常用语言，减少英文文案闪烁
-  const initialAntdLocale: AntdLocale = (() => {
-    try {
-      const raw = (localStorage.getItem('sp.locale') || '').toLowerCase().replace(/_/g, '-');
-      if (raw.startsWith('zh-cn')) return zhCN as AntdLocale;
-      if (raw.startsWith('ja')) return jaJP as AntdLocale;
-      if (raw.startsWith('en')) return enUS as AntdLocale;
-    } catch {}
-    // 与 I18nProvider 的默认语言保持一致
-    return zhCN as AntdLocale;
-  })();
-  const [antdLocale, setAntdLocale] = useState<AntdLocale>(initialAntdLocale);
-  useEffect(() => {
-    const c = (locale || '').toLowerCase().replace(/_/g,'-');
-    const load = async (): Promise<AntdLocale> => {
-      try {
-        if (c.startsWith('zh-cn')) return (zhCN as AntdLocale);
-        if (c.startsWith('zh-tw') || c.startsWith('zh-hk')) return (await import('antd/locale/zh_TW')).default as AntdLocale;
-        if (c.startsWith('en-gb')) return (await import('antd/locale/en_GB')).default as AntdLocale;
-        if (c.startsWith('en')) return enUS as AntdLocale; // 已静态引入
-        if (c.startsWith('ja')) return (jaJP as AntdLocale); // 已静态引入
-        if (c.startsWith('ko')) return (await import('antd/locale/ko_KR')).default as AntdLocale;
-        if (c.startsWith('fr')) return (await import('antd/locale/fr_FR')).default as AntdLocale;
-        if (c.startsWith('de')) return (await import('antd/locale/de_DE')).default as AntdLocale;
-        if (c.startsWith('es')) return (await import('antd/locale/es_ES')).default as AntdLocale;
-        if (c.startsWith('pt-br') || c === 'pt') return (await import('antd/locale/pt_BR')).default as AntdLocale;
-        if (c.startsWith('ru')) return (await import('antd/locale/ru_RU')).default as AntdLocale;
-        return enUS as AntdLocale;
-      } catch {
-        return enUS as AntdLocale;
-      }
-    };
-    let mounted = true;
-    load().then(l => { if (mounted) setAntdLocale(l); });
-    return () => { mounted = false; };
-  }, [locale]);
+  const { t, ready: i18nReady, loading: i18nLoading } = useI18n();
 
   // 加载远程模块列表与路由（带 loading）
   const { data: remotes, loading: remotesLoading } = usePageable<Remote>(modules);
@@ -272,7 +230,7 @@ const App: React.FC = () => {
   // 全屏资源加载覆盖层（首屏保留最少时间防止闪烁）
   const [minHoldDone, setMinHoldDone] = useState(false);
   useEffect(() => {
-    const timer = window.setTimeout(() => setMinHoldDone(true), 300);
+    const timer = window.setTimeout(() => setMinHoldDone(true), 1000);
     return () => window.clearTimeout(timer);
   }, []);
   const anyLoading = i18nLoading || !i18nReady || remotesLoading || routesLoading || !initedRef.current;
@@ -292,7 +250,7 @@ const App: React.FC = () => {
         algorithm: resolvedTheme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
         token: {colorPrimary: '#1677FF'},
         components: {}
-      }} componentSize={globalSize} locale={antdLocale}>
+      }} componentSize={globalSize} >
         <HashRouter>
           <TitleSync/>
           <NavigateBar data={data}>
