@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 
 export type Messages = Record<string, string>;
 
@@ -13,20 +13,19 @@ export type I18nLike = {
 const interpolate = (tpl: string, params?: Record<string, any>) =>
   params ? tpl.replace(/\{(\w+)}/g, (_: any, k: string) => (params[k] !== undefined ? String(params[k]) : `{${k}}`)) : tpl;
 
-const mkT = (msgs: Messages): I18nLike['t'] => (key, fallbackOrParams, maybeParams) => {
+export const mkT = (messages: Messages): I18nLike['t'] => (key, fallbackOrParams, maybeParams) => {
   let params: Record<string, any> | undefined;
   let fallback: string | undefined;
   if (typeof fallbackOrParams === 'string') fallback = fallbackOrParams;
   else if (fallbackOrParams && typeof fallbackOrParams === 'object') params = fallbackOrParams as any;
   if (maybeParams && typeof maybeParams === 'object') params = maybeParams as any;
-  const raw = msgs[key] ?? (fallback ?? key);
+  const raw = messages[key] ?? (fallback ?? key);
   return interpolate(raw, params);
 };
 
 function getGlobal(): I18nLike | undefined {
   if (typeof window === 'undefined') return undefined;
-  const g = (window as any).spI18n as I18nLike | undefined;
-  return g;
+  return (window as any).spI18n as I18nLike | undefined;
 }
 
 export function useI18n() {

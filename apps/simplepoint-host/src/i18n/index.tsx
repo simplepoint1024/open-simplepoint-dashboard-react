@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import calendar from 'dayjs/plugin/calendar';
+import { mkT } from '@simplepoint/libs-shared/hooks/useI18n';
 
 dayjs.extend(localizedFormat);
 dayjs.extend(relativeTime);
@@ -316,18 +317,6 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
   // 简单占位符插值：将 {name} 替换为 params.name
   const interpolate = (tpl: string, params?: Record<string, any>) =>
     params ? tpl.replace(/{(\w+)}/g, (_: any, k: string) => (params[k] !== undefined ? String(params[k]) : `{${k}}`)) : tpl;
-
-  // 基于给定 messages 生成 t 函数（统一 fallback，不区分语言）
-  const mkT = (msgs: Messages): I18nContextValue['t'] =>
-    (key, fallbackOrParams, maybeParams) => {
-      let params: Record<string, any> | undefined;
-      let fallback: string | undefined;
-      if (typeof fallbackOrParams === 'string') fallback = fallbackOrParams;
-      else if (fallbackOrParams && typeof fallbackOrParams === 'object') params = fallbackOrParams as any;
-      if (maybeParams && typeof maybeParams === 'object') params = maybeParams as any;
-      const raw = msgs[key] ?? (fallback ?? key);
-      return interpolate(raw, params);
-    };
 
   const t = useCallback<I18nContextValue['t']>((key, fallbackOrParams, maybeParams) => {
     let params: Record<string, any> | undefined;
