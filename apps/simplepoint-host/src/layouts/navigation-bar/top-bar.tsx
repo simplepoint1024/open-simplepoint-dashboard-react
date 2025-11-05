@@ -226,6 +226,8 @@ const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
          const g: any = (window as any)?.spI18n;
          if (g?.locale === lng) {
            window.removeEventListener('sp-i18n-updated', handler as any);
+           // 确保语言生效
+           window.location.reload();
            setSwitching(false);
          }
        } catch {}
