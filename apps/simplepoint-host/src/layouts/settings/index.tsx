@@ -17,7 +17,7 @@ import {
   Tag
 } from "antd";
 import {FontSizeOutlined, GlobalOutlined, ReloadOutlined, SkinOutlined, UserOutlined, DesktopOutlined, MoonOutlined, SunOutlined} from "@ant-design/icons";
-import {useI18n} from '@/i18n';
+import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import './index.css'
 
 export const Settings: React.FC = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useI18n } from '@/i18n';
+import {useI18n} from "@/layouts/i18n/useI18n.ts";
 
 export type I18nTextProps = {
   k: string;

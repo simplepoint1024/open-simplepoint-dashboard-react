@@ -3,7 +3,7 @@ import {Avatar, Button, Dropdown, MenuProps, Tooltip, Popconfirm, message} from 
 import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined, DesktopOutlined, DeleteOutlined, FullscreenOutlined, FullscreenExitOutlined} from "@ant-design/icons";
 import React, {useEffect, useRef, useState} from 'react';
 import {post} from "@simplepoint/libs-shared/types/request.ts";
-import { useI18n } from '@/i18n';
+import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import { useUserInfo } from '@/services/user';
 
 // 为主题切换提供短暂的全局颜色过渡动画

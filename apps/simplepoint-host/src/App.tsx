@@ -10,8 +10,8 @@ import {MenuInfo} from "@/store/routes";
 import {modules, Remote, routes} from "@/services/routes.ts";
 import {init, loadRemote} from '@module-federation/enhanced/runtime';
 import 'antd/dist/reset.css';
-import { useI18n } from '@/i18n';
 import type { Pageable } from '@simplepoint/libs-shared/types/request.ts';
+import {useI18n} from "@/layouts/i18n/useI18n.ts";
 
 // 简单错误边界，捕获远程组件运行期错误并给出友好提示
 class ErrorBoundary extends React.Component<{ children?: React.ReactNode; fallback?: React.ReactNode }, { hasError: boolean }> {

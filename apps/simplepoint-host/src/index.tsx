@@ -4,9 +4,9 @@ import '@simplepoint/libs-components/Simplepoint.css';
 import '@ant-design/v5-patch-for-react-19';
 import App from '@/App';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { I18nProvider } from '@/i18n';
 import { initMock } from './mock/init';
 import {applyInitialHtmlAttributes} from "@/utils/initHtmlAttributes.ts";
+import {I18nProvider} from "@/layouts/i18n/I18nProvider.tsx";
 
 applyInitialHtmlAttributes();
 

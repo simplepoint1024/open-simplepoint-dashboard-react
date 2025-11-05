@@ -14,7 +14,7 @@ import {useSideNavigation, useTopNavigation} from "@/hooks/routes";
 import {useLocation, useNavigate} from "react-router-dom";
 import {flattenMenus, MenuInfo} from "@/store/routes";
 import './index.css'
-import {useI18n} from '@/i18n';
+import {useI18n} from "@/layouts/i18n/useI18n.ts";
 
 const {Header, Content, Footer, Sider} = Layout;
 

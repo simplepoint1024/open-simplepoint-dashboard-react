@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Avatar, Button, Card, Col, Descriptions, Empty, Form, Input, message, Row, Skeleton, Space, Tag, Typography } from "antd";
 import { UserOutlined, EditOutlined, SaveOutlined, ReloadOutlined } from "@ant-design/icons";
-import { useI18n } from '@/i18n';
+import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import { useUserInfo } from '@/services/user';
 import './index.css'
 

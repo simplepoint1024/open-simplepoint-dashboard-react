@@ -1,0 +1,268 @@
+// context/I18nProvider.tsx
+import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { fetchLanguages, fetchMessages, Language, Messages } from '@/services/i18n';
+import { mkT } from '@simplepoint/libs-shared/hooks/useI18n';
+import { normalizeLocale, mapDayjsLocale, isRTL, interpolate } from '@/utils/i18nUtils';
+import { readStoredMessages, writeStoredMessages,  cacheKey, cacheTsKey, checkAndUpgradeCacheVersion } from '@/utils/i18nCache';
+import { emitAsync } from '@/utils/i18nEvents';
+import dayjs from 'dayjs';
+
+export type I18nContextValue = {
+  locale: string;
+  setLocale: (code: string) => void;
+  languages: Language[];
+  messages: Messages;
+  t: (key: string, fallbackOrParams?: string | Record<string, any>, maybeParams?: Record<string, any>) => string;
+  loading: boolean;
+  refresh: () => Promise<void>;
+  ready: boolean;
+  ensure: (ns: string[]) => Promise<void>;
+};
+
+export const I18nContext = createContext<I18nContextValue | undefined>(undefined);
+
+export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+  const initialLocale = normalizeLocale(localStorage.getItem('sp.locale') || undefined);
+  const [locale, setLocaleState] = useState<string>(initialLocale);
+  const [languages, setLanguages] = useState<Language[]>([]);
+  const [messages, setMessages] = useState<Messages>(readStoredMessages(initialLocale) || {});
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const cache = useRef(new Map<string, Messages>());
+  const loadSeqRef = useRef(0);
+  const missingKeysRef = useRef<Set<string>>(new Set());
+  const missingDebounceRef = useRef<number | null>(null);
+
+  const loadedNsRef = useRef<Set<string>>(new Set());
+  const ensurePendingNsRef = useRef<Set<string>>(new Set());
+  const ensureTimerRef = useRef<number | null>(null);
+  const ensureWaitersRef = useRef<Array<() => void>>([]);
+  const ensureInflightRef = useRef<Promise<void> | null>(null);
+
+  useEffect(() => {
+    checkAndUpgradeCacheVersion();
+  }, []);
+
+  useEffect(() => {
+    const initial = readStoredMessages(initialLocale);
+    if (initial && Object.keys(initial).length > 0) {
+      cache.current.set(initialLocale, initial);
+      window.spI18n = { t: mkT(initial), locale: initialLocale, setLocale, messages: initial, ensure };
+    }
+  }, []);
+
+  const applyLocale = useCallback((code: string) => {
+    const norm = normalizeLocale(code);
+    localStorage.setItem('sp.locale', norm);
+    const schedule = typeof queueMicrotask === 'function' ? queueMicrotask : (fn: () => void) => Promise.resolve().then(fn);
+    schedule(() => {
+      setLocaleState(norm);
+      emitAsync('sp-set-locale', norm);
+    });
+  }, []);
+
+  const setLocale = useCallback((code: string) => applyLocale(code), [applyLocale]);
+
+  useEffect(() => {
+    const schedule = typeof queueMicrotask === 'function' ? queueMicrotask : (fn: () => void) => Promise.resolve().then(fn);
+    const handler = (e: any) => {
+      const next = normalizeLocale((e?.detail as string) || 'zh-CN');
+      if (next !== locale) schedule(() => setLocaleState(next));
+    };
+    window.addEventListener('sp-set-locale', handler as EventListener);
+    return () => window.removeEventListener('sp-set-locale', handler as EventListener);
+  }, [locale]);
+
+  useEffect(() => {
+    void (async () => {
+      const list = await fetchLanguages();
+      setLanguages(list);
+    })();
+  }, []);
+
+  const updateGlobalI18n = (data: Messages, lng: string) => {
+    window.spI18n = { t: mkT(data), locale: lng, setLocale, messages: data, ensure };
+    emitAsync('sp-i18n-updated', { locale: lng });
+  };
+
+  const loadMessages = useCallback(async (lng: string) => {
+    const lang = normalizeLocale(lng);
+    const mySeq = ++loadSeqRef.current;
+
+    const cached = cache.current.get(lang);
+    if (cached && Object.keys(cached).length > 0) {
+      if (mySeq !== loadSeqRef.current) return;
+      setMessages(cached);
+      updateGlobalI18n(cached, lang);
+      return;
+    }
+
+    const stored = readStoredMessages(lang);
+    if (stored && Object.keys(stored).length > 0) {
+      cache.current.set(lang, stored);
+      if (mySeq !== loadSeqRef.current) return;
+      setMessages(stored);
+      updateGlobalI18n(stored, lang);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const data = await fetchMessages(lang);
+      if (mySeq !== loadSeqRef.current) return;
+      cache.current.set(lang, data);
+      setMessages(data);
+      writeStoredMessages(lang, data);
+      updateGlobalI18n(data, lang);
+      loadedNsRef.current.clear();
+    } catch (err) {
+      console.warn(`[i18n] Failed to load messages for ${lang}`, err);
+    } finally {
+      setLoading(false);
+    }
+  }, [setLocale]);
+
+  const ensure = useCallback(async (ns: string[]) => {
+    if (!Array.isArray(ns) || ns.length === 0) return;
+
+    ns.forEach(k => {
+      if (k && !loadedNsRef.current.has(k)) {
+        ensurePendingNsRef.current.add(k);
+      }
+    });
+
+    const p = new Promise<void>(resolve => {
+      ensureWaitersRef.current.push(resolve);
+    });
+
+    const flush = async () => {
+      if (ensureInflightRef.current) return;
+      const list = Array.from(ensurePendingNsRef.current.values());
+      if (list.length === 0) return;
+
+      ensurePendingNsRef.current.clear();
+      const lng = locale;
+
+      ensureInflightRef.current = fetchMessages(lng, list)
+        .then((data) => {
+          if (data && typeof data === 'object' && Object.keys(data).length > 0) {
+            setMessages(prev => {
+              const merged = { ...prev, ...data };
+              cache.current.set(lng, merged);
+              writeStoredMessages(lng, merged);
+              updateGlobalI18n(merged, lng);
+              list.forEach(k => loadedNsRef.current.add(k));
+              return merged;
+            });
+          }
+        })
+        .catch(err => {
+          console.warn('[i18n] ensure failed:', err);
+        })
+        .finally(() => {
+          ensureInflightRef.current = null;
+          const waiters = ensureWaitersRef.current.splice(0, ensureWaitersRef.current.length);
+          waiters.forEach(fn => { try { fn(); } catch {} });
+
+          if (ensurePendingNsRef.current.size > 0) {
+            if (ensureTimerRef.current) window.clearTimeout(ensureTimerRef.current);
+            ensureTimerRef.current = window.setTimeout(() => {
+              ensureTimerRef.current = null;
+              void flush();
+            }, 30);
+          }
+        });
+
+      await ensureInflightRef.current;
+    };
+
+    if (ensureTimerRef.current) window.clearTimeout(ensureTimerRef.current);
+    ensureTimerRef.current = window.setTimeout(() => {
+      ensureTimerRef.current = null;
+      void flush();
+    }, 30);
+
+    return p;
+  }, [locale]);
+
+  const t = useCallback<I18nContextValue['t']>((key, fallbackOrParams, maybeParams) => {
+    let params: Record<string, any> | undefined;
+    let fallback: string | undefined;
+
+    if (typeof fallbackOrParams === 'string') fallback = fallbackOrParams;
+    else if (typeof fallbackOrParams === 'object') params = fallbackOrParams;
+    if (typeof maybeParams === 'object') params = maybeParams;
+
+    const has = Object.prototype.hasOwnProperty.call(messages, key);
+    const raw = has ? messages[key] : (fallback ?? key);
+
+    if (!has && process.env.NODE_ENV !== 'production') {
+      const mk = `${locale}::${key}`;
+      if (!missingKeysRef.current.has(mk)) {
+        missingKeysRef.current.add(mk);
+        if (missingDebounceRef.current) window.clearTimeout(missingDebounceRef.current);
+        missingDebounceRef.current = window.setTimeout(() => {
+          const list = Array.from(missingKeysRef.current.values());
+          if (list.length > 0) {
+            console.warn(`[i18n] Missing keys(${locale}):`, list);
+            emitAsync('sp-i18n-missing-batch', { locale, keys: list });
+          }
+        }, 1200);
+      }
+    }
+
+    return interpolate(raw, params);
+  }, [messages, locale]);
+
+  const refresh = useCallback(async () => {
+    cache.current.delete(locale);
+    localStorage.removeItem(cacheKey(locale));
+    localStorage.removeItem(cacheTsKey(locale));
+    await loadMessages(locale);
+  }, [locale, loadMessages]);
+
+  const value = useMemo<I18nContextValue>(() => ({
+    locale,
+    setLocale,
+    languages,
+    messages,
+    t,
+    loading,
+    refresh,
+    ready: !loading && Object.keys(messages || {}).length > 0,
+    ensure,
+  }), [locale, setLocale, languages, messages, t, loading, refresh, ensure]);
+
+  useEffect(() => {
+    window.spI18n = { t: mkT(messages), locale, setLocale, messages, ensure };
+  }, [messages, locale, setLocale, ensure]);
+
+  useEffect(() => {
+    void loadMessages(locale).then(() => {
+      const shouldRemount = localStorage.getItem('sp.i18n.forceRemount');
+      if (shouldRemount === 'false') return;
+      const path = window.location.hash?.replace(/^#/, '') || window.location.pathname || '/';
+      emitAsync('sp-refresh-route', { path });
+    });
+    return () => {
+      ensurePendingNsRef.current.clear();
+      if (ensureTimerRef.current) {
+        window.clearTimeout(ensureTimerRef.current);
+        ensureTimerRef.current = null;
+      }
+    };
+  }, [locale]);
+
+  useEffect(() => {
+    const el = document.documentElement;
+    el.setAttribute('lang', locale);
+    el.setAttribute('dir', isRTL(locale) ? 'rtl' : 'ltr');
+    void import(`dayjs/locale/${mapDayjsLocale(locale)}.js`).then(() => {
+      dayjs.locale(mapDayjsLocale(locale));
+    }).catch(() => {});
+  }, [locale]);
+
+  return (
+    <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
+  );
+};
