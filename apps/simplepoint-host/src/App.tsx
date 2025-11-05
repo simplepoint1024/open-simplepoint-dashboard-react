@@ -12,6 +12,7 @@ import {init, loadRemote} from '@module-federation/enhanced/runtime';
 import 'antd/dist/reset.css';
 import type { Pageable } from '@simplepoint/libs-shared/types/request.ts';
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
+import { App as AntApp } from 'antd';
 
 // 简单错误边界，捕获远程组件运行期错误并给出友好提示
 class ErrorBoundary extends React.Component<{ children?: React.ReactNode; fallback?: React.ReactNode }, { hasError: boolean }> {
@@ -251,43 +252,45 @@ const App: React.FC = () => {
         token: {colorPrimary: '#1677FF'},
         components: {}
       }} componentSize={globalSize} >
-        <HashRouter>
-          <TitleSync/>
-          <NavigateBar data={data}>
-            <Routes>
-              {/* 默认进入时重定向到 /dashboard */}
-              <Route path="/" element={<Navigate to="/dashboard" replace/>}/>
-              <Route key={'profile'} path={'/profile'} element={<Profile/>}/>
-              <Route key={'settings'} path={'/settings'} element={<Settings/>}/>
-              {leafRoutes.map(({uuid, path, component}, idx) => {
-                const key = uuid || path || String(idx);
-                const rk = path ? (refreshKeyMap[path] || 0) : 0;
-                const isIframe = typeof component === 'string' && component.startsWith('iframe:');
-                if (isIframe) {
-                  const src = (component as string).slice('iframe:'.length);
+        <AntApp>
+          <HashRouter>
+            <TitleSync/>
+            <NavigateBar data={data}>
+              <Routes>
+                {/* 默认进入时重定向到 /dashboard */}
+                <Route path="/" element={<Navigate to="/dashboard" replace/>}/>
+                <Route key={'profile'} path={'/profile'} element={<Profile/>}/>
+                <Route key={'settings'} path={'/settings'} element={<Settings/>}/>
+                {leafRoutes.map(({uuid, path, component}, idx) => {
+                  const key = uuid || path || String(idx);
+                  const rk = path ? (refreshKeyMap[path] || 0) : 0;
+                  const isIframe = typeof component === 'string' && component.startsWith('iframe:');
+                  if (isIframe) {
+                    const src = (component as string).slice('iframe:'.length);
+                    return (
+                      <Route key={key} path={path} element={<IframeView key={`iframe-${path}-${rk}`} src={src}/>}/>
+                    );
+                  }
+                  const Component = getLazyComponent(component);
                   return (
-                    <Route key={key} path={path} element={<IframeView key={`iframe-${path}-${rk}`} src={src}/>}/>
+                    <Route
+                      key={key}
+                      path={path}
+                      element={
+                        <React.Suspense fallback={<div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%'}}><Spin/></div>}>
+                          <ErrorBoundary key={`eb-${path}-${rk}`} fallback={<Result status="error" title={t('error.componentCrashed','页面加载出错')}/> }>
+                            <Component key={`comp-${path}-${rk}`}/>
+                          </ErrorBoundary>
+                        </React.Suspense>
+                      }
+                    />
                   );
-                }
-                const Component = getLazyComponent(component);
-                return (
-                  <Route
-                    key={key}
-                    path={path}
-                    element={
-                      <React.Suspense fallback={<div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%'}}><Spin/></div>}>
-                        <ErrorBoundary key={`eb-${path}-${rk}`} fallback={<Result status="error" title={t('error.componentCrashed','页面加载出错')}/> }>
-                          <Component key={`comp-${path}-${rk}`}/>
-                        </ErrorBoundary>
-                      </React.Suspense>
-                    }
-                  />
-                );
-              })}
-              <Route path="*" element={<Result status="404" title={t('error.404','页面不存在')}/>}/>
-            </Routes>
-          </NavigateBar>
-        </HashRouter>
+                })}
+                <Route path="*" element={<Result status="404" title={t('error.404','页面不存在')}/>}/>
+              </Routes>
+            </NavigateBar>
+          </HashRouter>
+        </AntApp>
       </ConfigProvider>
     </div>
   );

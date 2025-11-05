@@ -10,8 +10,23 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    justify-content: center;
 
+}
+
+.nb-top-menu {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    line-height: 64px;
+    display: flex;
+    align-items: center;
+}
+
+/* 侧边栏与按钮 */
+.nb-sider-menu {
+    height: 100%;
+    border-right: 0;
+    background-color: var(--nb-bg);
 }
 
 /* 主题切换全局颜色过渡动画 */
@@ -21,8 +36,152 @@ html.theme-transition, html.theme-transition body, html.theme-transition * {
     transition-timing-function: ease;
 }
 
+.nb-footer { text-align: center; }
+
+/* Tabs 标签文本与图标布局 */
+.nb-tab-label { display: inline-flex; align-items: center; gap: 6px; }
+.nb-tab-label-icon { display: inline-flex; align-items: center; }
+
 @media (prefers-reduced-motion: reduce) {
     html.theme-transition, html.theme-transition * {
         transition: none !important;
     }
 }
+
+/* 顶部菜单下划线去除（保留原有样式） */
+.top-nav-menu.ant-menu-horizontal > .ant-menu-item::after,
+.top-nav-menu.ant-menu-horizontal > .ant-menu-submenu::after,
+.top-nav-menu.ant-menu-horizontal > .ant-menu-item-selected::after,
+.top-nav-menu.ant-menu-horizontal > .ant-menu-submenu-selected::after {
+    border-bottom: none !important;
+}
+
+/* 主题变量（亮/暗） */
+.nb-root.theme-light {
+    --nb-bg: #ffffff;
+    --nb-border: rgba(5, 5, 5, 0.06);
+    --nb-radius: 8px;
+    --nb-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 1px 6px rgba(0,0,0,0.04);
+    --nb-shadow-tertiary: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.nb-root.theme-dark {
+    --nb-bg: #141414;
+    --nb-border: rgba(255, 255, 255, 0.12);
+    --nb-radius: 8px;
+    --nb-shadow: 0 1px 2px rgba(0,0,0,0.45), 0 1px 6px rgba(0,0,0,0.35);
+    --nb-shadow-tertiary: 0 1px 2px rgba(0,0,0,0.6);
+}
+
+/* 根容器与头部 */
+.nb-root { height: 100%; }
+
+.nb-header {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    background: var(--nb-bg);
+    height: 64px;
+}
+
+.nb-sider-toggle {
+    background-color: var(--nb-bg);
+    border: 1px solid var(--nb-border);
+    border-radius: 6px;
+    box-shadow: var(--nb-shadow-tertiary);
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    z-index: 10;
+}
+
+/* 内层布局与内容容器 */
+.nb-inner-layout { padding: 3px; }
+
+.nb-content-wrapper {
+    padding: 0;
+    margin: 0;
+    min-height: 300px;
+    background: var(--nb-bg);
+    border-radius: var(--nb-radius);
+    border: 1px solid var(--nb-border);
+    box-shadow: var(--nb-shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.nb-tabs-bar {
+    padding: 6px 12px 0;
+    border-bottom: 1px solid var(--nb-border);
+    background: var(--nb-bg);
+}
+
+.nb-inner-content {
+    flex: 1;
+    padding: 12px;
+    overflow: auto;
+}
+
+
+/* 顶部右侧工具组容器（与头像水平对齐） */
+.nb-tools-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    height: 100%;
+}
+
+/* 工具组容器占满菜单项高度，保证与头像垂直居中 */
+.nb-top-menu .ant-menu-item .nb-tools-item { height: 100%; }
+
+/* 使菜单项（包含工具组与头像）在 Header 内垂直居中 */
+.nb-top-menu .ant-menu-item,
+.nb-top-menu .ant-menu-submenu { display: flex; align-items: center; height: 100%; }
+
+/* 美化：当前登录用户名区域 */
+.nb-header-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    height: 100%;
+}
+
+.nb-header-user .ant-avatar {
+    box-shadow: var(--nb-shadow-tertiary);
+    border: 1px solid var(--nb-border);
+}
+
+.nb-greeting {
+    font-size: 12px;
+    color: rgba(250, 173, 20, 0.88); /* 暖色问候 */
+    margin-right: 2px;
+}
+
+.nb-name {
+    color: #1677ff; /* 与 Antd 默认主色一致 */
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nb-name:hover { text-decoration: underline; }
+
+/* 用户名文本容器：与头像垂直居中，并清除继承的行高 */
+.nb-header-user-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    line-height: 1;
+}
+
+/* 文本行高归一，避免受菜单 64px 行高影响 */
+.nb-greeting,
+.nb-name { line-height: 1; }

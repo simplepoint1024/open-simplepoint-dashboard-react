@@ -13,7 +13,6 @@ import {createIcon} from '@simplepoint/libs-shared/types/icon.ts';
 import {useSideNavigation, useTopNavigation} from "@/hooks/routes";
 import {useLocation, useNavigate} from "react-router-dom";
 import {flattenMenus, MenuInfo} from "@/store/routes";
-import './index.css'
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
 
 const {Header, Content, Footer, Sider} = Layout;
@@ -319,7 +318,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   const sideMenuItems = useMemo(() => useSideNavigation(navigate, data).items, [navigate, data, locale, t]);
 
   return (
-    <Layout className={`nb-root ${themeMode === 'dark' ? 'theme-dark' : 'theme-light'}`}>
+    <Layout className={`nb-root ${themeMode === 'dark' ? 'theme-dark' : 'theme-light'}`} style={{ minHeight: '100vh' }}>
       <Header className="nb-header">
         <Menu
           mode="horizontal"
