@@ -19,7 +19,7 @@ function getGlobalT(): ((key: string, fallback?: string, params?: Record<string,
 
 function isI18nReady(): boolean {
   const g = typeof window !== "undefined" ? (window as any)?.spI18n : undefined;
-  return !!(g?.t && g?.messages && Object.keys(g.messages).length > 0);
+  return !!(g?.t && g?.messages && Object.keys(g.messages).length > 1);
 }
 
 const isI18nStr = (v: unknown): v is string => typeof v === "string" && v.startsWith("i18n:");
@@ -86,15 +86,6 @@ function normalizeButtonI18n(btn: TableButtonProps): TableButtonProps {
 
 export function useSchema(baseUrl: string) {
   return useData(`${baseUrl}/schema`, async () => {
-    // 等待 i18n 准备完成（最多等待 2 秒）
-    const maxWait = 2000;
-    const interval = 50;
-    let waited = 0;
-    while (!isI18nReady() && waited < maxWait) {
-      await new Promise((r) => setTimeout(r, interval));
-      waited += interval;
-    }
-
     const res = await get<TableSchemaProps>(`${baseUrl}/schema`);
     if (!res) return res;
 
@@ -122,7 +113,14 @@ export function useSchema(baseUrl: string) {
         })
         .map(normalizeButtonI18n)
       : [];
-
+    // 等待 i18n 准备完成（最多等待 10 秒）
+    const maxWait = 1500;
+    const interval = 100;
+    let waited = 0;
+    while (!isI18nReady() && waited < maxWait) {
+      await new Promise((r) => setTimeout(r, interval));
+      waited += interval;
+    }
     return { ...res, schema: sortedSchema, buttons: processedButtons };
   });
 }

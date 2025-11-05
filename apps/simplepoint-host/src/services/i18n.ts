@@ -1,6 +1,5 @@
-// 后端国际化服务封装
-import {apis} from '@/apis';
-import {get} from '@simplepoint/libs-shared/api/methods';
+import { apis } from '@/apis';
+import { get } from '@simplepoint/libs-shared/api/methods';
 
 export type Language = {
   code: string;   // 例如 zh-CN / en-US
@@ -9,29 +8,42 @@ export type Language = {
 
 export type Messages = Record<string, string>;
 
+const FALLBACK_LANGUAGES: Language[] = [
+  { code: 'zh-CN', name: '中文（简体）' },
+  { code: 'en-US', name: 'English' },
+];
+
 // 获取可选语言列表
 export async function fetchLanguages(): Promise<Language[]> {
+  const { baseUrl, expansion } = apis['i18n-languages'];
+  const url = `${baseUrl}${expansion.mapping}`;
+
   try {
-    const data = await get<Language[]>(apis['i18n-languages'].baseUrl + apis['i18n-languages'].expansion.mapping);
+    const data = await get<Language[]>(url);
     if (Array.isArray(data) && data.length > 0) return data;
-  } catch (_) {
+  } catch (err) {
+    console.warn('[fetchLanguages] Failed to fetch languages:', err);
   }
-  // 兜底：最少提供中英文
-  return [
-    {code: 'zh-CN', name: '中文（简体）'},
-    {code: 'en-US', name: 'English'},
-  ];
+
+  return FALLBACK_LANGUAGES;
 }
 
-// 获取指定语言的消息键值对（可选按命名空间）
-export async function fetchMessages(locale: string, ns?: string[]): Promise<Messages> {
-  try {
-    const params: any = {locale};
-    if (Array.isArray(ns) && ns.length > 0) params.ns = ns.join(',');
-    const data = await get<Messages>(apis['i18n-messages'].baseUrl + apis['i18n-messages'].expansion.mapping, params);
-    if (data && typeof data === 'object') return data;
-  } catch (_) {
+// 获取指定语言的消息键值对（支持命名空间）
+export async function fetchMessages(locale: string, namespaces?: string[]): Promise<Messages> {
+  const { baseUrl, expansion } = apis['i18n-messages'];
+  const url = `${baseUrl}${expansion.mapping}`;
+
+  const params: Record<string, string> = { locale };
+  if (Array.isArray(namespaces) && namespaces.length > 0) {
+    params.ns = namespaces.join(',');
   }
-  // 兜底：返回空，让调用方使用 key 或默认文案
+
+  try {
+    const data = await get<Messages>(url, params);
+    if (data && typeof data === 'object') return data;
+  } catch (err) {
+    console.warn(`[fetchMessages] Failed to fetch messages for ${locale}:`, err);
+  }
+
   return {};
 }

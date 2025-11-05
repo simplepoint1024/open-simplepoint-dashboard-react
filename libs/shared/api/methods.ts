@@ -1,12 +1,18 @@
 import { request } from './client';
-import {Pageable} from "./pagination";
-import {useQuery} from "@tanstack/react-query";
+import type { Pageable } from './pagination';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
+/**
+ * GET 请求封装
+ */
 export function get<T>(url: string, params?: Record<string, any>): Promise<T> {
   const query = params ? `?${new URLSearchParams(params).toString()}` : '';
   return request<T>(`${url}${query}`, { method: 'GET' });
 }
 
+/**
+ * POST 请求封装
+ */
 export function post<T>(url: string, data: any): Promise<T> {
   return request<T>(url, {
     method: 'POST',
@@ -14,6 +20,9 @@ export function post<T>(url: string, data: any): Promise<T> {
   });
 }
 
+/**
+ * PUT 请求封装
+ */
 export function put<T>(url: string, data: any): Promise<T> {
   return request<T>(url, {
     method: 'PUT',
@@ -21,21 +30,23 @@ export function put<T>(url: string, data: any): Promise<T> {
   });
 }
 
-// 兼容 string | number | (string|number)[]
-export function del<T>(url: string, ids: string[] | number[] | string | number): Promise<T> {
+/**
+ * DELETE 请求封装（支持单个或多个 ID）
+ */
+export function del<T>(url: string, ids: string | number | (string | number)[]): Promise<T> {
   const list = Array.isArray(ids) ? ids : [ids];
-  const flat = (list as any).flat ? (list as any).flat() : list;
-  const idsStr = flat.map((x: any) => String(x)).join(',');
+  const idsStr = list.map(String).join(',');
   const query = idsStr ? `?ids=${encodeURIComponent(idsStr)}` : '';
-  return request<T>(`${url}${query}`, {
-    method: 'DELETE',
-  });
+  return request<T>(`${url}${query}`, { method: 'DELETE' });
 }
 
+/**
+ * 分页数据查询 Hook
+ */
 export function usePageable<T>(
   key: string | readonly unknown[],
   fetchFn: () => Promise<Pageable<T>>,
-  options?: any
+  options?: UseQueryOptions<Pageable<T>>
 ) {
   const queryKey = Array.isArray(key) ? key : [key];
   return useQuery<Pageable<T>>({
@@ -45,12 +56,18 @@ export function usePageable<T>(
   });
 }
 
+/**
+ * 普通数据查询 Hook
+ */
 export function useData<T>(
-  key: string,
-  fetchFn: () => Promise<T>
+  key: string | readonly unknown[],
+  fetchFn: () => Promise<T>,
+  options?: UseQueryOptions<T>
 ) {
+  const queryKey = Array.isArray(key) ? key : [key];
   return useQuery<T>({
-    queryKey: [key],
+    queryKey,
     queryFn: fetchFn,
+    ...options,
   });
 }
