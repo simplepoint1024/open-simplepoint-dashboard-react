@@ -110,9 +110,8 @@ export const apis = [
             }
           }
         }
-      }      )
+      })
   }),
-
   http.get('/common/roles', () => {
     return HttpResponse.json(
       {
@@ -149,6 +148,31 @@ export const apis = [
       }
     )
   }),
+  http.get('/common/roles/items', () => {
+    return HttpResponse.json({
+      'content': [
+        {
+          'name': '超级管理员',
+          'description': '拥有系统内所有权限',
+          'authority': 'SYSTEM_ADMIN'
+        },
+        {
+          'name': '用户',
+          'description': '普通用户',
+          'authority': 'USER'
+        }
+      ],
+      "page": {
+        "size": 10,
+        "number": 0,
+        "totalElements": 2,
+        "totalPages": 1
+      }
+    })
+  }),
+  http.get('/common/roles/authorized',()=> {
+    return HttpResponse.json(["SYSTEM_ADMIN"])
+  })
 ];
 
 export default apis;

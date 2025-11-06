@@ -7,7 +7,7 @@ import React, {useEffect, useMemo, useRef, useState} from "react";
 import {Profile} from "@/layouts/profile";
 import {Settings} from "@/layouts/settings";
 import {MenuInfo} from "@/store/routes";
-import {modules, Remote, routes} from "@/services/routes.ts";
+import {modules, Remote, routes} from "@/fetches/routes";
 import {init, loadRemote} from '@module-federation/enhanced/runtime';
 import 'antd/dist/reset.css';
 import type { Pageable } from '@simplepoint/libs-shared/types/request.ts';

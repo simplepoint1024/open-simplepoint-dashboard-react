@@ -1,6 +1,6 @@
 // context/I18nProvider.tsx
 import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { fetchLanguages, fetchMessages, Language, Messages } from '@/services/i18n';
+import { fetchLanguages, fetchMessages, Language, Messages } from '@/fetches/i18n';
 import { mkT } from '@simplepoint/libs-shared/hooks/useI18n';
 import { normalizeLocale, mapDayjsLocale, isRTL, interpolate } from '@/utils/i18nUtils';
 import { readStoredMessages, writeStoredMessages,  cacheKey, cacheTsKey, checkAndUpgradeCacheVersion } from '@/utils/i18nCache';

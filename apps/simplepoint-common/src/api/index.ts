@@ -12,7 +12,7 @@ export const apis = {
   'rbac-roles':{
     baseUrl: '/common/roles',
     i18nNamespaces: ['roles'],
-    name: 'roles',
+    name: 'roles'
   },
   'rbac-users':{
     baseUrl: '/common/users',

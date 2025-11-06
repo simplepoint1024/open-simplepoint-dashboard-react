@@ -8,13 +8,16 @@ interface TableTransferProps<T> extends TransferProps<TransferItem> {
   dataSource: T[];
   leftColumns: TableColumnsType<T>;
   rightColumns: TableColumnsType<T>;
+  // 不使用 React 的保留 prop 名称 `key`，改为 itemKey
+  itemKey?: keyof T | string;
 }
 
-const App = <T,>(props: TableTransferProps<T>) => {
-  const {leftColumns, rightColumns, ...restProps} = props;
-
-  // 统一行主键：优先使用 id，其次使用 key
-  const getRowKey = (item: any) => String(item?.id ?? item?.key);
+const App = <T,>({leftColumns, rightColumns, itemKey = 'id', ...restProps}: TableTransferProps<T>) => {
+  // 统一行主键：优先使用 item[itemKey]，其次使用 id、key，最终保证返回字符串（避免返回 'undefined'）
+  const getRowKey = (item: any) => {
+    const val = item?.[itemKey as string] ?? item?.id ?? item?.key;
+    return String(val ?? '');
+  };
 
   return (
     <Transfer style={{width: '100%'}} rowKey={getRowKey} {...restProps}>

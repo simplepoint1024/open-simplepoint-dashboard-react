@@ -1,4 +1,4 @@
-import { apis } from '@/apis';
+import fetches from '@/fetches';
 import { get } from '@simplepoint/libs-shared/api/methods';
 
 export type Language = {
@@ -15,7 +15,7 @@ const FALLBACK_LANGUAGES: Language[] = [
 
 // 获取可选语言列表
 export async function fetchLanguages(): Promise<Language[]> {
-  const { baseUrl, expansion } = apis['i18n-languages'];
+  const { baseUrl, expansion } = fetches['i18n-languages'];
   const url = `${baseUrl}${expansion.mapping}`;
 
   try {
@@ -30,7 +30,7 @@ export async function fetchLanguages(): Promise<Language[]> {
 
 // 获取指定语言的消息键值对（支持命名空间）
 export async function fetchMessages(locale: string, namespaces?: string[]): Promise<Messages> {
-  const { baseUrl, expansion } = apis['i18n-messages'];
+  const { baseUrl, expansion } = fetches['i18n-messages'];
   const url = `${baseUrl}${expansion.mapping}`;
 
   const params: Record<string, string> = { locale };

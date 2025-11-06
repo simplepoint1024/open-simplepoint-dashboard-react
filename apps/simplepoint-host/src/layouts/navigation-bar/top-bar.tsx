@@ -4,7 +4,7 @@ import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, Se
 import React, {useEffect, useRef, useState} from 'react';
 import {post} from "@simplepoint/libs-shared/types/request.ts";
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
-import { useUserInfo } from '@/services/user';
+import { useUserInfo } from '@/fetches/user';
 
 // 为主题切换提供短暂的全局颜色过渡动画
 function startThemeTransition(duration = 240) {
