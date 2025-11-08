@@ -55,7 +55,11 @@ const App = (props: RoleSelectProps) => {
   const [targetKeys, setTargetKeys] = useState<TransferProps['targetKeys']>([]);
 
   // 获取已分配角色
-  const {data: authorized} = useData<string[]>('fetchAuthorized', () => fetchAuthorized());
+  const {data: authorized} = useData<string[]>('fetchAuthorized', () => fetchAuthorized(
+    {
+      username: props.username
+    }
+  ));
   // 初始化已分配角色
   useEffect(() => {
     setTargetKeys(authorized);

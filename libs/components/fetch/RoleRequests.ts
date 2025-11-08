@@ -14,7 +14,7 @@ export interface RoleSelectDto {
   // 用户名
   username: string | null;
   // 角色权限列表
-  roleAuthorities: string[];
+  roleAuthorities?: string[];
 }
 
 /**
@@ -28,8 +28,8 @@ export async function fetchItems(params: Record<string, string>) {
 /**
  * 获取已分配角色下拉分页
  */
-export async function fetchAuthorized() {
-  return await get<string[]>('/common/roles/authorized');
+export async function fetchAuthorized(params: RoleSelectDto) {
+  return await get<string[]>('/common/roles/authorized', params);
 }
 
 /**
