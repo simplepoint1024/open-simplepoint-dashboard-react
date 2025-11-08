@@ -1,4 +1,4 @@
-import {get} from "@simplepoint/libs-shared/api/methods";
+import {get, post} from "@simplepoint/libs-shared/api/methods";
 import {Pageable} from "@simplepoint/libs-shared/api/pagination";
 
 /**
@@ -8,6 +8,13 @@ export interface RoleSelect {
   name: string;
   description: string;
   authority: string;
+}
+
+export interface RoleSelectDto {
+  // 用户名
+  username: string | null;
+  // 角色权限列表
+  roleAuthorities: string[];
 }
 
 /**
@@ -23,4 +30,16 @@ export async function fetchItems(params: Record<string, string>) {
  */
 export async function fetchAuthorized() {
   return await get<string[]>('/common/roles/authorized');
+}
+
+/**
+ * 取消分配角色
+ * @param data 请求数据
+ */
+export async function fetchUnauthorized(data: RoleSelectDto) {
+  return await post<RoleSelectDto>('/common/roles/unauthorized', data);
+}
+
+export async function fetchAuthorize(data: RoleSelectDto) {
+  return await post<RoleSelectDto>('/common/roles/authorize', data);
 }

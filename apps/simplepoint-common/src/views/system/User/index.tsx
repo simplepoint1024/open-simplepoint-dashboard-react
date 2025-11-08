@@ -7,6 +7,7 @@ import RoleSelect from "@simplepoint/libs-components/RoleSelect";
 
 const App = () => {
   const {t, ensure, locale} = useI18n();
+  const [username, setUsername] = useState(null as string | null);
   const [open, setOpen] = useState(false);
 
   // 确保本页所需命名空间加载（users/roles），语言切换后也会自动增量加载
@@ -15,8 +16,9 @@ const App = () => {
   }, [ensure, locale]);
 
   const customButtonEvents = {
-    onConfigRoles: (_keys: React.Key[], _rows: any[]) => {
+    onConfigRoles: (_keys: React.Key[], rows: any[]) => {
       setOpen(true);
+      setUsername(rows[0].username)
     },
   } as const;
 
@@ -34,7 +36,7 @@ const App = () => {
         placement={"bottom"}
         // height={700}
       >
-        <RoleSelect/>
+        <RoleSelect username={username}/>
       </Drawer>
     </div>
   );

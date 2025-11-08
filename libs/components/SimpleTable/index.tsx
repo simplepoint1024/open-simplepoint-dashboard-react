@@ -39,9 +39,7 @@ const App = (props: SimpleTableProps<any>) => {
     }
     (async () => {
       try {
-        console.log('[SimpleTable] loading i18n namespaces:', merged, 'for locale:', locale);
         await ensure(merged as string[]);
-        console.log("[SimpleTable] i18n namespaces loaded:", merged);
       } finally {
         nsLoadedCache.add(cacheKey);
         setI18nReady(true);

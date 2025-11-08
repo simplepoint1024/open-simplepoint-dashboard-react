@@ -36,7 +36,6 @@ export const apis = [
     } else {
       messages = {...pack.common,...pack.menu};
     }
-    console.log('[i18n] messages for', locale, nsList, messages);
     return HttpResponse.json(messages);
   }),
 ];

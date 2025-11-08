@@ -1,11 +1,15 @@
 import {useI18n} from '@simplepoint/libs-shared/hooks/useI18n';
 import {useEffect, useMemo, useState} from "react";
-import type {GetProp, TableColumnsType, TransferProps} from 'antd';
+import {GetProp, TableColumnsType, TransferProps} from 'antd';
 import STableTransfer from "../STableTransfer";
 import {useData, usePageable} from '@simplepoint/libs-shared/api/methods';
-import {fetchAuthorized, fetchItems} from "../fetch/RoleRequests.ts";
+import {fetchAuthorize, fetchAuthorized, fetchItems, fetchUnauthorized} from "../fetch/RoleRequests.ts";
 
 type TransferItem = GetProp<TransferProps, 'dataSource'>[number];
+
+export interface RoleSelectProps {
+  username: string | null;
+}
 
 interface DataType {
   name: string;
@@ -23,7 +27,7 @@ const filterOption = (input: string, item: DataType) => {
   return item.name?.includes(input) || item.authority?.includes(input);
 }
 
-const App = () => {
+const App = (props: RoleSelectProps) => {
   const {t, ensure, locale} = useI18n();
 
   // 获取角色列表数据
@@ -61,10 +65,20 @@ const App = () => {
     setTargetKeys(nextTargetKeys);
     if (direction === 'right') {
       // 分配角色的逻辑处理
-      console.log('Assign roles:', moveKeys);
+      fetchAuthorize({
+        username: props.username,
+        roleAuthorities: moveKeys as string[],
+      }).then(_res => {
+        // 处理返回结果
+      })
     } else {
       // 移除角色的逻辑处理
-      console.log('Remove roles:', moveKeys);
+      fetchUnauthorized({
+        username: props.username,
+        roleAuthorities: moveKeys as string[],
+      }).then(_res => {
+        // 处理返回结果
+      })
     }
   };
 

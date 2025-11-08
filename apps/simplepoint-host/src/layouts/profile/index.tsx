@@ -17,7 +17,7 @@ import {
 } from "antd";
 import {EditOutlined, ReloadOutlined, SaveOutlined, UserOutlined} from "@ant-design/icons";
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
-import {useUserInfo} from '@/services/user';
+import {useUserInfo} from '@/fetches/user.ts';
 import './index.css'
 
 export const Profile: React.FC = () => {
