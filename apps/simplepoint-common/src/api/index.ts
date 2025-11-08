@@ -1,4 +1,4 @@
-export const apis = {
+export default {
   'oidc-clients': {
     baseUrl: '/common/oidc/clients',
     i18nNamespaces: ['clients'],

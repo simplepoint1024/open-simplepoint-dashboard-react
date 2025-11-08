@@ -1,9 +1,9 @@
 import {useI18n} from '@simplepoint/libs-shared/hooks/useI18n';
 import {useEffect, useMemo, useState} from "react";
 import {GetProp, TableColumnsType, TransferProps} from 'antd';
-import STableTransfer from "../STableTransfer";
+import STableTransfer from "@simplepoint/libs-components/STableTransfer";
 import {useData, usePageable} from '@simplepoint/libs-shared/api/methods';
-import {fetchAuthorize, fetchAuthorized, fetchItems, fetchUnauthorized} from "../fetch/RoleRequests.ts";
+import {fetchAuthorize, fetchAuthorized, fetchItems, fetchUnauthorized} from "@/api/system/role";
 
 type TransferItem = GetProp<TransferProps, 'dataSource'>[number];
 

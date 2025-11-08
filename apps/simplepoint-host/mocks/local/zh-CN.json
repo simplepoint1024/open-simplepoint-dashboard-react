@@ -212,7 +212,7 @@
     "users.description.superAdmin": "是否为超级管理员",
     "users.title.username": "用户名",
     "users.description.username": "登录用户名",
-    "users.button.configRoles": "配置角色"
+    "users.button.config.role": "配置角色"
   },
   "menus": {
     "menus.title.component": "组件",
@@ -245,9 +245,14 @@
     "roles.description.roleName": "例如：超级管理员",
     "table.button.permissionConfig": "权限配置",
     "roles.permissionConfig.title": "系统权限配置",
-    "roles.permissionConfig.menu": "菜单配置"
+    "roles.permissionConfig.menu": "菜单配置",
+    "roles.config.permission": "权限配置"
   },
   "permissions": {
+    "permissions.title.name": "权限名称",
+    "permissions.description.name": "权限的显示名称",
+    "permissions.title.description": "描述",
+    "permissions.description.description": "该权限的简要说明",
     "permissions.title.authority": "权限标识",
     "permissions.description.authority": "权限字符串，例如 system:user:read",
     "permissions.title.method": "HTTP 方法",

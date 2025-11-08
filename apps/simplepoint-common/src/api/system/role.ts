@@ -1,5 +1,8 @@
 import {get, post} from "@simplepoint/libs-shared/api/methods";
 import {Pageable} from "@simplepoint/libs-shared/api/pagination";
+import api from "@/api";
+
+const {baseUrl} = api['rbac-roles']
 
 /**
  * 角色下拉选项接口
@@ -22,14 +25,14 @@ export interface RoleSelectDto {
  * @param params 查询参数
  */
 export async function fetchItems(params: Record<string, string>) {
-  return await get<Pageable<RoleSelect>>('/common/roles/items', params);
+  return await get<Pageable<RoleSelect>>(`${baseUrl}/items`, params);
 }
 
 /**
  * 获取已分配角色下拉分页
  */
 export async function fetchAuthorized(params: RoleSelectDto) {
-  return await get<string[]>('/common/roles/authorized', params);
+  return await get<string[]>(`${baseUrl}/authorized`, params);
 }
 
 /**
@@ -37,9 +40,9 @@ export async function fetchAuthorized(params: RoleSelectDto) {
  * @param data 请求数据
  */
 export async function fetchUnauthorized(data: RoleSelectDto) {
-  return await post<RoleSelectDto>('/common/roles/unauthorized', data);
+  return await post<RoleSelectDto>(`${baseUrl}/unauthorized`, data);
 }
 
 export async function fetchAuthorize(data: RoleSelectDto) {
-  return await post<RoleSelectDto>('/common/roles/authorize', data);
+  return await post<RoleSelectDto>(`${baseUrl}/authorize`, data);
 }

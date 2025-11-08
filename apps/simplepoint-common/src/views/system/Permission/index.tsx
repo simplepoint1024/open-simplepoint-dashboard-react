@@ -1,11 +1,11 @@
 import SimpleTable from "@simplepoint/libs-components/SimpleTable";
-import {apis} from "@/api";
+import api from '@/api/index';
 
 const App = () => {
   return (
     <div>
       <SimpleTable
-        {...apis['rbac-permissions']}
+        {...api['rbac-permissions']}
       />
     </div>
   );

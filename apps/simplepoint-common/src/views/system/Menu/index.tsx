@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import SimpleTable from "@simplepoint/libs-components/SimpleTable";
-import {apis} from '@/api';
+import api from '@/api/index';
 
 const App = () => {
   // 受控抽屉与编辑数据
@@ -22,7 +22,7 @@ const App = () => {
   return (
     <div>
       <SimpleTable
-        {...apis['rbac-menus']}
+        {...api['rbac-menus']}
         drawerOpen={drawerOpen}
         onDrawerOpenChange={setDrawerOpen}
         editingRecord={editingRecord}

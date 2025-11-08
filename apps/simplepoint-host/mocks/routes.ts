@@ -229,6 +229,13 @@ export const apis = [
                 "children": []
               }
             ]
+          },
+          {
+            "label": "外部链接",
+            "title": "menu.externalLink",
+            "icon": "LinkOutlined",
+            "path": "/baidu",
+            "component": "iframe:https://www.baidu.com",
           }
         ],
         "page": {

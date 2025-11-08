@@ -48,10 +48,10 @@ export const apis = [
             "argumentMaxSize": 1,
             "sort": 2,
             "type": "primary",
-            "title": "i18n:users.button.configRoles",
+            "title": "i18n:users.button.config.role",
             "danger": false,
             "argumentMinSize": 1,
-            "key": "onConfigRoles"
+            "key": "config.role"
           }
         ], "schema": {
           "$schema": "http://json-schema.org/draft-07/schema#", "type": "object", "properties": {

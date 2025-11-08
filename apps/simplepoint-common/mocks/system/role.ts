@@ -52,10 +52,10 @@ export const apis = [
             "argumentMaxSize": 1,
             "sort": 2,
             "type": "primary",
-            "title": "i18n:table.button.permissionConfig",
+            "title": "i18n:roles.config.permission",
             "danger": false,
             "argumentMinSize": 1,
-            "key": "permissionConfig"
+            "key": "config.permission"
           }
         ],
         "schema": {

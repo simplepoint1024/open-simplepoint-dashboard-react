@@ -76,12 +76,36 @@ export const apis = [
       }
     )
   }),
-
   http.get(`${base}`, () => {
     return HttpResponse.json(
       {"content": [], "page": {"size": 20, "number": 0, "totalElements": 0, "totalPages": 0}}
     )
   }),
+  http.get(`${base}/items`, () => {
+    return HttpResponse.json({
+      'content': [
+        {
+          'name': '测试权限',
+          'description': '拥有系统内所有权限',
+          'authority': 'SYSTEM'
+        },
+        {
+          'name': '测试权限2',
+          'description': '通用权限',
+          'authority': 'COMMON'
+        }
+      ],
+      "page": {
+        "size": 10,
+        "number": 0,
+        "totalElements": 2,
+        "totalPages": 1
+      }
+    })
+  }),
+  http.get(`${base}/authorized`,()=> {
+    return HttpResponse.json(["COMMON"])
+  })
 ];
 
 export default apis;
