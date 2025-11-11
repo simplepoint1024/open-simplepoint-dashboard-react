@@ -35,11 +35,14 @@ const normalizeSchemaI18n = (node: any): any => {
   return node;
 };
 
-const sortByOrder = <T extends Record<string, any>>(items: T[], keyFn: (item: T) => string = () => "") =>
+// Only sort by x-order; keep original relative order for ties or when x-order is undefined
+const sortByOrder = <T extends Record<string, any>>(items: T[], _keyFn: (item: T) => string = () => "") =>
   [...items].sort((a, b) => {
     const o1 = typeof a["x-order"] === "number" ? a["x-order"] : Infinity;
     const o2 = typeof b["x-order"] === "number" ? b["x-order"] : Infinity;
-    return o1 !== o2 ? o1 - o2 : keyFn(a).localeCompare(keyFn(b));
+    if (o1 < o2) return -1;
+    if (o1 > o2) return 1;
+    return 0; // stable sort preserves original order
   });
 
 const sortObjectProperties = (obj: Record<string, any>) =>
