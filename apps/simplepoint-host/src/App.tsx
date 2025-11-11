@@ -1,7 +1,7 @@
 import '@/App.css';
 import '@simplepoint/components/Simplepoint.css'
-import {ConfigProvider, Result, Spin, theme as antdTheme} from 'antd';
-import {HashRouter, Route, Routes, Navigate} from "react-router-dom";
+import {App as AntApp, ConfigProvider, Result, Spin, theme as antdTheme} from 'antd';
+import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import NavigateBar from "@/layouts/navigation-bar";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {Profile} from "@/layouts/profile";
@@ -10,28 +10,43 @@ import {MenuInfo} from "@/store/routes";
 import {modules, Remote, routes as fetchRoutes} from "@/fetches/routes";
 import 'antd/dist/reset.css';
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
-import { App as AntApp } from 'antd';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { IframeView } from './components/IframeView';
-import { TitleSync } from './components/TitleSync';
-import { usePageable } from '@simplepoint/shared/api/methods';
-import { useGlobalSize } from './hooks/useGlobalSize';
-import { useThemeMode } from './hooks/useThemeMode';
-import { flattenLeafRoutes } from './utils/flattenRoutes';
-import { getLazyComponent } from './utils/lazyComponent';
-import { registerRemotesIfAny } from './mf/registerRemotes';
+import {ErrorBoundary} from './components/ErrorBoundary';
+import {IframeView} from './components/IframeView';
+import {TitleSync} from './components/TitleSync';
+import {usePageable} from '@simplepoint/shared/api/methods';
+import {useGlobalSize} from './hooks/useGlobalSize';
+import {useThemeMode} from './hooks/useThemeMode';
+import {flattenLeafRoutes} from './utils/flattenRoutes';
+import {getLazyComponent} from './utils/lazyComponent';
+import {registerRemotesIfAny} from './mf/registerRemotes';
+import zhCN from 'antd/locale/zh_CN';
+import dayjs from "dayjs";
+import {antdLocaleMapping, dayjsLocaleMapping} from "@/i18n/locale.ts";
 
 const App: React.FC = () => {
-  const { globalSize } = useGlobalSize();
-  const { resolvedTheme } = useThemeMode();
+  const [currentLocale, setCurrentLocale] = useState(zhCN);
+  const {globalSize} = useGlobalSize();
+  const {resolvedTheme} = useThemeMode();
 
   // 使用全局 I18n 的 locale
-  const { t, ready: i18nReady, loading: i18nLoading } = useI18n();
+  const {t, ready: i18nReady, loading: i18nLoading, locale} = useI18n();
 
+  useEffect(() => {
+    import(`dayjs/locale/${dayjsLocaleMapping[locale]}`).then(() => {
+      dayjs.locale(locale)
+    }).catch(() => {
+      dayjs.locale('en')
+    })
+    import(`antd/locale/${antdLocaleMapping[locale]}`).then((mod) => {
+      setCurrentLocale(mod.default);
+    }).catch(() => {
+      setCurrentLocale(zhCN);
+    });
+  }, [locale]);
   // 加载远程模块列表与路由（带 loading）
-  const { data: remotesPage, isLoading: remotesLoading } = usePageable<Remote>(['mf-remotes'], modules);
+  const {data: remotesPage, isLoading: remotesLoading} = usePageable<Remote>(['mf-remotes'], modules);
   const remotes = remotesPage?.content ?? [];
-  const { data: menusPage, isLoading: routesLoading } = usePageable<MenuInfo>(['routes'], fetchRoutes);
+  const {data: menusPage, isLoading: routesLoading} = usePageable<MenuInfo>(['routes'], fetchRoutes);
 
   const initedRef = useRef(false);
   useEffect(() => {
@@ -49,7 +64,7 @@ const App: React.FC = () => {
     const handler = (e: any) => {
       const fromHash = window.location.hash ? window.location.hash.replace(/^#/, '') : undefined;
       const currentPath = e?.detail?.path || fromHash || window.location.pathname || '/';
-      setRefreshKeyMap(prev => ({ ...prev, [currentPath]: (prev[currentPath] || 0) + 1 }));
+      setRefreshKeyMap(prev => ({...prev, [currentPath]: (prev[currentPath] || 0) + 1}));
     };
     window.addEventListener('sp-refresh-route', handler as EventListener);
     return () => window.removeEventListener('sp-refresh-route', handler as EventListener);
@@ -71,12 +86,23 @@ const App: React.FC = () => {
   const showGlobalLoading = anyLoading || !minHoldDone;
 
   return (
-    <div className="content" style={{position:'relative'}}>
+    <div className="content" style={{position: 'relative'}}>
       {showGlobalLoading && (
-        <div style={{position:'fixed', inset:0, zIndex: 9999, display:'flex', alignItems:'center', justifyContent:'center', background: resolvedTheme === 'dark' ? 'rgba(0,0,0,0.75)' : 'rgba(255,255,255,0.9)'}}>
-          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap: 12}}>
-            <Spin size="large" />
-            <div style={{color: resolvedTheme === 'dark' ? '#EEE' : '#333', fontSize: 14}}>{t('loading.resources','正在加载资源...')}</div>
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: resolvedTheme === 'dark' ? 'rgba(0,0,0,0.75)' : 'rgba(255,255,255,0.9)'
+        }}>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12}}>
+            <Spin size="large"/>
+            <div style={{
+              color: resolvedTheme === 'dark' ? '#EEE' : '#333',
+              fontSize: 14
+            }}>{t('loading.resources', '正在加载资源...')}</div>
           </div>
         </div>
       )}
@@ -84,10 +110,10 @@ const App: React.FC = () => {
         algorithm: resolvedTheme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
         token: {colorPrimary: '#1677FF'},
         components: {}
-      }} componentSize={globalSize} >
+      }} componentSize={globalSize} locale={currentLocale}>
         <AntApp>
           <HashRouter>
-            <TitleSync leafRoutes={leafRoutes} t={t} />
+            <TitleSync leafRoutes={leafRoutes} t={t}/>
             <NavigateBar data={data}>
               <Routes>
                 <Route path="/" element={<Navigate to="/dashboard" replace/>}/>
@@ -109,8 +135,11 @@ const App: React.FC = () => {
                       key={key}
                       path={path}
                       element={
-                        <React.Suspense fallback={<div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%'}}><Spin/></div>}>
-                          <ErrorBoundary key={`eb-${path}-${rk}`} fallback={<Result status="error" title={t('error.componentCrashed','页面加载出错')}/> }>
+                        <React.Suspense fallback={<div
+                          style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                          <Spin/></div>}>
+                          <ErrorBoundary key={`eb-${path}-${rk}`} fallback={<Result status="error"
+                                                                                    title={t('error.componentCrashed', '页面加载出错')}/>}>
                             <Component key={`comp-${path}-${rk}`}/>
                           </ErrorBoundary>
                         </React.Suspense>
@@ -118,7 +147,7 @@ const App: React.FC = () => {
                     />
                   );
                 })}
-                <Route path="*" element={<Result status="404" title={t('error.404','页面不存在')}/>}/>
+                <Route path="*" element={<Result status="404" title={t('error.404', '页面不存在')}/>}/>
               </Routes>
             </NavigateBar>
           </HashRouter>
