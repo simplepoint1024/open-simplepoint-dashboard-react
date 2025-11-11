@@ -1,62 +1,37 @@
 import {http, HttpResponse} from 'msw';
 
-const base = '/common/i18n/messages';
+const base = '/common/i18n/namespaces';
 
-export const apis = [
+export default [
   http.get(`${base}/schema`, () => {
     return HttpResponse.json(
       {
         "schema": {
-          "$schema": "http://json-schema.org/draft-07/schema#", "type": "object", "properties": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
             "code": {
               "type": ["string", "null"],
-              "title": "i18n:messages.title.code",
-              "description": "i18n:messages.description.code",
-              "minLength": 1,
-              "maxLength": 256,
-              "x-order": 2,
+              "title": "i18n:namespaces.title.code",
+              "description": "i18n:namespaces.description.code",
               "x-ui": {"x-list-visible": "true"}
             },
             "description": {
               "type": ["string", "null"],
-              "title": "i18n:messages.title.description",
-              "description": "i18n:messages.description.description",
-              "minLength": 1,
-              "maxLength": 2048,
-              "x-order": 4
-            },
-            "global": {
-              "type": "boolean",
-              "title": "i18n:messages.title.global",
-              "description": "i18n:messages.description.global",
-              "x-order": 5,
+              "title": "i18n:namespaces.title.description",
+              "description": "i18n:namespaces.description.description",
               "x-ui": {"x-list-visible": "true"}
             },
-            "locale": {
+            "module": {
               "type": ["string", "null"],
-              "title": "i18n:messages.title.locale",
-              "description": "i18n:messages.description.locale",
-              "minLength": 1,
-              "maxLength": 128,
-              "x-order": 0,
+              "title": "i18n:namespaces.title.module",
+              "description": "i18n:namespaces.description.module",
               "x-ui": {"x-list-visible": "true"}
             },
-            "message": {
+            "name": {
               "type": ["string", "null"],
-              "title": "i18n:messages.title.message",
-              "description": "i18n:messages.description.message",
-              "minLength": 1,
-              "maxLength": 2048,
-              "x-order": 3,
-              "x-ui": {"x-list-visible": "true"}
-            },
-            "namespace": {
-              "type": ["string", "null"],
-              "title": "i18n:messages.title.namespace",
-              "description": "i18n:messages.description.namespace",
-              "minLength": 1,
-              "maxLength": 128,
-              "x-order": 1,
+              "title": "i18n:namespaces.title.name",
+              "description": "i18n:namespaces.description.name",
               "x-ui": {"x-list-visible": "true"}
             }
           }
@@ -109,5 +84,5 @@ export const apis = [
   }),
 ];
 
-export default apis;
+
 

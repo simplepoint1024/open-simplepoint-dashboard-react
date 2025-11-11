@@ -2,7 +2,7 @@ import {http, HttpResponse} from 'msw';
 
 const base = '/common/i18n/regions';
 
-export const apis = [
+export default [
   http.get(`${base}/schema`, () => {
     return HttpResponse.json(
       {
@@ -99,5 +99,5 @@ export const apis = [
   }),
 ];
 
-export default apis;
+
 

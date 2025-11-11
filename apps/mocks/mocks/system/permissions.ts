@@ -2,7 +2,7 @@ import {http, HttpResponse} from 'msw';
 
 const base = '/common/permissions';
 
-export const apis = [
+export default [
   http.get(`${base}/schema`, () => {
     return HttpResponse.json(
       {
@@ -108,5 +108,5 @@ export const apis = [
   })
 ];
 
-export default apis;
+
 

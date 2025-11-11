@@ -4,7 +4,7 @@ import '@simplepoint/components/Simplepoint.css';
 import '@ant-design/v5-patch-for-react-19';
 import App from '@/App';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import MockWorker from "@/mock";
+import MockWorker from "../../mocks";
 import {applyInitialHtmlAttributes} from "@/utils/initHtmlAttributes.ts";
 import {I18nProvider} from "@/layouts/i18n/I18nProvider.tsx";
 
@@ -26,8 +26,12 @@ function createRoot() {
   );
 }
 
-MockWorker
-  .catch((err) => console.warn('MSW mock init failed:', err))
-  .finally(createRoot);
+if (process.env.NODE_ENV === 'development') {
+  MockWorker
+    .catch((err) => console.warn('MSW mock init failed:', err))
+    .finally(createRoot);
+}else {
+  createRoot();
+}
 
 

@@ -1,6 +1,6 @@
 import {http, HttpResponse} from 'msw';
 
-export const apis = [
+export default [
   http.get('/common/modules', () => {
     return HttpResponse.json({
       page: {
@@ -248,5 +248,3 @@ export const apis = [
     )
   }),
 ];
-
-export default apis;

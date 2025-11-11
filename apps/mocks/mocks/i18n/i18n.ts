@@ -6,7 +6,7 @@ const languageMap: Record<string, any> = {
   'ja-JP': require("./local/ja-JP.json"),
 }
 
-export const apis = [
+export default [
   // 语言列表
   http.get('/common/i18n/languages/mapping', () => {
     return HttpResponse.json([
@@ -34,10 +34,8 @@ export const apis = [
         }
       }
     } else {
-      messages = {...pack.common,...pack.menu};
+      messages = {...pack.common, ...pack.menu};
     }
     return HttpResponse.json(messages);
   }),
 ];
-
-export default apis;
