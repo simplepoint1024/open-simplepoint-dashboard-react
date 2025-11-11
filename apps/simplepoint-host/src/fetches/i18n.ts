@@ -1,5 +1,5 @@
 import fetches from '@/fetches';
-import { get } from '@simplepoint/libs-shared/api/methods';
+import { get } from '@simplepoint/shared/api/methods';
 
 export type Language = {
   code: string;   // 例如 zh-CN / en-US

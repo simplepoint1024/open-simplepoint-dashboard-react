@@ -1,4 +1,4 @@
-import {createIcon} from "@simplepoint/libs-shared/types/icon.ts";
+import {createIcon} from "@simplepoint/shared/types/icon.ts";
 import {MenuInfo, MenuItemType} from "@/store/routes";
 import {MenuProps} from "antd";
 import {aboutMeItem, logoItem, toolsSwitcherGroupItem} from "@/layouts/navigation-bar/top-bar.tsx";

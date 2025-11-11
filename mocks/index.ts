@@ -1,5 +1,3 @@
-import {setupWorker} from 'msw/browser';
-
 // 读取配置：支持 ?mockInclude=xxx & ?mockExclude=yyy & ?mockLog=1
 function parseBoolean(value: string | null | undefined): boolean | null {
   if (value == null) return null;
@@ -43,7 +41,7 @@ const moduleEntries = ctx.keys()
   .filter(({ key }) => (includeRe ? includeRe.test(key) : true))
   .filter(({ key }) => (excludeRe ? !excludeRe.test(key) : true));
 
-const handlers = moduleEntries.flatMap(({ key, mod }) => {
+export const handlers = moduleEntries.flatMap(({ key, mod }) => {
   // 兼容多种导出方式：默认导出数组、命名导出 apis、默认导出对象.apis
   const picked = Array.isArray(mod?.default)
     ? mod.default
@@ -70,7 +68,3 @@ if (log) {
   if (include) console.info('[MSW] include 规则：', include);
   if (exclude) console.info('[MSW] exclude 规则：', exclude);
 }
-
-export const worker = setupWorker(
-  ...handlers,
-);

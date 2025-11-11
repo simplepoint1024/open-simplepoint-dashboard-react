@@ -1,8 +1,8 @@
-import SimpleTable from "@simplepoint/libs-components/SimpleTable";
+import SimpleTable from "@simplepoint/components/SimpleTable";
 import api from '@/api/index';
 import React, {useEffect, useState} from 'react';
 import {Drawer} from "antd";
-import {useI18n} from '@simplepoint/libs-shared/hooks/useI18n';
+import {useI18n} from '@simplepoint/shared/hooks/useI18n';
 import PermissionConfig from './config/permission'
 
 // 获取基础表格配置

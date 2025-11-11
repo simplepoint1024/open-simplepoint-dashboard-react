@@ -8,7 +8,7 @@
     "dev": "rslib mf-dev"
   },
   "dependencies": {
-    "@simplepoint/libs-shared": "workspace:*",
-    "@simplepoint/libs-components": "workspace:*"
+    "@simplepoint/shared": "workspace:*",
+    "@simplepoint/components": "workspace:*"
   }
 }

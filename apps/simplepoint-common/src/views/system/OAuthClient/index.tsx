@@ -1,5 +1,5 @@
 import api from '@/api/index';
-import SimpleTable from "@simplepoint/libs-components/SimpleTable";
+import SimpleTable from "@simplepoint/components/SimpleTable";
 
 const App = () => {
   return (

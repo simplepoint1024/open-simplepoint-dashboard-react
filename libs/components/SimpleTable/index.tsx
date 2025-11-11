@@ -1,12 +1,12 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { useSchema } from '@simplepoint/libs-shared/hooks/useSchema';
-import { del, get, post, put, usePageable } from '@simplepoint/libs-shared/api/methods';
+import { useSchema } from '@simplepoint/shared/hooks/useSchema';
+import { del, get, post, put, usePageable } from '@simplepoint/shared/api/methods';
 import Table, { TableButtonProps } from '../Table';
 import SForm from '../SForm';
 import { IChangeEvent } from '@rjsf/core';
 import { Alert, Drawer, message, Modal, Spin, Skeleton } from 'antd';
-import { createIcon } from '@simplepoint/libs-shared/types/icon';
-import { useI18n } from '@simplepoint/libs-shared/hooks/useI18n';
+import { createIcon } from '@simplepoint/shared/types/icon';
+import { useI18n } from '@simplepoint/shared/hooks/useI18n';
 
 const nsLoadedCache = new Set<string>();
 
@@ -71,7 +71,7 @@ const App = (props: SimpleTableProps<any>) => {
   };
 
   const fetchPage = () =>
-    get<import('@simplepoint/libs-shared/types/request').Pageable<any>>(props.baseUrl, {
+    get<import('@simplepoint/shared/types/request').Pageable<any>>(props.baseUrl, {
       page: page - 1,
       size,
       ...filters,

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { get } from '@simplepoint/libs-shared/types/request.ts';
+import { get } from '@simplepoint/shared/types/request.ts';
 
 export type UserInfo = any;
 

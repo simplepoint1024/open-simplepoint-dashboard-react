@@ -53,11 +53,11 @@ export default {
     singleton: true,
     eager: true,
   },
-  '@simplepoint/libs-components': {
+  '@simplepoint/components': {
     singleton: true,
     eager: true,
   },
-  '@simplepoint/libs-shared': {
+  '@simplepoint/shared': {
     singleton: true,
     eager: true,
   },

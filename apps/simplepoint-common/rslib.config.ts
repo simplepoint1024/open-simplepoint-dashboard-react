@@ -24,7 +24,7 @@ export default defineConfig({
         pluginModuleFederation({
           name: 'common',
           exposes: require('./module.exposes').default,
-          shared: require('@simplepoint/libs-shared/types/module.shared').default,
+          shared: require('@simplepoint/shared/types/module.shared').default,
         }),
       ],
     },

@@ -1,5 +1,5 @@
 import '@/App.css';
-import '@simplepoint/libs-components/Simplepoint.css'
+import '@simplepoint/components/Simplepoint.css'
 import {ConfigProvider, Result, Spin, theme as antdTheme} from 'antd';
 import {HashRouter, Route, Routes, Navigate} from "react-router-dom";
 import NavigateBar from "@/layouts/navigation-bar";
@@ -14,7 +14,7 @@ import { App as AntApp } from 'antd';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { IframeView } from './components/IframeView';
 import { TitleSync } from './components/TitleSync';
-import { usePageable } from '@simplepoint/libs-shared/api/methods';
+import { usePageable } from '@simplepoint/shared/api/methods';
 import { useGlobalSize } from './hooks/useGlobalSize';
 import { useThemeMode } from './hooks/useThemeMode';
 import { flattenLeafRoutes } from './utils/flattenRoutes';

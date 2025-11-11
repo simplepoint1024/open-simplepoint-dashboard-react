@@ -8,7 +8,7 @@ export default defineConfig({
     pluginModuleFederation({
       name: 'host',
       manifest: false,
-      shared: require('@simplepoint/libs-shared/types/module.shared').default,
+      shared: require('@simplepoint/shared/types/module.shared').default,
       shareStrategy: 'loaded-first',
     }),
   ],

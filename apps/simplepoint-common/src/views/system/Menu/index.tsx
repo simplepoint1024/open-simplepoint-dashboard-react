@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import SimpleTable from "@simplepoint/libs-components/SimpleTable";
+import SimpleTable from "@simplepoint/components/SimpleTable";
 import api from '@/api/index';
 
 const App = () => {

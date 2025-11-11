@@ -4,10 +4,10 @@ import {Button, Checkbox, Col, Popover, Row, Space, Table as AntTable} from 'ant
 import {SearchOutlined, SettingOutlined} from '@ant-design/icons';
 import type {ColumnsType} from 'antd/es/table';
 import {RJSFSchema} from '@rjsf/utils';
-import {Pageable} from '@simplepoint/libs-shared/types/request';
+import {Pageable} from '@simplepoint/shared/types/request';
 import {ButtonProps} from "antd/es/button/button";
-import {createIcon} from '@simplepoint/libs-shared/types/icon';
-import {useI18n} from '@simplepoint/libs-shared/hooks/useI18n';
+import {createIcon} from '@simplepoint/shared/types/icon';
+import {useI18n} from '@simplepoint/shared/hooks/useI18n';
 import ColumnFilter from './ColumnFilter';
 
 export type TableButtonProps = ButtonProps & {

@@ -1,7 +1,7 @@
 {
-  "name": "@simplepoint/libs-components",
+  "name": "@simplepoint/components",
   "version": "1.0.0",
   "dependencies": {
-    "@simplepoint/libs-shared": "workspace:*"
+    "@simplepoint/shared": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 import {MenuInfo} from "@/store/routes";
-import {get, Pageable} from "@simplepoint/libs-shared/types/request.ts";
+import {get, Pageable} from "@simplepoint/shared/types/request.ts";
 
 export type Remote = {
   name: string;

@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import {Select} from 'antd';
 import type {WidgetProps} from '@rjsf/utils';
 import * as AntIcons from '@ant-design/icons';
-import {createIcon} from '@simplepoint/libs-shared/types/icon';
+import {createIcon} from '@simplepoint/shared/types/icon';
 
 const allIconNames = Object.keys(AntIcons).filter((k) => /Outlined$/.test(k));
 

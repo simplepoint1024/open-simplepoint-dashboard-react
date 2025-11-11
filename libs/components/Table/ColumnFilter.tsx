@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useMemo, useState} from 'react';
 import {Input, Select, Space, Button} from 'antd';
-import { useI18n } from '@simplepoint/libs-shared/hooks/useI18n';
+import { useI18n } from '@simplepoint/shared/hooks/useI18n';
 
 export interface ColumnFilterProps {
   initialOp?: string;

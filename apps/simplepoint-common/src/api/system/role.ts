@@ -1,5 +1,5 @@
-import {get, post} from "@simplepoint/libs-shared/api/methods";
-import {Pageable} from "@simplepoint/libs-shared/api/pagination";
+import {get, post} from "@simplepoint/shared/api/methods";
+import {Pageable} from "@simplepoint/shared/api/pagination";
 import api from "@/api";
 
 const {baseUrl} = api['rbac-roles']

@@ -2,7 +2,7 @@ import type {ItemType} from "antd/es/menu/interface";
 import {Avatar, Button, Dropdown, MenuProps, Tooltip, Popconfirm, message} from "antd";
 import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined, DesktopOutlined, DeleteOutlined, FullscreenOutlined, FullscreenExitOutlined} from "@ant-design/icons";
 import React, {useEffect, useRef, useState} from 'react';
-import {post} from "@simplepoint/libs-shared/types/request.ts";
+import {post} from "@simplepoint/shared/types/request.ts";
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import { useUserInfo } from '@/fetches/user';
 

@@ -9,7 +9,7 @@ import {
   VerticalRightOutlined
 } from '@ant-design/icons';
 import {Button, Dropdown, Layout, Menu, Tabs} from 'antd';
-import {createIcon} from '@simplepoint/libs-shared/types/icon.ts';
+import {createIcon} from '@simplepoint/shared/types/icon.ts';
 import {useSideNavigation, useTopNavigation} from "@/hooks/routes";
 import {useLocation, useNavigate} from "react-router-dom";
 import {flattenMenus, MenuInfo} from "@/store/routes";
