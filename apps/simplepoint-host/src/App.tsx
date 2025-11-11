@@ -8,7 +8,7 @@ import {Profile} from "@/layouts/profile";
 import {Settings} from "@/layouts/settings";
 import {MenuInfo} from "@/store/routes";
 import {modules, Remote, routes} from "@/fetches/routes";
-import {init, loadRemote} from '@module-federation/enhanced/runtime';
+import { getInstance, loadRemote } from '@module-federation/runtime';
 import 'antd/dist/reset.css';
 import type { Pageable } from '@simplepoint/libs-shared/types/request.ts';
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
@@ -109,11 +109,12 @@ const App: React.FC = () => {
   const { data: remotes, loading: remotesLoading } = usePageable<Remote>(modules);
   const { data: menus, loading: routesLoading } = usePageable<MenuInfo>(routes);
 
+  const mf = getInstance();
   const initedRef = useRef(false);
   useEffect(() => {
     if (!initedRef.current && !remotesLoading) {
       if (remotes.length > 0) {
-        init({ name: 'host', remotes });
+        mf?.registerRemotes(remotes);
       }
       initedRef.current = true; // 即使无远程也视为完成初始化
     }

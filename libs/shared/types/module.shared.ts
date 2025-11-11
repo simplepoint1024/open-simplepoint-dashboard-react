@@ -11,10 +11,6 @@ export default {
     strictVersion: false,
     eager: true,
   },
-  '@module-federation/enhanced': {
-    singleton: true,
-    eager: true,
-  },
   'antd': {
     singleton: true,
     eager: true,

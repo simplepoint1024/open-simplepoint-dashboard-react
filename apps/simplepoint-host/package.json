@@ -9,8 +9,8 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
-    "@simplepoint/libs-shared": "workspace:*",
+    "@module-federation/runtime": "^0.21.3",
     "@simplepoint/libs-components": "workspace:*",
-    "dayjs": "^1.11.11"
+    "@simplepoint/libs-shared": "workspace:*"
   }
 }
