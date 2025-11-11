@@ -3,7 +3,8 @@ import {useEffect, useMemo, useState} from "react";
 import {GetProp, TableColumnsType, TransferProps} from 'antd';
 import STableTransfer from "@simplepoint/components/STableTransfer";
 import {useData, usePageable} from '@simplepoint/shared/api/methods';
-import {fetchAuthorize, fetchAuthorized, fetchItems, fetchUnauthorized} from "@/api/system/role";
+import {fetchItems} from "@/api/system/role";
+import {fetchAuthorize, fetchAuthorized, fetchUnauthorized} from "@/api/system/user";
 
 type TransferItem = GetProp<TransferProps, 'dataSource'>[number];
 

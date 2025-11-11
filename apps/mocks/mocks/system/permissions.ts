@@ -102,9 +102,6 @@ export default [
         "totalPages": 1
       }
     })
-  }),
-  http.get(`${base}/authorized`,()=> {
-    return HttpResponse.json(["COMMON"])
   })
 ];
 

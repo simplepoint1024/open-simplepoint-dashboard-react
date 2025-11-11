@@ -1,7 +1,9 @@
 import {http, HttpResponse} from 'msw';
 
+const base = '/common/roles';
+
 export default [
-  http.get('/common/roles/schema', () => {
+  http.get(`${base}/schema`, () => {
     return HttpResponse.json(
       {
         "buttons": [
@@ -112,7 +114,7 @@ export default [
         }
       })
   }),
-  http.get('/common/roles', () => {
+  http.get(`${base}`, () => {
     return HttpResponse.json(
       {
         "content": [
@@ -148,7 +150,7 @@ export default [
       }
     )
   }),
-  http.get('/common/roles/items', () => {
+  http.get(`${base}/items`, () => {
     return HttpResponse.json({
       'content': [
         {
@@ -170,8 +172,8 @@ export default [
       }
     })
   }),
-  http.get('/common/roles/authorized',()=> {
-    return HttpResponse.json(["SYSTEM_ADMIN"])
+  http.get(`${base}/authorized`,()=> {
+    return HttpResponse.json(["COMMON"])
   })
 ];
 

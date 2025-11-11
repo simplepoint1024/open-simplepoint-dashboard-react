@@ -159,7 +159,6 @@ export default [
       }
     )
   }),
-
   http.get('/userinfo', () => {
     return HttpResponse.json(
       {
@@ -193,7 +192,6 @@ export default [
       }
     )
   }),
-
   http.get('/common/users', () => {
     return HttpResponse.json(
       {
@@ -232,5 +230,8 @@ export default [
       }
     )
   }),
+  http.get('/common/roles/authorized',()=> {
+    return HttpResponse.json(["SYSTEM_ADMIN"])
+  })
 ];
 
