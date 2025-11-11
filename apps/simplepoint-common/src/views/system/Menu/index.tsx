@@ -1,13 +1,25 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SimpleTable from "@simplepoint/components/SimpleTable";
 import api from '@/api/index';
+import {useI18n} from '@simplepoint/shared/hooks/useI18n';
+import {Drawer} from "antd";
+import PermissionConfig from "@/views/system/Menu/config/permission";
+const baseConfig = api['rbac-menus'];
 
 const App = () => {
   // 受控抽屉与编辑数据
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<any | null>(null);
   const [initialValues, setInitialValues] = useState<any>({});
+  const [openRoleConfig, setOpenRoleConfig] = useState(false);
+  const [authority, setAuthority] = useState<string | null>(null);
 
+  // 国际化
+  const {t, ensure, locale} = useI18n();
+  // 确保本页所需命名空间加载（roles），语言切换后也会自动增量加载
+  useEffect(() => {
+    void ensure(baseConfig.i18nNamespaces);
+  }, [ensure, locale]);
   // 自定义添加：若选中一行，则将其 uuid 作为 parent，默认类型为 item
   const customButtonEvents = {
     add: (_keys: React.Key[], rows: any[]) => {
@@ -16,6 +28,10 @@ const App = () => {
       setEditingRecord(null);
       setInitialValues({path, parent, type: 'item'});
       setDrawerOpen(true);
+    },
+    'config.permission':(_keys: React.Key[], rows: any[]) => {
+      setOpenRoleConfig(true);
+      setAuthority(rows[0].authority);
     },
   } as const;
 
@@ -30,6 +46,15 @@ const App = () => {
         initialValues={initialValues}
         customButtonEvents={customButtonEvents}
       />
+      <Drawer
+        title={t("menus.config.permission")}
+        open={openRoleConfig}
+        onClose={() => setOpenRoleConfig(false)}
+        placement={"bottom"}
+        width={720}
+      >
+        <PermissionConfig menuAuthority={authority}/>
+      </Drawer>
     </div>
   );
 };

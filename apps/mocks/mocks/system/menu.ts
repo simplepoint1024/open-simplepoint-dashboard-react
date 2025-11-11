@@ -1,5 +1,7 @@
 import {http, HttpResponse} from 'msw';
 
+const base = '/common/menus';
+
 export default [
   http.get('/common/menus/schema', () => {
     return HttpResponse.json(
@@ -46,6 +48,19 @@ export default [
             "danger": false,
             "argumentMinSize": 1,
             "key": "edit"
+          },
+          {
+            "path": "[default]",
+            "color": "orange",
+            "variant": "outlined",
+            "icon": "SafetyOutlined",
+            "argumentMaxSize": 1,
+            "sort": 2,
+            "type": "primary",
+            "title": "i18n:menus.config.permission",
+            "danger": false,
+            "argumentMinSize": 1,
+            "key": "config.permission"
           }
         ],
         "schema": {
@@ -177,7 +192,6 @@ export default [
       }
     )
   }),
-
   http.get('/common/menus', () => {
     return HttpResponse.json(
       {
@@ -401,6 +415,9 @@ export default [
       }
     )
   }),
+  http.get(`${base}/authorized`,()=> {
+    return HttpResponse.json(["COMMON"])
+  })
 ];
 
 
