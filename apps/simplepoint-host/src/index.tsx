@@ -27,11 +27,20 @@ function createRoot() {
 
 // 在开发环境按需加载 mocks，避免生产环境打包任何 mock 相关代码
 if (process.env.NODE_ENV === 'development') {
-  // 动态导入，确保生产环境不会生成相关 chunk
+  // 动态导入，确保生产环境不会生成相关 chunk；并等待 worker.start() 完成后再渲染
   import('../../mocks')
-    .then(() => createRoot())
-    .catch((err) => {
-      console.warn('MSW mock init failed:', err);
+    .then(async (mod: any) => {
+      try {
+        // mocks/index.ts 默认导出是 worker.start(...) 返回的 Promise
+        if (mod && mod.default && typeof mod.default.then === 'function') {
+          await mod.default;
+        }
+      } catch (err) {
+        console.warn('MSW mock init failed:', err);
+      }
+    })
+    .finally(() => {
+      // 无论是否成功启动，都继续渲染，失败时会走真实网络
       createRoot();
     });
 } else {

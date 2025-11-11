@@ -241,7 +241,8 @@
     "menus.title.title": "标题",
     "menus.description.title": "菜单或页面标题",
     "menus.title.type": "类型",
-    "menus.description.type": "菜单类型（目录/分组/项等）"
+    "menus.description.type": "菜单类型（目录/分组/项等）",
+    "menus.config.permission": "权限配置"
   },
   "roles": {
     "roles.title.authority": "权限标识",

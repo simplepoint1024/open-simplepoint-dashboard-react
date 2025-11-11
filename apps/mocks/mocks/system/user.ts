@@ -230,7 +230,7 @@ export default [
       }
     )
   }),
-  http.get('/common/roles/authorized',()=> {
+  http.get('/common/users/authorized',()=> {
     return HttpResponse.json(["SYSTEM_ADMIN"])
   })
 ];
