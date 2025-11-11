@@ -1,126 +1,47 @@
 import '@/App.css';
 import '@simplepoint/libs-components/Simplepoint.css'
 import {ConfigProvider, Result, Spin, theme as antdTheme} from 'antd';
-import {HashRouter, Route, Routes, Navigate, useLocation} from "react-router-dom";
+import {HashRouter, Route, Routes, Navigate} from "react-router-dom";
 import NavigateBar from "@/layouts/navigation-bar";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {Profile} from "@/layouts/profile";
 import {Settings} from "@/layouts/settings";
 import {MenuInfo} from "@/store/routes";
-import {modules, Remote, routes} from "@/fetches/routes";
-import { getInstance, loadRemote } from '@module-federation/runtime';
+import {modules, Remote, routes as fetchRoutes} from "@/fetches/routes";
 import 'antd/dist/reset.css';
-import type { Pageable } from '@simplepoint/libs-shared/types/request.ts';
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import { App as AntApp } from 'antd';
-
-// 简单错误边界，捕获远程组件运行期错误并给出友好提示
-class ErrorBoundary extends React.Component<{ children?: React.ReactNode; fallback?: React.ReactNode }, { hasError: boolean }> {
-  constructor(props: any) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  static getDerivedStateFromError() { return { hasError: true }; }
-  componentDidCatch() { /* 可在此上报 */ }
-  render() {
-    if (this.state.hasError) return this.props.fallback ?? null;
-    return this.props.children as React.ReactNode;
-  }
-}
-
-// 本地 hook：带 loading 的分页请求封装
-function usePageable<T>(fetcher: () => Promise<Pageable<T>>) {
-  const [data, setData] = useState<T[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<any>(null);
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      setLoading(true);
-      try {
-        const res = await fetcher();
-        if (!mounted) return;
-        setData(Array.isArray(res?.content) ? res.content : []);
-        setError(null);
-      } catch (e) {
-        if (!mounted) return;
-        setError(e);
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    })();
-    return () => { mounted = false; };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return { data, loading, error } as const;
-}
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { IframeView } from './components/IframeView';
+import { TitleSync } from './components/TitleSync';
+import { usePageable } from '@simplepoint/libs-shared/api/methods';
+import { useGlobalSize } from './hooks/useGlobalSize';
+import { useThemeMode } from './hooks/useThemeMode';
+import { flattenLeafRoutes } from './utils/flattenRoutes';
+import { getLazyComponent } from './utils/lazyComponent';
+import { registerRemotesIfAny } from './mf/registerRemotes';
 
 const App: React.FC = () => {
-  // 初始化并监听全局尺寸
-  const [globalSize, setGlobalSize] = useState<'small'|'middle'|'large'>(() => (localStorage.getItem('sp.globalSize') as any) || 'middle');
-  useEffect(() => {
-    const handler = (e: any) => {
-      const next = (e?.detail as 'small'|'middle'|'large') || 'middle';
-      setGlobalSize(next);
-    };
-    window.addEventListener('sp-set-size', handler as EventListener);
-    return () => window.removeEventListener('sp-set-size', handler as EventListener);
-  }, []);
-  // 持久化全局尺寸
-  useEffect(() => { try { localStorage.setItem('sp.globalSize', globalSize); } catch {} }, [globalSize]);
+  const { globalSize } = useGlobalSize();
+  const { resolvedTheme } = useThemeMode();
 
-  // 全局主题模式：light / dark / system
-  const getSystemTheme = (): 'light'|'dark' => {
-    try { return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; } catch { return 'light'; }
-  };
-  const [themeMode, setThemeMode] = useState<'light'|'dark'|'system'>(() => (localStorage.getItem('sp.theme') as any) || 'light');
-  const [resolvedTheme, setResolvedTheme] = useState<'light'|'dark'>(() => themeMode === 'system' ? getSystemTheme() : (themeMode as 'light'|'dark'));
-  useEffect(() => {
-    const handler = (e: any) => {
-      const next = (e?.detail as 'light'|'dark'|'system') || 'light';
-      setThemeMode(next);
-    };
-    window.addEventListener('sp-set-theme', handler as EventListener);
-    return () => window.removeEventListener('sp-set-theme', handler as EventListener);
-  }, []);
-  useEffect(() => {
-    if (themeMode === 'system') {
-      const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : (null as any);
-      const apply = () => setResolvedTheme(getSystemTheme());
-      apply();
-      if (mq && mq.addEventListener) mq.addEventListener('change', apply);
-      else if (mq && (mq as any).addListener) (mq as any).addListener(apply);
-      return () => {
-        if (mq && mq.removeEventListener) mq.removeEventListener('change', apply);
-        else if (mq && (mq as any).removeListener) (mq as any).removeListener(apply);
-      };
-    } else {
-      setResolvedTheme(themeMode as 'light'|'dark');
-    }
-  }, [themeMode]);
-  // 持久化主题偏好 + 将解析后的主题写入 html 属性，便于自定义样式使用
-  useEffect(() => { try { localStorage.setItem('sp.theme', themeMode); } catch {} }, [themeMode]);
-  useEffect(() => { try { document.documentElement.setAttribute('data-theme', resolvedTheme); } catch {} }, [resolvedTheme]);
-
-  // 使用全局 I18n 的 locale（动态按需加载 Antd locale，避免一次性引入全部）
+  // 使用全局 I18n 的 locale
   const { t, ready: i18nReady, loading: i18nLoading } = useI18n();
 
   // 加载远程模块列表与路由（带 loading）
-  const { data: remotes, loading: remotesLoading } = usePageable<Remote>(modules);
-  const { data: menus, loading: routesLoading } = usePageable<MenuInfo>(routes);
+  const { data: remotesPage, isLoading: remotesLoading } = usePageable<Remote>(['mf-remotes'], modules);
+  const remotes = remotesPage?.content ?? [];
+  const { data: menusPage, isLoading: routesLoading } = usePageable<MenuInfo>(['routes'], fetchRoutes);
 
-  const mf = getInstance();
   const initedRef = useRef(false);
   useEffect(() => {
     if (!initedRef.current && !remotesLoading) {
-      if (remotes.length > 0) {
-        mf?.registerRemotes(remotes);
-      }
-      initedRef.current = true; // 即使无远程也视为完成初始化
+      registerRemotesIfAny(remotes);
+      initedRef.current = true;
     }
   }, [remotes, remotesLoading]);
 
-  const data = menus as unknown as MenuInfo[];
+  const data = (menusPage?.content ?? []) as unknown as MenuInfo[];
 
   // 路由刷新：为不同 path 维护一个重渲染计数，用于强制 remount
   const [refreshKeyMap, setRefreshKeyMap] = useState<Record<string, number>>({});
@@ -134,100 +55,11 @@ const App: React.FC = () => {
     return () => window.removeEventListener('sp-refresh-route', handler as EventListener);
   }, []);
 
-  // 将树形菜单拍平成叶子路由（有 path 且有 component 的节点）
-  type MenuNode = MenuInfo & { children?: MenuNode[] };
-  const flattenLeafRoutes = (nodes: MenuNode[] = []): MenuNode[] => {
-    const res: MenuNode[] = [];
-    const dfs = (arr: MenuNode[]) => {
-      arr.forEach((n) => {
-        const children = n.children as MenuNode[] | undefined;
-        if (Array.isArray(children) && children.length > 0) {
-          dfs(children);
-        } else {
-          res.push(n);
-        }
-      });
-    };
-    dfs(nodes);
-    return res;
-  };
-
+  // 叶子路由
   const leafRoutes = useMemo(() => (
-    flattenLeafRoutes(data as unknown as MenuNode[])
-      .filter(n => !!n.path && !!n.component)
+    flattenLeafRoutes(data as any)
+      .filter((n: any) => !!n.path && !!n.component)
   ), [data]);
-
-  // 缓存懒加载组件，避免重复创建 React.lazy，并限制缓存大小防止内存增长
-  const lazyCache = useRef(new Map<string, React.LazyExoticComponent<React.ComponentType<any>>>());
-  const LAZY_CACHE_MAX = 50;
-  const getLazyComponent = (spec?: string): React.LazyExoticComponent<React.ComponentType<any>> => {
-    const fallback: { default: React.ComponentType<any> } = {
-      default: () => (
-        <Result status="error" title={t('error.remoteLoadFail','远程资源加载失败，请稍后再试。')}/>
-      )
-    };
-    if (!spec) return React.lazy(async () => fallback);
-    const cached = lazyCache.current.get(spec);
-    if (cached) return cached;
-    const s = spec as string; // 保证后续为非空字符串
-    const comp = React.lazy(async () => {
-      try {
-        if (s.startsWith("./")) {
-          // @ts-ignore
-          return await import(`${s}`) as { default: React.ComponentType<any> };
-        } else {
-          return await loadRemote(`${s}`) as { default: React.ComponentType<any> };
-        }
-      } catch (error) {
-        return fallback as any;
-      }
-    });
-    // 简单 LRU：超过上限时移除最早的一个
-    if (lazyCache.current.size >= LAZY_CACHE_MAX) {
-      const firstKey = lazyCache.current.keys().next().value as string | undefined;
-      if (firstKey) lazyCache.current.delete(firstKey);
-    }
-    lazyCache.current.set(s, comp);
-    return comp;
-  };
-
-  // Iframe 渲染器：占满可视区域 + 加载态
-  const IframeView: React.FC<{ src: string }> = ({ src }) => {
-    const [loading, setLoading] = useState(true);
-    return (
-      <div style={{height: '100%', width: '100%', position:'relative'}}>
-        {loading && (
-          <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',background:'transparent'}}>
-            <Spin/>
-          </div>
-        )}
-        <iframe
-          src={src}
-          title={src}
-          style={{border: 0, width: '100%', height: '100%'}}
-          allow="clipboard-read; clipboard-write; fullscreen; geolocation"
-          referrerPolicy="no-referrer"
-          loading="lazy"
-          onLoad={() => setLoading(false)}
-          onError={() => setLoading(false)}
-        />
-      </div>
-    );
-  };
-
-  // 根据当前路由设置浏览器页签标题（放在 Router 内部）
-  const TitleSync: React.FC = () => {
-    const location = useLocation();
-    useEffect(() => {
-      const current = leafRoutes.find(n => n.path === location.pathname);
-      const keyOrText = (current?.title || current?.label || '') as string;
-      if (keyOrText) {
-        const localized = t(keyOrText, keyOrText);
-        if (localized) document.title = localized;
-      }
-    }, [location.pathname, leafRoutes, t]);
-    return null;
-  };
 
   // 全屏资源加载覆盖层（首屏保留最少时间防止闪烁）
   const [minHoldDone, setMinHoldDone] = useState(false);
@@ -255,14 +87,13 @@ const App: React.FC = () => {
       }} componentSize={globalSize} >
         <AntApp>
           <HashRouter>
-            <TitleSync/>
+            <TitleSync leafRoutes={leafRoutes} t={t} />
             <NavigateBar data={data}>
               <Routes>
-                {/* 默认进入时重定向到 /dashboard */}
                 <Route path="/" element={<Navigate to="/dashboard" replace/>}/>
                 <Route key={'profile'} path={'/profile'} element={<Profile/>}/>
                 <Route key={'settings'} path={'/settings'} element={<Settings/>}/>
-                {leafRoutes.map(({uuid, path, component}, idx) => {
+                {leafRoutes.map(({uuid, path, component}: any, idx: number) => {
                   const key = uuid || path || String(idx);
                   const rk = path ? (refreshKeyMap[path] || 0) : 0;
                   const isIframe = typeof component === 'string' && component.startsWith('iframe:');
@@ -272,7 +103,7 @@ const App: React.FC = () => {
                       <Route key={key} path={path} element={<IframeView key={`iframe-${path}-${rk}`} src={src}/>}/>
                     );
                   }
-                  const Component = getLazyComponent(component);
+                  const Component = getLazyComponent(t, component);
                   return (
                     <Route
                       key={key}
