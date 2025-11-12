@@ -97,17 +97,22 @@ const App = (props: RoleSelectProps) => {
   };
 
   return (
-    <div>
-      <STableTransfer
-        dataSource={content}
-        targetKeys={targetKeys}
-        showSelectAll={false}
-        onChange={onChange}
-        filterOption={filterOption}
-        leftColumns={columns}
-        rightColumns={columns}
-        itemKey={'authority'}
-      />
+    <div style={{display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0}}>
+      <div style={{flex: 1, minHeight: 0}}>
+        <STableTransfer
+          dataSource={content}
+          targetKeys={targetKeys}
+          showSelectAll={false}
+          onChange={onChange}
+          filterOption={filterOption}
+          leftColumns={columns}
+          rightColumns={columns}
+          itemKey={'authority'}
+          adaptiveHeight={true}
+          // 如需微调底部空隙，可调整 scrollOffset（例如 8、12、16）
+          // scrollOffset={8}
+        />
+      </div>
     </div>
   );
 };
