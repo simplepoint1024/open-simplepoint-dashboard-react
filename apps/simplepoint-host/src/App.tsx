@@ -123,11 +123,16 @@ const App: React.FC = () => {
                   const key = uuid || path || String(idx);
                   const rk = path ? (refreshKeyMap[path] || 0) : 0;
                   const isIframe = typeof component === 'string' && component.startsWith('iframe:');
+                  const isExternal = typeof component === 'string' && component.startsWith('external:');
                   if (isIframe) {
                     const src = (component as string).slice('iframe:'.length);
                     return (
                       <Route key={key} path={path} element={<IframeView key={`iframe-${path}-${rk}`} src={src}/>}/>
                     );
+                  }
+                  if (isExternal) {
+                    // 外链不渲染为内部路由，菜单点击会在新标签打开
+                    return null;
                   }
                   const Component = getLazyComponent(t, component);
                   return (

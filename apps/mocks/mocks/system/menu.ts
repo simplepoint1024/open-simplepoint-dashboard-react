@@ -239,6 +239,17 @@ export default [
                 "type": "item",
                 "component": "iframe:https://www.baidu.com",
                 "children": []
+              },
+              {
+                "id": "b7f2c1b0-9e3e-4a7f-8c11-2b4c6d7e8f91",
+                "updatedAt": "2025-10-29T11:33:38.810000Z",
+                "uuid": "d2d2e3f4-5678-49ab-90cd-ef0123456790",
+                "label": "AntDesign 官网",
+                "parent": "91639c9d-86b1-44cd-8539-1297df4f6218",
+                "icon": "LinkOutlined",
+                "path": "/ops/ant-design",
+                "type": "item",
+                "component": "external:https://ant.design",
               }
             ]
           },
@@ -419,6 +430,3 @@ export default [
     return HttpResponse.json(["COMMON"])
   })
 ];
-
-
-

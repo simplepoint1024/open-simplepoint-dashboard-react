@@ -10,27 +10,35 @@ import I18nText from '@/i18n/Text';
 const buildMenusFromFlat = (
   menus: Array<MenuInfo>,
   navigate: (path: string) => void,
-  parent: string | undefined = undefined,
+  parent: string | number | undefined = undefined,
 ): MenuItemType[] => {
   const siblings = menus
     .filter((m) => m.parent === parent);
 
   return siblings.map((menu) => {
-    const children = buildMenusFromFlat(menus, navigate, menu.uuid);
+    const children = buildMenusFromFlat(menus, navigate, menu.id);
     const existsChildren = children.length > 0;
     const keyText = (menu as any).title ?? (menu as any).label ?? '';
+    const component: string | undefined = (menu as any).component ?? undefined;
+    const isExternal = typeof component === 'string' && component.startsWith('external:');
+    const externalUrl = isExternal ? component!.slice('external:'.length) : undefined;
     // @ts-ignore
     const menuItem: MenuItemType = {
-      key: menu.uuid || (menu as any).path || keyText || "",
+      key: menu.id || (menu as any).path || keyText || "",
       label: <I18nText k={(menu as any).title || ''} fallback={(menu as any).label || ''} />,
       icon: (menu as any).icon ? createIcon((menu as any).icon) : undefined,
       type: (menu as any).type ?? undefined,
       danger: (menu as any).danger ?? undefined,
       disabled: (menu as any).disabled ?? undefined,
-      component: (menu as any).component ?? undefined,
+      component: component,
       ...(existsChildren ? {children} : {}),
+      // 叶子节点点击：如为 external: 前缀，打开新标签；否则按 path 导航
       ...(!existsChildren ? {
-        onClick: () => {
+        onClick: (_info?: any) => {
+          if (isExternal && externalUrl) {
+            try { window.open(externalUrl, '_blank', 'noopener,noreferrer'); } catch {}
+            return;
+          }
           if ((menu as any).path) navigate(`${(menu as any).path}`)
         }
       } : {})
@@ -52,6 +60,9 @@ const buildMenusFromTree = (
       const builtChildren = Array.isArray(rawChildren) && rawChildren.length > 0 ? buildMenusFromTree(rawChildren, navigate) : undefined;
       const existsChildren = !!builtChildren && builtChildren.length > 0;
       const keyText = menu.title ?? menu.label ?? '';
+      const component: string | undefined = menu.component ?? undefined;
+      const isExternal = typeof component === 'string' && component.startsWith('external:');
+      const externalUrl = isExternal ? component!.slice('external:'.length) : undefined;
       // @ts-ignore
       const item: MenuItemType = {
         key: menu.uuid || menu.path || keyText || "",
@@ -60,10 +71,14 @@ const buildMenusFromTree = (
         type: menu.type ?? undefined,
         danger: menu.danger ?? undefined,
         disabled: menu.disabled ?? undefined,
-        component: menu.component ?? undefined,
+        component: component ?? undefined,
         ...(existsChildren ? {children: builtChildren} : {}),
         ...(!existsChildren ? {
-          onClick: () => {
+          onClick: (_info?: any) => {
+            if (isExternal && externalUrl) {
+              try { window.open(externalUrl, '_blank', 'noopener,noreferrer'); } catch {}
+              return;
+            }
             if (menu.path) navigate(`${menu.path}`)
           }
         } : {})

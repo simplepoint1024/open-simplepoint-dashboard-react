@@ -246,6 +246,14 @@ export default [
             "icon": "LinkOutlined",
             "path": "/baidu",
             "component": "iframe:https://www.baidu.com",
+          },
+          {
+            "label": "AntDesign 官网",
+            "parent": "91639c9d-86b1-44cd-8539-1297df4f6218",
+            "icon": "LinkOutlined",
+            "path": "/ops/ant-design",
+            "type": "item",
+            "component": "external:https://ant.design",
           }
         ],
         "page": {
