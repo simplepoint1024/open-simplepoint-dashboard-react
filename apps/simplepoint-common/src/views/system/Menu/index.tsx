@@ -49,10 +49,10 @@ const App = () => {
   useEffect(() => {
     void ensure(baseConfig.i18nNamespaces);
   }, [ensure, locale]);
-  // 自定义添加：若选中一行，则将其 uuid 作为 parent，默认类型为 item
+  // 自定义添加：若选中一行，则将其 id 作为 parent，默认类型为 item
   const customButtonEvents = {
     add: (_keys: React.Key[], rows: any[]) => {
-      const parent = rows && rows.length > 0 ? rows[0]?.uuid : undefined;
+      const parent = rows && rows.length > 0 ? rows[0]?.id : undefined;
       const path = rows && rows.length > 0 ? rows[0]?.path : undefined;
       setEditingRecord(null);
       setInitialValues({path, parent, type: 'item'});

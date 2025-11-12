@@ -4,9 +4,9 @@ export type MenuItemType = ItemType & Record<string, any>;
 
 export interface MenuInfo {
   id?: string | number;
-  uuid?: string;
   path?: string;
   parent?: string;
+  authority?: string;
   title?: string;
   label?: string;
   icon?: string;
