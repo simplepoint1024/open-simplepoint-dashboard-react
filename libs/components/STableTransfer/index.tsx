@@ -1,6 +1,8 @@
 import type {GetProp, TableColumnsType, TableProps, TransferProps} from 'antd';
 import {Table, Transfer} from "antd";
+import Highlighter from 'react-highlight-words';
 import {useEffect, useRef, useState} from 'react';
+import type {CSSProperties} from 'react';
 
 type TransferItem = GetProp<TransferProps, 'dataSource'>[number];
 type TableRowSelection<T extends object> = TableProps<T>['rowSelection'];
@@ -21,9 +23,28 @@ interface TableTransferProps<T> extends TransferProps<TransferItem> {
   adaptiveHeight?: boolean;
   /** 当使用 adaptiveHeight 时，从实测高度中额外再减去的偏移量（已经自动减去 header/search/footer）。默认 0 */
   scrollOffset?: number;
+  /** 是否显示搜索框（显示在左右列表头部，使用 Transfer 内置搜索） */
+  searchable?: boolean;
+  /** 是否对匹配文本进行高亮 */
+  highlight?: boolean;
+  /** 高亮样式自定义 */
+  highlightStyle?: CSSProperties;
 }
 
-const App = <T,>({leftColumns, rightColumns, itemKey = 'id', listHeight = 400, leftScrollY, rightScrollY, adaptiveHeight = false, scrollOffset = 0, ...restProps}: TableTransferProps<T>) => {
+const App = <T,>({
+  leftColumns,
+  rightColumns,
+  itemKey = 'id',
+  listHeight = 400,
+  leftScrollY,
+  rightScrollY,
+  adaptiveHeight = false,
+  scrollOffset = 0,
+  searchable = false,
+  highlight = true,
+  highlightStyle,
+  ...restProps
+}: TableTransferProps<T>) => {
   // 统一行主键：优先使用 item[itemKey]，其次使用 id、key，最终保证返回字符串（避免返回 'undefined'）
   const getRowKey = (item: any) => {
     const val = item?.[itemKey as string] ?? item?.id ?? item?.key;
@@ -37,6 +58,55 @@ const App = <T,>({leftColumns, rightColumns, itemKey = 'id', listHeight = 400, l
   const [rightAutoHeight, setRightAutoHeight] = useState<number | undefined>();
   const leftPanelRef = useRef<HTMLDivElement | null>(null);
   const rightPanelRef = useRef<HTMLDivElement | null>(null);
+  const [searchValues, setSearchValues] = useState<{left: string; right: string}>({left: '', right: ''});
+
+  // 提取所有叶子列的 dataIndex（支持分组列）
+  const getLeafDataIndexes = (cols: TableColumnsType<any>): Array<string | number> => {
+    const result: Array<string | number> = [];
+    const walk = (arr: any[]) => {
+      arr?.forEach((col) => {
+        if (col && Array.isArray(col.children) && col.children.length) {
+          walk(col.children);
+        } else if (col && col.dataIndex != null) {
+          result.push(col.dataIndex as any);
+        }
+      });
+    };
+    walk(cols as any);
+    return result;
+  };
+
+  // 递归包装列渲染以实现高亮（仅作用于叶子列）
+  const decorateColumnsForHighlight = (cols: TableColumnsType<any>, searchValue: string): TableColumnsType<any> => {
+    return (cols as any).map((col: any) => {
+      if (Array.isArray(col?.children) && col.children.length) {
+        return {
+          ...col,
+          children: decorateColumnsForHighlight(col.children, searchValue),
+        };
+      }
+      if (col?.dataIndex == null) return col;
+      const dataIndex = col.dataIndex;
+      const originalRender = col.render;
+      return {
+        ...col,
+        render: (text: any, record: any, index: number) => {
+          const raw = originalRender ? originalRender(text, record, index) : (text ?? record?.[dataIndex]);
+          if (!searchValue) return raw;
+          const str = (typeof raw === 'string' || typeof raw === 'number') ? String(raw) : '';
+          if (!str) return raw;
+          return (
+            <Highlighter
+              searchWords={[searchValue]}
+              autoEscape
+              textToHighlight={str}
+              highlightStyle={highlightStyle || {backgroundColor: '#ffc069', padding: 0}}
+            />
+          );
+        }
+      };
+    });
+  };
 
   // 监听父容器高度变化
   useEffect(() => {
@@ -86,10 +156,30 @@ const App = <T,>({leftColumns, rightColumns, itemKey = 'id', listHeight = 400, l
     };
   }, [adaptiveHeight, scrollOffset]);
 
+  // 默认跨全部列的过滤（仅在用户未提供 filterOption 且 searchable 时启用）
+  const defaultFilterOption = searchable && !restProps.filterOption
+    ? ((input: string, item: any) => {
+        const lower = input.toLowerCase();
+        const indexes = Array.from(new Set([
+          ...getLeafDataIndexes(leftColumns as any),
+          ...getLeafDataIndexes(rightColumns as any),
+        ]));
+        return indexes.some((key) => {
+          const value = item?.[key as any];
+          return value != null && String(value).toLowerCase().includes(lower);
+        });
+      })
+    : undefined;
+
   return (
-    <Transfer {...restProps} rowKey={getRowKey}
-              style={{...(restProps.style || {}), width: '100%', height: adaptiveHeight ? '100%' : (restProps.style?.height as any)}}
-              listStyle={adaptiveHeight ? {height: '100%'} : (restProps as any).listStyle}
+    <Transfer
+      {...restProps}
+      rowKey={getRowKey}
+      style={{...(restProps.style || {}), width: '100%', height: adaptiveHeight ? '100%' : (restProps.style?.height as any)}}
+      listStyle={adaptiveHeight ? {height: '100%'} : (restProps as any).listStyle}
+      showSearch={searchable}
+      filterOption={restProps.filterOption ?? defaultFilterOption}
+      onSearch={(direction, value) => setSearchValues(prev => ({...prev, [direction]: value}))}
     >
       {({
           direction,
@@ -100,6 +190,11 @@ const App = <T,>({leftColumns, rightColumns, itemKey = 'id', listHeight = 400, l
           disabled: listDisabled,
         }) => {
         const columns = direction === 'left' ? leftColumns : rightColumns;
+        const searchValue = direction === 'left' ? searchValues.left : searchValues.right;
+        const decoratedColumns: TableColumnsType<any> = (searchable && highlight && searchValue)
+          ? decorateColumnsForHighlight(columns as any, searchValue)
+          : columns;
+
         const rowSelection: TableRowSelection<TransferItem> = {
           getCheckboxProps: () => ({disabled: listDisabled}),
           onChange(selectedRowKeys) {
@@ -120,44 +215,44 @@ const App = <T,>({leftColumns, rightColumns, itemKey = 'id', listHeight = 400, l
         return (
           <div ref={panelRef} style={{height: adaptiveHeight ? '100%' : scrollY, overflow: 'hidden', display: 'flex', flexDirection: 'column'}}>
             <Table
-              // 确保 Table 与 Transfer 使用相同的 rowKey
-              pagination={false}
-              rowKey={getRowKey}
-              rowSelection={rowSelection}
-              columns={columns}
-              dataSource={filteredItems as any}
-              style={{pointerEvents: listDisabled ? 'none' : undefined}}
-              // 独立滚动，不影响外层主布局
-              scroll={{y: scrollY}}
-              onRow={(record: any) => ({
-                onClick: () => {
-                  // 单击切换勾选（不直接移动）
-                  const key = getRowKey(record);
-                  const itemDisabled = record?.disabled;
-                  if (itemDisabled || listDisabled) return;
-                  onItemSelect(key, !listSelectedKeys.includes(key));
-                },
-                // Ant Design Table 会读取 onDoubleClick 事件，此处用于穿梭双击移动。
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                onDoubleClick: () => {
-                  const key = getRowKey(record);
-                  const itemDisabled = record?.disabled;
-                  if (itemDisabled || listDisabled) return;
-                  if (!onChange) return;
-                  const keyStr = String(key);
-                  const current = targetKeys.map(k => String(k));
-                  if (direction === 'left') {
-                    if (!current.includes(keyStr)) {
-                      onChange([...targetKeys, keyStr], 'right', [keyStr]);
-                    }
-                  } else {
-                    if (current.includes(keyStr)) {
-                      onChange(targetKeys.filter(k => String(k) !== keyStr), 'left', [keyStr]);
-                    }
-                  }
-                },
-              })}
-            />
+               // 确保 Table 与 Transfer 使用相同的 rowKey
+               pagination={false}
+               rowKey={getRowKey}
+               rowSelection={rowSelection}
+               columns={decoratedColumns as any}
+               dataSource={filteredItems as any}
+               style={{pointerEvents: listDisabled ? 'none' : undefined}}
+               // 独立滚动，不影响外层主布局
+               scroll={{y: scrollY}}
+               onRow={(record: any) => ({
+                 onClick: () => {
+                   // 单击切换勾选（不直接移动）
+                   const key = getRowKey(record);
+                   const itemDisabled = record?.disabled;
+                   if (itemDisabled || listDisabled) return;
+                   onItemSelect(key, !listSelectedKeys.includes(key));
+                 },
+                 // Ant Design Table 会读取 onDoubleClick 事件，此处用于穿梭双击移动。
+                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                 onDoubleClick: () => {
+                   const key = getRowKey(record);
+                   const itemDisabled = record?.disabled;
+                   if (itemDisabled || listDisabled) return;
+                   if (!onChange) return;
+                   const keyStr = String(key);
+                   const current = targetKeys.map(k => String(k));
+                   if (direction === 'left') {
+                     if (!current.includes(keyStr)) {
+                       onChange([...targetKeys, keyStr], 'right', [keyStr]);
+                     }
+                   } else {
+                     if (current.includes(keyStr)) {
+                       onChange(targetKeys.filter(k => String(k) !== keyStr), 'left', [keyStr]);
+                     }
+                   }
+                 },
+               })}
+             />
           </div>
         );
       }}

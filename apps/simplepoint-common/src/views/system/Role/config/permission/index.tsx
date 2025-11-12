@@ -24,10 +24,7 @@ interface TableTransferProps extends TransferProps<TransferItem> {
   rightColumns: TableColumnsType<DataType>;
 }
 
-const filterOption = (input: string, item: DataType) => {
-  return item.name?.includes(input) || item.authority?.includes(input);
-}
-
+// 删除本地 filterOption，启用组件内“全列搜索+高亮”
 const App = (props: RoleSelectProps) => {
   const {t, ensure, locale} = useI18n();
 
@@ -104,11 +101,11 @@ const App = (props: RoleSelectProps) => {
           targetKeys={targetKeys}
           showSelectAll={false}
           onChange={onChange}
-          filterOption={filterOption}
           leftColumns={columns}
           rightColumns={columns}
           itemKey={'authority'}
           adaptiveHeight={true}
+          searchable={true}
           // 如需微调底部空隙，可调整 scrollOffset（例如 8、12、16）
           // scrollOffset={8}
         />
