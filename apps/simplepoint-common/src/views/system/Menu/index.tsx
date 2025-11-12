@@ -49,11 +49,12 @@ const App = () => {
       <Drawer
         title={t("menus.config.permission")}
         open={openRoleConfig}
-        onClose={() => setOpenRoleConfig(false)}
+        width={1440}
+        onClose={() => { setOpenRoleConfig(false); setAuthority(null); }}
         placement={"bottom"}
-        width={720}
       >
-        <PermissionConfig menuAuthority={authority}/>
+        {/* 使用 key 强制在 authority 变化时重建组件，避免内部状态残留 */}
+        <PermissionConfig key={authority || 'none'} menuAuthority={authority}/>
       </Drawer>
     </div>
   );

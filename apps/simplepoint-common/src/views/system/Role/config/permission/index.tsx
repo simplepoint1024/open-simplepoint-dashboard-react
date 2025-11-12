@@ -58,15 +58,21 @@ const App = (props: RoleSelectProps) => {
 
   const [targetKeys, setTargetKeys] = useState<TransferProps['targetKeys']>([]);
 
-  // 获取已分配权限
-  const {data: authorized} = useData<string[]>('fetchAuthorized', () => fetchAuthorized(
-    {
-      roleAuthority: props.roleAuthority
-    }
-  ));
-  // 初始化已分配权限
+  // 获取已分配权限（随 roleAuthority 变化而变化）
+  const {data: authorized} = useData<string[]>(
+    ['fetchAuthorized', props.roleAuthority],
+    () => fetchAuthorized({ roleAuthority: props.roleAuthority }),
+    { enabled: !!props.roleAuthority }
+  );
+
+  // 切换不同角色时，先清空以避免显示上一次的内容
   useEffect(() => {
-    setTargetKeys(authorized);
+    setTargetKeys([]);
+  }, [props.roleAuthority]);
+
+  // 初始化/更新已分配权限
+  useEffect(() => {
+    setTargetKeys(authorized || []);
   }, [authorized]);
 
   const onChange: TableTransferProps['onChange'] = (nextTargetKeys, direction, moveKeys) => {

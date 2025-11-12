@@ -34,11 +34,11 @@ const App = () => {
       <Drawer
         title={t("users.button.config.role")}
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={() => { setOpen(false); setUsername(null); }}
         placement={"bottom"}
-        // height={700}
+        destroyOnClose
       >
-        <RoleConfig username={username}/>
+        <RoleConfig key={username || 'none'} username={username}/>
       </Drawer>
     </div>
   );

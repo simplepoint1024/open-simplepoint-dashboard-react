@@ -37,11 +37,12 @@ const App = () => {
       <Drawer
         title={t("roles.config.permission")}
         open={openRoleConfig}
-        onClose={() => setOpenRoleConfig(false)}
+        onClose={() => { setOpenRoleConfig(false); setAuthority(null); }}
         placement={"bottom"}
         width={720}
+        destroyOnClose
       >
-        <PermissionConfig roleAuthority={authority}/>
+        <PermissionConfig key={authority || 'none'} roleAuthority={authority}/>
       </Drawer>
     </div>
   );
