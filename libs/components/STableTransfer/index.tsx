@@ -19,6 +19,9 @@ const App = <T,>({leftColumns, rightColumns, itemKey = 'id', ...restProps}: Tabl
     return String(val ?? '');
   };
 
+  const targetKeys = (restProps.targetKeys as (string | number)[] | undefined) || [];
+  const onChange = restProps.onChange;
+
   return (
     <Transfer style={{width: '100%'}} rowKey={getRowKey} {...restProps}>
       {({
@@ -50,12 +53,30 @@ const App = <T,>({leftColumns, rightColumns, itemKey = 'id', ...restProps}: Tabl
             style={{pointerEvents: listDisabled ? 'none' : undefined}}
             onRow={(record: any) => ({
               onClick: () => {
+                // 单击切换勾选（不直接移动）
                 const key = getRowKey(record);
                 const itemDisabled = record?.disabled;
-                if (itemDisabled || listDisabled) {
-                  return;
-                }
+                if (itemDisabled || listDisabled) return;
                 onItemSelect(key, !listSelectedKeys.includes(key));
+              },
+              // Ant Design Table 会读取 onDoubleClick 事件，此处用于穿梭双击移动。
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              onDoubleClick: () => {
+                const key = getRowKey(record);
+                const itemDisabled = record?.disabled;
+                if (itemDisabled || listDisabled) return;
+                if (!onChange) return;
+                const keyStr = String(key);
+                const current = targetKeys.map(k => String(k));
+                if (direction === 'left') {
+                  if (!current.includes(keyStr)) {
+                    onChange([...targetKeys, keyStr], 'right', [keyStr]);
+                  }
+                } else {
+                  if (current.includes(keyStr)) {
+                    onChange(targetKeys.filter(k => String(k) !== keyStr), 'left', [keyStr]);
+                  }
+                }
               },
             })}
           />

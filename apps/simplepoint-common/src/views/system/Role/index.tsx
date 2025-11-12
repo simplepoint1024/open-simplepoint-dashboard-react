@@ -1,6 +1,6 @@
 import SimpleTable from "@simplepoint/components/SimpleTable";
 import api from '@/api/index';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {Drawer} from "antd";
 import {useI18n} from '@simplepoint/shared/hooks/useI18n';
 import PermissionConfig from './config/permission'
@@ -11,6 +11,8 @@ const baseConfig = api['rbac-roles'];
 const App = () => {
   const [openRoleConfig, setOpenRoleConfig] = useState(false);
   const [authority, setAuthority] = useState<string | null>(null);
+  // 支持拖拽高度
+  const [drawerHeight, setDrawerHeight] = useState<number>(480);
 
   // 国际化
   const {t, ensure, locale} = useI18n();
@@ -18,6 +20,36 @@ const App = () => {
   useEffect(() => {
     void ensure(baseConfig.i18nNamespaces);
   }, [ensure, locale]);
+
+  // 关闭时重置高度，避免下次打开异常
+  useEffect(() => {
+    if (!openRoleConfig) {
+      setDrawerHeight(480);
+    }
+  }, [openRoleConfig]);
+
+  // 拖拽句柄事件（bottom 抽屉，向上拖动增加高度）
+  const startResize = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    const startY = e.clientY;
+    const startHeight = drawerHeight;
+    const minHeight = 240;
+    const maxHeight = Math.max(320, window.innerHeight - 80);
+
+    const onMove = (me: MouseEvent) => {
+      const delta = startY - me.clientY;
+      let next = startHeight + delta;
+      if (next < minHeight) next = minHeight;
+      if (next > maxHeight) next = maxHeight;
+      setDrawerHeight(next);
+    };
+    const onUp = () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+  }, [drawerHeight]);
 
   // 自定义按钮事件
   const customButtonEvents = {
@@ -39,9 +71,16 @@ const App = () => {
         open={openRoleConfig}
         onClose={() => { setOpenRoleConfig(false); setAuthority(null); }}
         placement={"bottom"}
-        width={720}
+        // width 对 bottom 抽屉无效，使用 height 控制高度
+        height={drawerHeight}
         destroyOnClose
+        styles={{ body: { position: 'relative', paddingTop: 12 } }}
       >
+        {/* 顶部拖拽条 */}
+        <div
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 8, cursor: 'ns-resize', zIndex: 10 }}
+          onMouseDown={startResize}
+        />
         <PermissionConfig key={authority || 'none'} roleAuthority={authority}/>
       </Drawer>
     </div>

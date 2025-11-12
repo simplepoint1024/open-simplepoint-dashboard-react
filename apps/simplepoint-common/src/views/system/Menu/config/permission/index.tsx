@@ -61,8 +61,8 @@ const App = (props: RoleSelectProps) => {
   // 获取已分配权限（随 menuAuthority 变化而变化）
   const {data: authorized} = useData<string[]>(
     ['fetchAuthorized', props.menuAuthority],
-    () => fetchAuthorized({ menuAuthority: props.menuAuthority }),
-    { enabled: !!props.menuAuthority }
+    () => fetchAuthorized({menuAuthority: props.menuAuthority}),
+    {enabled: !!props.menuAuthority}
   );
 
   // 切换不同菜单时，先清空以避免显示上一次的内容
