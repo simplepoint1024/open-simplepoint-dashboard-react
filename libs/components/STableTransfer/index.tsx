@@ -10,9 +10,15 @@ interface TableTransferProps<T> extends TransferProps<TransferItem> {
   rightColumns: TableColumnsType<T>;
   // 不使用 React 的保留 prop 名称 `key`，改为 itemKey
   itemKey?: keyof T | string;
+  /** 左右两侧统一高度（像素），用于表格内部滚动。默认 400 */
+  listHeight?: number;
+  /** 左侧表格纵向滚动高度优先级高于 listHeight */
+  leftScrollY?: number;
+  /** 右侧表格纵向滚动高度优先级高于 listHeight */
+  rightScrollY?: number;
 }
 
-const App = <T,>({leftColumns, rightColumns, itemKey = 'id', ...restProps}: TableTransferProps<T>) => {
+const App = <T,>({leftColumns, rightColumns, itemKey = 'id', listHeight = 400, leftScrollY, rightScrollY, ...restProps}: TableTransferProps<T>) => {
   // 统一行主键：优先使用 item[itemKey]，其次使用 id、key，最终保证返回字符串（避免返回 'undefined'）
   const getRowKey = (item: any) => {
     const val = item?.[itemKey as string] ?? item?.id ?? item?.key;
@@ -42,44 +48,53 @@ const App = <T,>({leftColumns, rightColumns, itemKey = 'id', ...restProps}: Tabl
           selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT, Table.SELECTION_NONE],
         };
 
+        // 计算滚动高度：左右独立，其次统一高度
+        const scrollY = direction === 'left'
+          ? (leftScrollY ?? listHeight)
+          : (rightScrollY ?? listHeight);
+
         return (
-          <Table
-            // 确保 Table 与 Transfer 使用相同的 rowKey
-            pagination={false}
-            rowKey={getRowKey}
-            rowSelection={rowSelection}
-            columns={columns}
-            dataSource={filteredItems as any}
-            style={{pointerEvents: listDisabled ? 'none' : undefined}}
-            onRow={(record: any) => ({
-              onClick: () => {
-                // 单击切换勾选（不直接移动）
-                const key = getRowKey(record);
-                const itemDisabled = record?.disabled;
-                if (itemDisabled || listDisabled) return;
-                onItemSelect(key, !listSelectedKeys.includes(key));
-              },
-              // Ant Design Table 会读取 onDoubleClick 事件，此处用于穿梭双击移动。
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              onDoubleClick: () => {
-                const key = getRowKey(record);
-                const itemDisabled = record?.disabled;
-                if (itemDisabled || listDisabled) return;
-                if (!onChange) return;
-                const keyStr = String(key);
-                const current = targetKeys.map(k => String(k));
-                if (direction === 'left') {
-                  if (!current.includes(keyStr)) {
-                    onChange([...targetKeys, keyStr], 'right', [keyStr]);
+          <div style={{height: scrollY, overflow: 'hidden'}}>
+            <Table
+              // 确保 Table 与 Transfer 使用相同的 rowKey
+              pagination={false}
+              rowKey={getRowKey}
+              rowSelection={rowSelection}
+              columns={columns}
+              dataSource={filteredItems as any}
+              style={{pointerEvents: listDisabled ? 'none' : undefined}}
+              // 独立滚动，不影响外层主布局
+              scroll={{y: scrollY}}
+              onRow={(record: any) => ({
+                onClick: () => {
+                  // 单击切换勾选（不直接移动）
+                  const key = getRowKey(record);
+                  const itemDisabled = record?.disabled;
+                  if (itemDisabled || listDisabled) return;
+                  onItemSelect(key, !listSelectedKeys.includes(key));
+                },
+                // Ant Design Table 会读取 onDoubleClick 事件，此处用于穿梭双击移动。
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                onDoubleClick: () => {
+                  const key = getRowKey(record);
+                  const itemDisabled = record?.disabled;
+                  if (itemDisabled || listDisabled) return;
+                  if (!onChange) return;
+                  const keyStr = String(key);
+                  const current = targetKeys.map(k => String(k));
+                  if (direction === 'left') {
+                    if (!current.includes(keyStr)) {
+                      onChange([...targetKeys, keyStr], 'right', [keyStr]);
+                    }
+                  } else {
+                    if (current.includes(keyStr)) {
+                      onChange(targetKeys.filter(k => String(k) !== keyStr), 'left', [keyStr]);
+                    }
                   }
-                } else {
-                  if (current.includes(keyStr)) {
-                    onChange(targetKeys.filter(k => String(k) !== keyStr), 'left', [keyStr]);
-                  }
-                }
-              },
-            })}
-          />
+                },
+              })}
+            />
+          </div>
         );
       }}
     </Transfer>
