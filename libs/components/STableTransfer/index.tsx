@@ -42,11 +42,11 @@ const App = <T,>({leftColumns, rightColumns, itemKey = 'id', ...restProps}: Tabl
         return (
           <Table
             // 确保 Table 与 Transfer 使用相同的 rowKey
+            pagination={false}
             rowKey={getRowKey}
             rowSelection={rowSelection}
             columns={columns}
             dataSource={filteredItems as any}
-            size="small"
             style={{pointerEvents: listDisabled ? 'none' : undefined}}
             onRow={(record: any) => ({
               onClick: () => {

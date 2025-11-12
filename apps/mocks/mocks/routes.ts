@@ -33,6 +33,16 @@ export default [
             "children": []
           },
           {
+            "label": "Test",
+            "title": "menu.test",
+            "icon": "DashboardOutlined",
+            "path": "/test",
+            "sort": 0,
+            "component": "common/Test",
+            "disabled": false,
+            "children": []
+          },
+          {
             "label": "系统配置",
             "title": "menu.system",
             "icon": "SettingOutlined",

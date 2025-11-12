@@ -32,7 +32,10 @@ const App = (props: RoleSelectProps) => {
   const {t, ensure, locale} = useI18n();
 
   // 获取权限列表数据
-  const {data: page} = usePageable('fetchItems', () => fetchItems({}));
+  const {data: page} = usePageable('fetchItems', () => fetchItems({
+    page: '0',
+    size: '10000000'
+  }));
   const {content} = page || {content: []};
 
   // 确保本页所需命名空间加载（users/roles），语言切换后也会自动增量加载

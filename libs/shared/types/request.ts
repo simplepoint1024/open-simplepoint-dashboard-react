@@ -4,10 +4,12 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
   const notify = (title: string, desc?: string) => {
     try {
       // @ts-ignore
-      import('antd').then(({ notification }) => {
-        notification.error({ message: title || '请求失败', description: desc, duration: 4 });
-      }).catch(() => {});
-    } catch {}
+      import('antd').then(({notification}) => {
+        notification.error({message: title || '请求失败', description: desc, duration: 4});
+      }).catch(() => {
+      });
+    } catch {
+    }
   };
 
   const method = (options?.method || 'GET').toUpperCase();
@@ -19,11 +21,11 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
       ...(options?.headers || {})
     },
     ...options,
-  }).then( async (response) => {
+  }).then(async (response) => {
     if (!response.ok) {
       const text = await response.text();
       const msg = `HTTP ${response.status} ${response.statusText}`;
-      notify('请求失败', `${method} ${url}\n${msg}\n${text?.slice(0,500)}`);
+      notify('请求失败', `${method} ${url}\n${msg}\n${text?.slice(0, 500)}`);
       const err: any = new Error(`Request failed with status ${response.status}: ${text}`);
       err.__notified = true;
       throw err;
@@ -43,7 +45,7 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
 
     // 其他情况：读取文本并报错（避免 JSON.parse 报错 `<`）
     const text = await response.text();
-    notify('请求失败', `${method} ${url}\nUnexpected content-type: ${contentType || 'unknown'}\n${text?.slice(0,500)}`);
+    notify('请求失败', `${method} ${url}\nUnexpected content-type: ${contentType || 'unknown'}\n${text?.slice(0, 500)}`);
     const err: any = new Error(`Unexpected content-type: ${contentType || 'unknown'}`);
     err.__notified = true;
     throw err;
@@ -64,7 +66,7 @@ export async function post<T>(url: string, data: any): Promise<T> {
 
 export async function get<T>(url: string, params?: Record<string, any>): Promise<T> {
   const query = params ? `?${new URLSearchParams(params).toString()}` : '';
-  return await request<T>(`${url}${query}`,{
+  return await request<T>(`${url}${query}`, {
     method: 'GET'
   });
 }
@@ -76,12 +78,13 @@ export async function put<T>(url: string, data: any): Promise<T> {
   });
 }
 
-export async function del<T>(url: string,ids:string[]): Promise<T> {
+export async function del<T>(url: string, ids: string[]): Promise<T> {
   return await request<T>(`${url}?ids=${ids.join(',')}`, {
     method: 'DELETE',
   });
 }
-export type Page ={
+
+export type Page = {
   number: number;
   size: number;
   totalElements?: number;
@@ -91,6 +94,19 @@ export type Page ={
 export type Pageable<T> = {
   content: Array<T>;
   page: Page
+}
+
+/**
+ * 将 Pageable 转换为 Ant Design Table 组件的分页配置
+ * @param pageable Pageable 对象
+ */
+export function toPagination(pageable: Pageable<any>) {
+  return {
+    total: pageable?.page?.totalElements ?? 0,
+    pageSize: pageable?.page?.size ?? 10,
+    current: (pageable?.page?.number ?? 0) + 1,
+    showSizeChanger: true,
+  }
 }
 
 /**

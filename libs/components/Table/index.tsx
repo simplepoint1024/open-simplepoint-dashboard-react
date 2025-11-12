@@ -4,7 +4,7 @@ import {Button, Checkbox, Col, Popover, Row, Space, Table as AntTable} from 'ant
 import {SearchOutlined, SettingOutlined} from '@ant-design/icons';
 import type {ColumnsType} from 'antd/es/table';
 import {RJSFSchema} from '@rjsf/utils';
-import {Pageable} from '@simplepoint/shared/types/request';
+import {Pageable, toPagination} from '@simplepoint/shared/types/request';
 import {ButtonProps} from "antd/es/button/button";
 import {createIcon} from '@simplepoint/shared/types/icon';
 import {useI18n} from '@simplepoint/shared/hooks/useI18n';
@@ -201,12 +201,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
 
   const dataSource = props.pageable?.content ?? [];
 
-  const pagination = {
-    total: props.pageable?.page?.totalElements ?? 0,
-    pageSize: props.pageable?.page?.size ?? 10,
-    current: (props.pageable?.page?.number ?? 0) + 1,
-    showSizeChanger: true,
-  };
+  const pagination = toPagination(props.pageable);
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>(props.rowSelection?.selectedKeys ?? []);
   const [selectedRows, setSelectedRows] = useState<T[]>([]);
