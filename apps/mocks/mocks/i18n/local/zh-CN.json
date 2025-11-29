@@ -116,6 +116,7 @@
     "field.email": "邮箱",
     "field.phone": "手机号",
     "field.roles": "角色",
+    "field.twoFactorEnabled": "两步认证",
     "field.joinedAt": "加入时间",
     "rule.nickname": "请输入昵称",
     "rule.email": "邮箱格式不正确",

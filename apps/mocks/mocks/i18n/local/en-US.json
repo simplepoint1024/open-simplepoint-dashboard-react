@@ -109,6 +109,7 @@
     "field.email": "Email",
     "field.phone": "Phone Number",
     "field.roles": "Roles",
+    "field.twoFactorEnabled": "Two Factor",
     "field.joinedAt": "Joined At",
     "rule.nickname": "Please enter a nickname",
     "rule.email": "Invalid email format",

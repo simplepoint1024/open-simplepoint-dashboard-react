@@ -138,6 +138,9 @@ export const Profile: React.FC = () => {
                   <Descriptions.Item label={t('field.roles', '角色')}>
                     {roles.length > 0 ? roles.map(r => (<Tag key={r} color="blue">{r}</Tag>)) : '-'}
                   </Descriptions.Item>
+                  <Descriptions.Item label={t('field.twoFactorEnabled', '两步认证')}>
+                      {data?.twoFactorEnabled === true ? '✅' : data?.twoFactorEnabled === false ? '❌' : '❌'}
+                  </Descriptions.Item>
                   <Descriptions.Item label={t('field.joinedAt', '加入时间')}>
                     {(data as any)?.joinedAt || (data as any)?.createTime || '-'}
                   </Descriptions.Item>
