@@ -209,7 +209,7 @@ const FullscreenButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'defau
  */
 const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
   const { languages, locale, setLocale, t, ensure } = useI18n();
-  useEffect(() => { try { void ensure(['common']); } catch {} }, [ensure]);
+  useEffect(() => { try { void ensure(['common','menu']); } catch {}}, [ensure]);
   const [open, setOpen] = useState(false);
   const [switching, setSwitching] = useState(false);
   const closingRef = useRef(false);
