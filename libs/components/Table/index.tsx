@@ -4,7 +4,7 @@ import {Button, Checkbox, Col, Popover, Row, Space, Table as AntTable} from 'ant
 import {SearchOutlined, SettingOutlined} from '@ant-design/icons';
 import type {ColumnsType} from 'antd/es/table';
 import {RJSFSchema} from '@rjsf/utils';
-import {Pageable, toPagination} from '@simplepoint/shared/types/request';
+import {Page, toPagination} from '@simplepoint/shared/types/request';
 import {ButtonProps} from "antd/es/button/button";
 import {createIcon} from '@simplepoint/shared/types/icon';
 import {useI18n} from '@simplepoint/shared/hooks/useI18n';
@@ -22,7 +22,7 @@ export type TableButtonProps = ButtonProps & {
 
 export interface TableProps<T> {
   refresh: () => void;
-  pageable: Pageable<T>;
+  pageable: Page<T>;
   schema: RJSFSchema | any[];
   filters?: Record<string, string>;
   onFilterChange?: (filters: Record<string, string>) => void;

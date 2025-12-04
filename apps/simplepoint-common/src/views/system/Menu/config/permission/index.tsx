@@ -2,7 +2,7 @@ import {useI18n} from '@simplepoint/shared/hooks/useI18n';
 import {useEffect, useMemo, useState} from "react";
 import {GetProp, TableColumnsType, TransferProps} from 'antd';
 import STableTransfer from '@simplepoint/components/STableTransfer'
-import {useData, usePageable} from '@simplepoint/shared/api/methods';
+import {useData, usePage} from '@simplepoint/shared/api/methods';
 import {fetchItems} from "@/api/system/permission.ts";
 import {fetchAuthorize, fetchAuthorized, fetchUnauthorized} from "@/api/system/menu";
 
@@ -28,7 +28,7 @@ const App = (props: RoleSelectProps) => {
   const {t, ensure, locale} = useI18n();
 
   // 获取权限列表数据
-  const {data: page} = usePageable('fetchItems', () => fetchItems({
+  const {data: page} = usePage('fetchItems', () => fetchItems({
     page: '0',
     size: '10000000'
   }));

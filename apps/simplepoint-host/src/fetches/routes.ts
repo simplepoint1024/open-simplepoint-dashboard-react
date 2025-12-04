@@ -1,15 +1,15 @@
 import {MenuInfo} from "@/store/routes";
-import {get, Pageable} from "@simplepoint/shared/types/request.ts";
+import {get, Page} from "@simplepoint/shared/types/request.ts";
 
 export type Remote = {
-  name: string;
-  entry: string;
+    name: string;
+    entry: string;
 }
 
-export function routes(): Promise<Pageable<MenuInfo>> {
-  return get<Pageable<MenuInfo>>("/common/menus/routes")
+export function routes(): Promise<Page<MenuInfo>> {
+    return get<Page<MenuInfo>>("/common/menus/routes")
 }
 
-export function modules(): Promise<Pageable<Remote>> {
-  return get<Pageable<Remote>>("/common/modules")
+export function modules(): Promise<Page<Remote>> {
+    return get<Page<Remote>>("/common/modules")
 }

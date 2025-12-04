@@ -1,5 +1,5 @@
 import {get, post} from "@simplepoint/shared/api/methods";
-import {Pageable} from "@simplepoint/shared/api/pagination";
+import {Page} from "@simplepoint/shared/types/request"
 import api from "@/api";
 
 const {baseUrl} = api['rbac-roles']
@@ -28,7 +28,7 @@ export interface RolePermissionRelevantDto {
  * @param params 查询参数
  */
 export async function fetchItems(params: Record<string, string>) {
-  return await get<Pageable<RoleRelevantVo>>(`${baseUrl}/items`, params);
+  return await get<Page<RoleRelevantVo>>(`${baseUrl}/items`, params);
 }
 
 /**

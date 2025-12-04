@@ -1,5 +1,5 @@
 import {get} from "@simplepoint/shared/api/methods";
-import {Pageable} from "@simplepoint/shared/api/pagination";
+import {Page} from "@simplepoint/shared/types/request"
 import api from "@/api";
 
 const {baseUrl} = api['rbac-permissions']
@@ -8,9 +8,9 @@ const {baseUrl} = api['rbac-permissions']
  * 角色下拉选项接口
  */
 export interface PermissionRelevantVo {
-  name: string;
-  description: string;
-  authority: string;
+    name: string;
+    description: string;
+    authority: string;
 }
 
 /**
@@ -18,5 +18,5 @@ export interface PermissionRelevantVo {
  * @param params 查询参数
  */
 export async function fetchItems(params: Record<string, string>) {
-  return await get<Pageable<PermissionRelevantVo>>(`${baseUrl}/items`, params);
+    return await get<Page<PermissionRelevantVo>>(`${baseUrl}/items`, params);
 }

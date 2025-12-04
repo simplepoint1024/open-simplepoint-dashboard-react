@@ -1,12 +1,13 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import { useSchema } from '@simplepoint/shared/hooks/useSchema';
-import { del, get, post, put, usePageable } from '@simplepoint/shared/api/methods';
-import Table, { TableButtonProps } from '../Table';
+import React, {useEffect, useMemo, useState} from 'react';
+import {useSchema} from '@simplepoint/shared/hooks/useSchema';
+import {del, get, post, put, usePage} from '@simplepoint/shared/api/methods';
+import {emptyPage} from "@simplepoint/shared/types/request"
+import Table, {TableButtonProps} from '../Table';
 import SForm from '../SForm';
-import { IChangeEvent } from '@rjsf/core';
-import { Alert, Drawer, message, Modal, Spin, Skeleton } from 'antd';
-import { createIcon } from '@simplepoint/shared/types/icon';
-import { useI18n } from '@simplepoint/shared/hooks/useI18n';
+import {IChangeEvent} from '@rjsf/core';
+import {Alert, Drawer, message, Modal, Skeleton, Spin} from 'antd';
+import {createIcon} from '@simplepoint/shared/types/icon';
+import {useI18n} from '@simplepoint/shared/hooks/useI18n';
 
 const nsLoadedCache = new Set<string>();
 
@@ -71,13 +72,13 @@ const App = (props: SimpleTableProps<any>) => {
   };
 
   const fetchPage = () =>
-    get<import('@simplepoint/shared/types/request').Pageable<any>>(props.baseUrl, {
+    get<import('@simplepoint/shared/types/request').Page<any>>(props.baseUrl, {
       page: page - 1,
       size,
       ...filters,
     });
 
-  const { data: pageData, isLoading: pageLoading, refetch: refetchPage } = usePageable(
+  const { data: pageData, isLoading: pageLoading, refetch: refetchPage } = usePage(
     [props.name, page, size, filters],
     fetchPage
   );
@@ -172,10 +173,7 @@ const App = (props: SimpleTableProps<any>) => {
         <Table<any>
           refresh={() => void refetchPage()}
           pageable={
-            pageData ?? {
-              content: [],
-              page: { number: 0, size: 10, totalElements: 0, totalPages: 0 },
-            }
+            pageData ?? emptyPage
           }
           schema={schemaData?.schema ?? []}
           filters={filters}

@@ -13,7 +13,7 @@ import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import {ErrorBoundary} from './components/ErrorBoundary';
 import {IframeView} from './components/IframeView';
 import {TitleSync} from './components/TitleSync';
-import {usePageable} from '@simplepoint/shared/api/methods';
+import {usePage} from '@simplepoint/shared/api/methods';
 import {useGlobalSize} from './hooks/useGlobalSize';
 import {useThemeMode} from './hooks/useThemeMode';
 import {flattenLeafRoutes} from './utils/flattenRoutes';
@@ -44,9 +44,9 @@ const App: React.FC = () => {
     });
   }, [locale]);
   // 加载远程模块列表与路由（带 loading）
-  const {data: remotesPage, isLoading: remotesLoading} = usePageable<Remote>(['mf-remotes'], modules);
+  const {data: remotesPage, isLoading: remotesLoading} = usePage<Remote>(['mf-remotes'], modules);
   const remotes = remotesPage?.content ?? [];
-  const {data: menusPage, isLoading: routesLoading} = usePageable<MenuInfo>(['routes'], fetchRoutes);
+  const {data: menusPage, isLoading: routesLoading} = usePage<MenuInfo>(['routes'], fetchRoutes);
 
   const initedRef = useRef(false);
   useEffect(() => {
