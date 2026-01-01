@@ -1,163 +1,67 @@
 import '@/App.css';
-import '@simplepoint/components/Simplepoint.css'
-import {App as AntApp, ConfigProvider, Result, Spin, theme as antdTheme} from 'antd';
-import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
-import NavigateBar from "@/layouts/navigation-bar";
-import React, {useEffect, useMemo, useRef, useState} from "react";
-import {Profile} from "@/layouts/profile";
-import {Settings} from "@/layouts/settings";
-import {fetchServiceRoutes, ServiceMenuResult} from "@/fetches/routes";
+import '@simplepoint/components/Simplepoint.css';
 import 'antd/dist/reset.css';
-import {useI18n} from "@/layouts/i18n/useI18n.ts";
-import {ErrorBoundary} from './components/ErrorBoundary';
-import {IframeView} from './components/IframeView';
-import {TitleSync} from './components/TitleSync';
+
+import React from 'react';
+import {HashRouter, Routes} from 'react-router-dom';
+import {App as AntApp, ConfigProvider, theme} from 'antd';
+
+import NavigateBar from '@/layouts/navigation-bar';
+
+import {useI18n} from '@/layouts/i18n/useI18n';
 import {useData} from '@simplepoint/shared/api/methods';
-import {useGlobalSize} from './hooks/useGlobalSize';
-import {useThemeMode} from './hooks/useThemeMode';
-import {getLazyComponent} from './utils/lazyComponent';
-import {registerRemotesIfAny,flattenLeafRoutes} from './utils/MfRoutes';
-import zhCN from 'antd/locale/zh_CN';
-import dayjs from "dayjs";
-import {antdLocaleMapping, dayjsLocaleMapping} from "@/i18n/locale.ts";
-import {MenuInfo} from "@/store/routes";
+import {fetchServiceRoutes, ServiceMenuResult} from '@/fetches/routes';
+
+import {useLocaleLoader} from '@/hooks/useLocaleLoader';
+import {useRegisterRemotes} from '@/hooks/useRegisterRemotes';
+import {useLeafRoutes} from '@/hooks/useLeafRoutes';
+import {useRefreshKeyMap} from '@/hooks/useRefreshKeyMap';
+import {useGlobalLoading} from '@/hooks/useGlobalLoading';
+import {useGlobalSize} from '@/hooks/useGlobalSize';
+import {useThemeMode} from '@/hooks/useThemeMode';
+
+import {GlobalLoading} from '@/components/GlobalLoading';
+import {TitleSync} from '@/components/TitleSync';
+import {renderRoutes} from "@/components/RouteRenderer.tsx";
 
 const App: React.FC = () => {
-    const [currentLocale, setCurrentLocale] = useState(zhCN);
     const {globalSize} = useGlobalSize();
     const {resolvedTheme} = useThemeMode();
 
-    // 使用全局 I18n 的 locale
-    const {t, ensure, ready: i18nReady, loading: i18nLoading, locale} = useI18n();
+    const {t, locale, ready: i18nReady, loading: i18nLoading} = useI18n();
+    const currentLocale = useLocaleLoader(locale);
 
-    useEffect(() => {
-        import(`dayjs/locale/${dayjsLocaleMapping[locale]}`).then(() => {
-            dayjs.locale(locale)
-        }).catch(() => {
-            dayjs.locale('en')
-        })
-        import(`antd/locale/${antdLocaleMapping[locale]}`).then((mod) => {
-            setCurrentLocale(mod.default);
-        }).catch(() => {
-            setCurrentLocale(zhCN);
-        });
-    }, [locale, ensure]);
-    // 加载远程模块列表与路由（带 loading）
+    const {data: res, isLoading} = useData<ServiceMenuResult>(
+        ['fetchServiceRoutes'],
+        fetchServiceRoutes
+    );
 
-    const {data: res, isLoading: resLoading} = useData<ServiceMenuResult>(['fetchServiceRoutes'], fetchServiceRoutes);
+    // 远程模块注册
+    useRegisterRemotes(res, isLoading);
 
-    const initedRef = useRef(false);
-    useEffect(() => {
-        if (!initedRef.current && !resLoading) {
-            registerRemotesIfAny(res?.services ?? [], res?.entryPoint);
-            initedRef.current = true;
-        }
-    }, [resLoading]);
-
-    const data = (res?.routes ?? []) as unknown as MenuInfo[];
-
-    // 路由刷新：为不同 path 维护一个重渲染计数，用于强制 remount
-    const [refreshKeyMap, setRefreshKeyMap] = useState<Record<string, number>>({});
-    useEffect(() => {
-        const handler = (e: any) => {
-            const fromHash = window.location.hash ? window.location.hash.replace(/^#/, '') : undefined;
-            const currentPath = e?.detail?.path || fromHash || window.location.pathname || '/';
-            setRefreshKeyMap(prev => ({...prev, [currentPath]: (prev[currentPath] || 0) + 1}));
-        };
-        window.addEventListener('sp-refresh-route', handler as EventListener);
-        return () => window.removeEventListener('sp-refresh-route', handler as EventListener);
-    }, []);
-
-    // 叶子路由
-    const leafRoutes = useMemo(() => (
-        flattenLeafRoutes(data as any)
-            .filter((n: any) => !!n.path && !!n.component)
-    ), [data]);
-
-    // 全屏资源加载覆盖层（首屏保留最少时间防止闪烁）
-    const [minHoldDone, setMinHoldDone] = useState(false);
-    useEffect(() => {
-        const timer = window.setTimeout(() => setMinHoldDone(true), 300);
-        return () => window.clearTimeout(timer);
-    }, []);
-    const anyLoading = i18nLoading || !i18nReady || resLoading || !initedRef.current;
-    const showGlobalLoading = anyLoading || !minHoldDone;
+    // 展平后的叶子路由
+    const leafRoutes = useLeafRoutes(res?.routes);
+    // 每个 path 对应的刷新 key
+    const refreshKeyMap = useRefreshKeyMap();
+    // 全局 loading 状态
+    const showLoading = useGlobalLoading(i18nLoading, i18nReady, isLoading);
 
     return (
         <div className="content" style={{position: 'relative'}}>
-            {showGlobalLoading && (
-                <div style={{
-                    position: 'fixed',
-                    inset: 0,
-                    zIndex: 9999,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: resolvedTheme === 'dark' ? 'rgba(0,0,0,0.75)' : 'rgba(255,255,255,0.9)'
+            <GlobalLoading visible={showLoading} text={t('loading.resources', '正在加载资源...')}/>
+            <ConfigProvider
+                locale={currentLocale}
+                componentSize={globalSize}
+                theme={{
+                    algorithm: resolvedTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
+                    token: {colorPrimary: '#1677FF'}
                 }}>
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12}}>
-                        <Spin size="large"/>
-                        <div style={{
-                            color: resolvedTheme === 'dark' ? '#EEE' : '#333',
-                            fontSize: 14
-                        }}>{t('loading.resources', '正在加载资源...')}</div>
-                    </div>
-                </div>
-            )}
-            <ConfigProvider theme={{
-                algorithm: resolvedTheme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
-                token: {colorPrimary: '#1677FF'},
-                components: {}
-            }} componentSize={globalSize} locale={currentLocale}>
                 <AntApp>
                     <HashRouter>
                         <TitleSync leafRoutes={leafRoutes} t={t}/>
-                        <NavigateBar data={data}>
+                        <NavigateBar data={res?.routes ?? []}>
                             <Routes>
-                                <Route path="/" element={<Navigate to="/dashboard" replace/>}/>
-                                <Route key={'profile'} path={'/profile'} element={<Profile/>}/>
-                                <Route key={'settings'} path={'/settings'} element={<Settings/>}/>
-                                {leafRoutes.map(({uuid, path, component}: any, idx: number) => {
-                                    const key = uuid || path || String(idx);
-                                    const rk = path ? (refreshKeyMap[path] || 0) : 0;
-                                    const isIframe = typeof component === 'string' && component.startsWith('iframe:');
-                                    const isExternal = typeof component === 'string' && component.startsWith('external:');
-                                    if (isIframe) {
-                                        const src = (component as string).slice('iframe:'.length);
-                                        return (
-                                            <Route key={key} path={path}
-                                                   element={<IframeView key={`iframe-${path}-${rk}`} src={src}/>}/>
-                                        );
-                                    }
-                                    if (isExternal) {
-                                        // 外链不渲染为内部路由，菜单点击会在新标签打开
-                                        return null;
-                                    }
-                                    const Component = getLazyComponent(t, component);
-                                    return (
-                                        <Route
-                                            key={key}
-                                            path={path}
-                                            element={
-                                                <React.Suspense fallback={<div
-                                                    style={{
-                                                        display: 'flex',
-                                                        justifyContent: 'center',
-                                                        alignItems: 'center',
-                                                        height: '100%'
-                                                    }}>
-                                                    <Spin/></div>}>
-                                                    <ErrorBoundary key={`eb-${path}-${rk}`}
-                                                                   fallback={<Result status="error"
-                                                                                     title={t('error.componentCrashed', '页面加载出错')}/>}>
-                                                        <Component key={`comp-${path}-${rk}`}/>
-                                                    </ErrorBoundary>
-                                                </React.Suspense>
-                                            }
-                                        />
-                                    );
-                                })}
-                                <Route path="*" element={<Result status="404" title={t('error.404', '页面不存在')}/>}/>
+                                {renderRoutes(leafRoutes, refreshKeyMap, t)}
                             </Routes>
                         </NavigateBar>
                     </HashRouter>
