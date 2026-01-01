@@ -54,4 +54,9 @@ export default {
     i18nNamespaces: ['timezones'],
     name: 'timezones'
   },
+  'ops-microapps': {
+    baseUrl: '/common/ops/microapps',
+    i18nNamespaces: ['microapps'],
+    name: 'microapps'
+  },
 }

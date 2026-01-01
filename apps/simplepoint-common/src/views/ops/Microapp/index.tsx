@@ -1,9 +1,9 @@
 import SimpleTable from "@simplepoint/components/SimpleTable";
-import api from '@/api/index';
 import {useEffect} from "react";
 import {useI18n} from '@simplepoint/shared/hooks/useI18n';
+import api from "@/api";
 
-const baseConfig = api['rbac-permissions'];
+const baseConfig = api['ops-microapps'];
 const App = () => {
     // 国际化
     const {ensure, locale} = useI18n();
@@ -13,7 +13,9 @@ const App = () => {
     }, [ensure, locale]);
     return (
         <div>
-            <SimpleTable{...baseConfig}/>
+            <SimpleTable
+                {...baseConfig}
+            />
         </div>
     );
 };

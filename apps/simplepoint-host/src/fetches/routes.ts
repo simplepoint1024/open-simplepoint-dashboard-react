@@ -1,15 +1,17 @@
 import {MenuInfo} from "@/store/routes";
-import {get, Page} from "@simplepoint/shared/types/request.ts";
+import {get} from "@simplepoint/shared/types/request.ts";
 
-export type Remote = {
+export type ServiceMenuResult = {
+    services: ServiceEntry[];
+    routes: MenuInfo[];
+    entryPoint: string;
+}
+
+export type ServiceEntry = {
     name: string;
     entry: string;
 }
 
-export function routes(): Promise<Page<MenuInfo>> {
-    return get<Page<MenuInfo>>("/common/menus/routes")
-}
-
-export function modules(): Promise<Page<Remote>> {
-    return get<Page<Remote>>("/common/modules")
+export function fetchServiceRoutes() {
+    return get<ServiceMenuResult>("/common/menus/service-routes")
 }

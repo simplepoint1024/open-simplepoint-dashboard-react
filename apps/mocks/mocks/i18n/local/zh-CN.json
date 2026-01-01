@@ -398,5 +398,8 @@
     "messages.description.message": "国际化消息的具体内容",
     "messages.title.namespace": "命名空间",
     "messages.description.namespace": "消息键所属的命名空间"
+  },
+  "microapps": {
+
   }
 }

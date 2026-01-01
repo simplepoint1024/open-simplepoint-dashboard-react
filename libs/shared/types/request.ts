@@ -89,44 +89,23 @@ export async function del<T>(url: string, ids: string[]): Promise<T> {
  */
 export const emptyPage: Page<any> = {
     content: [],
-    empty: true,
-    first: true,
-    last: true,
-    number: 0,
-    numberOfElements: 0,
-    pageable: null,
-    size: 0,
-    sort: null,
-    totalElements: 0,
-    totalPages: 0
+    page: {
+        size: 0,
+        totalElements: 0,
+        totalPages: 0,
+        number: 0,
+    }
 }
 
 
 export type Page<T> = {
     content: Array<T>;
-    empty: boolean,
-    first: boolean,
-    last: boolean,
-    number: number,
-    numberOfElements: number,
-    pageable?: Pageable
-    size: number,
-    sort?: Sort,
-    totalElements: number,
-    totalPages: number
-}
-
-export type Pageable = {
-    offset: number,
-    pageNumber: number,
-    pageSize: number,
-    paged?: boolean,
-    sort: {
-        empty: boolean,
-        sorted: boolean,
-        unsorted: boolean
-    },
-    unpaged?: boolean
+    page: {
+        size: number;
+        totalElements: number;
+        totalPages: number;
+        number: number;
+    }
 }
 
 export type Sort = {
@@ -137,13 +116,14 @@ export type Sort = {
 
 /**
  * 将 Pageable 转换为 Ant Design Table 组件的分页配置
- * @param pageable Pageable 对象
+ * @param page Pageable 对象
  */
-export function toPagination(pageable: Page<any>) {
+export function toPagination(page: Page<any>) {
+    const {size,number,totalElements} = page.page
     return {
-        total: pageable?.totalElements ?? 0,
-        pageSize: pageable?.size ?? 10,
-        current: (pageable?.number ?? 0) + 1,
+        total: totalElements ?? 0,
+        pageSize: size ?? 10,
+        current: (number ?? 0) + 1,
         showSizeChanger: true,
     }
 }

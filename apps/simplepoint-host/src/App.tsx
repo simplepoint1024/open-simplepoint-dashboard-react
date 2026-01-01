@@ -6,22 +6,21 @@ import NavigateBar from "@/layouts/navigation-bar";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {Profile} from "@/layouts/profile";
 import {Settings} from "@/layouts/settings";
-import {MenuInfo} from "@/store/routes";
-import {modules, Remote, routes as fetchRoutes} from "@/fetches/routes";
+import {fetchServiceRoutes, ServiceMenuResult} from "@/fetches/routes";
 import 'antd/dist/reset.css';
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import {ErrorBoundary} from './components/ErrorBoundary';
 import {IframeView} from './components/IframeView';
 import {TitleSync} from './components/TitleSync';
-import {usePage} from '@simplepoint/shared/api/methods';
+import {useData} from '@simplepoint/shared/api/methods';
 import {useGlobalSize} from './hooks/useGlobalSize';
 import {useThemeMode} from './hooks/useThemeMode';
-import {flattenLeafRoutes} from './utils/flattenRoutes';
 import {getLazyComponent} from './utils/lazyComponent';
-import {registerRemotesIfAny} from './mf/registerRemotes';
+import {registerRemotesIfAny,flattenLeafRoutes} from './utils/MfRoutes';
 import zhCN from 'antd/locale/zh_CN';
 import dayjs from "dayjs";
 import {antdLocaleMapping, dayjsLocaleMapping} from "@/i18n/locale.ts";
+import {MenuInfo} from "@/store/routes";
 
 const App: React.FC = () => {
     const [currentLocale, setCurrentLocale] = useState(zhCN);
@@ -44,19 +43,18 @@ const App: React.FC = () => {
         });
     }, [locale, ensure]);
     // 加载远程模块列表与路由（带 loading）
-    const {data: remotesPage, isLoading: remotesLoading} = usePage<Remote>(['mf-remotes'], modules);
-    const remotes = remotesPage?.content ?? [];
-    const {data: menusPage, isLoading: routesLoading} = usePage<MenuInfo>(['routes'], fetchRoutes);
+
+    const {data: res, isLoading: resLoading} = useData<ServiceMenuResult>(['fetchServiceRoutes'], fetchServiceRoutes);
 
     const initedRef = useRef(false);
     useEffect(() => {
-        if (!initedRef.current && !remotesLoading) {
-            registerRemotesIfAny(remotes);
+        if (!initedRef.current && !resLoading) {
+            registerRemotesIfAny(res?.services ?? [], res?.entryPoint);
             initedRef.current = true;
         }
-    }, [remotes, remotesLoading]);
+    }, [resLoading]);
 
-    const data = (menusPage?.content ?? []) as unknown as MenuInfo[];
+    const data = (res?.routes ?? []) as unknown as MenuInfo[];
 
     // 路由刷新：为不同 path 维护一个重渲染计数，用于强制 remount
     const [refreshKeyMap, setRefreshKeyMap] = useState<Record<string, number>>({});
@@ -79,10 +77,10 @@ const App: React.FC = () => {
     // 全屏资源加载覆盖层（首屏保留最少时间防止闪烁）
     const [minHoldDone, setMinHoldDone] = useState(false);
     useEffect(() => {
-        const timer = window.setTimeout(() => setMinHoldDone(true), 1000);
+        const timer = window.setTimeout(() => setMinHoldDone(true), 300);
         return () => window.clearTimeout(timer);
     }, []);
-    const anyLoading = i18nLoading || !i18nReady || remotesLoading || routesLoading || !initedRef.current;
+    const anyLoading = i18nLoading || !i18nReady || resLoading || !initedRef.current;
     const showGlobalLoading = anyLoading || !minHoldDone;
 
     return (
