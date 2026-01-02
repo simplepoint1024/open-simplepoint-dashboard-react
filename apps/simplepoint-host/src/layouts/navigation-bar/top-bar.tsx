@@ -217,7 +217,6 @@ const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
   const onSelect = (lng: string) => {
     if (!lng || lng === locale) { setOpen(false); return; }
     // 后续如果表格组件动态加载语言正常后，这里可以去掉强制刷新
-    window.location.reload();
     setSwitching(true);
     // 标记正在关闭，忽略随后 Dropdown 可能触发的一次 open=true 事件
     closingRef.current = true;

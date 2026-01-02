@@ -12,7 +12,7 @@ const App = () => {
   const [editingRecord, setEditingRecord] = useState<any | null>(null);
   const [initialValues, setInitialValues] = useState<any>({});
   const [openRoleConfig, setOpenRoleConfig] = useState(false);
-  const [authority, setAuthority] = useState<string | null>(null);
+  const [menuId, setMenuId] = useState<string | null>(null);
   // 新增：权限配置抽屉可拖拽高度
   const [permDrawerHeight, setPermDrawerHeight] = useState<number>(480);
 
@@ -60,7 +60,7 @@ const App = () => {
     },
     'config.permission':(_keys: React.Key[], rows: any[]) => {
       setOpenRoleConfig(true);
-      setAuthority(rows[0].authority);
+      setMenuId(rows[0].id);
     },
   } as const;
 
@@ -80,9 +80,9 @@ const App = () => {
         open={openRoleConfig}
         // width 对 bottom 抽屉无效，使用高度控制
         height={permDrawerHeight}
-        onClose={() => { setOpenRoleConfig(false); setAuthority(null); }}
+        onClose={() => { setOpenRoleConfig(false); setMenuId(null); }}
         placement={"bottom"}
-        destroyOnClose
+        destroyOnHidden
         styles={{ body: { position: 'relative', paddingTop: 12 } }}
       >
         <div
@@ -90,7 +90,7 @@ const App = () => {
           onMouseDown={startResize}
         />
         {/* 使用 key 强制在 authority 变化时重建组件，避免内部状态残留 */}
-        <PermissionConfig key={authority || 'none'} menuAuthority={authority}/>
+        <PermissionConfig key={menuId || 'none'} menuId={menuId}/>
       </Drawer>
     </div>
   );

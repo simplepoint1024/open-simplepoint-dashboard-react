@@ -10,7 +10,7 @@ const {baseUrl} = api['rbac-permissions']
 export interface PermissionRelevantVo {
     name: string;
     description: string;
-    authority: string;
+    id: string;
 }
 
 /**

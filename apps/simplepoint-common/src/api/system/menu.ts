@@ -8,11 +8,10 @@ const {baseUrl} = api['rbac-menus']
  */
 export interface RolePermissionRelevantDto {
   // 所选角色
-  menuAuthority: string | null;
+  menuId: string | null;
   // 权限列表
-  permissionAuthorities?: string[];
+  permissionIds?: string[];
 }
-
 
 /**
  * 获取已分配角色的权限下拉分页

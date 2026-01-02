@@ -9,7 +9,7 @@ const baseConfig = api['rbac-users'];
 
 const App = () => {
   const {t, ensure, locale} = useI18n();
-  const [username, setUsername] = useState(null as string | null);
+  const [userId, setUserId] = useState(null as string | null);
   const [open, setOpen] = useState(false);
   // 新增：可拖拽高度状态（仅 bottom / top 方向有效）
   const [drawerHeight, setDrawerHeight] = useState<number>(480);
@@ -52,7 +52,7 @@ const App = () => {
   const customButtonEvents = {
     'config.role': (_keys: React.Key[], rows: any[]) => {
       setOpen(true);
-      setUsername(rows[0].username)
+      setUserId(rows[0].id)
     },
   } as const;
 
@@ -66,11 +66,11 @@ const App = () => {
       <Drawer
         title={t("users.button.config.role")}
         open={open}
-        onClose={() => { setOpen(false); setUsername(null); }}
+        onClose={() => { setOpen(false); setUserId(null); }}
         placement={"bottom"}
         // 传递动态高度
         height={drawerHeight}
-        destroyOnClose
+        destroyOnHidden
         styles={{
           body: { position: 'relative', paddingTop: 12 },
         }}
@@ -89,7 +89,7 @@ const App = () => {
           }}
           onMouseDown={startResize}
         />
-        <RoleConfig key={username || 'none'} username={username}/>
+        <RoleConfig key={userId || 'none'} userId={userId}/>
       </Drawer>
     </div>
   );

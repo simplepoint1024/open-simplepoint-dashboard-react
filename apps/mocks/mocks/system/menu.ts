@@ -427,6 +427,6 @@ export default [
     )
   }),
   http.get(`${base}/authorized`,()=> {
-    return HttpResponse.json(["COMMON"])
+    return HttpResponse.json(["1"])
   })
 ];

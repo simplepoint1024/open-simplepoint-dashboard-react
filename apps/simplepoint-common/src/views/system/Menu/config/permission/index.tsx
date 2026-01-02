@@ -3,29 +3,25 @@ import {useEffect, useMemo, useState} from "react";
 import {GetProp, TableColumnsType, TransferProps} from 'antd';
 import STableTransfer from '@simplepoint/components/STableTransfer'
 import {useData, usePage} from '@simplepoint/shared/api/methods';
-import {fetchItems} from "@/api/system/permission.ts";
-import {fetchAuthorize, fetchAuthorized, fetchUnauthorized} from "@/api/system/menu";
+import {fetchItems, PermissionRelevantVo} from "@/api/system/permission.ts";
+import {fetchAuthorize, fetchAuthorized, fetchUnauthorized, RolePermissionRelevantDto} from "@/api/system/menu";
 
 type TransferItem = GetProp<TransferProps, 'dataSource'>[number];
 
 export interface RoleSelectProps {
-  menuAuthority: string | null;
-}
-
-interface DataType {
-  name: string;
-  description: string;
-  authority: string;
+  menuId: string | null;
 }
 
 interface TableTransferProps extends TransferProps<TransferItem> {
-  dataSource: DataType[];
-  leftColumns: TableColumnsType<DataType>;
-  rightColumns: TableColumnsType<DataType>;
+  dataSource: RolePermissionRelevantDto[];
+  leftColumns: TableColumnsType<RolePermissionRelevantDto>;
+  rightColumns: TableColumnsType<RolePermissionRelevantDto>;
 }
 
 const App = (props: RoleSelectProps) => {
   const {t, ensure, locale} = useI18n();
+  // 统一使用非空 menuId，避免首次挂载时传入 null 触发请求异常
+  const menuId = props.menuId || '';
 
   // 获取权限列表数据
   const {data: page} = usePage('fetchItems', () => fetchItems({
@@ -37,9 +33,9 @@ const App = (props: RoleSelectProps) => {
   // 确保本页所需命名空间加载（users/roles），语言切换后也会自动增量加载
   useEffect(() => {
     void ensure(['permissions']);
-  }, [ensure, locale]);
+  }, [ensure]);
 
-  const columns: TableColumnsType<DataType> = useMemo(() => ([
+  const columns: TableColumnsType<PermissionRelevantVo> = useMemo(() => ([
     {
       key: 'name',
       dataIndex: 'name',
@@ -54,17 +50,17 @@ const App = (props: RoleSelectProps) => {
 
   const [targetKeys, setTargetKeys] = useState<TransferProps['targetKeys']>([]);
 
-  // 获取已分配权限（随 menuAuthority 变化而变化）
+  // 获取已分配权限（随 menuId 变化而变化）
   const {data: authorized} = useData<string[]>(
-    ['fetchAuthorized', props.menuAuthority],
-    () => fetchAuthorized({menuAuthority: props.menuAuthority}),
-    {enabled: !!props.menuAuthority}
+    ['fetchAuthorized', menuId],
+    () => fetchAuthorized({menuId}),
+    {enabled: !!menuId}
   );
 
   // 切换不同菜单时，先清空以避免显示上一次的内容
   useEffect(() => {
     setTargetKeys([]);
-  }, [props.menuAuthority]);
+  }, [menuId]);
 
   // 初始化/更新已分配权限
   useEffect(() => {
@@ -72,26 +68,29 @@ const App = (props: RoleSelectProps) => {
   }, [authorized]);
 
   const onChange: TableTransferProps['onChange'] = (nextTargetKeys, direction, moveKeys) => {
+    if (!menuId) return; // menuId 缺失时不触发接口调用
     setTargetKeys(nextTargetKeys);
     if (direction === 'right') {
       // 分配权限的逻辑处理
       fetchAuthorize({
-        menuAuthority: props.menuAuthority,
-        permissionAuthorities: moveKeys as string[],
+        menuId,
+        permissionIds: moveKeys as string[],
       }).then(_res => {
         // 处理返回结果
       })
     } else {
       // 移除权限的逻辑处理
       fetchUnauthorized({
-        menuAuthority: props.menuAuthority,
-        permissionAuthorities: moveKeys as string[],
+        menuId,
+        permissionIds: moveKeys as string[],
       }).then(_res => {
         // 处理返回结果
       })
     }
   };
 
+  // menuId 为空时直接不渲染，避免首次打开时传入 null 触发组件内部计算
+  if (!menuId) return null;
   return (
     <div style={{display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0}}>
       <div style={{flex: 1, minHeight: 0}}>
@@ -102,7 +101,6 @@ const App = (props: RoleSelectProps) => {
           onChange={onChange}
           leftColumns={columns}
           rightColumns={columns}
-          itemKey={'authority'}
           adaptiveHeight={true}
           searchable={true}
           // 如需微调底部空隙，可调整 scrollOffset（例如 8、12、16）

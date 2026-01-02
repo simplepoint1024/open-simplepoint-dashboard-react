@@ -7,17 +7,17 @@ const {baseUrl} = api['rbac-users'];
  * 用户角色分配接口
  */
 export interface UserRoleRelevantDto {
-  // 用户名
-  username: string | null;
-  // 角色权限列表
-  roleAuthorities?: string[];
+    // 用户名
+    userId: string | null;
+    // 角色权限列表
+    roleIds?: string[];
 }
 
 /**
  * 获取已分配角色下拉分页
  */
 export async function fetchAuthorized(params: UserRoleRelevantDto) {
-  return await get<string[]>(`${baseUrl}/authorized`, params);
+    return await get<string[]>(`${baseUrl}/authorized?`, params);
 }
 
 /**
@@ -25,7 +25,7 @@ export async function fetchAuthorized(params: UserRoleRelevantDto) {
  * @param data 请求数据
  */
 export async function fetchUnauthorized(data: UserRoleRelevantDto) {
-  return await post<UserRoleRelevantDto>(`${baseUrl}/unauthorized`, data);
+    return await post<UserRoleRelevantDto>(`${baseUrl}/unauthorized`, data);
 }
 
 /**
@@ -33,5 +33,5 @@ export async function fetchUnauthorized(data: UserRoleRelevantDto) {
  * @param data
  */
 export async function fetchAuthorize(data: UserRoleRelevantDto) {
-  return await post<UserRoleRelevantDto>(`${baseUrl}/authorize`, data);
+    return await post<UserRoleRelevantDto>(`${baseUrl}/authorize`, data);
 }

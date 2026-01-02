@@ -1,108 +1,140 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export type Messages = Record<string, string>;
 
 export type I18nLike = {
-  t: (key: string, fallbackOrParams?: string | Record<string, unknown>, maybeParams?: Record<string, unknown>) => string;
-  locale: string;
-  setLocale: (code: string) => void;
-  messages: Messages;
-  ensure: (ns: string[]) => Promise<void> | void;
+    t: (key: string, fallbackOrParams?: string | Record<string, unknown>, maybeParams?: Record<string, unknown>) => string;
+    locale: string;
+    setLocale: (code: string) => void;
+    messages: Messages;
+    ensure: (ns: string[]) => Promise<void> | void;
 };
 
 const isBrowser = typeof window !== 'undefined';
 
+/** 更通用的插值：支持 {a.b}、{0}、任意 key */
 const interpolate = (tpl: string, params?: Record<string, unknown>) =>
-  params
-    ? tpl.replace(/\{(\w+)}/g, (_, k: string) =>
-      params[k] !== undefined ? String(params[k]) : `{${k}}`
-    )
-    : tpl;
+    params
+        ? tpl.replace(/\{([^}]+)}/g, (_, k: string) =>
+            params[k] !== undefined ? String(params[k]) : `{${k}}`
+        )
+        : tpl;
 
+/** 生成 t 函数 */
 export const mkT = (messages: Messages): I18nLike['t'] => (key, fallbackOrParams, maybeParams) => {
-  const fallback = typeof fallbackOrParams === 'string' ? fallbackOrParams : undefined;
-  const params =
-    typeof fallbackOrParams === 'object' ? fallbackOrParams :
-      typeof maybeParams === 'object' ? maybeParams :
-        undefined;
-  const raw = messages[key] ?? fallback ?? key;
-  return interpolate(raw, params);
+    const fallback = typeof fallbackOrParams === 'string' ? fallbackOrParams : undefined;
+    const params =
+        typeof fallbackOrParams === 'object' ? fallbackOrParams :
+            typeof maybeParams === 'object' ? maybeParams :
+                undefined;
+
+    const raw = messages[key] ?? fallback ?? key;
+    return interpolate(raw, params);
 };
 
 function getGlobal(): I18nLike | undefined {
-  return isBrowser ? (window as any).spI18n : undefined;
+    return isBrowser ? (window as any).spI18n : undefined;
 }
 
-// 命名空间加载缓存和锁
+/** 命名空间加载缓存与锁 */
 const nsLoadedCache = new Set<string>();
 const nsLoadingMap = new Map<string, Promise<void>>();
 
 export function useI18n() {
-  const [locale, setLocaleState] = useState<string>('zh-CN');
-  const [messages, setMessages] = useState<Messages>({});
-  const [tImpl, setTImpl] = useState<I18nLike['t']>(() => mkT({}));
+    /** 单一 state，减少渲染次数 */
+    const [state, setState] = useState(() => ({
+        locale: 'zh-CN',
+        messages: {} as Messages,
+        t: mkT({})
+    }));
 
-  const refreshFromGlobal = useCallback(() => {
-    const g = getGlobal();
-    if (!g) return;
-    setLocaleState(g.locale);
-    setMessages(g.messages || {});
-    setTImpl(() => g.t ?? mkT(g.messages || {}));
-  }, []);
+    const { locale, messages, t } = state;
 
-  const setLocale = useCallback((code: string) => {
-    try {
-      getGlobal()?.setLocale?.(code);
-    } catch {
-      setLocaleState(code);
-    }
-  }, []);
+    /** 避免重复 setState */
+    const lastMessagesRef = useRef(messages);
 
-  const ensure = useCallback(async (ns: string[]) => {
-    const g = getGlobal();
-    if (!g?.ensure) return;
+    /** 从全局同步状态 */
+    const refreshFromGlobal = useCallback(() => {
+        const g = getGlobal();
+        if (!g) return;
 
-    const merged = Array.from(new Set(ns)).sort();
-    const key = `${g.locale}::${merged.join(',')}`;
+        const nextMessages = g.messages || {};
 
-    if (nsLoadedCache.has(key)) return;
-    if (nsLoadingMap.has(key)) {
-      await nsLoadingMap.get(key);
-      return;
-    }
+        // 避免 messages 相同却重复渲染
+        if (lastMessagesRef.current !== nextMessages) {
+            lastMessagesRef.current = nextMessages;
+            setState({
+                locale: g.locale,
+                messages: nextMessages,
+                t: g.t ?? mkT(nextMessages)
+            });
+        }
+    }, []);
 
-    const loadPromise = (async () => {
-      try {
-        await g.ensure(merged);
-        nsLoadedCache.add(key);
-      } catch (e) {
-        console.warn('[i18n] ensure failed:', e);
-      } finally {
-        nsLoadingMap.delete(key);
+    /** 设置语言（避免重复设置） */
+    const setLocale = useCallback((code: string) => {
+        const g = getGlobal();
+        if (g?.locale !== code) {
+            try {
+                g?.setLocale?.(code);
+            } catch {
+                setState(s => ({ ...s, locale: code }));
+            }
+        }
+    }, []);
+
+    /** 命名空间加载（优化 key、避免重复加载） */
+    const ensure = useCallback(async (ns: string[]) => {
+        const g = getGlobal();
+        if (!g?.ensure) return;
+
+        const merged = Array.from(new Set(ns)).sort();
+        const key = `${locale}::${merged.join(',')}`;
+
+        if (nsLoadedCache.has(key)) return;
+
+        if (nsLoadingMap.has(key)) {
+            await nsLoadingMap.get(key);
+            return;
+        }
+
+        const loadPromise = (async () => {
+            try {
+                await g.ensure(merged);
+                nsLoadedCache.add(key);
+            } catch (e) {
+                console.warn('[i18n] ensure failed:', e);
+            } finally {
+                nsLoadingMap.delete(key);
+                refreshFromGlobal();
+            }
+        })();
+
+        nsLoadingMap.set(key, loadPromise);
+        await loadPromise;
+    }, [locale, refreshFromGlobal]);
+
+    /** 初始化 + 监听全局事件 */
+    useEffect(() => {
+        if (!isBrowser) return;
+
         refreshFromGlobal();
-      }
-    })();
 
-    nsLoadingMap.set(key, loadPromise);
-    await loadPromise;
-  }, [refreshFromGlobal]);
+        const onUpdated = () => refreshFromGlobal();
+        window.addEventListener('sp-i18n-updated', onUpdated);
 
-  useEffect(() => {
-    if (!isBrowser) return;
-    refreshFromGlobal();
-    const onUpdated = () => refreshFromGlobal();
-    window.addEventListener('sp-i18n-updated', onUpdated);
-    return () => window.removeEventListener('sp-i18n-updated', onUpdated);
-  }, [refreshFromGlobal]);
+        return () => window.removeEventListener('sp-i18n-updated', onUpdated);
+    }, [refreshFromGlobal]);
 
-  const ready = useMemo(() => Object.keys(messages).length > 0, [messages]);
+    /** ready 状态 */
+    const ready = useMemo(() => Object.keys(messages).length > 0, [messages]);
 
-  return {
-    t: tImpl,
-    locale,
-    setLocale,
-    messages,
-    ensure,
-    ready,
-  } as const;
+    return {
+        t,
+        locale,
+        setLocale,
+        messages,
+        ensure,
+        ready
+    } as const;
 }

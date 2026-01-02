@@ -156,12 +156,12 @@ export default [
         {
           'name': '超级管理员',
           'description': '拥有系统内所有权限',
-          'authority': 'SYSTEM_ADMIN'
+          'id': '1'
         },
         {
           'name': '用户',
           'description': '普通用户',
-          'authority': 'USER'
+          'id': '2'
         }
       ],
       "page": {

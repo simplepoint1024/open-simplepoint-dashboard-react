@@ -10,7 +10,7 @@ const {baseUrl} = api['rbac-roles']
 export interface RoleRelevantVo {
   name: string;
   description: string;
-  authority: string;
+  id: string;
 }
 
 /**
@@ -18,9 +18,9 @@ export interface RoleRelevantVo {
  */
 export interface RolePermissionRelevantDto {
   // 所选角色
-  roleAuthority: string | null;
+  roleId: string | null;
   // 权限列表
-  permissionAuthorities?: string[];
+  permissionIds?: string[];
 }
 
 /**
@@ -34,8 +34,8 @@ export async function fetchItems(params: Record<string, string>) {
 /**
  * 获取已分配角色的权限下拉分页
  */
-export async function fetchAuthorized(params: RolePermissionRelevantDto) {
-  return await get<string[]>(`${baseUrl}/authorized`, params);
+export async function fetchAuthorized(roleId: string) {
+  return await get<string[]>(`${baseUrl}/authorized?roleId=${roleId}`);
 }
 
 /**
