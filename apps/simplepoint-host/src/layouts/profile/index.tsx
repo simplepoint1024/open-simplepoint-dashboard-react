@@ -25,7 +25,7 @@ export const Profile: React.FC = () => {
   // 增量加载 profile 命名空间
   useEffect(() => {
     void ensure(['profile']);
-  }, [ensure]);
+  }, [ensure, locale]);
 
   const {data, isLoading, refetch} = useUserInfo();
   const [saving, setSaving] = useState(false);

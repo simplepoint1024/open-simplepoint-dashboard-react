@@ -1,98 +1,107 @@
 import SimpleTable from "@simplepoint/components/SimpleTable";
 import api from '@/api/index';
 import {useI18n} from '@simplepoint/shared/hooks/useI18n';
-import React, {useEffect, useState, useCallback} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Drawer} from "antd";
 import RoleConfig from "./config/role";
+
 const baseConfig = api['rbac-users'];
 
-
 const App = () => {
-  const {t, ensure, locale} = useI18n();
-  const [userId, setUserId] = useState(null as string | null);
-  const [open, setOpen] = useState(false);
-  // 新增：可拖拽高度状态（仅 bottom / top 方向有效）
-  const [drawerHeight, setDrawerHeight] = useState<number>(480);
+    const {t, ensure, locale} = useI18n();
 
-  // 关闭时重置高度，避免下次打开过高或过低
-  useEffect(() => {
-    if (!open) {
-      setDrawerHeight(480);
-    }
-  }, [open]);
+    const [userId, setUserId] = useState<string | null>(null);
+    const [open, setOpen] = useState(false);
 
-  // 拖拽开始函数
-  const startResize = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    const startY = e.clientY;
-    const startHeight = drawerHeight;
-    const minHeight = 240;
-    const maxHeight = Math.max(320, window.innerHeight - 80); // 预留头部与安全边距
+    /** Drawer 高度（可拖拽） */
+    const [drawerHeight, setDrawerHeight] = useState(480);
 
-    const onMove = (me: MouseEvent) => {
-      const delta = startY - me.clientY; // 向上拖动增高（bottom 抽屉）
-      let next = startHeight + delta;
-      if (next < minHeight) next = minHeight;
-      if (next > maxHeight) next = maxHeight;
-      setDrawerHeight(next);
-    };
-    const onUp = () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup', onUp);
-    };
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
-  }, [drawerHeight]);
+    /** Drawer 关闭时重置高度 */
+    useEffect(() => {
+        if (!open) setDrawerHeight(480);
+    }, [open]);
 
-  // 确保本页所需命名空间加载（users/roles），语言切换后也会自动增量加载
-  useEffect(() => {
-    void ensure(baseConfig.i18nNamespaces);
-  }, [ensure, locale]);
+    /** 拖拽调整 Drawer 高度 */
+    const startResize = useCallback(
+        (e: React.MouseEvent) => {
+            e.preventDefault();
+            const startY = e.clientY;
+            const startHeight = drawerHeight;
 
-  const customButtonEvents = {
-    'config.role': (_keys: React.Key[], rows: any[]) => {
-      setOpen(true);
-      setUserId(rows[0].id)
-    },
-  } as const;
+            const minHeight = 240;
+            const maxHeight = Math.max(320, window.innerHeight - 80);
 
+            const onMove = (me: MouseEvent) => {
+                const delta = startY - me.clientY;
+                let next = startHeight + delta;
+                if (next < minHeight) next = minHeight;
+                if (next > maxHeight) next = maxHeight;
+                setDrawerHeight(next);
+            };
 
-  return (
-    <div>
-      <SimpleTable
-        {...baseConfig}
-        customButtonEvents={customButtonEvents}
-      />
-      <Drawer
-        title={t("users.button.config.role")}
-        open={open}
-        onClose={() => { setOpen(false); setUserId(null); }}
-        placement={"bottom"}
-        // 传递动态高度
-        height={drawerHeight}
-        destroyOnHidden
-        styles={{
-          body: { position: 'relative', paddingTop: 12 },
-        }}
-      >
-        {/* 拖拽句柄：放在内容顶部，absolute 定位覆盖全宽 */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 8,
-            cursor: 'ns-resize',
-            zIndex: 10,
-            // 视觉提示：一条浅色横线（可自定义主题）
-          }}
-          onMouseDown={startResize}
-        />
-        <RoleConfig key={userId || 'none'} userId={userId}/>
-      </Drawer>
-    </div>
-  );
+            const onUp = () => {
+                window.removeEventListener("mousemove", onMove);
+                window.removeEventListener("mouseup", onUp);
+            };
+
+            window.addEventListener("mousemove", onMove);
+            window.addEventListener("mouseup", onUp);
+        },
+        [drawerHeight]
+    );
+
+    /** 加载 i18n 命名空间（只执行一次） */
+    useEffect(() => {
+        ensure(baseConfig.i18nNamespaces);
+    }, [ensure, locale]);
+
+    /** SimpleTable 自定义按钮事件 */
+    const customButtonEvents = {
+        "config.role": (_keys: React.Key[], rows: any[]) => {
+            const id = rows?.[0]?.id;
+            if (!id) return;
+            setUserId(id);
+            setOpen(true);
+        },
+    } as const;
+
+    return (
+        <div>
+            <SimpleTable {...baseConfig} customButtonEvents={customButtonEvents}/>
+
+            <Drawer
+                title={t("users.button.config.role")}
+                open={open}
+                onClose={() => {
+                    setOpen(false);
+                    setUserId(null);
+                }}
+                placement="bottom"
+                height={drawerHeight}
+                destroyOnHidden
+                styles={{
+                    body: {position: "relative", paddingTop: 12},
+                }}
+            >
+                {/* 拖拽句柄 */}
+                <div
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: 8,
+                        cursor: "ns-resize",
+                        zIndex: 10,
+                    }}
+                    onMouseDown={startResize}
+                />
+
+                {/* ⭐ 不再使用 key 强制重建，避免闪退 */}
+                {userId && <RoleConfig userId={userId}/>}
+            </Drawer>
+        </div>
+    );
 };
 
 export default App;

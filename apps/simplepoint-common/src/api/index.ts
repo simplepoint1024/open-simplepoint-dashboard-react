@@ -6,17 +6,17 @@ export default {
   },
   'rbac-menus':{
     baseUrl: '/common/menus',
-    i18nNamespaces: ['menus'],
+    i18nNamespaces: ['menus','permissions'],
     name: 'rbac-menus',
   },
   'rbac-roles':{
     baseUrl: '/common/roles',
-    i18nNamespaces: ['roles'],
+    i18nNamespaces: ['roles','permissions'],
     name: 'roles'
   },
   'rbac-users':{
     baseUrl: '/common/users',
-    i18nNamespaces: ['users'],
+    i18nNamespaces: ['users','roles'],
     name: 'users'
   },
   'rbac-permissions':{

@@ -19,7 +19,7 @@ interface TableTransferProps extends TransferProps<TransferItem> {
 }
 
 const App = ({userId}: RoleSelectProps) => {
-    const {t, ensure, messages} = useI18n();
+    const {t, messages} = useI18n();
 
     /** 1. 加载角色列表 */
     const {data: page} = usePage(
@@ -27,11 +27,6 @@ const App = ({userId}: RoleSelectProps) => {
         () => fetchItems({page: '0', size: '10000000'})
     );
     const content = page?.content ?? [];
-
-    /** 2. 加载 i18n 命名空间（只执行一次） */
-    useEffect(() => {
-        ensure(['roles']);
-    }, [ensure]);
 
     /** 3. 列定义（依赖 messages 才能在语言切换时立即更新） */
     const columns: TableColumnsType<RoleRelevantVo> = useMemo(() => [
@@ -50,11 +45,14 @@ const App = ({userId}: RoleSelectProps) => {
     /** 4. 角色分配状态 */
     const [targetKeys, setTargetKeys] = useState<TransferProps['targetKeys']>([]);
 
+    // 无 userId 时不启动查询
+    const canQuery = !!userId;
+
     /** 5. 获取已分配角色 */
-    const {data: authorized} = useData<string[]>(
-        userId ? ['fetchAuthorizedUserRoles', userId] : '',
+    const {data: authorized, isFetching} = useData<string[]>(
+        canQuery ? ['fetchAuthorizedUserRoles', userId] : ['fetchAuthorizedUserRoles', 'pending'],
         () => fetchAuthorized({userId}),
-        {enabled: !!userId}
+        {enabled: canQuery}
     );
 
     /** 6. 切换用户时清空状态 */
@@ -73,7 +71,7 @@ const App = ({userId}: RoleSelectProps) => {
     const onChange: TableTransferProps['onChange'] = (nextTargetKeys, direction, moveKeys) => {
         setTargetKeys(nextTargetKeys);
 
-        if (!userId) return;
+        if (!canQuery) return;
 
         if (direction === 'right') {
             fetchAuthorize({
@@ -88,8 +86,8 @@ const App = ({userId}: RoleSelectProps) => {
         }
     };
 
-    /** 9. userId 为空时不渲染穿梭框（避免内部 DOM 计算报错） */
-    if (!userId) {
+    /** 9. userId 为空时不渲染穿梭框，避免内部 DOM 计算报错 */
+    if (!canQuery) {
         return <div style={{flex: 1, minHeight: 0}}/>;
     }
 
@@ -107,6 +105,7 @@ const App = ({userId}: RoleSelectProps) => {
                     adaptiveHeight
                     searchable
                 />
+                {isFetching && <div style={{marginTop: 8}}>{t('loading', '加载中...')}</div>}
             </div>
         </div>
     );

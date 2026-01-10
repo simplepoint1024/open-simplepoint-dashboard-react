@@ -1,10 +1,10 @@
-import {useI18n} from '@simplepoint/shared/hooks/useI18n';
-import {useEffect, useMemo, useState} from "react";
-import {GetProp, TableColumnsType, TransferProps} from 'antd';
-import STableTransfer from '@simplepoint/components/STableTransfer'
-import {useData, usePage} from '@simplepoint/shared/api/methods';
-import {fetchItems, PermissionRelevantVo} from "@/api/system/permission.ts";
-import {fetchAuthorize, fetchAuthorized, fetchUnauthorized} from "@/api/system/role.ts";
+import { useI18n } from '@simplepoint/shared/hooks/useI18n';
+import { useEffect, useMemo, useState } from 'react';
+import { GetProp, TableColumnsType, TransferProps } from 'antd';
+import STableTransfer from '@simplepoint/components/STableTransfer';
+import { useData, usePage } from '@simplepoint/shared/api/methods';
+import { fetchItems, PermissionRelevantVo } from '@/api/system/permission.ts';
+import { fetchAuthorize, fetchAuthorized, fetchUnauthorized } from '@/api/system/role.ts';
 
 type TransferItem = GetProp<TransferProps, 'dataSource'>[number];
 
@@ -18,78 +18,85 @@ interface TableTransferProps extends TransferProps<TransferItem> {
     rightColumns: TableColumnsType<PermissionRelevantVo>;
 }
 
-// 删除本地 filterOption，启用组件内“全列搜索+高亮”
-const App = (props: RoleSelectProps) => {
-    const {t, ensure, locale} = useI18n();
+const App = ({ roleId }: RoleSelectProps) => {
+    const { t, messages } = useI18n();
 
-    // 获取权限列表数据
-    const {data: page} = usePage('fetchItems', () => fetchItems({
-        page: '0',
-        size: '10000000'
-    }));
-    const {content} = page || {content: []};
+    /** 1. 获取权限列表 */
+    const { data: page } = usePage('fetchItems', () =>
+        fetchItems({ page: '0', size: '10000000' })
+    );
+    const content = page?.content ?? [];
 
-    // 确保本页所需命名空间加载（users/roles），语言切换后也会自动增量加载
-    useEffect(() => {
-        void ensure(['permissions']);
-    }, [ensure, locale]);
-
-    const columns: TableColumnsType<PermissionRelevantVo> = useMemo(() => ([
-        {
-            key: 'name',
-            dataIndex: 'name',
-            title: t('permissions.title.name'),
-        },
-        {
-            key: 'description',
-            dataIndex: 'description',
-            title: t('permissions.title.description'),
-        },
-    ]), [t, locale]);
-
-    const [targetKeys, setTargetKeys] = useState<TransferProps['targetKeys']>([]);
-
-    // 获取已分配权限（随 roleId 变化而变化）
-    const {data: authorized} = useData<string[]>(
-        ['fetchAuthorized', props.roleId],
-        () => fetchAuthorized(props.roleId),
-        {enabled: !!props.roleId}
+    /** 2. 列定义（依赖 messages 才能在语言切换时立即更新） */
+    const columns: TableColumnsType<PermissionRelevantVo> = useMemo(
+        () => [
+            {
+                key: 'name',
+                dataIndex: 'name',
+                title: t('permissions.title.name'),
+            },
+            {
+                key: 'description',
+                dataIndex: 'description',
+                title: t('permissions.title.description'),
+            },
+        ],
+        [messages] // ⭐ messages 是最稳定、最正确的依赖
     );
 
-    // 切换不同角色时，先清空以避免显示上一次的内容
+    /** 3. 穿梭框状态 */
+    const [targetKeys, setTargetKeys] = useState<TransferProps['targetKeys']>([]);
+
+    /** 4. 获取已分配权限 */
+    const { data: authorized } = useData<string[]>(
+        roleId ? ['fetchAuthorized', roleId] : '',
+        () => fetchAuthorized(roleId),
+        { enabled: !!roleId }
+    );
+
+    /** 5. 切换角色时清空状态 */
     useEffect(() => {
         setTargetKeys([]);
-    }, [props.roleId]);
+    }, [roleId]);
 
-    // 初始化/更新已分配权限
+    /** 6. 初始化/更新已分配权限 */
     useEffect(() => {
-        setTargetKeys(authorized || []);
+        if (authorized) {
+            setTargetKeys(authorized);
+        }
     }, [authorized]);
 
-    const onChange: TableTransferProps['onChange'] = (nextTargetKeys, direction, moveKeys) => {
+    /** 7. 穿梭框变更事件 */
+    const onChange: TableTransferProps['onChange'] = (
+        nextTargetKeys,
+        direction,
+        moveKeys
+    ) => {
         setTargetKeys(nextTargetKeys);
+
+        if (!roleId) return;
+
         if (direction === 'right') {
-            // 分配权限的逻辑处理
             fetchAuthorize({
-                roleId: props.roleId,
+                roleId,
                 permissionIds: moveKeys as string[],
-            }).then(_res => {
-                // 处理返回结果
-            })
+            });
         } else {
-            // 移除权限的逻辑处理
             fetchUnauthorized({
-                roleId: props.roleId,
+                roleId,
                 permissionIds: moveKeys as string[],
-            }).then(_res => {
-                // 处理返回结果
-            })
+            });
         }
     };
 
+    /** 8. roleId 为空时不渲染穿梭框（避免内部 DOM 计算报错） */
+    if (!roleId) {
+        return <div style={{ flex: 1, minHeight: 0 }} />;
+    }
+
     return (
-        <div style={{display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0}}>
-            <div style={{flex: 1, minHeight: 0}}>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
+            <div style={{ flex: 1, minHeight: 0 }}>
                 <STableTransfer
                     dataSource={content}
                     targetKeys={targetKeys}
@@ -97,11 +104,9 @@ const App = (props: RoleSelectProps) => {
                     onChange={onChange}
                     leftColumns={columns}
                     rightColumns={columns}
-                    itemKey={'id'}
-                    adaptiveHeight={true}
-                    searchable={true}
-                    // 如需微调底部空隙，可调整 scrollOffset（例如 8、12、16）
-                    // scrollOffset={8}
+                    itemKey="id"
+                    adaptiveHeight
+                    searchable
                 />
             </div>
         </div>

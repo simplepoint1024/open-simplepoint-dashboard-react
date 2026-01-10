@@ -10,7 +10,7 @@ const baseConfig = api['rbac-roles'];
 
 const App = () => {
     const [openRoleConfig, setOpenRoleConfig] = useState(false);
-    const [roleId, setRoleId] = useState<string | null>(null);
+    const [roleId, setRoleId] = useState<string>('');
     // 支持拖拽高度
     const [drawerHeight, setDrawerHeight] = useState<number>(480);
 
@@ -71,7 +71,7 @@ const App = () => {
                 open={openRoleConfig}
                 onClose={() => {
                     setOpenRoleConfig(false);
-                    setRoleId(null);
+                    setRoleId('');
                 }}
                 placement={"bottom"}
                 // width 对 bottom 抽屉无效，使用 height 控制高度

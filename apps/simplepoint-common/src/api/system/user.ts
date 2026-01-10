@@ -17,7 +17,8 @@ export interface UserRoleRelevantDto {
  * 获取已分配角色下拉分页
  */
 export async function fetchAuthorized(params: UserRoleRelevantDto) {
-    return await get<string[]>(`${baseUrl}/authorized?`, params);
+    // 避免 "authorized??userId=..." 的双问号，将查询参数交给 get 封装追加
+    return await get<string[]>(`${baseUrl}/authorized`, params);
 }
 
 /**

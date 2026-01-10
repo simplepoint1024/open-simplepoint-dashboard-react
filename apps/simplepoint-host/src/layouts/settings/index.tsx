@@ -61,7 +61,7 @@ export const Settings: React.FC = () => {
     // 加载 settings 命名空间
     useEffect(() => {
         ensure(["settings"]).catch();
-    }, [ensure]);
+    }, [ensure, locale]);
 
     // 主题 & 尺寸
     const [themeMode, setThemeMode] = useState<"light" | "dark" | "system">(
