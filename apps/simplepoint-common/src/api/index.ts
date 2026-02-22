@@ -59,4 +59,14 @@ export default {
     i18nNamespaces: ['microapps'],
     name: 'microapps'
   },
+  'organization.app-packages': {
+    baseUrl: '/common/organization/app-packages',
+    i18nNamespaces: ['app-packages'],
+    name: 'app-packages'
+  },
+  'organization.tenants': {
+    baseUrl: '/common/organization/tenants',
+    i18nNamespaces: ['tenants'],
+    name: 'tenants'
+  },
 }

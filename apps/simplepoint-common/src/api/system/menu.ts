@@ -10,7 +10,7 @@ export interface RolePermissionRelevantDto {
   // 所选角色
   menuId: string | null;
   // 权限列表
-  permissionIds?: string[];
+  permissionAuthority?: string[];
 }
 
 /**

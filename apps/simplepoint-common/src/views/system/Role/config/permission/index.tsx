@@ -79,12 +79,12 @@ const App = ({ roleId }: RoleSelectProps) => {
         if (direction === 'right') {
             fetchAuthorize({
                 roleId,
-                permissionIds: moveKeys as string[],
+                permissionAuthority: moveKeys as string[],
             });
         } else {
             fetchUnauthorized({
                 roleId,
-                permissionIds: moveKeys as string[],
+                permissionAuthority: moveKeys as string[],
             });
         }
     };
@@ -104,7 +104,7 @@ const App = ({ roleId }: RoleSelectProps) => {
                     onChange={onChange}
                     leftColumns={columns}
                     rightColumns={columns}
-                    itemKey="id"
+                    itemKey="authority"
                     adaptiveHeight
                     searchable
                 />

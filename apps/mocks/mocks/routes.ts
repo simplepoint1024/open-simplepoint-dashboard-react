@@ -230,6 +230,100 @@ const routes = {
             ]
         },
         {
+            "label": "组织管理",
+            "title": "menu.organization",
+            "icon": "ApartmentOutlined",
+            "path": "/organization",
+            "authority": "organization.view",
+            "type": "item",
+            "sort": 3,
+            "disabled": false,
+            "permissions": [
+                {
+                    "name": "Organization View",
+                    "authority": "organization.view",
+                    "resource": "/organization",
+                    "description": "允许访问组织管理菜单"
+                }
+            ],
+            "children": [
+                {
+                    "label": "租户管理",
+                    "title": "menu.organization.tenant",
+                    "icon": "TeamOutlined",
+                    "path": "/organization/tenants",
+                    "authority": "tenants.view",
+                    "sort": 0,
+                    "component": "common/organization/tenant",
+                    "type": "item",
+                    "disabled": false,
+                    "permissions": [
+                        {
+                            "name": "Tenant View",
+                            "authority": "tenants.view",
+                            "resource": "/organization/tenant",
+                            "description": "允许访问租户管理页面"
+                        },
+                        {
+                            "name": "Tenant Create",
+                            "authority": "tenants.create",
+                            "resource": "/organization/tenant",
+                            "description": "允许创建租户"
+                        },
+                        {
+                            "name": "Tenant Edit",
+                            "authority": "tenants.edit",
+                            "resource": "/organization/tenant",
+                            "description": "允许编辑租户"
+                        },
+                        {
+                            "name": "Tenant Delete",
+                            "authority": "tenants.delete",
+                            "resource": "/organization/tenant",
+                            "description": "允许删除租户"
+                        }
+                    ]
+                },
+                {
+                    "label": "应用包管理",
+                    "title": "menu.organization.appPackages",
+                    "icon": "AppstoreOutlined",
+                    "path": "/organization/app-packages",
+                    "authority": "appPackages.view",
+                    "sort": 1,
+                    "component": "common/organization/AppPackage",
+                    "type": "item",
+                    "disabled": false,
+                    "permissions": [
+                        {
+                            "name": "App Package View",
+                            "authority": "appPackages.view",
+                            "resource": "/organization/app-package",
+                            "description": "允许访问应用包管理页面"
+                        },
+                        {
+                            "name": "App Package Create",
+                            "authority": "appPackages.create",
+                            "resource": "/organization/app-package",
+                            "description": "允许创建应用包"
+                        },
+                        {
+                            "name": "App Package Edit",
+                            "authority": "appPackages.edit",
+                            "resource": "/organization/app-package",
+                            "description": "允许编辑应用包"
+                        },
+                        {
+                            "name": "App Package Delete",
+                            "authority": "appPackages.delete",
+                            "resource": "/organization/app-package",
+                            "description": "允许删除应用包"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "label": "外部链接",
             "title": "menu.externalLink",
             "icon": "LinkOutlined",
