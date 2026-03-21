@@ -230,94 +230,248 @@ const routes = {
             ]
         },
         {
-            "label": "组织管理",
-            "title": "menu.organization",
+            "label": "平台管理",
+            "title": "menu.platform",
             "icon": "ApartmentOutlined",
-            "path": "/organization",
-            "authority": "organization.view",
+            "path": "/platform",
+            "authority": "tenants.view",
             "type": "item",
             "sort": 3,
             "disabled": false,
             "permissions": [
                 {
-                    "name": "Organization View",
-                    "authority": "organization.view",
-                    "resource": "/organization",
-                    "description": "允许访问组织管理菜单"
+                    "name": "Platform View",
+                    "authority": "tenants.view",
+                    "resource": "/platform",
+                    "description": "允许访问平台管理菜单"
                 }
             ],
             "children": [
                 {
                     "label": "租户管理",
-                    "title": "menu.organization.tenant",
+                    "title": "menu.platform.tenants",
                     "icon": "TeamOutlined",
-                    "path": "/organization/tenants",
+                    "path": "/platform/tenants",
                     "authority": "tenants.view",
                     "sort": 0,
-                    "component": "common/organization/tenant",
+                    "component": "common/platform/Tenant",
                     "type": "item",
                     "disabled": false,
                     "permissions": [
                         {
                             "name": "Tenant View",
                             "authority": "tenants.view",
-                            "resource": "/organization/tenant",
+                            "resource": "/platform/tenants",
                             "description": "允许访问租户管理页面"
                         },
                         {
                             "name": "Tenant Create",
                             "authority": "tenants.create",
-                            "resource": "/organization/tenant",
+                            "resource": "/platform/tenants",
                             "description": "允许创建租户"
                         },
                         {
                             "name": "Tenant Edit",
                             "authority": "tenants.edit",
-                            "resource": "/organization/tenant",
+                            "resource": "/platform/tenants",
                             "description": "允许编辑租户"
                         },
                         {
                             "name": "Tenant Delete",
                             "authority": "tenants.delete",
-                            "resource": "/organization/tenant",
+                            "resource": "/platform/tenants",
                             "description": "允许删除租户"
                         }
                     ]
                 },
                 {
-                    "label": "应用包管理",
-                    "title": "menu.organization.appPackages",
+                    "label": "套餐包管理",
+                    "title": "menu.platform.packages",
                     "icon": "AppstoreOutlined",
-                    "path": "/organization/app-packages",
-                    "authority": "appPackages.view",
+                    "path": "/platform/packages",
+                    "authority": "packages.view",
                     "sort": 1,
-                    "component": "common/organization/AppPackage",
+                    "component": "common/platform/Package",
                     "type": "item",
                     "disabled": false,
                     "permissions": [
                         {
-                            "name": "App Package View",
-                            "authority": "appPackages.view",
-                            "resource": "/organization/app-package",
-                            "description": "允许访问应用包管理页面"
+                            "name": "Package View",
+                            "authority": "packages.view",
+                            "resource": "/platform/packages",
+                            "description": "允许访问套餐包管理页面"
                         },
                         {
-                            "name": "App Package Create",
-                            "authority": "appPackages.create",
-                            "resource": "/organization/app-package",
-                            "description": "允许创建应用包"
+                            "name": "Package Create",
+                            "authority": "packages.create",
+                            "resource": "/platform/packages",
+                            "description": "允许创建套餐包"
                         },
                         {
-                            "name": "App Package Edit",
-                            "authority": "appPackages.edit",
-                            "resource": "/organization/app-package",
-                            "description": "允许编辑应用包"
+                            "name": "Package Edit",
+                            "authority": "packages.edit",
+                            "resource": "/platform/packages",
+                            "description": "允许编辑套餐包"
                         },
                         {
-                            "name": "App Package Delete",
-                            "authority": "appPackages.delete",
-                            "resource": "/organization/app-package",
-                            "description": "允许删除应用包"
+                            "name": "Package Delete",
+                            "authority": "packages.delete",
+                            "resource": "/platform/packages",
+                            "description": "允许删除套餐包"
+                        }
+                    ]
+                },
+                {
+                    "label": "应用管理",
+                    "title": "menu.platform.applications",
+                    "icon": "AppstoreOutlined",
+                    "path": "/platform/applications",
+                    "authority": "applications.view",
+                    "sort": 2,
+                    "component": "common/platform/Application",
+                    "type": "item",
+                    "disabled": false,
+                    "permissions": [
+                        {
+                            "name": "Application View",
+                            "authority": "applications.view",
+                            "resource": "/platform/applications",
+                            "description": "允许访问应用管理页面"
+                        },
+                        {
+                            "name": "Application Create",
+                            "authority": "applications.create",
+                            "resource": "/platform/applications",
+                            "description": "允许创建应用"
+                        },
+                        {
+                            "name": "Application Edit",
+                            "authority": "applications.edit",
+                            "resource": "/platform/applications",
+                            "description": "允许编辑应用"
+                        },
+                        {
+                            "name": "Application Delete",
+                            "authority": "applications.delete",
+                            "resource": "/platform/applications",
+                            "description": "允许删除应用"
+                        }
+                    ]
+                },
+                {
+                    "label": "功能管理",
+                    "title": "menu.platform.features",
+                    "icon": "FunctionOutlined",
+                    "path": "/platform/features",
+                    "authority": "features.view",
+                    "sort": 3,
+                    "component": "common/platform/Feature",
+                    "type": "item",
+                    "disabled": false,
+                    "permissions": [
+                        {
+                            "name": "Feature View",
+                            "authority": "features.view",
+                            "resource": "/platform/features",
+                            "description": "允许访问功能管理页面"
+                        },
+                        {
+                            "name": "Feature Create",
+                            "authority": "features.create",
+                            "resource": "/platform/features",
+                            "description": "允许创建功能"
+                        },
+                        {
+                            "name": "Feature Edit",
+                            "authority": "features.edit",
+                            "resource": "/platform/features",
+                            "description": "允许编辑功能"
+                        },
+                        {
+                            "name": "Feature Delete",
+                            "authority": "features.delete",
+                            "resource": "/platform/features",
+                            "description": "允许删除功能"
+                        }
+                    ]
+                },
+                {
+                    "label": "字典管理",
+                    "title": "menu.platform.dictionaries",
+                    "icon": "BookOutlined",
+                    "path": "/platform/dictionaries",
+                    "authority": "dictionaries.view",
+                    "sort": 4,
+                    "component": "common/platform/Dictionary",
+                    "type": "item",
+                    "disabled": false,
+                    "permissions": [
+                        {
+                            "name": "Dictionary View",
+                            "authority": "dictionaries.view",
+                            "resource": "/platform/dictionaries",
+                            "description": "允许访问字典管理页面"
+                        },
+                        {
+                            "name": "Dictionary Create",
+                            "authority": "dictionaries.create",
+                            "resource": "/platform/dictionaries",
+                            "description": "允许创建字典"
+                        },
+                        {
+                            "name": "Dictionary Edit",
+                            "authority": "dictionaries.edit",
+                            "resource": "/platform/dictionaries",
+                            "description": "允许编辑字典"
+                        },
+                        {
+                            "name": "Dictionary Delete",
+                            "authority": "dictionaries.delete",
+                            "resource": "/platform/dictionaries",
+                            "description": "允许删除字典"
+                        },
+                        {
+                            "name": "Dictionary Config Item",
+                            "authority": "dictionaries.config.item",
+                            "resource": "/platform/dictionaries",
+                            "description": "允许配置字典项"
+                        }
+                    ]
+                },
+                {
+                    "label": "组织机构管理",
+                    "title": "menu.platform.organizations",
+                    "icon": "ApartmentOutlined",
+                    "path": "/platform/organizations",
+                    "authority": "organizations.view",
+                    "sort": 5,
+                    "component": "common/platform/Organization",
+                    "type": "item",
+                    "disabled": false,
+                    "permissions": [
+                        {
+                            "name": "Organization View",
+                            "authority": "organizations.view",
+                            "resource": "/platform/organizations",
+                            "description": "允许访问组织机构管理页面"
+                        },
+                        {
+                            "name": "Organization Create",
+                            "authority": "organizations.create",
+                            "resource": "/platform/organizations",
+                            "description": "允许创建组织机构"
+                        },
+                        {
+                            "name": "Organization Edit",
+                            "authority": "organizations.edit",
+                            "resource": "/platform/organizations",
+                            "description": "允许编辑组织机构"
+                        },
+                        {
+                            "name": "Organization Delete",
+                            "authority": "organizations.delete",
+                            "resource": "/platform/organizations",
+                            "description": "允许删除组织机构"
                         }
                     ]
                 }

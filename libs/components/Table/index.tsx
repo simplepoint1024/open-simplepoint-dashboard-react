@@ -73,6 +73,38 @@ const computeVisibleKeys = (properties: Record<string, any>): string[] => {
   return anyDeclared ? visible : keys;
 };
 
+const resolveI18nLabel = (value: unknown): string => {
+  if (typeof value !== 'string' || !value.startsWith('i18n:')) return String(value ?? '');
+  const key = value.slice(5);
+  const t = typeof window !== 'undefined' ? (window as any)?.spI18n?.t : undefined;
+  return t?.(key, key) ?? key;
+};
+
+const normalizeOptionValue = (value: any) => value == null ? '' : String(value);
+
+const resolveOptionLabel = (schemaDef: any, value: any): string | undefined => {
+  const options = Array.isArray(schemaDef?.oneOf)
+    ? schemaDef.oneOf
+    : Array.isArray(schemaDef?.anyOf)
+      ? schemaDef.anyOf
+      : [];
+
+  if (!options.length) {
+    return undefined;
+  }
+
+  const matched = options.find((option: any) => {
+    const optionValue = option?.const ?? option?.value;
+    return normalizeOptionValue(optionValue) === normalizeOptionValue(value);
+  });
+
+  if (!matched) {
+    return undefined;
+  }
+
+  return resolveI18nLabel(matched.title ?? matched.label ?? matched.const ?? value);
+};
+
 const App = <T extends object = any>(props: TableProps<T>) => {
   const {t, locale} = useI18n();
   const [filters, setFilters] = useState<Record<string, string>>(props.filters ?? {});
@@ -147,6 +179,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
         const isBoolean = (schemaDef as any)?.type === 'boolean';
         const isNumber = (schemaDef as any)?.type === 'number' || (schemaDef as any)?.type === 'integer';
         const align = key === 'icon' ? 'center' : (isNumber ? 'right' : undefined);
+        const hasOptions = Array.isArray((schemaDef as any)?.oneOf) || Array.isArray((schemaDef as any)?.anyOf);
 
         const renderCell = isBoolean
           ? (val: any) => (
@@ -160,8 +193,10 @@ const App = <T extends object = any>(props: TableProps<T>) => {
               <span style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%'}}>
                 {typeof val === 'string' ? createIcon(val) : null}
               </span>
-            )
-            : undefined;
+             )
+            : hasOptions
+              ? (val: any) => resolveOptionLabel(schemaDef, val) ?? val
+             : undefined;
 
         const column: any = {
           title: baseTitle,

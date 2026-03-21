@@ -1,9 +1,10 @@
+import { ensureContextId, getStoredContextId, getStoredTenantId, shouldAutoEnsureContextId } from './contextId';
+
 // 自定义错误类型，方便上层捕获和处理
 export class HttpError extends Error {
   status: number;
   statusText: string;
   body?: string;
-  notified?: boolean;
 
   constructor(status: number, statusText: string, body?: string) {
     super(`HTTP ${status} ${statusText}`);
@@ -38,61 +39,69 @@ const notifyI18n = (() => {
 })();
 
 // 通用请求方法
-export async function request<T>(
-  url: string,
-  options?: RequestInit
-): Promise<T> {
+export async function request<T>(url: string, options?: RequestInit): Promise<T> {
+  const method = (options?.method || 'GET').toUpperCase();
+
+  const tenantId = getStoredTenantId();
+  let contextId: string | undefined = getStoredContextId(tenantId);
+
+  const mergedHeaders: Record<string, any> = {
+    'Content-Type': 'application/json',
+    ...(options?.headers || {}),
+  };
+
+  if (tenantId && mergedHeaders['X-Tenant-Id'] == null) {
+    mergedHeaders['X-Tenant-Id'] = tenantId;
+  }
+
+  const headerContextId = mergedHeaders['X-Context-Id'];
+  if (shouldAutoEnsureContextId(url, headerContextId)) {
+    // best-effort：不阻断主请求
+    if (!contextId && tenantId) {
+      try {
+        contextId = await ensureContextId(tenantId);
+      } catch {
+        // ignore
+      }
+    }
+  }
+
+  if (contextId && mergedHeaders['X-Context-Id'] == null) {
+    mergedHeaders['X-Context-Id'] = contextId;
+  }
+
+  let response: Response;
   try {
-    const response = await fetch(url, {
+    response = await fetch(url, {
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(options?.headers || {}),
-      },
+      headers: mergedHeaders,
       ...options,
     });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      const method = (options?.method || 'GET').toUpperCase();
-      const msg = `HTTP ${response.status} ${response.statusText}`;
-      notifyI18n(
-        'error.requestFailed',
-        '请求失败',
-        `${method} ${url}\n${msg}\n${errorText?.slice(0, 500)}`
-      );
-      const err = new HttpError(response.status, response.statusText, errorText);
-      err.notified = true;
-      throw err;
-    }
-
-    // ✅ 支持无返回值接口（204 No Content 或空 body）
-    if (response.status === 204) {
-      return undefined as T;
-    }
-
-    const text = await response.text();
-    if (!text) {
-      return undefined as T;
-    }
-
-    const contentType = response.headers.get('content-type') || '';
-    if (contentType.includes('application/json')) {
-      return JSON.parse(text) as T;
-    }
-    if (contentType.includes('text/')) {
-      return text as unknown as T;
-    }
-    return (await response.blob()) as unknown as T;
   } catch (error: any) {
-    if (!error?.notified) {
-      const method = (options?.method || 'GET').toUpperCase();
-      notifyI18n(
-        'error.networkError',
-        '网络错误',
-        `${method} ${url}\n${String(error?.message || error)}`
-      );
+    notifyI18n('error.network', '网络错误', `${method} ${url}\n${String(error?.message || error)}`);
+    throw error;
+  }
+
+  if (!response.ok) {
+    const text = await response.text();
+    const desc = `${method} ${url}\nHTTP ${response.status} ${response.statusText}\n${text?.slice(0, 500)}`;
+    notifyI18n('error.requestFailed', '请求失败', desc);
+    const err: any = new HttpError(response.status, response.statusText, text);
+    err.__notified = true;
+    throw err;
+  }
+
+  if (response.status === 204) return undefined as T;
+
+  const contentType = response.headers.get('content-type') || '';
+  try {
+    if (contentType.includes('application/json')) {
+      return (await response.json()) as T;
     }
+    // 兼容 text/plain
+    return (await response.text()) as unknown as T;
+  } catch (error: any) {
+    notifyI18n('error.network', '网络错误', `${method} ${url}\n${String(error?.message || error)}`);
     throw error;
   }
 }

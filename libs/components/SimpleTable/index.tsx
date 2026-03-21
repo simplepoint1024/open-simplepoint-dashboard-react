@@ -8,6 +8,7 @@ import {IChangeEvent} from '@rjsf/core';
 import {Alert, Drawer, message, Modal, Skeleton, Spin} from 'antd';
 import {createIcon} from '@simplepoint/shared/types/icon';
 import {useI18n} from '@simplepoint/shared/hooks/useI18n';
+import {getStoredContextId, getStoredTenantId} from '@simplepoint/shared/api/contextId';
 
 const nsLoadedCache = new Set<string>();
 
@@ -23,6 +24,8 @@ export interface SimpleTableProps<T> {
   onEditingRecordChange?: (record: any | null) => void;
   initialValues?: any;
   onSubmit?: (action: 'add' | 'edit', formData: any, currentEditing: any | null) => Promise<void> | void;
+  formSchemaTransform?: (schema: any, editingRecord: any | null) => any;
+  formUiSchema?: Record<string, any>;
   i18nNamespaces: string[];
 }
 
@@ -48,7 +51,7 @@ const App = (props: SimpleTableProps<any>) => {
     })();
   }, [props.i18nNamespaces, ensure, locale]);
 
-  const { data: schemaData, isLoading: schemaLoading, error: schemaError } = useSchema(
+  const { data: schemaData, isLoading: schemaLoading, error: schemaError, refetch: refetchSchema } = useSchema(
     props.baseUrl,
     { enabled: i18nReady }
   );
@@ -56,6 +59,8 @@ const App = (props: SimpleTableProps<any>) => {
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState<number>(10);
   const [filters, setFilters] = useState<Record<string, string>>(props.initialFilters ?? {});
+  const [tenantId, setTenantId] = useState<string>(() => getStoredTenantId() ?? '');
+  const [contextId, setContextId] = useState<string>(() => getStoredContextId(getStoredTenantId()) ?? '');
   const [innerDrawerOpen, setInnerDrawerOpen] = useState(false);
   const [innerEditing, setInnerEditing] = useState<any | null>(null);
 
@@ -79,9 +84,34 @@ const App = (props: SimpleTableProps<any>) => {
     });
 
   const { data: pageData, isLoading: pageLoading, refetch: refetchPage } = usePage(
-    [props.name, page, size, filters],
+    [props.name, tenantId, contextId, page, size, filters],
     fetchPage
   );
+
+  useEffect(() => {
+    const handleTenantChange = (event: Event) => {
+      const nextTenantId = (event as CustomEvent<string | undefined>).detail ?? getStoredTenantId() ?? '';
+      setTenantId(nextTenantId);
+      setContextId(getStoredContextId(nextTenantId) ?? '');
+    };
+
+    const handleContextChange = () => {
+      const currentTenantId = getStoredTenantId() ?? '';
+      setContextId(getStoredContextId(currentTenantId) ?? '');
+    };
+
+    window.addEventListener('sp-set-tenant', handleTenantChange as EventListener);
+    window.addEventListener('sp-set-context-id', handleContextChange as EventListener);
+
+    return () => {
+      window.removeEventListener('sp-set-tenant', handleTenantChange as EventListener);
+      window.removeEventListener('sp-set-context-id', handleContextChange as EventListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    setPage(1);
+  }, [tenantId, contextId]);
 
   const loading = !ready || !i18nReady || schemaLoading || pageLoading;
 
@@ -115,7 +145,7 @@ const App = (props: SimpleTableProps<any>) => {
         try {
           await del(props.baseUrl, keys as any);
           message.success(t('table.deleteSuccess', '删除成功'));
-          await refetchPage();
+          await Promise.allSettled([refetchPage(), refetchSchema()]);
         } catch (e: any) {
           message.error(t('table.deleteFail', '删除失败: {msg}', { msg: e?.message || '' }));
         }
@@ -139,7 +169,7 @@ const App = (props: SimpleTableProps<any>) => {
       }
       setDrawerOpen(false);
       setEditingRecord(null);
-      await refetchPage();
+      await Promise.allSettled([refetchPage(), refetchSchema()]);
     } catch (e: any) {
       message.error(t('table.actionFail', '操作失败: {msg}', { msg: e?.message || '' }));
     }
@@ -153,6 +183,16 @@ const App = (props: SimpleTableProps<any>) => {
       return s1 - s2;
     });
   }, [schemaData?.buttons, props.customButtons]);
+
+  const formSchema = useMemo(() => {
+    if (!schemaData?.schema) {
+      return undefined;
+    }
+    if (!props.formSchemaTransform) {
+      return schemaData.schema;
+    }
+    return props.formSchemaTransform(schemaData.schema, editingRecord);
+  }, [schemaData?.schema, props.formSchemaTransform, editingRecord]);
 
   const defaultEvents = {
     add: handleAdd,
@@ -204,7 +244,8 @@ const App = (props: SimpleTableProps<any>) => {
         {schemaError && <Alert type="error" message={t('table.loadFail', '加载失败')} description={(schemaError as Error).message} />}
         {!loading && schemaData && (
           <SForm
-            schema={schemaData.schema}
+            schema={formSchema ?? schemaData.schema}
+            uiSchema={props.formUiSchema}
             formData={editingRecord ?? props.initialValues ?? {}}
             onSubmit={handleFormSubmit}
           />

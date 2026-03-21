@@ -59,14 +59,39 @@ export default {
     i18nNamespaces: ['microapps'],
     name: 'microapps'
   },
-  'organization.app-packages': {
-    baseUrl: '/common/organization/app-packages',
-    i18nNamespaces: ['app-packages'],
-    name: 'app-packages'
+  'platform.packages': {
+    baseUrl: '/common/platform/packages',
+    i18nNamespaces: ['packages'],
+    name: 'packages'
   },
-  'organization.tenants': {
-    baseUrl: '/common/organization/tenants',
+  'platform.tenants': {
+    baseUrl: '/common/platform/tenants',
     i18nNamespaces: ['tenants'],
     name: 'tenants'
+  },
+  'platform.features': {
+    baseUrl: '/common/platform/features',
+    i18nNamespaces: ['features'],
+    name: 'features'
+  },
+  'platform.dictionaries': {
+    baseUrl: '/common/platform/dictionaries',
+    i18nNamespaces: ['dictionaries'],
+    name: 'dictionaries'
+  },
+  'platform.organizations': {
+    baseUrl: '/common/platform/organizations',
+    i18nNamespaces: [],
+    name: 'organizations'
+  },
+  'platform.dictionary-items': {
+    baseUrl: '/common/platform/dictionary-items',
+    i18nNamespaces: ['dictionaries'],
+    name: 'dictionary-items'
+  },
+  'platform.applications': {
+    baseUrl: '/common/platform/applications',
+    i18nNamespaces: ['applications'],
+    name: 'applications'
   },
 }

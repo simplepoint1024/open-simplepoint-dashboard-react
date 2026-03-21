@@ -6,6 +6,17 @@ import { loadRemote } from '@module-federation/runtime';
 const lazyCache = new Map<string, React.LazyExoticComponent<React.ComponentType<any>>>();
 const LAZY_CACHE_MAX = 50;
 
+const specAliases: Record<string, string> = {
+  'common/organization/tenant': 'common/platform/Tenant',
+  'common/organization/AppPackage': 'common/platform/Package',
+  'common/platform/tenant': 'common/platform/Tenant',
+};
+
+function getSpecCandidates(spec: string) {
+  const normalized = specAliases[spec] ?? spec;
+  return Array.from(new Set([normalized, spec]));
+}
+
 export function getLazyComponent(t: (k: string, d?: string) => string, spec?: string): React.LazyExoticComponent<React.ComponentType<any>> {
   const fallback: { default: React.ComponentType<any> } = {
     default: () => (
@@ -17,16 +28,21 @@ export function getLazyComponent(t: (k: string, d?: string) => string, spec?: st
   if (cached) return cached;
   const s = spec as string; // 保证后续为非空字符串
   const comp = React.lazy(async () => {
-    try {
-      if (s.startsWith("./")) {
-        // @ts-ignore
-        return await import(`${s}`) as { default: React.ComponentType<any> };
-      } else {
-        return await loadRemote(`${s}`) as { default: React.ComponentType<any> };
+    const candidates = getSpecCandidates(s);
+    for (const candidate of candidates) {
+      try {
+        if (candidate.startsWith("./")) {
+          // @ts-ignore
+          return await import(`${candidate}`) as { default: React.ComponentType<any> };
+        }
+        return await loadRemote(`${candidate}`) as { default: React.ComponentType<any> };
+      } catch (error) {
+        if (candidate === candidates[candidates.length - 1]) {
+          return fallback as any;
+        }
       }
-    } catch (error) {
-      return fallback as any;
     }
+    return fallback as any;
   });
   if (lazyCache.size >= LAZY_CACHE_MAX) {
     const firstKey = lazyCache.keys().next().value as string | undefined;
@@ -35,4 +51,3 @@ export function getLazyComponent(t: (k: string, d?: string) => string, spec?: st
   lazyCache.set(s, comp);
   return comp;
 }
-

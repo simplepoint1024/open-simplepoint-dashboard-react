@@ -1,22 +1,16 @@
-import {get} from "@simplepoint/shared/api/methods";
-import {Page} from "@simplepoint/shared/types/request"
-import api from "@/api";
+import {get} from '@simplepoint/shared/api/methods';
+import {Page} from '@simplepoint/shared/types/request';
+import api from '@/api';
 
-const {baseUrl} = api['rbac-permissions']
+const {baseUrl} = api['rbac-permissions'];
 
-/**
- * 角色下拉选项接口
- */
 export interface PermissionRelevantVo {
-    name: string;
-    description: string;
-    id: string;
+  id: string;
+  name: string;
+  authority: string;
+  description: string;
 }
 
-/**
- * 获取下拉分页
- * @param params 查询参数
- */
 export async function fetchItems(params: Record<string, string>) {
-    return await get<Page<PermissionRelevantVo>>(`${baseUrl}/items`, params);
+  return await get<Page<PermissionRelevantVo>>(`${baseUrl}/items`, params);
 }

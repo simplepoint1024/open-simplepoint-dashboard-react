@@ -74,7 +74,6 @@
     "error.reload": "重新加载",
     "menu.externalLink": "外部链接",
     "tooltip.size": "切换全局尺寸(小/中/大)"
-
   },
   "table": {
     "table.confirmDeleteTitle": "确认删除",
@@ -191,7 +190,14 @@
     "menu.system.field": "字段权限",
     "menu.system.data": "数据权限",
     "menu.system.menu": "菜单管理",
-    "menu.system.user": "用户管理"
+    "menu.system.user": "用户管理",
+    "menu.platform": "平台管理",
+    "menu.platform.tenants": "租户管理",
+    "menu.platform.packages": "套餐包管理",
+    "menu.platform.applications": "应用管理",
+    "menu.platform.features": "功能管理",
+    "menu.platform.dictionaries": "字典管理",
+    "menu.platform.organizations": "组织机构管理"
   },
   "users": {
     "users.title.address": "地址",
@@ -399,7 +405,24 @@
     "messages.title.namespace": "命名空间",
     "messages.description.namespace": "消息键所属的命名空间"
   },
-  "microapps": {
-
+  "microapps": {},
+  "dictionaries": {
+    "dictionaries.title.name": "字典名称",
+    "dictionaries.description.name": "用于区分该字典的展示名称",
+    "dictionaries.title.code": "字典编码",
+    "dictionaries.description.code": "用于字段绑定和程序识别的唯一编码",
+    "dictionaries.title.description": "描述",
+    "dictionaries.description.description": "字典或字典项的简要说明",
+    "dictionaries.title.sort": "排序",
+    "dictionaries.description.sort": "数值越小越靠前展示",
+    "dictionaries.title.enabled": "启用",
+    "dictionaries.description.enabled": "是否启用该字典或字典项",
+    "dictionaries.title.dictionaryCode": "所属字典",
+    "dictionaries.description.dictionaryCode": "该字典项所属的字典编码",
+    "dictionaries.title.itemName": "字典项名称",
+    "dictionaries.description.itemName": "字典项在界面上展示的名称",
+    "dictionaries.title.value": "字典项值",
+    "dictionaries.description.value": "保存到业务字段中的实际值",
+    "dictionaries.button.config.item": "配置字典项"
   }
 }

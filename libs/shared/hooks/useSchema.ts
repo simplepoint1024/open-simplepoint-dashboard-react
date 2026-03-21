@@ -1,12 +1,19 @@
+import { useEffect, useState } from 'react';
 import { TableButtonProps } from "../../components/Table";
 import { get, useData } from "../api/methods";
 import { RJSFSchema } from "@rjsf/utils";
 import { createIcon } from "../types/icon";
 import type { UseQueryOptions } from "@tanstack/react-query";
+import { getStoredContextId, getStoredTenantId } from '../api/contextId';
 
 export type TableSchemaProps = {
   schema: RJSFSchema;
   buttons: TableButtonProps[];
+};
+
+type DictionaryOptionVo = {
+  value: string | number | boolean | null;
+  label: string;
 };
 
 const getGlobalT = () =>
@@ -35,6 +42,79 @@ const normalizeSchemaI18n = (node: any): any => {
   return node;
 };
 
+const getSchemaScalarType = (type: unknown): string | undefined => {
+  if (Array.isArray(type)) {
+    return type.find((item): item is string => typeof item === 'string' && item !== 'null');
+  }
+  return typeof type === 'string' ? type : undefined;
+};
+
+const castDictionaryOptionValue = (value: unknown, schemaType: unknown) => {
+  const scalarType = getSchemaScalarType(schemaType);
+  if (value == null) return value;
+  if (scalarType === 'integer') {
+    const parsed = Number(value);
+    return Number.isNaN(parsed) ? value : Math.trunc(parsed);
+  }
+  if (scalarType === 'number') {
+    const parsed = Number(value);
+    return Number.isNaN(parsed) ? value : parsed;
+  }
+  if (scalarType === 'boolean') {
+    if (typeof value === 'boolean') return value;
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+  }
+  return typeof value === 'string' ? value : String(value);
+};
+
+const applyDictionaryOptions = async (schema: any) => {
+  const cache = new Map<string, Promise<DictionaryOptionVo[]>>();
+
+  const walk = async (node: any): Promise<void> => {
+    if (!node || typeof node !== 'object') return;
+
+    const xui = node['x-ui'];
+    const dictCode = typeof xui?.dictCode === 'string'
+      ? xui.dictCode
+      : typeof xui?.['dict-code'] === 'string'
+        ? xui['dict-code']
+        : undefined;
+
+    if (dictCode) {
+      let optionsPromise = cache.get(dictCode);
+      if (!optionsPromise) {
+        optionsPromise = get<DictionaryOptionVo[]>('/common/platform/dictionaries/options', {dictionaryCode: dictCode});
+        cache.set(dictCode, optionsPromise);
+      }
+      const options = await optionsPromise;
+      if (Array.isArray(options) && options.length > 0) {
+        node.oneOf = options.map((option) => ({
+          const: castDictionaryOptionValue(option.value, node.type),
+          title: resolveI18nStr(option.label),
+        }));
+        node['x-ui'] = {
+          ...(xui || {}),
+          widget: xui?.widget ?? xui?.['ui:widget'] ?? 'select',
+        };
+      }
+    }
+
+    if (node.properties && typeof node.properties === 'object') {
+      await Promise.all(Object.values(node.properties).map(walk));
+    }
+
+    if (Array.isArray(node.items)) {
+      await Promise.all(node.items.map(walk));
+    } else if (node.items) {
+      await walk(node.items);
+    }
+  };
+
+  await walk(schema);
+  return schema;
+};
+
 // Only sort by x-order; keep original relative order for ties or when x-order is undefined
 const sortByOrder = <T extends Record<string, any>>(items: T[], _keyFn: (item: T) => string = () => "") =>
   [...items].sort((a, b) => {
@@ -58,7 +138,31 @@ const normalizeButtonI18n = (btn: TableButtonProps): TableButtonProps => ({
 export function useSchema(
   baseUrl: string,
   options?: Omit<UseQueryOptions<TableSchemaProps, Error, TableSchemaProps, readonly unknown[]>, 'queryKey' | 'queryFn'>) {
-  return useData(`${baseUrl}/schema`, async () => {
+  const [tenantId, setTenantId] = useState(() => getStoredTenantId() ?? "");
+  const [contextId, setContextId] = useState(() => getStoredContextId(getStoredTenantId()) ?? "");
+
+  useEffect(() => {
+    const handleTenantChange = (event: Event) => {
+      const nextTenantId = (event as CustomEvent<string | undefined>).detail ?? getStoredTenantId() ?? "";
+      setTenantId(nextTenantId);
+      setContextId(getStoredContextId(nextTenantId) ?? "");
+    };
+
+    const handleContextChange = () => {
+      const currentTenantId = getStoredTenantId() ?? "";
+      setContextId(getStoredContextId(currentTenantId) ?? "");
+    };
+
+    window.addEventListener("sp-set-tenant", handleTenantChange as EventListener);
+    window.addEventListener("sp-set-context-id", handleContextChange as EventListener);
+
+    return () => {
+      window.removeEventListener("sp-set-tenant", handleTenantChange as EventListener);
+      window.removeEventListener("sp-set-context-id", handleContextChange as EventListener);
+    };
+  }, []);
+
+  return useData([`${baseUrl}/schema`, tenantId, contextId], async () => {
     const res = await get<TableSchemaProps>(`${baseUrl}/schema`);
     if (!res) return res;
 
@@ -70,10 +174,14 @@ export function useSchema(
       };
 
     const buttons = sortByOrder(res.buttons ?? []).map(normalizeButtonI18n);
+    const normalizedSchema = normalizeSchemaI18n(schema);
+    const enhancedSchema = Array.isArray(normalizedSchema)
+      ? normalizedSchema
+      : await applyDictionaryOptions(normalizedSchema);
 
     return {
       ...res,
-      schema: normalizeSchemaI18n(schema),
+      schema: enhancedSchema,
       buttons,
     };
   }, options);

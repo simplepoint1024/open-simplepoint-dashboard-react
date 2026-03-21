@@ -1,10 +1,14 @@
 import type {ItemType} from "antd/es/menu/interface";
 import {Avatar, Button, Dropdown, MenuProps, Tooltip, Popconfirm, message} from "antd";
-import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined, DesktopOutlined, DeleteOutlined, FullscreenOutlined, FullscreenExitOutlined} from "@ant-design/icons";
+import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined, DesktopOutlined, DeleteOutlined, FullscreenOutlined, FullscreenExitOutlined, SwapOutlined} from "@ant-design/icons";
 import React, {useEffect, useRef, useState} from 'react';
-import {post} from "@simplepoint/shared/types/request.ts";
+import {post} from "@simplepoint/shared/api/methods";
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import { useUserInfo } from '@/fetches/user';
+import { useCurrentTenants } from '@/fetches/tenants';
+import { getTenantId, setTenantId } from '@/store/tenant';
+import { setContextId } from '@/store/contextId';
+import { ensureContextId } from '@simplepoint/shared/api/contextId';
 
 // 为主题切换提供短暂的全局颜色过渡动画
 function startThemeTransition(duration = 240) {
@@ -30,6 +34,94 @@ const LogoTitle: React.FC = () => {
 };
 
 /**
+ * 顶部栏左侧：租户切换（显示在“平台”旁边）
+ */
+const TenantSwitcherTop: React.FC = () => {
+  const { t } = useI18n();
+  const { data, isFetching, refetch } = useCurrentTenants();
+  const [tenantId, setTenantIdState] = useState<string | undefined>(() => getTenantId());
+
+  // 同步外部切换
+  useEffect(() => {
+    const handler = (e: any) => setTenantIdState((e?.detail as string) || undefined);
+    try {
+      window.addEventListener('sp-set-tenant', handler as EventListener);
+      return () => window.removeEventListener('sp-set-tenant', handler as EventListener);
+    } catch {
+      return;
+    }
+  }, []);
+
+  // 第一次登录默认选第一个
+  useEffect(() => {
+    if (tenantId) return;
+    const first = data?.[0];
+    if (first?.tenantId) {
+      setTenantId(first.tenantId);
+      setTenantIdState(first.tenantId);
+    }
+  }, [data, tenantId]);
+
+  const currentName = (data || []).find((x) => x.tenantId === tenantId)?.tenantName;
+
+  const menu: MenuProps = {
+    items: isFetching
+      ? [{ key: 'loading', disabled: true, label: t('loading', '加载中...') }]
+      : (data || []).map((it) => ({
+          key: it.tenantId,
+          label: it.tenantName,
+        })),
+    onClick: async (info: any) => {
+      const nextId = String(info?.key || '');
+      if (!nextId || nextId === tenantId) return;
+
+      // 先切租户：保证后续请求头 X-Tenant-Id 立即生效
+      setTenantId(nextId);
+      setTenantIdState(nextId);
+
+      // 预热权限上下文（best-effort，不阻断切换）
+      const ctxId = await ensureContextId(nextId, { force: true });
+      setContextId(ctxId);
+
+      message.success(t('tenant.switchDone', '已切换租户，后续请求将生效')).then(_ => {});
+    },
+  };
+
+  return (
+    <Dropdown
+      menu={menu}
+      trigger={['click']}
+      placement="bottomLeft"
+      destroyOnHidden
+      onOpenChange={(open) => {
+        if (open) {
+          // 用户手动点击打开时强制刷新一次租户列表
+          try { void refetch(); } catch {}
+        }
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '0 8px',
+          cursor: 'pointer',
+          userSelect: 'none',
+        }}
+        onClick={(e) => { try { e.stopPropagation(); } catch {} }}
+        onMouseDown={(e) => { try { e.stopPropagation(); } catch {} }}
+        title={t('label.tenant', '租户')}
+      >
+        <SwapOutlined style={{ marginRight: 6, opacity: 0.75 }} />
+        <span style={{ fontSize: 12, opacity: 0.85 }}>
+          {currentName || t('tenant.unknown', '未选择')}
+        </span>
+      </div>
+    </Dropdown>
+  );
+};
+
+/**
  * logo配置
  * @param navigate 用于路由跳转的回调函数
  */
@@ -48,6 +140,7 @@ export const logoItem = (navigate: (path: string) => void): ItemType => {
       }}>
         <img src="/svg.svg" alt="Logo" style={{ height: '32px', display: 'block' }} />
         <LogoTitle/>
+        <TenantSwitcherTop />
       </div>
     ),
     onClick: () => navigate('/')

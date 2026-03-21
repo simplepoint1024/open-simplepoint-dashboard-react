@@ -51,7 +51,6 @@
     "dashboard.quick.clients": "Application Management",
     "dashboard.quick.services": "Microservices",
     "dashboard.quick.i18n": "Internationalization",
-
     "form.submit": "Submit",
     "form.required": "This field is required",
     "form.minLength": "Length must be at least {limit} characters",
@@ -59,7 +58,6 @@
     "form.invalid": "Invalid input",
     "form.jsonInvalid": "Invalid JSON format",
     "form.passwordMismatch": "Passwords do not match",
-
     "tools.fullscreen.enter": "Enter fullscreen",
     "tools.fullscreen.exit": "Exit fullscreen",
     "tools.fullscreen.notAllowed": "Fullscreen is not supported or blocked by the browser",
@@ -184,7 +182,14 @@
     "menu.system.field": "Field Permissions",
     "menu.system.data": "Data Permissions",
     "menu.system.menu": "Menu Management",
-    "menu.system.user": "User Management"
+    "menu.system.user": "User Management",
+    "menu.platform": "Platform Management",
+    "menu.platform.tenants": "Tenant Management",
+    "menu.platform.packages": "Package Management",
+    "menu.platform.applications": "Application Management",
+    "menu.platform.features": "Feature Management",
+    "menu.platform.dictionaries": "Dictionary Management",
+    "menu.platform.organizations": "Organization Management"
   },
   "users": {
     "users.title.address": "Address",
@@ -382,5 +387,24 @@
     "messages.description.message": "Content of the internationalized message",
     "messages.title.namespace": "Namespace",
     "messages.description.namespace": "Namespace to which the message key belongs"
+  },
+  "dictionaries": {
+    "dictionaries.title.name": "Dictionary Name",
+    "dictionaries.description.name": "Display name used to identify the dictionary",
+    "dictionaries.title.code": "Dictionary Code",
+    "dictionaries.description.code": "Unique code used for field binding and program lookup",
+    "dictionaries.title.description": "Description",
+    "dictionaries.description.description": "Short description for the dictionary or item",
+    "dictionaries.title.sort": "Sort Order",
+    "dictionaries.description.sort": "Lower values appear earlier",
+    "dictionaries.title.enabled": "Enabled",
+    "dictionaries.description.enabled": "Whether the dictionary or item is enabled",
+    "dictionaries.title.dictionaryCode": "Dictionary Code",
+    "dictionaries.description.dictionaryCode": "Dictionary code that owns this item",
+    "dictionaries.title.itemName": "Item Name",
+    "dictionaries.description.itemName": "Display label of the dictionary item",
+    "dictionaries.title.value": "Item Value",
+    "dictionaries.description.value": "Actual value stored in business fields",
+    "dictionaries.button.config.item": "Configure Items"
   }
 }

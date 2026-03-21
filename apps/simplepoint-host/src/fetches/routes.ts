@@ -1,5 +1,5 @@
-import {MenuInfo} from "@/store/routes";
-import {get} from "@simplepoint/shared/types/request.ts";
+import {MenuInfo} from '@/store/routes';
+import {get} from '@simplepoint/shared/api/methods';
 
 export type ServiceMenuResult = {
     services: ServiceEntry[];
@@ -13,5 +13,5 @@ export type ServiceEntry = {
 }
 
 export function fetchServiceRoutes() {
-    return get<ServiceMenuResult>("/common/menus/service-routes")
+    return get<ServiceMenuResult>('/common/menus/service-routes');
 }
