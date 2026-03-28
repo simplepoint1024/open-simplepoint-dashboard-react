@@ -120,7 +120,11 @@
     "action.refresh": "Refresh",
     "action.edit": "Edit",
     "action.save": "Save",
-    "action.cancel": "Cancel"
+    "action.cancel": "Cancel",
+    "action.enableTwoFactor": "Enable Two-Factor Authentication",
+    "action.manageTwoFactor": "Manage Two-Factor Authentication",
+    "profile.twoFactor.enabled": "Enabled",
+    "profile.twoFactor.disabled": "Not Enabled"
   },
   "settings": {
     "settings.appearance": "Appearance Settings",
@@ -239,7 +243,8 @@
     "menus.title.title": "Title",
     "menus.description.title": "Menu or page title",
     "menus.title.type": "Type",
-    "menus.description.type": "Menu type (directory/group/item, etc.)"
+    "menus.description.type": "Menu type (directory/group/item, etc.)",
+    "menus.config.permission": "Feature Configuration"
   },
   "roles": {
     "roles.title.authority": "Authority Identifier",

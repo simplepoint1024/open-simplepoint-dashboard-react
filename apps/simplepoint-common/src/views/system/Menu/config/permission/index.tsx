@@ -1,14 +1,13 @@
 import { useI18n } from '@simplepoint/shared/hooks/useI18n';
 import { useEffect, useMemo, useState } from 'react';
-import { GetProp, TableColumnsType, TransferProps } from 'antd';
+import { GetProp, TableColumnsType, TableProps, TransferProps } from 'antd';
 import STableTransfer from '@simplepoint/components/STableTransfer';
 import { useData, usePage } from '@simplepoint/shared/api/methods';
-import { fetchItems, PermissionRelevantVo } from '@/api/system/permission.ts';
+import { FeatureRelevantVo, fetchItems, fetchSelectedItems } from '@/api/platform/feature';
 import {
     fetchAuthorize,
     fetchAuthorized,
     fetchUnauthorized,
-    RolePermissionRelevantDto,
 } from '@/api/system/menu';
 
 type TransferItem = GetProp<TransferProps, 'dataSource'>[number];
@@ -18,55 +17,77 @@ export interface RoleSelectProps {
 }
 
 interface TableTransferProps extends TransferProps<TransferItem> {
-    dataSource: RolePermissionRelevantDto[];
-    leftColumns: TableColumnsType<RolePermissionRelevantDto>;
-    rightColumns: TableColumnsType<RolePermissionRelevantDto>;
+    dataSource: FeatureRelevantVo[];
+    leftColumns: TableColumnsType<FeatureRelevantVo>;
+    rightColumns: TableColumnsType<FeatureRelevantVo>;
 }
 
 const App = ({ menuId }: RoleSelectProps) => {
-    const { t, messages } = useI18n();
+    const { t, messages, ensure, locale } = useI18n();
+    const [leftPage, setLeftPage] = useState({ current: 1, pageSize: 10 });
+    const [rightPage, setRightPage] = useState({ current: 1, pageSize: 10 });
 
-    /** 1. menuId 为空时不渲染，避免内部 DOM 计算报错 */
-    if (!menuId) {
-        return <div style={{ flex: 1, minHeight: 0 }} />;
-    }
+    useEffect(() => {
+        void ensure(['features']);
+    }, [ensure, locale]);
 
-    /** 2. 获取权限列表 */
-    const { data: page } = usePage('fetchItems', () =>
-        fetchItems({ page: '0', size: '10000000' })
+    /** 2. 获取功能列表 */
+    const { data: page } = usePage(['platform-feature-items', leftPage.current, leftPage.pageSize], () =>
+        fetchItems({ page: String(leftPage.current - 1), size: String(leftPage.pageSize) })
     );
     const content = page?.content ?? [];
 
     /** 3. 列定义（依赖 messages 才能在语言切换时立即更新） */
-    const columns: TableColumnsType<PermissionRelevantVo> = useMemo(
+    const columns: TableColumnsType<FeatureRelevantVo> = useMemo(
         () => [
             {
                 key: 'name',
                 dataIndex: 'name',
-                title: t('permissions.title.name'),
+                title: t('features.title.name', '功能名称'),
+            },
+            {
+                key: 'code',
+                dataIndex: 'code',
+                title: t('features.title.code', '功能编码'),
             },
             {
                 key: 'description',
                 dataIndex: 'description',
-                title: t('permissions.title.description'),
+                title: t('features.title.description', '功能描述'),
             },
         ],
-        [messages] // ⭐ messages 是最正确的依赖
+        [messages]
     );
 
     /** 4. 穿梭框状态 */
     const [targetKeys, setTargetKeys] = useState<TransferProps['targetKeys']>([]);
+    const [selectedItems, setSelectedItems] = useState<FeatureRelevantVo[]>([]);
+    const selectedCodes = useMemo(
+        () => (targetKeys ?? []).map((key) => String(key)),
+        [targetKeys]
+    );
 
-    /** 5. 获取已分配权限 */
+    /** 5. 获取已绑定功能 */
     const { data: authorized } = useData<string[]>(
-        menuId ? ['fetchAuthorizedMenuPermissions', menuId] : '',
+        menuId ? ['fetchAuthorizedMenuFeatures', menuId] : '',
         () => fetchAuthorized({ menuId }),
         { enabled: !!menuId }
+    );
+
+    const { data: selectedDetails } = useData<FeatureRelevantVo[]>(
+        menuId && selectedCodes.length > 0
+            ? ['fetchSelectedMenuFeatures', ...selectedCodes]
+            : ['fetchSelectedMenuFeatures', menuId ?? 'empty'],
+        () => fetchSelectedItems(selectedCodes),
+        { enabled: !!menuId && selectedCodes.length > 0 }
     );
 
     /** 6. 切换菜单时清空状态 */
     useEffect(() => {
         setTargetKeys([]);
+        setSelectedItems([]);
+        setLeftPage((prev) => ({ ...prev, current: 1 }));
+        setRightPage((prev) => ({ ...prev, current: 1 }));
     }, [menuId]);
 
     /** 7. 初始化/更新已分配权限 */
@@ -76,6 +97,50 @@ const App = ({ menuId }: RoleSelectProps) => {
         }
     }, [authorized]);
 
+    useEffect(() => {
+        if (!selectedCodes.length) {
+            setSelectedItems([]);
+            return;
+        }
+        if (selectedDetails) {
+            const detailMap = new Map(selectedDetails.map((item) => [item.code, item]));
+            setSelectedItems(
+                selectedCodes
+                    .map((code) => detailMap.get(code))
+                    .filter((item): item is FeatureRelevantVo => !!item)
+            );
+        }
+    }, [selectedCodes, selectedDetails]);
+
+    const dataSource = useMemo(() => {
+        const map = new Map<string, FeatureRelevantVo>();
+        content.forEach((item) => map.set(item.code, item));
+        selectedItems.forEach((item) => map.set(item.code, item));
+        return Array.from(map.values());
+    }, [content, selectedItems]);
+
+    const leftPagination: TableProps<FeatureRelevantVo>['pagination'] = {
+        current: leftPage.current,
+        pageSize: leftPage.pageSize,
+        total: page?.page.totalElements ?? 0,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        onChange: (current, pageSize) => {
+            setLeftPage({ current, pageSize });
+        },
+    };
+
+    const rightPagination: TableProps<FeatureRelevantVo>['pagination'] = {
+        current: rightPage.current,
+        pageSize: rightPage.pageSize,
+        total: selectedItems.length,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        onChange: (current, pageSize) => {
+            setRightPage({ current, pageSize });
+        },
+    };
+
     /** 8. 穿梭框变更事件 */
     const onChange: TableTransferProps['onChange'] = (
         nextTargetKeys,
@@ -83,33 +148,50 @@ const App = ({ menuId }: RoleSelectProps) => {
         moveKeys
     ) => {
         setTargetKeys(nextTargetKeys);
+        setRightPage((prev) => ({ ...prev, current: 1 }));
+
+        const mergedItemMap = new Map<string, FeatureRelevantVo>();
+        dataSource.forEach((item) => mergedItemMap.set(item.code, item));
+        selectedItems.forEach((item) => mergedItemMap.set(item.code, item));
+        setSelectedItems(
+            (nextTargetKeys ?? [])
+                .map((key) => mergedItemMap.get(String(key)))
+                .filter((item): item is FeatureRelevantVo => !!item)
+        );
 
         if (direction === 'right') {
-            fetchAuthorize({
+            void fetchAuthorize({
                 menuId,
-                permissionAuthority: moveKeys as string[],
+                featureCodes: moveKeys as string[],
             });
         } else {
-            fetchUnauthorized({
+            void fetchUnauthorized({
                 menuId,
-                permissionAuthority: moveKeys as string[],
+                featureCodes: moveKeys as string[],
             });
         }
     };
+
+    /** 9. menuId 为空时不渲染穿梭框（避免内部 DOM 计算报错） */
+    if (!menuId) {
+        return <div style={{ flex: 1, minHeight: 0 }} />;
+    }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
             <div style={{ flex: 1, minHeight: 0 }}>
                 <STableTransfer
-                    dataSource={content}
+                    dataSource={dataSource}
                     targetKeys={targetKeys}
                     showSelectAll={false}
                     onChange={onChange}
                     leftColumns={columns}
                     rightColumns={columns}
-                    itemKey="authority"
+                    itemKey="code"
                     adaptiveHeight
                     searchable
+                    leftPagination={leftPagination}
+                    rightPagination={rightPagination}
                 />
             </div>
         </div>

@@ -13,7 +13,16 @@ const App = () => {
     }, [ensure, locale]);
     return (
         <div>
-            <SimpleTable{...baseConfig}/>
+            <SimpleTable
+                {...baseConfig}
+                columnOverrides={{
+                    authority: { width: 260, ellipsis: true, order: 1 },
+                    resource: { width: 260, ellipsis: true, order: 2 },
+                    description: { ellipsis: true, order: 3 },
+                }}
+                submitRefreshTargets={{page: true, schema: false}}
+                deleteRefreshTargets={{page: true, schema: false}}
+            />
         </div>
     );
 };

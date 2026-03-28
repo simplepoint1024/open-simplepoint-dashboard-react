@@ -1,5 +1,5 @@
 import React from "react";
-import {del as deleted} from "@simplepoint/shared/types/request";
+import {del as deleted} from "@simplepoint/shared/api/methods";
 
 /**
  * ButtonEvents provides a set of common button event handlers

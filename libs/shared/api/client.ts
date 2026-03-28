@@ -1,4 +1,5 @@
 import { ensureContextId, getStoredContextId, getStoredTenantId, shouldAutoEnsureContextId } from './contextId';
+import { redirectToLogin } from './session';
 
 // 自定义错误类型，方便上层捕获和处理
 export class HttpError extends Error {
@@ -38,6 +39,61 @@ const notifyI18n = (() => {
   };
 })();
 
+let unauthorizedModalOpen = false;
+
+const getI18nT = () =>
+  typeof window !== 'undefined' ? (window as any)?.spI18n?.t as ((key: string, fallback?: string, params?: Record<string, unknown>) => string) | undefined : undefined;
+
+const getStatusDescription = (method: string, url: string, status: number, statusText: string, body?: string) => {
+  const snippet = body?.trim()?.slice(0, 500);
+  return `${method} ${url}\nHTTP ${status} ${statusText}${snippet ? `\n${snippet}` : ''}`;
+};
+
+async function handleHttpStatus(method: string, url: string, response: Response, body?: string) {
+  const t = getI18nT();
+  const desc = getStatusDescription(method, url, response.status, response.statusText, body);
+
+  if (response.status === 401) {
+    if (unauthorizedModalOpen) {
+      return;
+    }
+    unauthorizedModalOpen = true;
+    try {
+      const { Modal } = await import('antd');
+      await new Promise<void>((resolve) => {
+        Modal.confirm({
+          title: t?.('error.unauthorized.title', '登录状态已失效') ?? '登录状态已失效',
+          content: t?.('error.unauthorized.content', '检测到当前登录状态失效。你可以留在当前页面，或返回登录页面重新登录。')
+            ?? '检测到当前登录状态失效。你可以留在当前页面，或返回登录页面重新登录。',
+          okText: t?.('error.unauthorized.goLogin', '返回登录页') ?? '返回登录页',
+          cancelText: t?.('error.unauthorized.stay', '留在当前页') ?? '留在当前页',
+          centered: true,
+          onOk: async () => {
+            resolve();
+            await redirectToLogin();
+          },
+          onCancel: () => resolve(),
+        });
+      });
+    } finally {
+      unauthorizedModalOpen = false;
+    }
+    return;
+  }
+
+  if (response.status === 403) {
+    notifyI18n('error.forbidden', '无使用权限', desc);
+    return;
+  }
+
+  if (response.status >= 500) {
+    notifyI18n('error.server', '服务暂时不可用', desc);
+    return;
+  }
+
+  notifyI18n('error.requestFailed', '请求失败', desc);
+}
+
 // 通用请求方法
 export async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const method = (options?.method || 'GET').toUpperCase();
@@ -57,7 +113,7 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
   const headerContextId = mergedHeaders['X-Context-Id'];
   if (shouldAutoEnsureContextId(url, headerContextId)) {
     // best-effort：不阻断主请求
-    if (!contextId && tenantId) {
+    if (!contextId) {
       try {
         contextId = await ensureContextId(tenantId);
       } catch {
@@ -84,8 +140,7 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
 
   if (!response.ok) {
     const text = await response.text();
-    const desc = `${method} ${url}\nHTTP ${response.status} ${response.statusText}\n${text?.slice(0, 500)}`;
-    notifyI18n('error.requestFailed', '请求失败', desc);
+    await handleHttpStatus(method, url, response, text);
     const err: any = new HttpError(response.status, response.statusText, text);
     err.__notified = true;
     throw err;

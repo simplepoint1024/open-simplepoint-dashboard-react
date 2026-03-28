@@ -4,34 +4,36 @@ import api from "@/api";
 const {baseUrl} = api['rbac-menus']
 
 /**
- * 角色权限分配接口
+ * 菜单功能分配接口
  */
-export interface RolePermissionRelevantDto {
-  // 所选角色
+export interface MenuFeatureRelevantDto {
+  // 所选菜单
   menuId: string | null;
-  // 权限列表
+  // 功能编码列表
+  featureCodes?: string[];
+  // 兼容历史权限点字段
   permissionAuthority?: string[];
 }
 
 /**
- * 获取已分配角色的权限下拉分页
+ * 获取菜单已绑定功能
  */
-export async function fetchAuthorized(params: RolePermissionRelevantDto) {
+export async function fetchAuthorized(params: Pick<MenuFeatureRelevantDto, 'menuId'>) {
   return await get<string[]>(`${baseUrl}/authorized`, params);
 }
 
 /**
- * 取消分配角色权限
+ * 取消菜单功能绑定
  * @param data 请求数据
  */
-export async function fetchUnauthorized(data: RolePermissionRelevantDto) {
-  return await post<RolePermissionRelevantDto>(`${baseUrl}/unauthorized`, data);
+export async function fetchUnauthorized(data: MenuFeatureRelevantDto) {
+  return await post<MenuFeatureRelevantDto>(`${baseUrl}/unauthorized`, data);
 }
 
 /**
- * 分配角色权限
+ * 绑定菜单功能
  * @param data 请求数据
  */
-export async function fetchAuthorize(data: RolePermissionRelevantDto) {
-  return await post<RolePermissionRelevantDto>(`${baseUrl}/authorize`, data);
+export async function fetchAuthorize(data: MenuFeatureRelevantDto) {
+  return await post<MenuFeatureRelevantDto>(`${baseUrl}/authorize`, data);
 }

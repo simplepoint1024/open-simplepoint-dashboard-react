@@ -1,5 +1,5 @@
 // utils/i18nCache.ts
-import type { Messages } from '@/services/i18n';
+import type { Messages } from '@/fetches/i18n';
 
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 小时
 const VERSION_KEY = 'sp.i18n.version';

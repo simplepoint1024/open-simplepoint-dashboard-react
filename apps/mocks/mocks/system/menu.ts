@@ -2,6 +2,12 @@ import {http, HttpResponse} from 'msw';
 
 const base = '/common/menus';
 
+const unique = (values: string[]) => Array.from(new Set(values));
+
+let menuFeatures: Record<string, string[]> = {
+  'a333fea0-dc98-479c-a2fa-57764d81d20a': ['DASHBOARD'],
+};
+
 export default [
   http.get('/common/menus/schema', () => {
     return HttpResponse.json(
@@ -426,7 +432,22 @@ export default [
       }
     )
   }),
-  http.get(`${base}/authorized`,()=> {
-    return HttpResponse.json(["1"])
+  http.get(`${base}/authorized`, ({request}) => {
+    const menuId = new URL(request.url).searchParams.get('menuId') ?? '';
+    return HttpResponse.json(menuFeatures[menuId] ?? []);
+  }),
+  http.post(`${base}/authorize`, async ({request}) => {
+    const payload = await request.json() as {menuId?: string | null; featureCodes?: string[]; permissionAuthority?: string[]};
+    const menuId = payload.menuId ?? '';
+    const featureCodes = payload.featureCodes ?? payload.permissionAuthority ?? [];
+    menuFeatures[menuId] = unique([...(menuFeatures[menuId] ?? []), ...featureCodes]);
+    return HttpResponse.json((menuFeatures[menuId] ?? []).map((featureCode) => ({menuId, featureCode})));
+  }),
+  http.post(`${base}/unauthorized`, async ({request}) => {
+    const payload = await request.json() as {menuId?: string | null; featureCodes?: string[]; permissionAuthority?: string[]};
+    const menuId = payload.menuId ?? '';
+    const removing = new Set(payload.featureCodes ?? payload.permissionAuthority ?? []);
+    menuFeatures[menuId] = (menuFeatures[menuId] ?? []).filter((featureCode) => !removing.has(featureCode));
+    return HttpResponse.json(null);
   })
 ];

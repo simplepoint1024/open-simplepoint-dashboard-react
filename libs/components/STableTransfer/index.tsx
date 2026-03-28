@@ -29,6 +29,10 @@ interface TableTransferProps<T> extends TransferProps<TransferItem> {
   highlight?: boolean;
   /** 高亮样式自定义 */
   highlightStyle?: CSSProperties;
+  /** 左侧分页配置 */
+  leftPagination?: TableProps<T>['pagination'];
+  /** 右侧分页配置 */
+  rightPagination?: TableProps<T>['pagination'];
 }
 
 const App = <T,>({
@@ -43,6 +47,8 @@ const App = <T,>({
   searchable = false,
   highlight = true,
   highlightStyle,
+  leftPagination = false,
+  rightPagination = false,
   ...restProps
 }: TableTransferProps<T>) => {
   // 统一行主键：优先使用 item[itemKey]，其次使用 id、key，最终保证返回字符串（避免返回 'undefined'）
@@ -211,19 +217,22 @@ const App = <T,>({
           : baseConfigured;
 
         const panelRef = direction === 'left' ? leftPanelRef : rightPanelRef;
+        const pagination = direction === 'left' ? leftPagination : rightPagination;
+        const paginationEnabled = pagination !== false && pagination != null;
+        const tableScrollY = paginationEnabled ? Math.max(120, scrollY - 56) : scrollY;
 
         return (
           <div ref={panelRef} style={{height: adaptiveHeight ? '100%' : scrollY, overflow: 'hidden', display: 'flex', flexDirection: 'column'}}>
             <Table
                // 确保 Table 与 Transfer 使用相同的 rowKey
-               pagination={false}
+               pagination={pagination}
                rowKey={getRowKey}
                rowSelection={rowSelection}
                columns={decoratedColumns as any}
                dataSource={filteredItems as any}
                style={{pointerEvents: listDisabled ? 'none' : undefined}}
                // 独立滚动，不影响外层主布局
-               scroll={{y: scrollY}}
+               scroll={{y: tableScrollY}}
                onRow={(record: any) => ({
                  onClick: () => {
                    // 单击切换勾选（不直接移动）

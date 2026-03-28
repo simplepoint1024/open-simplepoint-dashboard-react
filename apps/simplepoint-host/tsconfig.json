@@ -8,7 +8,7 @@
     "useDefineForClassFields": true,
 
     /* modules */
-    "module": "CommonJS",
+    "module": "ESNext",
     "isolatedModules": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -22,6 +22,7 @@
 
     "paths": {
       "*": ["./@mf-types/*"],
+      "@/services/*": ["./src/fetches/*"],
       "@/*": ["./src/*"],
     }
   },

@@ -36,6 +36,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
 
     const cache = useRef(new Map<string, Messages>());
     const loadSeqRef = useRef(0);
+    const hasCompletedInitialLoadRef = useRef(false);
     const missingKeysRef = useRef<Set<string>>(new Set());
     const missingDebounceRef = useRef<number | null>(null);
 
@@ -131,7 +132,15 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
     const ensure = useCallback(async (ns: string[]) => {
         if (!Array.isArray(ns) || ns.length === 0) return;
 
-        ns.forEach(k => {
+        const normalized = Array.from(new Set(ns.filter(Boolean))).sort();
+        if (normalized.length === 0) return;
+
+        const missing = normalized.filter((key) => !loadedNsRef.current.has(key));
+        if (missing.length === 0 && !ensureInflightRef.current && ensurePendingNsRef.current.size === 0) {
+            return;
+        }
+
+        normalized.forEach(k => {
             if (k && !loadedNsRef.current.has(k)) {
                 ensurePendingNsRef.current.add(k);
             }
@@ -144,7 +153,16 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
         const flush = async () => {
             if (ensureInflightRef.current) return;
             const list = Array.from(ensurePendingNsRef.current.values());
-            if (list.length === 0) return;
+            if (list.length === 0) {
+                const waiters = ensureWaitersRef.current.splice(0, ensureWaitersRef.current.length);
+                waiters.forEach(fn => {
+                    try {
+                        fn();
+                    } catch {
+                    }
+                });
+                return;
+            }
 
             ensurePendingNsRef.current.clear();
             const lng = locale;
@@ -167,13 +185,6 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
                 })
                 .finally(() => {
                     ensureInflightRef.current = null;
-                    const waiters = ensureWaitersRef.current.splice(0, ensureWaitersRef.current.length);
-                    waiters.forEach(fn => {
-                        try {
-                            fn();
-                        } catch {
-                        }
-                    });
 
                     if (ensurePendingNsRef.current.size > 0) {
                         if (ensureTimerRef.current) window.clearTimeout(ensureTimerRef.current);
@@ -181,7 +192,16 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
                             ensureTimerRef.current = null;
                             void flush();
                         }, 30);
+                        return;
                     }
+
+                    const waiters = ensureWaitersRef.current.splice(0, ensureWaitersRef.current.length);
+                    waiters.forEach(fn => {
+                        try {
+                            fn();
+                        } catch {
+                        }
+                    });
                 });
 
             await ensureInflightRef.current;
@@ -250,6 +270,10 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
 
     useEffect(() => {
         void loadMessages(locale).then(() => {
+            if (!hasCompletedInitialLoadRef.current) {
+                hasCompletedInitialLoadRef.current = true;
+                return;
+            }
             const shouldRemount = localStorage.getItem('sp.i18n.forceRemount');
             if (shouldRemount === 'false') return;
             const path = window.location.hash?.replace(/^#/, '') || window.location.pathname || '/';

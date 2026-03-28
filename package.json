@@ -1,8 +1,10 @@
 {
   "name": "simplepoint-react",
   "private": true,
+  "packageManager": "pnpm@9.0.0",
   "workspaces": {
     "packages": [
+      "libs/*",
       "apps/*"
     ]
   },
@@ -10,7 +12,11 @@
     "dev:host": "nx run @simplepoint/host:dev",
     "build:host": "nx run @simplepoint/host:build",
     "dev:common": "nx run @simplepoint/common:dev",
-    "build:common": "nx run @simplepoint/common:build"
+    "build:common": "nx run @simplepoint/common:build",
+    "typecheck:host": "tsc -p apps/simplepoint-host/tsconfig.json --noEmit",
+    "typecheck:common": "tsc -p apps/simplepoint-common/tsconfig.json --noEmit",
+    "typecheck": "tsc -p apps/simplepoint-common/tsconfig.json --noEmit && tsc -p apps/simplepoint-host/tsconfig.json --noEmit",
+    "build": "nx run @simplepoint/common:build && nx run @simplepoint/host:build"
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.0",

@@ -31,6 +31,10 @@ export function getStoredTenantId(): TenantId | undefined {
   return readLS(KEY_TENANT) as TenantId | undefined;
 }
 
+export function setStoredTenantId(tenantId: TenantId | undefined) {
+  writeLS(KEY_TENANT, tenantId);
+}
+
 function getContextStorageKey(tenantId?: TenantId): string {
   return tenantId ? `${KEY_CTX_PREFIX}${tenantId}` : KEY_CTX;
 }

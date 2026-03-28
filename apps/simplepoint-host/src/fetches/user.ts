@@ -4,8 +4,26 @@ import {get} from '@simplepoint/shared/api/methods';
 
 export type UserInfo = any;
 
+function normalizeUserInfo(data: UserInfo): UserInfo {
+    if (!data || typeof data !== 'object') {
+        return data;
+    }
+
+    const normalized = {...data};
+
+    if (normalized.username == null && typeof normalized.preferred_username === 'string') {
+        normalized.username = normalized.preferred_username;
+    }
+
+    if (normalized.phone == null && typeof normalized.phone_number === 'string') {
+        normalized.phone = normalized.phone_number;
+    }
+
+    return normalized;
+}
+
 export async function fetchUserInfo(): Promise<UserInfo> {
-    return get<UserInfo>('/userinfo');
+    return normalizeUserInfo(await get<UserInfo>('/userinfo'));
 }
 
 export function useUserInfo() {
@@ -13,7 +31,7 @@ export function useUserInfo() {
     let cached: UserInfo | undefined;
     try {
         const raw = sessionStorage.getItem('sp.userinfo');
-        cached = raw ? JSON.parse(raw) : undefined;
+        cached = raw ? normalizeUserInfo(JSON.parse(raw)) : undefined;
     } catch {
     }
 
@@ -26,7 +44,8 @@ export function useUserInfo() {
         refetchOnWindowFocus: false,
         // 用缓存作为初始值（可选）
         initialData: cached,
-        initialDataUpdatedAt: cached ? Date.now() : undefined,
+        // 会话缓存只用于首屏兜底展示，但应立即后台回源，避免 2FA 等状态变更被旧值卡住
+        initialDataUpdatedAt: cached ? 0 : undefined,
     });
 
     useEffect(() => {

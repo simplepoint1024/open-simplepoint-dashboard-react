@@ -1,234 +1,94 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {useSchema} from '@simplepoint/shared/hooks/useSchema';
-import {del, get, post, put, usePage} from '@simplepoint/shared/api/methods';
 import {emptyPage} from "@simplepoint/shared/types/request"
-import Table, {TableButtonProps} from '../Table';
+import Table from '../Table';
 import SForm from '../SForm';
-import {IChangeEvent} from '@rjsf/core';
-import {Alert, Drawer, message, Modal, Skeleton, Spin} from 'antd';
+import {Alert, Button, Drawer, Empty, Skeleton, Spin} from 'antd';
 import {createIcon} from '@simplepoint/shared/types/icon';
-import {useI18n} from '@simplepoint/shared/hooks/useI18n';
-import {getStoredContextId, getStoredTenantId} from '@simplepoint/shared/api/contextId';
-
-const nsLoadedCache = new Set<string>();
-
-export interface SimpleTableProps<T> {
-  name: string;
-  baseUrl: string;
-  initialFilters?: Record<string, string>;
-  customButtonEvents?: Record<string, (selectedRowKeys: React.Key[], selectedRows: T[], props: TableButtonProps) => void>;
-  customButtons?: TableButtonProps[];
-  drawerOpen?: boolean;
-  onDrawerOpenChange?: (open: boolean) => void;
-  editingRecord?: any | null;
-  onEditingRecordChange?: (record: any | null) => void;
-  initialValues?: any;
-  onSubmit?: (action: 'add' | 'edit', formData: any, currentEditing: any | null) => Promise<void> | void;
-  formSchemaTransform?: (schema: any, editingRecord: any | null) => any;
-  formUiSchema?: Record<string, any>;
-  i18nNamespaces: string[];
-}
+import type {SimpleTableProps} from './types';
+import {useSimpleTableController} from './useSimpleTableController';
 
 const App = (props: SimpleTableProps<any>) => {
-  const { t, ensure, locale, ready } = useI18n();
-  const [i18nReady, setI18nReady] = useState(false);
+  const controller = useSimpleTableController(props);
+  const { t } = controller;
+  const { data: schemaData, formSchema, error: schemaError, retry: retrySchema } = controller.schema;
+  const { bootLoading, tableLoading, submitLoading, drawerSchemaLoading, hasSchemaError, hasPageError, showPageWarning } = controller.status;
+  const { data: pageData, filters, buttons } = controller.table;
+  const { open: drawerOpen, editingRecord, setOpen: setDrawerOpen } = controller.drawer;
+  const { defaultEvents, handleFormSubmit, retryPage } = controller.actions;
 
-  useEffect(() => {
-    const ns = Array.isArray(props.i18nNamespaces) ? props.i18nNamespaces : [];
-    const merged = Array.from(new Set(['table', ...ns])).sort();
-    const cacheKey = `${locale}::${merged.join(',')}`;
-    if (nsLoadedCache.has(cacheKey)) {
-      setI18nReady(true);
-      return;
-    }
-    (async () => {
-      try {
-        await ensure(merged as string[]);
-      } finally {
-        nsLoadedCache.add(cacheKey);
-        setI18nReady(true);
+  const renderPageError = () => (
+    <Alert
+      type="error"
+      showIcon
+      message={t('table.loadFail', '加载失败')}
+      description={t('table.pageLoadFail', '列表数据加载失败，请稍后重试。')}
+      action={
+        <Button size="small" onClick={() => void retryPage()}>
+          {t('table.retry', '重试')}
+        </Button>
       }
-    })();
-  }, [props.i18nNamespaces, ensure, locale]);
-
-  const { data: schemaData, isLoading: schemaLoading, error: schemaError, refetch: refetchSchema } = useSchema(
-    props.baseUrl,
-    { enabled: i18nReady }
+    />
   );
 
-  const [page, setPage] = useState<number>(1);
-  const [size, setSize] = useState<number>(10);
-  const [filters, setFilters] = useState<Record<string, string>>(props.initialFilters ?? {});
-  const [tenantId, setTenantId] = useState<string>(() => getStoredTenantId() ?? '');
-  const [contextId, setContextId] = useState<string>(() => getStoredContextId(getStoredTenantId()) ?? '');
-  const [innerDrawerOpen, setInnerDrawerOpen] = useState(false);
-  const [innerEditing, setInnerEditing] = useState<any | null>(null);
-
-  const drawerOpen = props.drawerOpen ?? innerDrawerOpen;
-  const setDrawerOpen = (open: boolean) => {
-    props.onDrawerOpenChange?.(open);
-    if (props.drawerOpen === undefined) setInnerDrawerOpen(open);
-  };
-
-  const editingRecord = props.editingRecord ?? innerEditing;
-  const setEditingRecord = (rec: any | null) => {
-    props.onEditingRecordChange?.(rec);
-    if (props.editingRecord === undefined) setInnerEditing(rec);
-  };
-
-  const fetchPage = () =>
-    get<import('@simplepoint/shared/types/request').Page<any>>(props.baseUrl, {
-      page: page - 1,
-      size,
-      ...filters,
-    });
-
-  const { data: pageData, isLoading: pageLoading, refetch: refetchPage } = usePage(
-    [props.name, tenantId, contextId, page, size, filters],
-    fetchPage
-  );
-
-  useEffect(() => {
-    const handleTenantChange = (event: Event) => {
-      const nextTenantId = (event as CustomEvent<string | undefined>).detail ?? getStoredTenantId() ?? '';
-      setTenantId(nextTenantId);
-      setContextId(getStoredContextId(nextTenantId) ?? '');
-    };
-
-    const handleContextChange = () => {
-      const currentTenantId = getStoredTenantId() ?? '';
-      setContextId(getStoredContextId(currentTenantId) ?? '');
-    };
-
-    window.addEventListener('sp-set-tenant', handleTenantChange as EventListener);
-    window.addEventListener('sp-set-context-id', handleContextChange as EventListener);
-
-    return () => {
-      window.removeEventListener('sp-set-tenant', handleTenantChange as EventListener);
-      window.removeEventListener('sp-set-context-id', handleContextChange as EventListener);
-    };
-  }, []);
-
-  useEffect(() => {
-    setPage(1);
-  }, [tenantId, contextId]);
-
-  const loading = !ready || !i18nReady || schemaLoading || pageLoading;
-
-  const handleTableChange = (pagination: any) => {
-    setPage(pagination?.current ?? 1);
-    setSize(pagination?.pageSize ?? size);
-    void refetchPage();
-  };
-
-  const handleFilterChange = (nextFilters: Record<string, string>) => {
-    setFilters(nextFilters);
-    setPage(1);
-    void refetchPage();
-  };
-
-  const handleAdd = () => {
-    setEditingRecord(null);
-    setDrawerOpen(true);
-  };
-
-  const handleEdit = (_keys: React.Key[], rows: any[]) => {
-    setEditingRecord(rows?.[0] ?? null);
-    setDrawerOpen(true);
-  };
-
-  const handleDelete = (keys: React.Key[]) => {
-    Modal.confirm({
-      title: t('table.confirmDeleteTitle', '确认删除'),
-      content: t('table.confirmDeleteContent', '确定要删除选中的 {count} 条数据吗？', { count: keys.length }),
-      onOk: async () => {
-        try {
-          await del(props.baseUrl, keys as any);
-          message.success(t('table.deleteSuccess', '删除成功'));
-          await Promise.allSettled([refetchPage(), refetchSchema()]);
-        } catch (e: any) {
-          message.error(t('table.deleteFail', '删除失败: {msg}', { msg: e?.message || '' }));
-        }
-      },
-    });
-  };
-
-  const handleFormSubmit = async ({ formData }: IChangeEvent) => {
-    try {
-      const action: 'add' | 'edit' = editingRecord ? 'edit' : 'add';
-      if (props.onSubmit) {
-        await props.onSubmit(action, formData, editingRecord);
-      } else {
-        if (action === 'edit') {
-          await put(props.baseUrl, { ...editingRecord, ...formData });
-          message.success(t('table.editSuccess', '修改成功'));
-        } else {
-          await post(props.baseUrl, formData);
-          message.success(t('table.addSuccess', '新增成功'));
-        }
+  const renderSchemaError = () => (
+    <Alert
+      type="error"
+      showIcon
+      message={t('table.loadFail', '加载失败')}
+      description={(schemaError as Error)?.message ?? t('table.schemaLoadFail', '页面结构加载失败，请稍后重试。')}
+      action={
+        <Button size="small" onClick={() => void retrySchema()}>
+          {t('table.retry', '重试')}
+        </Button>
       }
-      setDrawerOpen(false);
-      setEditingRecord(null);
-      await Promise.allSettled([refetchPage(), refetchSchema()]);
-    } catch (e: any) {
-      message.error(t('table.actionFail', '操作失败: {msg}', { msg: e?.message || '' }));
-    }
-  };
-
-  const mergedButtons: TableButtonProps[] = useMemo(() => {
-    const arr = [...(schemaData?.buttons ?? []), ...(props.customButtons ?? [])];
-    return arr.sort((a, b) => {
-      const s1 = typeof a.sort === 'number' ? a.sort : Infinity;
-      const s2 = typeof b.sort === 'number' ? b.sort : Infinity;
-      return s1 - s2;
-    });
-  }, [schemaData?.buttons, props.customButtons]);
-
-  const formSchema = useMemo(() => {
-    if (!schemaData?.schema) {
-      return undefined;
-    }
-    if (!props.formSchemaTransform) {
-      return schemaData.schema;
-    }
-    return props.formSchemaTransform(schemaData.schema, editingRecord);
-  }, [schemaData?.schema, props.formSchemaTransform, editingRecord]);
-
-  const defaultEvents = {
-    add: handleAdd,
-    edit: handleEdit,
-    delete: handleDelete,
-    del: handleDelete,
-  };
+    />
+  );
 
   return (
     <div>
-      {loading ? (
+      {bootLoading ? (
         <div style={{ padding: 16 }}>
           <Skeleton active paragraph={{ rows: 1 }} />
           <div style={{ height: 12 }} />
           <Skeleton active title={false} paragraph={{ rows: 8 }} />
         </div>
+      ) : hasSchemaError ? (
+        <div style={{ padding: 16 }}>
+          {renderSchemaError()}
+        </div>
+      ) : hasPageError ? (
+        <div style={{ padding: 16 }}>
+          {renderPageError()}
+        </div>
       ) : (
-        <Table<any>
-          refresh={() => void refetchPage()}
-          pageable={
-            pageData ?? emptyPage
-          }
-          schema={schemaData?.schema ?? []}
-          filters={filters}
-          onChange={handleTableChange}
-          onFilterChange={handleFilterChange}
-          onButtonEvents={{
-            ...defaultEvents,
-            ...(props.customButtonEvents ?? {}),
-          }}
-          buttons={mergedButtons}
-        />
+        <div>
+          {showPageWarning ? (
+            <div style={{ padding: '0 0 16px 0' }}>
+              {renderPageError()}
+            </div>
+          ) : null}
+          <Table<any>
+            refresh={controller.table.refresh}
+            pageable={
+              pageData ?? emptyPage
+            }
+            schema={schemaData?.schema ?? []}
+            columnOverrides={props.columnOverrides}
+            filters={filters}
+            onChange={controller.table.onChange}
+            onFilterChange={controller.table.onFilterChange}
+            onButtonEvents={{
+              ...defaultEvents,
+              ...(props.customButtonEvents ?? {}),
+            }}
+            buttons={buttons}
+            loading={tableLoading || submitLoading}
+            refreshDisabled={controller.table.refreshDisabled}
+          />
+        </div>
       )}
 
       <Drawer
-        closable={false}
+        closable={!submitLoading}
         title={
           <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32 }}>
             {createIcon(editingRecord ? 'EditOutlined' : 'PlusOutlined')}
@@ -237,17 +97,31 @@ const App = (props: SimpleTableProps<any>) => {
         placement="right"
         width={480}
         open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
+        maskClosable={!submitLoading}
+        keyboard={!submitLoading}
+        onClose={() => {
+          if (submitLoading) {
+            return;
+          }
+          setDrawerOpen(false);
+        }}
         destroyOnHidden
       >
-        {(schemaLoading || pageLoading) && <Spin />}
-        {schemaError && <Alert type="error" message={t('table.loadFail', '加载失败')} description={(schemaError as Error).message} />}
-        {!loading && schemaData && (
+        {drawerSchemaLoading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
+            <Spin />
+          </div>
+        ) : schemaError ? (
+          renderSchemaError()
+        ) : !schemaData ? (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={t('table.noSchema', '暂无可用表单')} />
+        ) : (
           <SForm
             schema={formSchema ?? schemaData.schema}
             uiSchema={props.formUiSchema}
             formData={editingRecord ?? props.initialValues ?? {}}
             onSubmit={handleFormSubmit}
+            submitLoading={submitLoading}
           />
         )}
       </Drawer>

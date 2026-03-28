@@ -9,6 +9,7 @@ import { useCurrentTenants } from '@/fetches/tenants';
 import { getTenantId, setTenantId } from '@/store/tenant';
 import { setContextId } from '@/store/contextId';
 import { ensureContextId } from '@simplepoint/shared/api/contextId';
+import { clearClientCaches, redirectToLogin } from '@simplepoint/shared/api/session';
 
 // 为主题切换提供短暂的全局颜色过渡动画
 function startThemeTransition(duration = 240) {
@@ -206,7 +207,7 @@ const ClearCacheButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'defau
   const onConfirm = async () => {
     setLoading(true);
     try {
-      await clearAllCaches();
+      await clearClientCaches({ preserveSessionContext: true, rebuildContextId: true });
       message.success(t('tools.clearDone','已清理全局缓存'));
     } finally {
       setLoading(false);
@@ -433,55 +434,10 @@ export const avatarConfig = (navigate: (path: string) => void): MenuProps => {
         icon: <LogoutOutlined/>,
         onClick: async () => {
           try { await post<any>('/logout', {}); } catch {}
-          await clearAllCaches();
-          // navigate('/login');
-          try { setTimeout(() => window.location.reload(), 50); } catch {}
+          await redirectToLogin();
         }
       },
     ]
   };
 }
 
-async function clearAllCaches() {
-  // 1) storage（同步且可能抖动，但体量较小）
-  try { if (typeof localStorage !== 'undefined') localStorage.clear(); } catch {}
-  try { if (typeof sessionStorage !== 'undefined') sessionStorage.clear(); } catch {}
-
-  const tasks: Promise<any>[] = [];
-
-  // 2) caches 并行删除
-  try {
-    if (typeof caches !== 'undefined' && caches?.keys) {
-      const keys = await caches.keys();
-      tasks.push(Promise.allSettled(keys.map((k) => caches.delete(k))));
-    }
-  } catch {}
-
-  // 3) service worker 注销
-  try {
-    if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator && navigator.serviceWorker.getRegistrations) {
-      const regs = await navigator.serviceWorker.getRegistrations();
-      tasks.push(Promise.allSettled(regs.map((r) => r.unregister())));
-    }
-  } catch {}
-
-  // 4) IndexedDB 数据库删除（仅在支持 databases() 的浏览器执行）
-  try {
-    const idb: any = typeof indexedDB !== 'undefined' ? (indexedDB as any) : undefined;
-    if (idb && typeof idb.databases === 'function') {
-      const dbs = await idb.databases();
-      const del = (name: string) => new Promise<void>((resolve) => {
-        try {
-          const req = indexedDB.deleteDatabase(name);
-          req.onsuccess = () => resolve();
-          req.onerror = () => resolve();
-          req.onblocked = () => resolve();
-        } catch { resolve(); }
-      });
-      tasks.push(Promise.allSettled((dbs || []).map((d: any) => (d?.name ? del(d.name) : Promise.resolve()))));
-    }
-  } catch {}
-
-  // 5) 等待所有清理完成（单个失败不影响整体）
-  await Promise.allSettled(tasks);
-}

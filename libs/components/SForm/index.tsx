@@ -9,15 +9,17 @@ import IconPicker from "./widgets/IconPicker";
 
 type SFormProps = Omit<FormProps, "validator">& {
   i18nNamespaces?: string[];
+  submitLoading?: boolean;
 };
 
 // 自定义提交按钮
 const CustomSubmitButton = (props: SubmitButtonProps) => {
   const {uiSchema} = props;
   const {"ui:submitButtonOptions": {submitText} = {}} = (uiSchema || {}) as any;
+  const submitLoading = Boolean((props as any)?.registry?.formContext?.submitLoading);
   const text = submitText || '提交';
   return (
-    <Button type="primary" htmlType="submit" style={{backgroundColor: '#00b96b'}}>
+    <Button type="primary" htmlType="submit" style={{backgroundColor: '#00b96b'}} loading={submitLoading} disabled={submitLoading}>
       {text}
     </Button>
   );
@@ -35,7 +37,7 @@ const defaultWidgets = {IconPicker} as const;
 const TEXTAREA_AUTOSIZE = { minRows: 4, maxRows: 16 } as const;
 
 const SForm = (props: SFormProps) => {
-  const {schema, uiSchema, validate, ...rest} = props as any;
+  const {schema, uiSchema, validate, submitLoading, ...rest} = props as any;
 
   // 从 schema.x-ui.widget 自动生成基础 uiSchema（含通用映射与 textarea 特例）
   const autoUiSchema = useMemo(() => {
@@ -117,6 +119,7 @@ const SForm = (props: SFormProps) => {
       {...rest}
       schema={schema}
       uiSchema={mergedUiSchema}
+      formContext={{...(rest.formContext || {}), submitLoading}}
       validator={validator}
       validate={mergedValidate}
       showErrorList={false}

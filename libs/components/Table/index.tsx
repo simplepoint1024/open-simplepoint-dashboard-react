@@ -2,7 +2,7 @@ import React, {MouseEventHandler, useCallback, useEffect, useMemo, useRef, useSt
 import type {TableRowSelection} from 'antd/es/table/interface';
 import {Button, Checkbox, Col, Popover, Row, Space, Table as AntTable} from 'antd';
 import {SearchOutlined, SettingOutlined} from '@ant-design/icons';
-import type {ColumnsType} from 'antd/es/table';
+import type {ColumnType, ColumnsType} from 'antd/es/table';
 import {RJSFSchema} from '@rjsf/utils';
 import {Page, toPagination} from '@simplepoint/shared/types/request';
 import {ButtonProps} from "antd/es/button/button";
@@ -24,6 +24,9 @@ export interface TableProps<T> {
   refresh: () => void;
   pageable: Page<T>;
   schema: RJSFSchema | any[];
+  loading?: boolean;
+  refreshDisabled?: boolean;
+  columnOverrides?: Record<string, Partial<ColumnType<T>> & { order?: number }>;
   filters?: Record<string, string>;
   onFilterChange?: (filters: Record<string, string>) => void;
   onChange?: (pagination: any, filters?: any, sorter?: any, extra?: any) => void;
@@ -171,8 +174,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
 
   const columns = useMemo<ColumnsType<T>>(() => {
     const entries = Object.entries(properties);
-
-    return entries
+    const generated: Array<{ order: number; column: ColumnType<T> }> = entries
       .filter(([key]) => (visibleCols[key] ?? visibleKeys.includes(key)))
       .map(([key, schemaDef]) => {
         const baseTitle = (schemaDef as any)?.title ?? key;
@@ -198,14 +200,14 @@ const App = <T extends object = any>(props: TableProps<T>) => {
               ? (val: any) => resolveOptionLabel(schemaDef, val) ?? val
              : undefined;
 
-        const column: any = {
+        const column: ColumnType<T> = {
           title: baseTitle,
           dataIndex: key,
           key,
           align,
         };
 
-        column.filterDropdown = ({close}: any) => (
+        (column as any).filterDropdown = ({close}: any) => (
           <div onKeyDown={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}
                onClick={(e) => e.stopPropagation()}>
             <ColumnFilter
@@ -226,13 +228,30 @@ const App = <T extends object = any>(props: TableProps<T>) => {
             />
           </div>
         );
-        column.filterIcon = () => <SearchOutlined style={{color: filters[key] ? '#1677ff' : undefined}}/>;
+        (column as any).filterIcon = () => <SearchOutlined style={{color: filters[key] ? '#1677ff' : undefined}}/>;
 
-        if (renderCell) column.render = renderCell;
+        if (renderCell) {
+          column.render = renderCell as ColumnType<T>['render'];
+        }
 
-        return column;
+        const override = props.columnOverrides?.[key] as (Partial<ColumnType<T>> & { order?: number }) | undefined;
+        const {order, ...overrideRest} = override || {};
+
+        return {
+          order: typeof order === 'number' ? order : Number.MAX_SAFE_INTEGER,
+          column: {
+            ...column,
+            ...overrideRest,
+            key,
+            dataIndex: key,
+          },
+        };
       });
-  }, [properties, visibleCols, visibleKeys, filters, props.onFilterChange, props.refresh, t, locale]);
+
+    return generated
+      .sort((left, right) => left.order - right.order)
+      .map((item) => item.column);
+  }, [properties, visibleCols, visibleKeys, filters, props.onFilterChange, props.refresh, props.columnOverrides, t, locale])
 
   const dataSource = props.pageable?.content ?? [];
 
@@ -392,7 +411,14 @@ const App = <T extends object = any>(props: TableProps<T>) => {
           </Space>
         </Col>
         <Col>
-          <Button className="button-col" type="text" icon={<SearchOutlined/>} onClick={() => props.refresh()}/>
+          <Button
+            className="button-col"
+            type="text"
+            icon={<SearchOutlined/>}
+            onClick={() => props.refresh()}
+            loading={props.loading}
+            disabled={props.refreshDisabled}
+          />
           <Popover placement="bottomRight" content={settingsContent} trigger="click">
             <Button icon={<SettingOutlined/>} type="text" style={{marginLeft: 8}}/>
           </Popover>
@@ -404,6 +430,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
             bordered
             columns={columns}
             dataSource={dataSource}
+            loading={props.loading}
             pagination={pagination}
             rowKey={keyOfRecord}
             onChange={props.onChange}

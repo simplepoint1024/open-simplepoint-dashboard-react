@@ -128,7 +128,11 @@
     "action.refresh": "刷新",
     "action.edit": "编辑",
     "action.save": "保存",
-    "action.cancel": "取消"
+    "action.cancel": "取消",
+    "action.enableTwoFactor": "开启两步认证",
+    "action.manageTwoFactor": "管理两步认证",
+    "profile.twoFactor.enabled": "已开启",
+    "profile.twoFactor.disabled": "未开启"
   },
   "settings": {
     "settings.appearance": "外观设置",
@@ -249,7 +253,7 @@
     "menus.description.title": "菜单或页面标题",
     "menus.title.type": "类型",
     "menus.description.type": "菜单类型（目录/分组/项等）",
-    "menus.config.permission": "权限配置"
+    "menus.config.permission": "功能配置"
   },
   "roles": {
     "roles.title.authority": "权限标识",

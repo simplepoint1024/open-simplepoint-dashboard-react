@@ -21,7 +21,7 @@ import {useUserInfo} from '@/fetches/user.ts';
 import './index.css'
 
 export const Profile: React.FC = () => {
-  const {t, ensure} = useI18n();
+  const {t, ensure, locale} = useI18n();
   // 增量加载 profile 命名空间
   useEffect(() => {
     void ensure(['profile']);
@@ -31,6 +31,25 @@ export const Profile: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    const handleFocus = () => {
+      void refetch();
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        void refetch();
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [refetch]);
 
   // 数据变化时同步到表单
   useEffect(() => {
@@ -60,6 +79,17 @@ export const Profile: React.FC = () => {
       // ignore
     } finally {
       setSaving(false);
+    }
+  };
+
+  const openTwoFactorSettings = () => {
+    try {
+      const opened = window.open('/authorization/account/2fa', '_blank', 'noopener,noreferrer');
+      if (!opened) {
+        window.location.assign('/authorization/account/2fa');
+      }
+    } catch {
+      window.location.assign('/authorization/account/2fa');
     }
   };
 
@@ -139,7 +169,18 @@ export const Profile: React.FC = () => {
                     {roles.length > 0 ? roles.map(r => (<Tag key={r} color="blue">{r}</Tag>)) : '-'}
                   </Descriptions.Item>
                   <Descriptions.Item label={t('field.twoFactorEnabled', '两步认证')}>
-                      {data?.twoFactorEnabled === true ? '✅' : data?.twoFactorEnabled === false ? '❌' : '❌'}
+                    <Space size={8} wrap>
+                      <Tag color={data?.twoFactorEnabled === true ? 'success' : 'default'}>
+                        {data?.twoFactorEnabled === true
+                          ? t('profile.twoFactor.enabled', '已开启')
+                          : t('profile.twoFactor.disabled', '未开启')}
+                      </Tag>
+                      <Button type="link" style={{paddingInline: 0}} onClick={openTwoFactorSettings}>
+                        {data?.twoFactorEnabled === true
+                          ? t('action.manageTwoFactor', '管理两步认证')
+                          : t('action.enableTwoFactor', '开启两步认证')}
+                      </Button>
+                    </Space>
                   </Descriptions.Item>
                   <Descriptions.Item label={t('field.joinedAt', '加入时间')}>
                     {(data as any)?.joinedAt || (data as any)?.createTime || '-'}

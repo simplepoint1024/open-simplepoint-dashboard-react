@@ -76,7 +76,7 @@ const App = () => {
         customButtonEvents={customButtonEvents}
       />
       <Drawer
-        title={t("menus.config.permission")}
+        title={t("menus.config.permission", "功能配置")}
         open={openRoleConfig}
         // width 对 bottom 抽屉无效，使用高度控制
         height={permDrawerHeight}

@@ -1,9 +1,10 @@
 import SimpleTable from "@simplepoint/components/SimpleTable";
 import api from '@/api/index';
-import React, {useCallback, useEffect, useState} from 'react';
-import {Drawer} from "antd";
+import React, {lazy, Suspense, useCallback, useEffect, useState} from 'react';
+import {Drawer, Spin} from "antd";
 import {useI18n} from '@simplepoint/shared/hooks/useI18n';
-import PermissionConfig from './config/permission'
+
+const PermissionConfig = lazy(() => import('./config/permission'));
 
 // 获取基础表格配置
 const baseConfig = api['rbac-roles'];
@@ -65,6 +66,17 @@ const App = () => {
             <SimpleTable
                 {...baseConfig}
                 customButtonEvents={customButtonEvents}
+                beforeSubmit={({formData}) => {
+                    const next = {...formData};
+                    ['name', 'authority', 'description'].forEach((key) => {
+                        if (typeof next[key] === 'string') {
+                            next[key] = next[key].trim();
+                        }
+                    });
+                    return next;
+                }}
+                submitRefreshTargets={{page: true, schema: false}}
+                deleteRefreshTargets={{page: true, schema: false}}
             />
             <Drawer
                 title={t("roles.config.permission")}
@@ -92,7 +104,11 @@ const App = () => {
                     }}
                     onMouseDown={startResize}
                 />
-                <PermissionConfig key={roleId || 'none'} roleId={roleId}/>
+                {openRoleConfig ? (
+                    <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', padding: 24}}><Spin/></div>}>
+                        <PermissionConfig key={roleId || 'none'} roleId={roleId}/>
+                    </Suspense>
+                ) : null}
             </Drawer>
         </div>
     );

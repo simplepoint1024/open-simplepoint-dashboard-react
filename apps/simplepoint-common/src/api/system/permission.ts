@@ -9,8 +9,19 @@ export interface PermissionRelevantVo {
   name: string;
   authority: string;
   description: string;
+  type?: number;
 }
 
 export async function fetchItems(params: Record<string, string>) {
   return await get<Page<PermissionRelevantVo>>(`${baseUrl}/items`, params);
 }
+
+export async function fetchSelectedItems(authorities: string[]) {
+  if (!authorities.length) {
+    return [] as PermissionRelevantVo[];
+  }
+  return await get<PermissionRelevantVo[]>(`${baseUrl}/items/selected`, {
+    authorities: authorities.join(','),
+  });
+}
+
