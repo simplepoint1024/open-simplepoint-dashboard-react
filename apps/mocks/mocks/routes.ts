@@ -3,8 +3,12 @@ const {get} = http;
 
 const microapps = [
     {
-        name: 'common',
-        entry: 'http://127.0.0.1:3001/common/mf/mf-manifest.json'
+         name: 'common',
+         entry: 'http://127.0.0.1:3001/common/mf/mf-manifest.json'
+    },
+    {
+         name: 'auditing',
+         entry: 'http://127.0.0.1:3002/auditing/mf/mf-manifest.json'
     }
 ]
 
@@ -215,6 +219,7 @@ const routes = {
             "title": "menu.monitoring",
             "icon": "EyeOutlined",
             "path": "/monitoring",
+            "authority": "monitoring.view",
             "type": "item",
             "disabled": false,
             "children": [
@@ -223,6 +228,69 @@ const routes = {
                     "title": "menu.monitoring.loginLog",
                     "icon": "SendOutlined",
                     "path": "/monitoring/login-log",
+                    "authority": "login.logs.view",
+                    "sort": 0,
+                    "component": "auditing/monitoring/LoginLog",
+                    "type": "item",
+                    "disabled": false,
+                    "children": []
+                },
+                {
+                    "label": "权限变更记录",
+                    "title": "menu.monitoring.permissionChangeLog",
+                    "icon": "SafetyCertificateOutlined",
+                    "path": "/monitoring/permission-change-log",
+                    "authority": "permission.change.logs.view",
+                    "sort": 1,
+                    "component": "auditing/monitoring/PermissionChangeLog",
+                    "type": "item",
+                    "disabled": false,
+                    "children": []
+                },
+                {
+                    "label": "错误日志",
+                    "title": "menu.monitoring.errorLog",
+                    "icon": "WarningOutlined",
+                    "path": "/monitoring/error-log",
+                    "authority": "error.logs.view",
+                    "sort": 2,
+                    "component": "auditing/monitoring/ErrorLog",
+                    "type": "item",
+                    "disabled": false,
+                    "children": []
+                },
+                {
+                    "label": "服务限流",
+                    "title": "menu.monitoring.serviceRateLimit",
+                    "icon": "CloudServerOutlined",
+                    "path": "/monitoring/service-rate-limit",
+                    "authority": "service.rate.limit.rules.view",
+                    "sort": 3,
+                    "component": "auditing/monitoring/ServiceRateLimitRule",
+                    "type": "item",
+                    "disabled": false,
+                    "children": []
+                },
+                {
+                    "label": "接口限流",
+                    "title": "menu.monitoring.endpointRateLimit",
+                    "icon": "ApiOutlined",
+                    "path": "/monitoring/endpoint-rate-limit",
+                    "authority": "endpoint.rate.limit.rules.view",
+                    "sort": 4,
+                    "component": "auditing/monitoring/EndpointRateLimitRule",
+                    "type": "item",
+                    "disabled": false,
+                    "children": []
+                },
+                {
+                    "label": "Redis管理",
+                    "title": "menu.monitoring.redis",
+                    "icon": "DatabaseOutlined",
+                    "path": "/monitoring/redis",
+                    "authority": "redis.entries.view",
+                    "sort": 5,
+                    "component": "auditing/monitoring/Redis",
                     "type": "item",
                     "disabled": false,
                     "children": []
@@ -472,6 +540,61 @@ const routes = {
                             "authority": "organizations.delete",
                             "resource": "/platform/organizations",
                             "description": "允许删除组织机构"
+                        }
+                    ]
+                },
+                {
+                    "label": "对象存储",
+                    "title": "menu.platform.objectStorage",
+                    "icon": "CloudUploadOutlined",
+                    "path": "/platform/object-storage",
+                    "authority": "storage.objects.view",
+                    "sort": 6,
+                    "component": "common/platform/ObjectStorage",
+                    "type": "item",
+                    "disabled": false,
+                    "permissions": [
+                        {
+                            "name": "Object Storage View",
+                            "authority": "storage.objects.view",
+                            "resource": "/platform/object-storage",
+                            "description": "允许访问对象存储页面"
+                        },
+                        {
+                            "name": "Object Storage Create",
+                            "authority": "storage.objects.create",
+                            "resource": "/platform/object-storage",
+                            "description": "允许上传对象"
+                        },
+                        {
+                            "name": "Object Storage Delete",
+                            "authority": "storage.objects.delete",
+                            "resource": "/platform/object-storage",
+                            "description": "允许删除对象"
+                        },
+                        {
+                            "name": "Object Storage Quota View",
+                            "authority": "storage.quotas.view",
+                            "resource": "/platform/object-storage",
+                            "description": "允许查看租户对象存储配额"
+                        },
+                        {
+                            "name": "Object Storage Quota Create",
+                            "authority": "storage.quotas.create",
+                            "resource": "/platform/object-storage",
+                            "description": "允许新增租户对象存储配额"
+                        },
+                        {
+                            "name": "Object Storage Quota Edit",
+                            "authority": "storage.quotas.edit",
+                            "resource": "/platform/object-storage",
+                            "description": "允许编辑租户对象存储配额"
+                        },
+                        {
+                            "name": "Object Storage Quota Delete",
+                            "authority": "storage.quotas.delete",
+                            "resource": "/platform/object-storage",
+                            "description": "允许删除租户对象存储配额"
                         }
                     ]
                 }

@@ -5,6 +5,7 @@ import { RJSFSchema } from "@rjsf/utils";
 import { createIcon } from "../types/icon";
 import type { UseQueryOptions } from "@tanstack/react-query";
 import { getStoredContextId, getStoredTenantId } from '../api/contextId';
+import { resolveClientI18nFallback } from '../i18n/fallbacks';
 
 export type TableSchemaProps = {
   schema: RJSFSchema;
@@ -22,7 +23,8 @@ const getGlobalT = () =>
 const resolveI18nStr = (v: unknown): string => {
   if (typeof v !== "string" || !v.startsWith("i18n:")) return String(v);
   const key = v.slice(5);
-  return getGlobalT()?.(key, key) ?? key;
+  const fallback = resolveClientI18nFallback(key);
+  return getGlobalT()?.(key, fallback ?? key) ?? fallback ?? key;
 };
 
 const normalizeSchemaI18n = (node: any): any => {

@@ -97,14 +97,24 @@ async function handleHttpStatus(method: string, url: string, response: Response,
 // 通用请求方法
 export async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const method = (options?.method || 'GET').toUpperCase();
+  const body = options?.body;
+  const isFormDataBody = typeof FormData !== 'undefined' && body instanceof FormData;
 
   const tenantId = getStoredTenantId();
   let contextId: string | undefined = getStoredContextId(tenantId);
 
   const mergedHeaders: Record<string, any> = {
-    'Content-Type': 'application/json',
+    ...(isFormDataBody ? {} : {'Content-Type': 'application/json'}),
     ...(options?.headers || {}),
   };
+
+  if (isFormDataBody) {
+    Object.keys(mergedHeaders).forEach((key) => {
+      if (key.toLowerCase() === 'content-type' && mergedHeaders[key] === 'application/json') {
+        delete mergedHeaders[key];
+      }
+    });
+  }
 
   if (tenantId && mergedHeaders['X-Tenant-Id'] == null) {
     mergedHeaders['X-Tenant-Id'] = tenantId;

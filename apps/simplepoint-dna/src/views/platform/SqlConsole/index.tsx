@@ -1,0 +1,590 @@
+import api from '@/api';
+import {ReloadOutlined} from '@ant-design/icons';
+import {get, post} from '@simplepoint/shared/api/methods';
+import type {Page} from '@simplepoint/shared/types/request';
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Descriptions,
+  Empty,
+  Input,
+  Row,
+  Select,
+  Space,
+  Spin,
+  Table,
+  Tabs,
+  Tag,
+  Tree,
+  Typography,
+  message,
+} from 'antd';
+import type {TabsProps} from 'antd';
+import {useCallback, useEffect, useMemo, useState} from 'react';
+import type {Key} from 'react';
+import {
+  findMetadataTreeNodeByKey,
+  normalizeMetadataTreeNodes,
+  renderMetadataTreeTitle,
+  replaceMetadataTreeChildren,
+  type MetadataNodeType,
+  type MetadataPathSegment,
+  type MetadataTreeNode,
+} from '../metadataTree';
+import {resolveErrorMessage} from '../shared';
+
+const {Paragraph} = Typography;
+const {TextArea} = Input;
+
+const catalogConfig = api['platform.dna-federation-catalogs'];
+const dataSourceConfig = api['platform.dna-data-sources'];
+const metadataConfig = api['platform.dna-metadata'];
+const sqlConsoleConfig = api['platform.dna-federation-sql-console'];
+
+type FederationCatalogOption = {
+  id: string;
+  code?: string;
+  name?: string;
+  enabled?: boolean;
+};
+
+type JdbcDataSourceOption = {
+  id: string;
+  code?: string;
+  name?: string;
+  enabled?: boolean;
+  driverName?: string;
+  databaseProductName?: string;
+};
+
+type SqlExplainResult = {
+  catalogCode: string;
+  policyCode: string;
+  maxRows: number;
+  timeoutMs: number;
+  allowCrossSourceJoin: boolean;
+  crossSourceJoin: boolean;
+  dataSources: string[];
+  planText: string;
+  pushedSqls: string[];
+  pushdownSummary?: string;
+};
+
+type SqlColumn = {
+  name: string;
+  typeName?: string | null;
+};
+
+type SqlQueryResult = SqlExplainResult & {
+  columns: SqlColumn[];
+  rows: unknown[][];
+  truncated: boolean;
+  returnedRows: number;
+  executionTimeMs: number;
+};
+
+type ResultRow = {
+  key: number;
+  values: unknown[];
+};
+
+type ResultTabKey = 'analysis' | 'pushedSql' | 'plan' | 'result';
+
+const defaultSql = `select *
+from 数据源编码.数据库编码.Schema.表名
+order by 1`;
+
+const sqlConsoleNodeTypeLabels: Record<MetadataNodeType, string> = {
+  DATA_SOURCE: '数据源',
+  ROOT: '根节点',
+  DATABASE: '数据库',
+  CATALOG: 'Catalog',
+  SCHEMA: 'Schema',
+  TABLE: '表',
+  VIEW: '视图',
+  COLUMN: '字段',
+};
+
+const resolveNodeTypeLabel = (type: MetadataNodeType, fallback?: string | null) => {
+  return sqlConsoleNodeTypeLabels[type] || fallback || type;
+};
+
+const resolveCatalogLabel = (catalog: FederationCatalogOption) => {
+  const primary = catalog.name || catalog.code || catalog.id;
+  const secondary = catalog.code && catalog.code !== primary ? ` (${catalog.code})` : '';
+  return `${primary}${secondary}`;
+};
+
+const resolveDataSourceLabel = (dataSource: JdbcDataSourceOption) => {
+  const primary = dataSource.name || dataSource.code || dataSource.id;
+  const secondary = dataSource.code && dataSource.code !== primary ? ` (${dataSource.code})` : '';
+  const product = dataSource.databaseProductName ? ` - ${dataSource.databaseProductName}` : '';
+  return `${primary}${secondary}${product}`;
+};
+
+const buildDataSourceTreeNodes = (dataSources: JdbcDataSourceOption[]): MetadataTreeNode[] => dataSources.map((dataSource) => {
+  const title = resolveDataSourceLabel(dataSource);
+  return {
+    key: `data-source-${dataSource.id}`,
+    title: renderMetadataTreeTitle('DATA_SOURCE', title, resolveNodeTypeLabel),
+    rawTitle: title,
+    type: 'DATA_SOURCE',
+    path: [],
+    leaf: false,
+    isLeaf: false,
+    loaded: false,
+    dataSourceId: dataSource.id,
+  };
+});
+
+const toExplainSnapshot = (result: SqlExplainResult | SqlQueryResult): SqlExplainResult => ({
+  catalogCode: result.catalogCode,
+  policyCode: result.policyCode,
+  maxRows: result.maxRows,
+  timeoutMs: result.timeoutMs,
+  allowCrossSourceJoin: result.allowCrossSourceJoin,
+  crossSourceJoin: result.crossSourceJoin,
+  dataSources: result.dataSources,
+  planText: result.planText,
+  pushedSqls: result.pushedSqls ?? [],
+  pushdownSummary: result.pushdownSummary,
+});
+
+const formatPushedSqls = (pushedSqls: string[]) => pushedSqls
+  .map((sql, index) => `-- Pushdown SQL ${index + 1}\n${sql}`)
+  .join('\n\n');
+
+const pageContainerStyle = {
+  display: 'flex',
+  flexDirection: 'column' as const,
+  gap: 16,
+  height: '100%',
+  minHeight: 0,
+  overflow: 'hidden',
+};
+
+const workspaceStyle = {
+  flex: 1,
+  minHeight: 0,
+  display: 'grid',
+  gridTemplateRows: 'minmax(320px, 3fr) minmax(260px, 2fr)',
+  gap: 16,
+  overflow: 'hidden',
+};
+
+const cardStyle = {
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column' as const,
+};
+
+const cardBodyStyle = {
+  flex: 1,
+  minHeight: 0,
+  display: 'flex',
+  flexDirection: 'column' as const,
+  overflow: 'hidden',
+};
+
+const scrollAreaStyle = {
+  flex: 1,
+  minHeight: 0,
+  overflow: 'auto',
+};
+
+const renderCellValue = (value: unknown) => {
+  if (value === null || value === undefined) {
+    return <Tag>NULL</Tag>;
+  }
+  if (typeof value === 'boolean') {
+    return <Tag color={value ? 'success' : 'default'}>{value ? 'true' : 'false'}</Tag>;
+  }
+  if (typeof value === 'object') {
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return String(value);
+    }
+  }
+  return String(value);
+};
+
+const App = () => {
+  const [catalogs, setCatalogs] = useState<FederationCatalogOption[]>([]);
+  const [catalogCode, setCatalogCode] = useState<string>();
+  const [dataSources, setDataSources] = useState<JdbcDataSourceOption[]>([]);
+  const [treeData, setTreeData] = useState<MetadataTreeNode[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState<Key[]>([]);
+  const [selectedTreeNode, setSelectedTreeNode] = useState<MetadataTreeNode | null>(null);
+  const [treeLoading, setTreeLoading] = useState(false);
+  const [sql, setSql] = useState(defaultSql);
+  const [loadingMode, setLoadingMode] = useState<'explain' | 'query' | null>(null);
+  const [activeTabKey, setActiveTabKey] = useState<ResultTabKey>('analysis');
+  const [explainResult, setExplainResult] = useState<SqlExplainResult | null>(null);
+  const [queryResult, setQueryResult] = useState<SqlQueryResult | null>(null);
+
+  const loadCatalogs = useCallback(async () => {
+    const page = await get<Page<FederationCatalogOption>>(catalogConfig.baseUrl, {page: 0, size: 200});
+    const enabledCatalogs = (page.content ?? []).filter((catalog) => catalog.enabled !== false);
+    setCatalogs(enabledCatalogs);
+    setCatalogCode((current) => current ?? enabledCatalogs[0]?.code);
+  }, []);
+
+  const loadDataSources = useCallback(async () => {
+    setTreeLoading(true);
+    try {
+      const page = await get<Page<JdbcDataSourceOption>>(dataSourceConfig.baseUrl, {page: 0, size: 200});
+      const enabledDataSources = (page.content ?? []).filter((dataSource) => dataSource.enabled !== false);
+      setDataSources(enabledDataSources);
+      setTreeData(buildDataSourceTreeNodes(enabledDataSources));
+      setSelectedKeys([]);
+      setSelectedTreeNode(null);
+    } catch (error) {
+      message.error(resolveErrorMessage(error, '数据源树加载失败'));
+    } finally {
+      setTreeLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadCatalogs().catch((error) => {
+      message.error(resolveErrorMessage(error, '联邦目录列表加载失败'));
+    });
+  }, [loadCatalogs]);
+
+  useEffect(() => {
+    void loadDataSources();
+  }, [loadDataSources]);
+
+  const loadChildren = useCallback(async (dataSourceId: string, path: MetadataPathSegment[]) => {
+    const data = await post<MetadataTreeNode[]>(`${metadataConfig.baseUrl}/${dataSourceId}/children`, {path});
+    return normalizeMetadataTreeNodes(data ?? [], resolveNodeTypeLabel, {dataSourceId});
+  }, []);
+
+  const handleLoadData = useCallback(async (treeNode: object) => {
+    const node = treeNode as MetadataTreeNode;
+    if (node.isLeaf || node.loaded || !node.dataSourceId) {
+      return;
+    }
+    try {
+      const children = await loadChildren(node.dataSourceId, node.type === 'DATA_SOURCE' ? [] : node.path);
+      setTreeData((current) => replaceMetadataTreeChildren(current, node.key, children));
+    } catch (error) {
+      message.error(resolveErrorMessage(error, '树节点加载失败'));
+    }
+  }, [loadChildren]);
+
+  const handleSelectTreeNode = useCallback((keys: Key[]) => {
+    setSelectedKeys(keys);
+    setSelectedTreeNode(keys.length > 0 ? findMetadataTreeNodeByKey(treeData, keys[0]) : null);
+  }, [treeData]);
+
+  const handleRefreshTree = useCallback(async () => {
+    await loadDataSources();
+    message.success('数据源树已刷新');
+  }, [loadDataSources]);
+
+  const selectedTreePath = useMemo(() => {
+    if (!selectedTreeNode?.dataSourceId) {
+      return null;
+    }
+    const dataSource = dataSources.find((item) => item.id === selectedTreeNode.dataSourceId);
+    const rootCode = dataSource?.code || dataSource?.name || selectedTreeNode.dataSourceId;
+    if (selectedTreeNode.type === 'DATA_SOURCE') {
+      return rootCode;
+    }
+    return [rootCode, ...selectedTreeNode.path.map((segment) => segment.name)].join('.');
+  }, [dataSources, selectedTreeNode]);
+
+  const submit = useCallback(async (mode: 'explain' | 'query') => {
+    if (!catalogCode) {
+      message.warning('请选择联邦目录');
+      return;
+    }
+    if (!sql.trim()) {
+      message.warning('请输入要执行的 SQL');
+      return;
+    }
+    setLoadingMode(mode);
+    const hide = message.loading(mode === 'explain' ? '正在生成执行计划...' : '正在执行 SQL...', 0);
+    try {
+      const payload = {catalogCode, sql};
+      if (mode === 'explain') {
+        const result = await post<SqlExplainResult>(`${sqlConsoleConfig.baseUrl}/explain`, payload);
+        setExplainResult(result);
+        setQueryResult(null);
+        setActiveTabKey('analysis');
+        message.success('执行计划已生成');
+      } else {
+        const result = await post<SqlQueryResult>(`${sqlConsoleConfig.baseUrl}/query`, payload);
+        setExplainResult(toExplainSnapshot(result));
+        setQueryResult(result);
+        setActiveTabKey('result');
+        message.success('SQL 执行成功');
+      }
+    } catch (error) {
+      message.error(resolveErrorMessage(error, mode === 'explain' ? '执行计划生成失败' : 'SQL 执行失败'));
+    } finally {
+      hide();
+      setLoadingMode(null);
+    }
+  }, [catalogCode, sql]);
+
+  const analysisResult = queryResult ?? explainResult;
+
+  const resultColumns = useMemo(() => (queryResult?.columns ?? []).map((column, index) => ({
+    title: column.typeName ? `${column.name} (${column.typeName})` : column.name,
+    dataIndex: ['values', index],
+    key: `${column.name}-${index}`,
+    render: (value: unknown) => renderCellValue(value),
+  })), [queryResult]);
+
+  const resultData = useMemo<ResultRow[]>(() => (queryResult?.rows ?? []).map((row, index) => ({
+    key: index,
+    values: row ?? [],
+  })), [queryResult]);
+
+  const resultTabs = useMemo<TabsProps['items']>(() => [
+    {
+      key: 'analysis',
+      label: '执行分析',
+      children: analysisResult ? (
+        <Space direction="vertical" size={16} style={{display: 'flex'}}>
+          <Descriptions bordered size="small" column={2}>
+            <Descriptions.Item label="联邦目录">{analysisResult.catalogCode}</Descriptions.Item>
+            <Descriptions.Item label="查询策略">{analysisResult.policyCode}</Descriptions.Item>
+            <Descriptions.Item label="最大返回行数">{analysisResult.maxRows}</Descriptions.Item>
+            <Descriptions.Item label="超时(ms)">{analysisResult.timeoutMs}</Descriptions.Item>
+            <Descriptions.Item label="允许跨源 Join">
+              <Tag color={analysisResult.allowCrossSourceJoin ? 'success' : 'default'}>
+                {analysisResult.allowCrossSourceJoin ? '允许' : '禁止'}
+              </Tag>
+            </Descriptions.Item>
+            <Descriptions.Item label="实际跨源 Join">
+              <Tag color={analysisResult.crossSourceJoin ? 'processing' : 'default'}>
+                {analysisResult.crossSourceJoin ? '是' : '否'}
+              </Tag>
+            </Descriptions.Item>
+            <Descriptions.Item label="命中数据源" span={2}>
+              {analysisResult.dataSources.length > 0
+                ? analysisResult.dataSources.map((code) => <Tag key={code}>{code}</Tag>)
+                : '-'}
+            </Descriptions.Item>
+            {queryResult ? (
+              <Descriptions.Item label="执行耗时(ms)" span={2}>
+                {queryResult.executionTimeMs}
+              </Descriptions.Item>
+            ) : null}
+          </Descriptions>
+
+          <div>
+            <Paragraph style={{marginBottom: 8}}>
+              <strong>下推摘要</strong>
+            </Paragraph>
+            <Paragraph style={{whiteSpace: 'pre-wrap', marginBottom: 0}}>
+              {analysisResult.pushdownSummary || '暂无下推摘要'}
+            </Paragraph>
+          </div>
+        </Space>
+      ) : (
+        <Empty description="查看执行计划或执行 SQL 后展示分析结果" />
+      ),
+    },
+    {
+      key: 'pushedSql',
+      label: 'JDBC 下推 SQL',
+      children: queryResult ? (
+        queryResult.pushedSqls.length > 0 ? (
+          <Paragraph style={{whiteSpace: 'pre-wrap', marginBottom: 0}}>
+            {formatPushedSqls(queryResult.pushedSqls)}
+          </Paragraph>
+        ) : (
+          <Empty description="本次执行未采集到 JDBC 下推 SQL" />
+        )
+      ) : (
+        <Empty description="执行 SQL 后展示 JDBC 下推 SQL" />
+      ),
+    },
+    {
+      key: 'plan',
+      label: 'Calcite 计划',
+      children: analysisResult ? (
+        <Paragraph style={{whiteSpace: 'pre-wrap', marginBottom: 0}}>
+          {analysisResult.planText || '暂无执行计划'}
+        </Paragraph>
+      ) : (
+        <Empty description="查看执行计划或执行 SQL 后展示 Calcite 执行计划" />
+      ),
+    },
+    {
+      key: 'result',
+      label: '执行结果',
+      children: queryResult ? (
+        <Space direction="vertical" size={16} style={{display: 'flex'}}>
+          {queryResult.truncated ? (
+            <Alert
+              type="warning"
+              showIcon
+              message="结果已按策略上限截断"
+              description={`当前仅返回前 ${queryResult.returnedRows} 行，请调整查询条件或放宽查询策略后再试。`}
+            />
+          ) : null}
+          <Descriptions bordered size="small" column={2}>
+            <Descriptions.Item label="返回行数">{queryResult.returnedRows}</Descriptions.Item>
+            <Descriptions.Item label="结果状态">
+              <Tag color={queryResult.truncated ? 'warning' : 'success'}>
+                {queryResult.truncated ? '已截断' : '完整返回'}
+              </Tag>
+            </Descriptions.Item>
+          </Descriptions>
+          <Table<ResultRow>
+            size="small"
+            rowKey="key"
+            scroll={{x: true}}
+            pagination={{pageSize: 20, showSizeChanger: true}}
+            columns={resultColumns}
+            dataSource={resultData}
+          />
+        </Space>
+      ) : (
+        <Empty description="执行 SQL 后展示结果集" />
+      ),
+    },
+  ], [analysisResult, queryResult, resultColumns, resultData]);
+
+  return (
+    <div style={pageContainerStyle}>
+      <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+        <Alert
+          type="info"
+          showIcon
+          message="当前控制台只支持单条只读 SQL"
+          description="左侧树按数据源 / 数据库 / Schema / 表 / 字段懒加载；执行时，物理源按“数据源编码.表名”、“数据源编码.Schema.表名”或“数据源编码.数据库编码.Schema.表名”暴露，逻辑视图按“逻辑 Schema 编码.视图编码”暴露。"
+        />
+
+        {catalogs.length === 0 ? (
+          <Alert
+            type="warning"
+            showIcon
+            message="当前还没有可用的联邦目录"
+            description="请先到联邦目录页面新增并启用目录，再配置查询策略后回到这里执行 SQL。"
+          />
+        ) : null}
+      </div>
+
+      <div style={workspaceStyle}>
+        <Row gutter={16} align="stretch" style={{height: '100%', minHeight: 0}}>
+          <Col span={8} style={{height: '100%'}}>
+            <Card
+              title="数据源树"
+              extra={(
+                <Button icon={<ReloadOutlined />} onClick={() => void handleRefreshTree()}>
+                  刷新树
+                </Button>
+              )}
+              style={cardStyle}
+              bodyStyle={cardBodyStyle}
+            >
+              <div style={scrollAreaStyle}>
+                {treeLoading ? (
+                  <div style={{display: 'flex', justifyContent: 'center', paddingTop: 120}}>
+                    <Spin />
+                  </div>
+                ) : treeData.length > 0 ? (
+                  <Tree
+                    blockNode
+                    treeData={treeData}
+                    loadData={handleLoadData}
+                    selectedKeys={selectedKeys}
+                    onSelect={(keys) => handleSelectTreeNode(keys)}
+                  />
+                ) : (
+                  <Empty description="当前没有可用的数据源" />
+                )}
+              </div>
+              {selectedTreePath ? (
+                <Alert
+                  type="info"
+                  showIcon
+                  style={{marginTop: 12}}
+                  message="当前选中路径"
+                  description={selectedTreePath}
+                />
+              ) : null}
+            </Card>
+          </Col>
+          <Col span={16} style={{height: '100%'}}>
+            <Card title="SQL 编辑器" style={cardStyle} bodyStyle={cardBodyStyle}>
+              <Space direction="vertical" size={12} style={{display: 'flex', flex: 1, minHeight: 0}}>
+                <Select
+                  placeholder="请选择联邦目录"
+                  value={catalogCode}
+                  onChange={setCatalogCode}
+                  options={catalogs.map((catalog) => ({
+                    label: resolveCatalogLabel(catalog),
+                    value: catalog.code,
+                  }))}
+                />
+
+                {selectedTreePath ? (
+                  <Alert
+                    type="info"
+                    showIcon
+                    message="左侧树当前选中对象"
+                    description={selectedTreePath}
+                  />
+                ) : null}
+
+                <div style={{flex: 1, minHeight: 0}}>
+                  <TextArea
+                    value={sql}
+                    onChange={(event) => setSql(event.target.value)}
+                    placeholder={defaultSql}
+                    style={{height: '100%', resize: 'none'}}
+                  />
+                </div>
+
+                <Space>
+                  <Button
+                    type="default"
+                    loading={loadingMode === 'explain'}
+                    disabled={loadingMode !== null}
+                    onClick={() => {
+                      void submit('explain');
+                    }}
+                  >
+                    查看执行计划
+                  </Button>
+                  <Button
+                    type="primary"
+                    loading={loadingMode === 'query'}
+                    disabled={loadingMode !== null}
+                    onClick={() => {
+                      void submit('query');
+                    }}
+                  >
+                    执行 SQL
+                  </Button>
+                </Space>
+              </Space>
+            </Card>
+          </Col>
+        </Row>
+
+        <Card title="执行输出" style={cardStyle} bodyStyle={{...cardBodyStyle, paddingTop: 8}}>
+          <div style={scrollAreaStyle}>
+            <Tabs
+              activeKey={activeTabKey}
+              onChange={(key) => setActiveTabKey(key as ResultTabKey)}
+              items={resultTabs}
+            />
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default App;
