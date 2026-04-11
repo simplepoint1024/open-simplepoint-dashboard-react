@@ -1,7 +1,6 @@
 import {createIcon} from "@simplepoint/shared/types/icon.ts";
 import {MenuInfo, MenuItemType} from "@/store/routes";
 import {MenuProps} from "antd";
-import {aboutMeItem, logoItem, toolsSwitcherGroupItem} from "@/layouts/navigation-bar/top-bar.tsx";
 import I18nText from '@/i18n/Text';
 
 /**
@@ -100,22 +99,6 @@ export const buildMenus = (
   return isTreeData ? buildMenusFromTree(menus, navigate) : buildMenusFromFlat(menus, navigate, undefined);
 };
 
-// 顶部菜单数据
-export const useTopNavigation = (navigate: (path: string) => void, data: Array<MenuInfo>): MenuProps => {
-  return {
-    items: [
-      logoItem(navigate),
-      ...buildMenus(data, navigate),
-      {
-        key: 'spacer',
-        label: '',
-        style: {marginLeft: 'auto', pointerEvents: 'none'},
-      },
-      toolsSwitcherGroupItem(),
-      aboutMeItem(navigate)
-    ]
-  }
-}
 // 侧边菜单
 export const useSideNavigation = (navigate: (path: string) => void, menuData: Array<MenuInfo>): MenuProps => {
   return {

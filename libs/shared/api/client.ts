@@ -15,29 +15,15 @@ export class HttpError extends Error {
   }
 }
 
-// 全局错误提醒（带国际化与防抖）
-const notifyI18n = (() => {
-  const guardMap = new Map<string, number>();
-  return (titleKey: string, fallbackTitle: string, desc?: string) => {
-    try {
-      const t: ((k: string, f?: string) => string) | undefined =
-        typeof window !== 'undefined' ? (window as any)?.spI18n?.t : undefined;
-      const title = t ? t(titleKey, fallbackTitle) : fallbackTitle;
-
-      const key = `${titleKey}::${(desc || '').slice(0, 200)}`;
-      const now = Date.now();
-      const lastAt = guardMap.get(key) || 0;
-      if (now - lastAt < 1500) return; // 1.5s 内相同内容不重复
-      guardMap.set(key, now);
-
-      import('antd')
-        .then(({ notification }) => {
-          notification.error({ message: title, description: desc, duration: 4 });
-        })
-        .catch(() => {});
-    } catch {}
-  };
-})();
+// Console-only error logging (no UI popups — page-level handlers show messages)
+const logError = (titleKey: string, fallbackTitle: string, desc?: string) => {
+  try {
+    const t: ((k: string, f?: string) => string) | undefined =
+      typeof window !== 'undefined' ? (window as any)?.spI18n?.t : undefined;
+    const title = t ? t(titleKey, fallbackTitle) : fallbackTitle;
+    console.warn(`[API] ${title}`, desc ?? '');
+  } catch {}
+};
 
 let unauthorizedModalOpen = false;
 
@@ -82,16 +68,16 @@ async function handleHttpStatus(method: string, url: string, response: Response,
   }
 
   if (response.status === 403) {
-    notifyI18n('error.forbidden', '无使用权限', desc);
+    logError('error.forbidden', '无使用权限', desc);
     return;
   }
 
   if (response.status >= 500) {
-    notifyI18n('error.server', '服务暂时不可用', desc);
+    logError('error.server', '服务暂时不可用', desc);
     return;
   }
 
-  notifyI18n('error.requestFailed', '请求失败', desc);
+  logError('error.requestFailed', '请求失败', desc);
 }
 
 // 通用请求方法
@@ -144,7 +130,7 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
       ...options,
     });
   } catch (error: any) {
-    notifyI18n('error.network', '网络错误', `${method} ${url}\n${String(error?.message || error)}`);
+    logError('error.network', '网络错误', `${method} ${url}\n${String(error?.message || error)}`);
     throw error;
   }
 
@@ -159,14 +145,19 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
   if (response.status === 204) return undefined as T;
 
   const contentType = response.headers.get('content-type') || '';
+  const contentLength = response.headers.get('content-length');
   try {
+    // Handle empty body (content-length 0 or missing body)
+    if (contentLength === '0') return undefined as T;
     if (contentType.includes('application/json')) {
-      return (await response.json()) as T;
+      const text = await response.text();
+      if (!text || !text.trim()) return undefined as T;
+      return JSON.parse(text) as T;
     }
     // 兼容 text/plain
     return (await response.text()) as unknown as T;
   } catch (error: any) {
-    notifyI18n('error.network', '网络错误', `${method} ${url}\n${String(error?.message || error)}`);
+    logError('error.network', '网络错误', `${method} ${url}\n${String(error?.message || error)}`);
     throw error;
   }
 }

@@ -10,9 +10,10 @@ import {
 } from '@ant-design/icons';
 import {Button, Dropdown, Layout, Menu, Tabs} from 'antd';
 import {createIcon} from '@simplepoint/shared/types/icon.ts';
-import {useSideNavigation, useTopNavigation} from "@/hooks/routes";
+import {buildMenus, useSideNavigation} from "@/hooks/routes";
 import {useLocation, useNavigate} from "react-router-dom";
-import {flattenMenus, MenuInfo} from "@/store/routes";
+import {findMenuChainByPath, flattenMenus, getMenuKey, MenuInfo} from "@/store/routes";
+import {aboutMeItem, logoItem, toolsSwitcherGroupItem} from "@/layouts/navigation-bar/top-bar.tsx";
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
 
 const {Header, Content, Footer, Sider} = Layout;
@@ -234,9 +235,46 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   }, [getCurrentPath, getTabLabel, normalizeTabs, persistTabs]);
 
   const activeKey = getCurrentPath();
+  const activeMenuChain = useMemo(() => findMenuChainByPath(data || [], activeKey), [data, activeKey]);
+  const selectedMenuKeys = useMemo(() => {
+    const current = activeMenuChain[activeMenuChain.length - 1];
+    const key = getMenuKey(current);
+    return key ? [key] : [];
+  }, [activeMenuChain]);
+
+  // 侧边菜单 items（must be declared before onMenuOpenChange which references it）
+  const sideMenuItems = useMemo(() => useSideNavigation(navigate, data).items, [navigate, data, locale, t]);
+
+  // Menu open keys: fully user-controlled after initial sync from active route
+  const [openMenuKeys, setOpenMenuKeys] = useState<string[]>([]);
+  const lastSyncedPath = useRef<string>('');
+
+  // When active route changes (tab switch, navigation), sync open keys to match new route
+  useEffect(() => {
+    if (activeKey !== lastSyncedPath.current) {
+      lastSyncedPath.current = activeKey;
+      const chainKeys = activeMenuChain.slice(0, -1).map(menu => getMenuKey(menu)).filter(Boolean);
+      setOpenMenuKeys(chainKeys);
+    }
+  }, [activeKey, activeMenuChain]);
+
+  const onMenuOpenChange = useCallback((keys: string[]) => {
+    // Accordion: when a new top-level key is opened, close other top-level keys
+    const topLevelKeys = sideMenuItems.map((item: any) => item?.key).filter(Boolean) as string[];
+    const prevTopLevel = openMenuKeys.filter(k => topLevelKeys.includes(k));
+    const newTopLevel = keys.filter(k => topLevelKeys.includes(k) && !prevTopLevel.includes(k));
+    if (newTopLevel.length > 0) {
+      const keepTopLevel = newTopLevel[newTopLevel.length - 1];
+      setOpenMenuKeys(keys.filter(k => !topLevelKeys.includes(k) || k === keepTopLevel));
+    } else {
+      setOpenMenuKeys(keys);
+    }
+  }, [sideMenuItems, openMenuKeys]);
 
   const onTabChange = useCallback((key: string) => {
-    if (key) navigate(key);
+    if (key) {
+      navigate(key);
+    }
   }, [navigate]);
 
   const onTabEdit = useCallback((targetKey: any, action: 'add' | 'remove') => {
@@ -313,9 +351,17 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
     onClick: onContextMenuClick,
   }), [onContextMenuClick, t, locale]);
 
-  // 顶部、侧边菜单 items 缓存
-  const topMenuItems = useMemo(() => useTopNavigation(navigate, []).items, [navigate, locale, t]);
-  const sideMenuItems = useMemo(() => useSideNavigation(navigate, data).items, [navigate, data, locale, t]);
+  // 顶部菜单 items 缓存
+  const topMenuItems = useMemo(() => [
+    logoItem(navigate),
+    {
+      key: 'spacer',
+      label: '',
+      style: {marginLeft: 'auto', pointerEvents: 'none' as const},
+    },
+    toolsSwitcherGroupItem(),
+    aboutMeItem(navigate)
+  ], [navigate, locale, t]);
 
   return (
     <Layout className={`nb-root ${themeMode === 'dark' ? 'theme-dark' : 'theme-light'}`} style={{ minHeight: '100vh' }}>
@@ -326,13 +372,16 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
           className="top-nav-menu nb-top-menu"
         />
       </Header>
-      <Layout>
-        <Sider width={200} trigger={null} collapsible collapsed={collapsed}>
+      <Layout style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+        <Sider width={200} trigger={null} collapsible collapsed={collapsed} style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <Menu
             mode="inline"
             theme={themeMode}
             className="nb-sider-menu"
             items={sideMenuItems}
+            selectedKeys={selectedMenuKeys}
+            openKeys={collapsed ? undefined : openMenuKeys}
+            onOpenChange={(keys) => onMenuOpenChange(keys as string[])}
           />
           <Button
             type="text"

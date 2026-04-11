@@ -1,4 +1,5 @@
 import api from '@/api';
+import {contextPath} from '@/services';
 import SimpleTable from '@simplepoint/components/SimpleTable';
 import {get} from '@simplepoint/shared/api/methods';
 import type {Page} from '@simplepoint/shared/types/request';
@@ -7,7 +8,7 @@ import {useCallback, useEffect, useMemo, useState} from 'react';
 import {resolveErrorMessage} from '../shared';
 
 const baseConfig = api['platform.dna-federation-views'];
-const schemaConfig = api['platform.dna-federation-schemas'];
+const schemaBaseUrl = `${contextPath}/platform/dna/federation/schemas`;
 
 type FederationSchemaOption = {
   id: string;
@@ -30,7 +31,7 @@ const App = () => {
   const [schemasLoaded, setSchemasLoaded] = useState(false);
 
   const loadSchemas = useCallback(async () => {
-    const page = await get<Page<FederationSchemaOption>>(schemaConfig.baseUrl, {page: 0, size: 200});
+    const page = await get<Page<FederationSchemaOption>>(schemaBaseUrl, {page: 0, size: 200});
     setSchemas(page.content ?? []);
     setSchemasLoaded(true);
   }, []);

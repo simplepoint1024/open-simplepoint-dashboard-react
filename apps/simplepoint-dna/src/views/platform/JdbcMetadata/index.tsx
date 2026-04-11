@@ -2,7 +2,7 @@ import api from '@/api';
 import { DeleteOutlined, EyeOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { get, post } from '@simplepoint/shared/api/methods';
 import { useI18n } from '@simplepoint/shared/hooks/useI18n';
-import { Alert, Button, Card, Col, Descriptions, Empty, Form, Input, InputNumber, Modal, Row, Select, Space, Spin, Switch, Table, Tabs, Tag, Tree, Typography, message } from 'antd';
+import { Button, Card, Col, Descriptions, Empty, Form, Input, InputNumber, Modal, Row, Select, Space, Spin, Switch, Table, Tabs, Tag, Tree, Typography, message } from 'antd';
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -810,18 +810,8 @@ const App = () => {
 
   return (
     <>
-      <Alert
-        type="info"
-        showIcon
-        style={{ marginBottom: 16 }}
-        message={t('dna.metadata.page.alert.browser.title', 'DataGrip-style tree browser')}
-        description={t(
-          'dna.metadata.page.alert.browser.description',
-          'Supports lazy loading by database / catalog / schema hierarchy down to columns, with structure, constraint, and paged data preview on the right.',
-        )}
-      />
-
-      <Space style={{ marginBottom: 16 }} wrap>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, gap: 16 }}>
+      <Space style={{ flexShrink: 0 }} wrap>
         <Select
           style={{ width: 320 }}
           placeholder={t('dna.metadata.page.placeholder.selectDataSource', 'Select a data source')}
@@ -892,9 +882,9 @@ const App = () => {
         </Button>
       </Space>
 
-      <Row gutter={16}>
-        <Col span={8}>
-          <Card title={t('dna.metadata.page.card.tree', 'Metadata Tree')} bodyStyle={{ minHeight: 640, maxHeight: 760, overflow: 'auto' }}>
+      <Row gutter={16} style={{ flex: 1, minHeight: 0 }}>
+        <Col span={8} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Card title={t('dna.metadata.page.card.tree', 'Metadata Tree')} style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }} bodyStyle={{ flex: 1, overflow: 'auto', minHeight: 0 }}>
             {treeLoading ? (
               <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 80 }}>
                 <Spin />
@@ -915,7 +905,7 @@ const App = () => {
             )}
           </Card>
         </Col>
-        <Col span={16}>
+        <Col span={16} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
           <Card
             title={t('dna.metadata.page.card.details', 'Object Details')}
             extra={relationPath
@@ -925,7 +915,8 @@ const App = () => {
                 </Button>
               )
               : null}
-            bodyStyle={{ minHeight: 640 }}
+            style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
+            bodyStyle={{ flex: 1, overflow: 'auto', minHeight: 0 }}
           >
             {!selectedNode ? (
               <Empty description={t('dna.metadata.page.empty.selectObject', 'Select an object from the left tree.')} />
@@ -1020,6 +1011,7 @@ const App = () => {
           </Card>
         </Col>
       </Row>
+    </div>
 
       <Modal
         title={t('dna.metadata.page.modal.namespace.title', 'Create Namespace')}

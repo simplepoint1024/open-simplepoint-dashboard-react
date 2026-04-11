@@ -1,4 +1,5 @@
 import api from '@/api';
+import {contextPath} from '@/services';
 import {ReloadOutlined} from '@ant-design/icons';
 import {get, post} from '@simplepoint/shared/api/methods';
 import type {Page} from '@simplepoint/shared/types/request';
@@ -38,7 +39,7 @@ import {resolveErrorMessage} from '../shared';
 const {Paragraph} = Typography;
 const {TextArea} = Input;
 
-const catalogConfig = api['platform.dna-federation-catalogs'];
+const catalogBaseUrl = `${contextPath}/platform/dna/federation/catalogs`;
 const dataSourceConfig = api['platform.dna-data-sources'];
 const metadataConfig = api['platform.dna-metadata'];
 const sqlConsoleConfig = api['platform.dna-federation-sql-console'];
@@ -226,7 +227,7 @@ const App = () => {
   const [queryResult, setQueryResult] = useState<SqlQueryResult | null>(null);
 
   const loadCatalogs = useCallback(async () => {
-    const page = await get<Page<FederationCatalogOption>>(catalogConfig.baseUrl, {page: 0, size: 200});
+    const page = await get<Page<FederationCatalogOption>>(catalogBaseUrl, {page: 0, size: 200});
     const enabledCatalogs = (page.content ?? []).filter((catalog) => catalog.enabled !== false);
     setCatalogs(enabledCatalogs);
     setCatalogCode((current) => current ?? enabledCatalogs[0]?.code);
@@ -250,7 +251,7 @@ const App = () => {
 
   useEffect(() => {
     void loadCatalogs().catch((error) => {
-      message.error(resolveErrorMessage(error, '联邦目录列表加载失败'));
+      message.error(resolveErrorMessage(error, '数据目录列表加载失败'));
     });
   }, [loadCatalogs]);
 
@@ -300,7 +301,7 @@ const App = () => {
 
   const submit = useCallback(async (mode: 'explain' | 'query') => {
     if (!catalogCode) {
-      message.warning('请选择联邦目录');
+      message.warning('请选择数据目录');
       return;
     }
     if (!sql.trim()) {
@@ -353,7 +354,7 @@ const App = () => {
       children: analysisResult ? (
         <Space direction="vertical" size={16} style={{display: 'flex'}}>
           <Descriptions bordered size="small" column={2}>
-            <Descriptions.Item label="联邦目录">{analysisResult.catalogCode}</Descriptions.Item>
+            <Descriptions.Item label="数据目录">{analysisResult.catalogCode}</Descriptions.Item>
             <Descriptions.Item label="查询策略">{analysisResult.policyCode}</Descriptions.Item>
             <Descriptions.Item label="最大返回行数">{analysisResult.maxRows}</Descriptions.Item>
             <Descriptions.Item label="超时(ms)">{analysisResult.timeoutMs}</Descriptions.Item>
@@ -456,24 +457,6 @@ const App = () => {
 
   return (
     <div style={pageContainerStyle}>
-      <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
-        <Alert
-          type="info"
-          showIcon
-          message="当前控制台只支持单条只读 SQL"
-          description="左侧树按数据源 / 数据库 / Schema / 表 / 字段懒加载；执行时，物理源按“数据源编码.表名”、“数据源编码.Schema.表名”或“数据源编码.数据库编码.Schema.表名”暴露，逻辑视图按“逻辑 Schema 编码.视图编码”暴露。"
-        />
-
-        {catalogs.length === 0 ? (
-          <Alert
-            type="warning"
-            showIcon
-            message="当前还没有可用的联邦目录"
-            description="请先到联邦目录页面新增并启用目录，再配置查询策略后回到这里执行 SQL。"
-          />
-        ) : null}
-      </div>
-
       <div style={workspaceStyle}>
         <Row gutter={16} align="stretch" style={{height: '100%', minHeight: 0}}>
           <Col span={8} style={{height: '100%'}}>
@@ -519,7 +502,7 @@ const App = () => {
             <Card title="SQL 编辑器" style={cardStyle} bodyStyle={cardBodyStyle}>
               <Space direction="vertical" size={12} style={{display: 'flex', flex: 1, minHeight: 0}}>
                 <Select
-                  placeholder="请选择联邦目录"
+                  placeholder="请选择数据目录"
                   value={catalogCode}
                   onChange={setCatalogCode}
                   options={catalogs.map((catalog) => ({

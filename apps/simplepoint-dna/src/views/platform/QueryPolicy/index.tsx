@@ -7,19 +7,19 @@ import {useCallback, useEffect, useMemo, useState} from 'react';
 import {resolveErrorMessage} from '../shared';
 
 const baseConfig = api['platform.dna-federation-query-policies'];
-const catalogConfig = api['platform.dna-federation-catalogs'];
+const dataSourceConfig = api['platform.dna-data-sources'];
 
-type FederationCatalogOption = {
+type DataSourceOption = {
   id: string;
   code?: string;
   name?: string;
   enabled?: boolean;
 };
 
-const resolveCatalogLabel = (catalog: FederationCatalogOption) => {
-  const primary = catalog.name || catalog.code || catalog.id;
-  const secondary = catalog.code && catalog.code !== primary ? ` (${catalog.code})` : '';
-  const disabled = catalog.enabled === false ? ' - 已禁用' : '';
+const resolveDataSourceLabel = (dataSource: DataSourceOption) => {
+  const primary = dataSource.name || dataSource.code || dataSource.id;
+  const secondary = dataSource.code && dataSource.code !== primary ? ` (${dataSource.code})` : '';
+  const disabled = dataSource.enabled === false ? ' - 已禁用' : '';
   return `${primary}${secondary}${disabled}`;
 };
 
@@ -31,41 +31,41 @@ const renderBooleanTag = (value?: boolean) => {
 };
 
 const App = () => {
-  const [catalogs, setCatalogs] = useState<FederationCatalogOption[]>([]);
-  const [catalogsLoaded, setCatalogsLoaded] = useState(false);
+  const [dataSources, setDataSources] = useState<DataSourceOption[]>([]);
+  const [dataSourcesLoaded, setDataSourcesLoaded] = useState(false);
 
-  const loadCatalogs = useCallback(async () => {
-    const page = await get<Page<FederationCatalogOption>>(catalogConfig.baseUrl, {page: 0, size: 200});
-    setCatalogs(page.content ?? []);
-    setCatalogsLoaded(true);
+  const loadDataSources = useCallback(async () => {
+    const page = await get<Page<DataSourceOption>>(dataSourceConfig.baseUrl, {page: 0, size: 200});
+    setDataSources((page.content ?? []).filter((ds) => ds.enabled !== false));
+    setDataSourcesLoaded(true);
   }, []);
 
   useEffect(() => {
-    void loadCatalogs().catch((error) => {
-      setCatalogsLoaded(true);
-      message.error(resolveErrorMessage(error, '联邦目录列表加载失败'));
+    void loadDataSources().catch((error) => {
+      setDataSourcesLoaded(true);
+      message.error(resolveErrorMessage(error, '数据源列表加载失败'));
     });
-  }, [loadCatalogs]);
+  }, [loadDataSources]);
 
   const formSchemaTransform = useCallback((schema: any) => {
     const nextSchema = JSON.parse(JSON.stringify(schema ?? {}));
     const properties = nextSchema?.properties ?? {};
     if (properties.catalogId) {
-      properties.catalogId.title = '联邦目录';
-      properties.catalogId.oneOf = catalogs.map((catalog) => ({
-        const: catalog.id,
-        title: resolveCatalogLabel(catalog),
+      properties.catalogId.title = '数据源';
+      properties.catalogId.oneOf = dataSources.map((dataSource) => ({
+        const: dataSource.id,
+        title: resolveDataSourceLabel(dataSource),
       }));
-      properties.catalogId.description = catalogs.length > 0 ? '请选择已配置的联邦目录' : '请先在联邦目录页面新增目录';
+      properties.catalogId.description = dataSources.length > 0 ? '请选择已配置的数据源' : '请先在数据源页面新增数据源';
     }
     delete properties.catalogCode;
     delete properties.catalogName;
     return nextSchema;
-  }, [catalogs]);
+  }, [dataSources]);
 
   const columnOverrides = useMemo(() => ({
     catalogId: {
-      title: '联邦目录',
+      title: '数据源',
       width: 220,
       render: (value: string, record: {catalogName?: string; catalogCode?: string}) =>
         record.catalogName || record.catalogCode || value || '-',
@@ -84,13 +84,13 @@ const App = () => {
 
   return (
     <div>
-      {catalogsLoaded && catalogs.length === 0 ? (
+      {dataSourcesLoaded && dataSources.length === 0 ? (
         <Alert
           type="warning"
           showIcon
           style={{marginBottom: 16}}
-          message="当前还没有联邦目录"
-          description="请先到联邦目录页面新增目录，再回来配置查询策略。"
+          message="当前还没有数据源"
+          description="请先到数据源页面新增数据源，再回来配置查询策略。"
         />
       ) : null}
       <SimpleTable

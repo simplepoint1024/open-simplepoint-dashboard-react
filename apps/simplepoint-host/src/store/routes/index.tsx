@@ -36,3 +36,25 @@ export const flattenMenus = (nodes: MenuInfo[] = []): MenuInfo[] => {
   dfs(nodes);
   return res;
 };
+
+// 获取菜单节点的唯一标识
+export const getMenuKey = (menu?: MenuInfo): string | undefined => {
+  if (!menu) return undefined;
+  return menu.path || (menu.id != null ? String(menu.id) : undefined);
+};
+
+// 根据路径查找从根到叶的菜单链
+export const findMenuChainByPath = (menus: MenuInfo[], path: string): MenuInfo[] => {
+  const dfs = (nodes: MenuInfo[], chain: MenuInfo[]): MenuInfo[] | null => {
+    for (const node of nodes) {
+      const next = [...chain, node];
+      if (node.path === path) return next;
+      if (hasChildren(node)) {
+        const found = dfs(node.children!, next);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+  return dfs(menus, []) || [];
+};
