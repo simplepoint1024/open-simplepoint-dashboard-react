@@ -8,7 +8,7 @@ import {
   VerticalLeftOutlined,
   VerticalRightOutlined
 } from '@ant-design/icons';
-import {Button, Dropdown, Layout, Menu, Tabs} from 'antd';
+import {Button, Dropdown, Layout, Menu, Skeleton, Tabs} from 'antd';
 import {createIcon} from '@simplepoint/shared/types/icon.ts';
 import {useSideNavigation} from "@/hooks/routes";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -377,15 +377,21 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
       </Header>
       <Layout style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
         <Sider width={200} trigger={null} collapsible collapsed={collapsed} style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          <Menu
-            mode="inline"
-            theme={themeMode}
-            className="nb-sider-menu"
-            items={sideMenuItems}
-            selectedKeys={selectedMenuKeys}
-            openKeys={collapsed ? undefined : openMenuKeys}
-            onOpenChange={(keys) => onMenuOpenChange(keys as string[])}
-          />
+          {(!sideMenuItems || sideMenuItems.length === 0) ? (
+            <div style={{ padding: collapsed ? 8 : 16 }}>
+              <Skeleton active paragraph={{ rows: 6 }} title={false} />
+            </div>
+          ) : (
+            <Menu
+              mode="inline"
+              theme={themeMode}
+              className="nb-sider-menu"
+              items={sideMenuItems}
+              selectedKeys={selectedMenuKeys}
+              openKeys={collapsed ? undefined : openMenuKeys}
+              onOpenChange={(keys) => onMenuOpenChange(keys as string[])}
+            />
+          )}
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
