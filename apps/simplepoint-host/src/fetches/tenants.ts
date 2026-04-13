@@ -36,7 +36,8 @@ export function useCurrentTenants() {
     try {
         const raw = sessionStorage.getItem(cacheKey);
         cached = raw ? (JSON.parse(raw) as CurrentTenant[]) : undefined;
-    } catch {
+    } catch (e) {
+        console.warn('[tenants] Failed to read cached tenants:', e);
     }
 
     const result = useQuery({
@@ -52,7 +53,8 @@ export function useCurrentTenants() {
         if (result.data) {
             try {
                 sessionStorage.setItem(cacheKey, JSON.stringify(result.data));
-            } catch {
+            } catch (e) {
+                console.warn('[tenants] Failed to cache tenants:', e);
             }
         }
     }, [cacheKey, result.data]);

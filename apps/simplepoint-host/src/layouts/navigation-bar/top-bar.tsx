@@ -186,7 +186,7 @@ const SizeButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' })
   const onToggleSize = () => {
     const cur = (localStorage.getItem('sp.globalSize') as any) || 'middle';
     const next = getNext(cur);
-    try { localStorage.setItem('sp.globalSize', next); } catch(_) {}
+    try { localStorage.setItem('sp.globalSize', next); } catch (e) { console.warn('[nav] Failed to save size:', e); }
     window.dispatchEvent(new CustomEvent('sp-set-size', { detail: next }));
   };
   return (
@@ -245,7 +245,7 @@ const ThemeButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
   const toggle = () => {
     const next = nextOf(mode);
     startThemeTransition(240);
-    try { localStorage.setItem('sp.theme', next); } catch {}
+    try { localStorage.setItem('sp.theme', next); } catch (e) { console.warn('[nav] Failed to save theme:', e); }
     window.dispatchEvent(new CustomEvent('sp-set-theme', { detail: next }));
     setMode(next);
   };
@@ -432,7 +432,7 @@ export const avatarConfig = (navigate: (path: string) => void): MenuProps => {
         label: <I18nText k='menu.logout' fallback='退出登录'/> as any,
         icon: <LogoutOutlined/>,
         onClick: async () => {
-          try { await post<any>('/logout', {}); } catch {}
+          try { await post<any>('/logout', {}); } catch (e) { console.warn('[auth] Logout request failed:', e); }
           await redirectToLogin();
         }
       },

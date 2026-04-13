@@ -90,7 +90,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
           });
         }
       }
-    } catch (_) { /* ignore */
+    } catch (e) { console.warn('[nav] Failed to read stored tab labels:', e);
     }
     return map;
   }, []);
@@ -108,7 +108,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
           });
         }
       }
-    } catch (_) { /* ignore */
+    } catch (e) { console.warn('[nav] Failed to read stored tab icons:', e);
     }
     return map;
   }, []);
@@ -151,7 +151,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
         };
       });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(simple));
-    } catch (_) {/* ignore */
+    } catch (e) { console.warn('[nav] Failed to persist tabs:', e);
     }
   }, [pathLabelMap, storedLabelMap, pathIconNameMap, storedIconMap]);
 
@@ -188,9 +188,8 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
           return normalizeTabs(base);
         }
       }
-    } catch (_) { /* ignore */
+    } catch (e) { console.warn('[nav] Failed to restore tabs from storage:', e);
     }
-    // 默认仅包含 dashboard
     return normalizeTabs([getDashboardTab()]);
   });
 
@@ -329,7 +328,8 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
     if (key === 'clear' || key === 'closeAll') {
       try {
         localStorage.removeItem(STORAGE_KEY);
-      } catch (_) {
+      } catch (e) {
+        console.warn('[nav] Failed to clear tab storage:', e);
       }
       const onlyDashboard = [getDashboardTab()];
       setTabs(onlyDashboard);

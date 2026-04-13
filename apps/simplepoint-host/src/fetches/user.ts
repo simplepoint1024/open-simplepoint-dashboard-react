@@ -32,7 +32,8 @@ export function useUserInfo() {
     try {
         const raw = sessionStorage.getItem('sp.userinfo');
         cached = raw ? normalizeUserInfo(JSON.parse(raw)) : undefined;
-    } catch {
+    } catch (e) {
+        console.warn('[user] Failed to read cached userinfo:', e);
     }
 
     const result = useQuery({
@@ -52,7 +53,8 @@ export function useUserInfo() {
         if (result.data) {
             try {
                 sessionStorage.setItem('sp.userinfo', JSON.stringify(result.data));
-            } catch {
+            } catch (e) {
+                console.warn('[user] Failed to cache userinfo:', e);
             }
         }
     }, [result.data]);
