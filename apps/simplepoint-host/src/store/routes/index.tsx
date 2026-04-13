@@ -1,6 +1,7 @@
 import type {ItemType} from "antd/es/menu/interface";
 
-export type MenuItemType = ItemType & Record<string, any>;
+/** Ant Design menu item extended with the component spec for route matching. */
+export type MenuItemType = ItemType & { component?: string };
 
 export interface MenuInfo {
   id?: string | number;
@@ -16,6 +17,8 @@ export interface MenuInfo {
   component?: string;
   sort?: number;
   children?: MenuInfo[];
+  /** Server-side UUID (used as key in tree-structured data). */
+  uuid?: string;
 }
 
 // 判断是否存在子节点

@@ -131,29 +131,32 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
     closable: false
   }), [getTabLabel]);
 
-  // 统一持久化 tabs 到本地存储
+  // 统一持久化 tabs 到本地存储（debounced to reduce writes during rapid navigation）
+  const persistTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const persistTabs = useCallback((arr: Array<{ key: string; label: React.ReactNode; closable?: boolean }>) => {
-    try {
-      const simple = arr.map(t => {
-        const labelText = (
-          pathLabelMap.get(t.key) ??
-          storedLabelMap.get(t.key) ??
-          (typeof t.label === 'string' ? t.label : undefined) ??
-          t.key
-        );
-        // 选择图标名：优先当前菜单里的 icon，其次用已存储的 icon
-        const iconName = pathIconNameMap.get(t.key) ?? storedIconMap.get(t.key);
-        return {
-          key: t.key,
-          label: labelText,
-          icon: iconName,
-          closable: t.closable !== false
-        };
-      });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(simple));
-    } catch (e) { console.warn('[nav] Failed to persist tabs:', e);
-    }
+    clearTimeout(persistTimerRef.current);
+    persistTimerRef.current = setTimeout(() => {
+      try {
+        const simple = arr.map(t => {
+          const labelText = (
+            pathLabelMap.get(t.key) ??
+            storedLabelMap.get(t.key) ??
+            (typeof t.label === 'string' ? t.label : undefined) ??
+            t.key
+          );
+          const iconName = pathIconNameMap.get(t.key) ?? storedIconMap.get(t.key);
+          return {
+            key: t.key,
+            label: labelText,
+            icon: iconName,
+            closable: t.closable !== false
+          };
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(simple));
+      } catch (e) { console.warn('[nav] Failed to persist tabs:', e); }
+    }, 300);
   }, [pathLabelMap, storedLabelMap, pathIconNameMap, storedIconMap]);
+  useEffect(() => () => clearTimeout(persistTimerRef.current), []);
 
   // 规范化 tabs：去重、dashboard 固定在首位且不可关闭
   const normalizeTabs = useCallback((input: Array<{ key: string; label: React.ReactNode; closable?: boolean }>) => {
@@ -242,7 +245,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   }, [activeMenuChain]);
 
   // 侧边菜单 items（must be declared before onMenuOpenChange which references it）
-  const sideMenuItems = useMemo(() => useSideNavigation(navigate, data).items, [navigate, data, locale, t]);
+  const sideMenuItems = useMemo(() => useSideNavigation(navigate, data).items, [navigate, data]);
 
   // Menu open keys: fully user-controlled after initial sync from active route
   const [openMenuKeys, setOpenMenuKeys] = useState<string[]>([]);
