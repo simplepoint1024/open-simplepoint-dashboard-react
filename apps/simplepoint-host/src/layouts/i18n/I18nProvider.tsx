@@ -72,12 +72,12 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
 
     useEffect(() => {
         const schedule = typeof queueMicrotask === 'function' ? queueMicrotask : (fn: () => void) => Promise.resolve().then(fn);
-        const handler = (e: any) => {
-            const next = normalizeLocale((e?.detail as string) || 'zh-CN');
+        const handler = (e: Event) => {
+            const next = normalizeLocale(((e as CustomEvent<string>).detail) || 'zh-CN');
             if (next !== locale) schedule(() => setLocaleState(next));
         };
-        window.addEventListener('sp-set-locale', handler as EventListener);
-        return () => window.removeEventListener('sp-set-locale', handler as EventListener);
+        window.addEventListener('sp-set-locale', handler);
+        return () => window.removeEventListener('sp-set-locale', handler);
     }, [locale]);
 
     useEffect(() => {
