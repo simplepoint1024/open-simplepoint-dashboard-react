@@ -44,10 +44,10 @@ const TenantSwitcherTop: React.FC = () => {
 
   // 同步外部切换
   useEffect(() => {
-    const handler = (e: any) => setTenantIdState((e?.detail as string) || undefined);
+    const handler = (e: Event) => setTenantIdState(((e as CustomEvent<string>).detail) || undefined);
     try {
-      window.addEventListener('sp-set-tenant', handler as EventListener);
-      return () => window.removeEventListener('sp-set-tenant', handler as EventListener);
+      window.addEventListener('sp-set-tenant', handler);
+      return () => window.removeEventListener('sp-set-tenant', handler);
     } catch {
       return;
     }
@@ -184,7 +184,7 @@ const SizeButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' })
   const order: Array<'small'|'middle'|'large'> = ['small','middle','large'];
   const getNext = (cur: 'small'|'middle'|'large') => order[(order.indexOf(cur)+1)%order.length];
   const onToggleSize = () => {
-    const cur = (localStorage.getItem('sp.globalSize') as any) || 'middle';
+    const cur = (localStorage.getItem('sp.globalSize') as 'small'|'middle'|'large') || 'middle';
     const next = getNext(cur);
     try { localStorage.setItem('sp.globalSize', next); } catch (e) { console.warn('[nav] Failed to save size:', e); }
     window.dispatchEvent(new CustomEvent('sp-set-size', { detail: next }));
@@ -235,11 +235,11 @@ const ClearCacheButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'defau
  */
 const ThemeButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
   const { t } = useI18n();
-  const [mode, setMode] = useState<'light'|'dark'|'system'>(() => (localStorage.getItem('sp.theme') as any) || 'light');
+  const [mode, setMode] = useState<'light'|'dark'|'system'>(() => (localStorage.getItem('sp.theme') as 'light'|'dark'|'system') || 'light');
   useEffect(() => {
-    const handler = (e: any) => setMode((e?.detail as 'light'|'dark'|'system') || 'light');
-    window.addEventListener('sp-set-theme', handler as EventListener);
-    return () => window.removeEventListener('sp-set-theme', handler as EventListener);
+    const handler = (e: Event) => setMode(((e as CustomEvent<string>).detail as 'light'|'dark'|'system') || 'light');
+    window.addEventListener('sp-set-theme', handler);
+    return () => window.removeEventListener('sp-set-theme', handler);
   }, []);
   const nextOf = (m: 'light'|'dark'|'system'): 'light'|'dark'|'system' => (m === 'light' ? 'dark' : m === 'dark' ? 'system' : 'light');
   const toggle = () => {
@@ -283,7 +283,7 @@ const FullscreenButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'defau
       } else {
         await document.exitFullscreen?.();
       }
-    } catch (e: any) {
+    } catch {
       message.warning(t('tools.fullscreen.notAllowed','当前环境不支持全屏或被浏览器拦截'));
     }
   };

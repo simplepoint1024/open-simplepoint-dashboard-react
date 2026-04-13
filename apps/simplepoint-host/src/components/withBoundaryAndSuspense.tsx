@@ -3,7 +3,9 @@ import React from 'react';
 import {Spin, Result} from 'antd';
 import {ErrorBoundary} from './ErrorBoundary';
 
-export function withBoundaryAndSuspense(Component: any, t: any, path: string, rk: number) {
+type TranslateFn = (key: string, fallback?: string) => string;
+
+export function withBoundaryAndSuspense(Component: React.ComponentType, t: TranslateFn, path: string, rk: number) {
     return () => (
         <React.Suspense
             fallback={

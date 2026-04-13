@@ -25,11 +25,11 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   const {t, locale} = useI18n();
 
   // 监听全局主题模式，驱动侧边菜单明暗样式
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => (localStorage.getItem('sp.theme') as any) || 'light');
+  const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => (localStorage.getItem('sp.theme') as 'light' | 'dark') || 'light');
   useEffect(() => {
-    const handler = (e: any) => setThemeMode((e?.detail as 'light' | 'dark') || 'light');
-    window.addEventListener('sp-set-theme', handler as EventListener);
-    return () => window.removeEventListener('sp-set-theme', handler as EventListener);
+    const handler = (e: Event) => setThemeMode(((e as CustomEvent<string>).detail as 'light' | 'dark') || 'light');
+    window.addEventListener('sp-set-theme', handler);
+    return () => window.removeEventListener('sp-set-theme', handler);
   }, []);
 
   const STORAGE_KEY = 'sp.nav.tabs';
@@ -56,7 +56,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   // 构建 path -> 图标 的映射（复用 leafNodes + extras）
   const pathIconMap = useMemo(() => {
     const map = new Map<string, React.ReactNode>();
-    leafNodes.forEach((n: any) => {
+    leafNodes.forEach((n) => {
       if (n?.path && n?.icon) {
         map.set(n.path, createIcon(n.icon));
       }
@@ -68,7 +68,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   // 构建 path -> 图标名 的映射（用于持久化）（复用 leafNodes + extras）
   const pathIconNameMap = useMemo(() => {
     const map = new Map<string, string>();
-    leafNodes.forEach((n: any) => {
+    leafNodes.forEach((n) => {
       if (n?.path && typeof n?.icon === 'string') {
         map.set(n.path, n.icon);
       }
@@ -259,7 +259,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
 
   const onMenuOpenChange = useCallback((keys: string[]) => {
     // Accordion: when a new top-level key is opened, close other top-level keys
-    const topLevelKeys = (sideMenuItems ?? []).map((item: any) => item?.key).filter(Boolean) as string[];
+    const topLevelKeys = (sideMenuItems ?? []).map((item) => item?.key).filter((k): k is string => !!k);
     const prevTopLevel = openMenuKeys.filter(k => topLevelKeys.includes(k));
     const newTopLevel = keys.filter(k => topLevelKeys.includes(k) && !prevTopLevel.includes(k));
     if (newTopLevel.length > 0) {
@@ -276,7 +276,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
     }
   }, [navigate]);
 
-  const onTabEdit = useCallback((targetKey: any, action: 'add' | 'remove') => {
+  const onTabEdit = useCallback((targetKey: React.MouseEvent | React.KeyboardEvent | string, action: 'add' | 'remove') => {
     if (action !== 'remove') return;
     // 基于当前 tabs 计算下一状态与应跳转的 fallbackKey，避免在 setState 回调内直接 navigate
     const prevTabs = tabs;

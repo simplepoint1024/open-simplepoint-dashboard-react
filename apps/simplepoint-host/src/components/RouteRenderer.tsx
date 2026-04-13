@@ -14,6 +14,14 @@ export interface RouteItem {
     element: JSX.Element;
 }
 
+interface LeafRoute {
+    uuid?: string;
+    path?: string;
+    component?: string;
+}
+
+type TranslateFn = (key: string, fallback?: string) => string;
+
 /**
  * 生成路由
  * @param leafRoutes
@@ -21,9 +29,9 @@ export interface RouteItem {
  * @param t
  */
 export function renderRoutes(
-    leafRoutes: any[],
+    leafRoutes: LeafRoute[],
     refreshKeyMap: Record<string, number>,
-    t: any
+    t: TranslateFn
 ) {
     // 1. 静态路由（结构统一）
     const staticRoutes: RouteItem[] = [
@@ -35,7 +43,9 @@ export function renderRoutes(
 
     // 2. 动态路由（转换成统一结构）
     const dynamicRoutes: RouteItem[] = leafRoutes
-        .map(({uuid, path, component}: any, idx: number) => {
+        .filter((route): route is LeafRoute & { path: string } => !!route.path)
+        .map((route, idx: number) => {
+            const { uuid, path, component } = route;
             const key = uuid || path || String(idx);
             const rk = path ? (refreshKeyMap[path] || 0) : 0;
 
