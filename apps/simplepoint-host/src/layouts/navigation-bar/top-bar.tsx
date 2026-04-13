@@ -307,12 +307,12 @@ const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
   const [open, setOpen] = useState(false);
   const [switching, setSwitching] = useState(false);
   const closingRef = useRef(false);
+  const mountedRef = useRef(true);
+  useEffect(() => { mountedRef.current = true; return () => { mountedRef.current = false; }; }, []);
   const hasLanguages = (languages || []).length > 0;
   const onSelect = (lng: string) => {
     if (!lng || lng === locale) { setOpen(false); return; }
-    // 后续如果表格组件动态加载语言正常后，这里可以去掉强制刷新
     setSwitching(true);
-    // 标记正在关闭，忽略随后 Dropdown 可能触发的一次 open=true 事件
     closingRef.current = true;
     setOpen(false);
 
@@ -322,20 +322,19 @@ const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
          const g: any = (window as any)?.spI18n;
          if (g?.locale === lng) {
            window.removeEventListener('sp-i18n-updated', handler as any);
-           // 确保语言生效
-           setSwitching(false);
+           if (mountedRef.current) setSwitching(false);
          }
        } catch {}
      };
      try { window.addEventListener('sp-i18n-updated', handler as any, { once: true } as any); } catch { /* older browsers */ }
      // 兜底超时，避免极端情况下 loading 不消失
-     const tm = window.setTimeout(() => { setSwitching(false); try { window.removeEventListener('sp-i18n-updated', handler as any); } catch {} }, 3000);
+     const tm = window.setTimeout(() => { if (mountedRef.current) setSwitching(false); try { window.removeEventListener('sp-i18n-updated', handler as any); } catch {} }, 3000);
      // 当事件到了也清除兜底
      const clearFallback = () => { try { window.clearTimeout(tm); } catch {} };
      try { window.addEventListener('sp-i18n-updated', clearFallback as any, { once: true } as any); } catch {}
      setLocale(lng);
     // 下一帧允许下次打开
-    window.setTimeout(() => { closingRef.current = false; }, 120);
+    window.setTimeout(() => { if (mountedRef.current) closingRef.current = false; }, 120);
    };
   const menu: MenuProps = {
     items: (languages || []).map(l => ({ key: l.code, label: l.name })),
