@@ -179,7 +179,7 @@ const HeaderUser: React.FC = () => {
 /**
  * 在顶部导航右侧：切换全局尺寸按钮（按钮本体组件，内部使用 hook）
  */
-const SizeButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' }) => {
+const SizeButton = React.memo<{ type?: 'text'|'default' }>(({ type = 'default' }) => {
   const { t } = useI18n();
   const order: Array<'small'|'middle'|'large'> = ['small','middle','large'];
   const getNext = (cur: 'small'|'middle'|'large') => order[(order.indexOf(cur)+1)%order.length];
@@ -195,12 +195,12 @@ const SizeButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' })
               style={{width:28,height:28,padding:0,borderRadius:6,margin: type==='text'?0:'0 8px'}}/>
     </Tooltip>
   );
-};
+});
 
 /**
  * 清理全局缓存按钮
  */
-const ClearCacheButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' }) => {
+const ClearCacheButton = React.memo<{ type?: 'text'|'default' }>(({ type = 'default' }) => {
   const { t } = useI18n();
   const [loading, setLoading] = useState(false);
 
@@ -228,12 +228,12 @@ const ClearCacheButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'defau
               style={{width:28,height:28,padding:0,borderRadius:6,margin: type==='text'?0:'0 4px'}}/>
     </Popconfirm>
   );
-};
+});
 
 /**
  * 主题模式切换（亮/暗/跟随系统）
  */
-const ThemeButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
+const ThemeButton = React.memo<{ compact?: boolean }>(({ compact }) => {
   const { t } = useI18n();
   const [mode, setMode] = useState<'light'|'dark'|'system'>(() => (localStorage.getItem('sp.theme') as 'light'|'dark'|'system') || 'light');
   useEffect(() => {
@@ -257,12 +257,12 @@ const ThemeButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
               style={{width:28,height:28,padding:0,borderRadius:6,margin: compact ? 0 : '0 4px'}}/>
     </Tooltip>
   );
-};
+});
 
 /**
  * 全屏切换按钮
  */
-const FullscreenButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'default' }) => {
+const FullscreenButton = React.memo<{ type?: 'text'|'default' }>(({ type = 'default' }) => {
   const { t } = useI18n();
   const [isFull, setIsFull] = useState<boolean>(() => {
     try { return !!document.fullscreenElement; } catch { return false; }
@@ -296,7 +296,7 @@ const FullscreenButton: React.FC<{ type?: 'text'|'default' }> = ({ type = 'defau
               style={{width:28,height:28,padding:0,borderRadius:6,margin: type==='text'?0:'0 4px'}}/>
     </Tooltip>
   );
-};
+});
 
 /**
  * 顶部导航右侧：语言切换（动态从后端获取语言列表）

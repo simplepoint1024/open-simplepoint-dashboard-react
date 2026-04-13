@@ -12,5 +12,5 @@ const I18nText: React.FC<I18nTextProps> = ({ k, fallback, params }) => {
   return <>{t(k, fallback ?? k, params)}</>;
 };
 
-export default I18nText;
+export default React.memo(I18nText);
 
