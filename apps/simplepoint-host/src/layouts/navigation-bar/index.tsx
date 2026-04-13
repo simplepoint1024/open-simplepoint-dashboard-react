@@ -23,7 +23,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const {t, locale} = useI18n();
+  const {t} = useI18n();
 
   // 监听全局主题模式，驱动侧边菜单明暗样式
   const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => (localStorage.getItem('sp.theme') as 'light' | 'dark') || 'light');
@@ -55,7 +55,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   const extraTabs = useMemo(() => ([
     { path: '/profile', label: t('menu.profile', '个人资料'), icon: 'UserOutlined' },
     { path: '/settings', label: t('menu.settings', '系统设置'), icon: 'SettingOutlined' },
-  ]), [t, locale]);
+  ]), [t]);
 
   // 根据菜单构建 path -> label 映射（复用 leafNodes + extras）
   const pathLabelMap = useMemo(() => {
@@ -65,7 +65,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
     });
     extraTabs.forEach(it => map.set(it.path, it.label));
     return map;
-  }, [leafNodes, extraTabs, t, locale]);
+  }, [leafNodes, extraTabs, t]);
 
   // 构建 path -> 图标 的映射（复用 leafNodes + extras）
   const pathIconMap = useMemo(() => {
@@ -366,7 +366,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
       {key: 'closeAll', label: t('nav.closeAll', '关闭全部'), icon: <CloseCircleOutlined/>},
     ],
     onClick: onContextMenuClick,
-  }), [onContextMenuClick, t, locale]);
+  }), [onContextMenuClick, t]);
 
   // 顶部菜单 items 缓存
   const topMenuItems = useMemo(() => [
@@ -378,7 +378,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
     },
     toolsSwitcherGroupItem(),
     aboutMeItem(navigate)
-  ], [navigate, locale, t]);
+  ], [navigate, t]);
 
   return (
     <Layout className={`nb-root ${themeMode === 'dark' ? 'theme-dark' : 'theme-light'}`} style={{ minHeight: '100vh' }}>
