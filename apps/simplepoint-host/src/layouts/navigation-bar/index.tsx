@@ -15,6 +15,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {findMenuChainByPath, flattenMenus, getMenuKey, MenuInfo} from "@/store/routes";
 import {aboutMeItem, logoItem, toolsSwitcherGroupItem} from "@/layouts/navigation-bar/top-bar.tsx";
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
+import MenuSearchModal from "@/layouts/navigation-bar/menu-search-modal.tsx";
 
 const {Header, Content, Footer, Sider} = Layout;
 
@@ -30,6 +31,19 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
     const handler = (e: Event) => setThemeMode(((e as CustomEvent<string>).detail as 'light' | 'dark') || 'light');
     window.addEventListener('sp-set-theme', handler);
     return () => window.removeEventListener('sp-set-theme', handler);
+  }, []);
+
+  // Ctrl+K 菜单搜索
+  const [searchOpen, setSearchOpen] = useState(false);
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
   }, []);
 
   const STORAGE_KEY = 'sp.nav.tabs';
@@ -424,6 +438,13 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
           </Footer>
         </Layout>
       </Layout>
+      <MenuSearchModal
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        menus={data}
+        onNavigate={navigate}
+        t={t}
+      />
     </Layout>
   );
 };
