@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 import {Button, Dropdown, Layout, Menu, Tabs} from 'antd';
 import {createIcon} from '@simplepoint/shared/types/icon.ts';
-import {buildMenus, useSideNavigation} from "@/hooks/routes";
+import {useSideNavigation} from "@/hooks/routes";
 import {useLocation, useNavigate} from "react-router-dom";
 import {findMenuChainByPath, flattenMenus, getMenuKey, MenuInfo} from "@/store/routes";
 import {aboutMeItem, logoItem, toolsSwitcherGroupItem} from "@/layouts/navigation-bar/top-bar.tsx";
@@ -253,14 +253,14 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   useEffect(() => {
     if (activeKey !== lastSyncedPath.current) {
       lastSyncedPath.current = activeKey;
-      const chainKeys = activeMenuChain.slice(0, -1).map(menu => getMenuKey(menu)).filter(Boolean);
+      const chainKeys = activeMenuChain.slice(0, -1).map(menu => getMenuKey(menu)).filter((k): k is string => !!k);
       setOpenMenuKeys(chainKeys);
     }
   }, [activeKey, activeMenuChain]);
 
   const onMenuOpenChange = useCallback((keys: string[]) => {
     // Accordion: when a new top-level key is opened, close other top-level keys
-    const topLevelKeys = sideMenuItems.map((item: any) => item?.key).filter(Boolean) as string[];
+    const topLevelKeys = (sideMenuItems ?? []).map((item: any) => item?.key).filter(Boolean) as string[];
     const prevTopLevel = openMenuKeys.filter(k => topLevelKeys.includes(k));
     const newTopLevel = keys.filter(k => topLevelKeys.includes(k) && !prevTopLevel.includes(k));
     if (newTopLevel.length > 0) {
