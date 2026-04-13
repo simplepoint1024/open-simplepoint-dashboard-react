@@ -40,11 +40,13 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
     const missingKeysRef = useRef<Set<string>>(new Set());
     const missingDebounceRef = useRef<number | null>(null);
 
-    const loadedNsRef = useRef<Set<string>>(new Set());
+    const loadedNsRef = useRef<Map<string, Set<string>>>(new Map());
     const ensurePendingNsRef = useRef<Set<string>>(new Set());
     const ensureTimerRef = useRef<number | null>(null);
     const ensureWaitersRef = useRef<Array<() => void>>([]);
     const ensureInflightRef = useRef<Promise<void> | null>(null);
+    const localeRef = useRef(locale);
+    localeRef.current = locale;
 
     useEffect(() => {
         checkAndUpgradeCacheVersion();
@@ -56,6 +58,15 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
             cache.current.set(initialLocale, initial);
             window.spI18n = {t: mkT(initial), locale: initialLocale, setLocale, messages: initial, ensure};
         }
+    }, []);
+
+    const getLoadedNs = useCallback((lng: string): Set<string> => {
+        let set = loadedNsRef.current.get(lng);
+        if (!set) {
+            set = new Set();
+            loadedNsRef.current.set(lng, set);
+        }
+        return set;
     }, []);
 
     const applyLocale = useCallback((code: string) => {
@@ -121,7 +132,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
             setMessages(data);
             writeStoredMessages(lang, data);
             updateGlobalI18n(data, lang);
-            loadedNsRef.current.clear();
+            loadedNsRef.current.delete(lang);
         } catch (err) {
             console.warn(`[i18n] Failed to load messages for ${lang}`, err);
         } finally {
@@ -135,13 +146,14 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
         const normalized = Array.from(new Set(ns.filter(Boolean))).sort();
         if (normalized.length === 0) return;
 
-        const missing = normalized.filter((key) => !loadedNsRef.current.has(key));
+        const loadedNs = getLoadedNs(locale);
+        const missing = normalized.filter((key) => !loadedNs.has(key));
         if (missing.length === 0 && !ensureInflightRef.current && ensurePendingNsRef.current.size === 0) {
             return;
         }
 
         normalized.forEach(k => {
-            if (k && !loadedNsRef.current.has(k)) {
+            if (k && !loadedNs.has(k)) {
                 ensurePendingNsRef.current.add(k);
             }
         });
@@ -170,14 +182,21 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
             ensureInflightRef.current = fetchMessages(lng, list)
                 .then((data) => {
                     if (data && typeof data === 'object' && Object.keys(data).length > 0) {
-                        setMessages(prev => {
-                            const merged = {...prev, ...data};
-                            cache.current.set(lng, merged);
-                            writeStoredMessages(lng, merged);
-                            updateGlobalI18n(merged, lng);
-                            list.forEach(k => loadedNsRef.current.add(k));
-                            return merged;
-                        });
+                        // 无论 locale 是否已切换，都缓存到正确的 locale
+                        const cachedForLng = cache.current.get(lng) || {};
+                        const merged = {...cachedForLng, ...data};
+                        cache.current.set(lng, merged);
+                        writeStoredMessages(lng, merged);
+                        list.forEach(k => getLoadedNs(lng).add(k));
+
+                        // 仅当 locale 未切换时才更新 state
+                        if (lng === localeRef.current) {
+                            setMessages(prev => {
+                                const mergedState = {...prev, ...data};
+                                updateGlobalI18n(mergedState, lng);
+                                return mergedState;
+                            });
+                        }
                     }
                 })
                 .catch(err => {
@@ -214,7 +233,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
         }, 30);
 
         return p;
-    }, [locale]);
+    }, [locale, getLoadedNs]);
 
     const t = useCallback<I18nContextValue['t']>((key, fallbackOrParams, maybeParams) => {
         let params: Record<string, any> | undefined;

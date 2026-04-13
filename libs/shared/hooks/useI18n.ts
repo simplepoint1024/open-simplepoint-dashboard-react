@@ -16,6 +16,12 @@ export type I18nLike = {
 
 const isBrowser = typeof window !== 'undefined';
 
+declare global {
+    interface Window {
+        spI18n?: I18nLike;
+    }
+}
+
 /** 通用插值：支持 {a.b}、{0}、任意 key */
 const interpolate = (tpl: string, params?: Record<string, unknown>) =>
     params
@@ -43,7 +49,7 @@ export const mkT = (messages: Messages): I18nLike['t'] => (
 };
 
 function getGlobal(): I18nLike | undefined {
-    return isBrowser ? (window as any).spI18n : undefined;
+    return isBrowser ? window.spI18n : undefined;
 }
 
 /** 命名空间加载缓存与锁（按 locale 隔离） */

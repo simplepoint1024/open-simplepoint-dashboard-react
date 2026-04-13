@@ -319,19 +319,18 @@ const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
      // 监听一次 i18n 更新事件，切换完成后关闭 loading
      const handler = () => {
        try {
-         const g: any = (window as any)?.spI18n;
-         if (g?.locale === lng) {
-           window.removeEventListener('sp-i18n-updated', handler as any);
+         if (window.spI18n?.locale === lng) {
+           window.removeEventListener('sp-i18n-updated', handler);
            if (mountedRef.current) setSwitching(false);
          }
        } catch {}
      };
-     try { window.addEventListener('sp-i18n-updated', handler as any, { once: true } as any); } catch { /* older browsers */ }
+     try { window.addEventListener('sp-i18n-updated', handler, { once: true }); } catch { /* older browsers */ }
      // 兜底超时，避免极端情况下 loading 不消失
-     const tm = window.setTimeout(() => { if (mountedRef.current) setSwitching(false); try { window.removeEventListener('sp-i18n-updated', handler as any); } catch {} }, 3000);
+     const tm = window.setTimeout(() => { if (mountedRef.current) setSwitching(false); try { window.removeEventListener('sp-i18n-updated', handler); } catch {} }, 3000);
      // 当事件到了也清除兜底
      const clearFallback = () => { try { window.clearTimeout(tm); } catch {} };
-     try { window.addEventListener('sp-i18n-updated', clearFallback as any, { once: true } as any); } catch {}
+     try { window.addEventListener('sp-i18n-updated', clearFallback, { once: true }); } catch {}
      setLocale(lng);
     // 下一帧允许下次打开
     window.setTimeout(() => { if (mountedRef.current) closingRef.current = false; }, 120);
