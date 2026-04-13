@@ -77,7 +77,9 @@ const App = ({userId}: JdbcUserDataSourceConfigProps) => {
 
   useEffect(() => {
     if (userId) {
-      void fetchGrants(userId).then(setGrants).catch(() => {});
+      void fetchGrants(userId).then(setGrants).catch((err) => {
+        console.warn('Failed to fetch user grants', err);
+      });
     }
   }, [userId]);
 

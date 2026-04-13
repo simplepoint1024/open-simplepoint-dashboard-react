@@ -44,7 +44,7 @@ const App = () => {
   }, [loadSchemas]);
 
   const formSchemaTransform = useCallback((schema: any) => {
-    const nextSchema = JSON.parse(JSON.stringify(schema ?? {}));
+    const nextSchema = structuredClone(schema ?? {});
     const properties = nextSchema?.properties ?? {};
     if (properties.schemaId) {
       properties.schemaId.title = '逻辑 Schema';

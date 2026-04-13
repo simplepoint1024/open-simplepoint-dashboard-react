@@ -69,7 +69,7 @@ const App = () => {
   }, []);
 
   const formSchemaTransform = useCallback((schema: any) => {
-    const nextSchema = JSON.parse(JSON.stringify(schema ?? {}));
+    const nextSchema = structuredClone(schema ?? {});
     const properties = nextSchema?.properties ?? {};
     delete properties.version;
     delete properties.driverClassName;

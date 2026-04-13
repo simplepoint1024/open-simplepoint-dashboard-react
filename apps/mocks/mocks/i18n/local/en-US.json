@@ -1078,7 +1078,21 @@
     "dna.dataLineage.placeholder.sourceNode": "Select source node",
     "dna.dataLineage.placeholder.targetNode": "Select target node",
     "dna.dataLineage.placeholder.transformDesc": "Describe data transformation logic (optional)",
-    "dna.dataLineage.alert.noDataSources": "No data sources available. Please add and enable a data source first."
+    "dna.dataLineage.alert.noDataSources": "No data sources available. Please add and enable a data source first.",
+    "dna.dataLineage.nodeType.TABLE": "Table",
+    "dna.dataLineage.nodeType.VIEW": "View",
+    "dna.dataLineage.nodeType.COLUMN": "Column",
+    "dna.dataLineage.nodeType.ETL": "ETL Job",
+    "dna.dataLineage.nodeType.STREAM": "Stream",
+    "dna.dataLineage.nodeType.API": "API",
+    "dna.dataLineage.nodeType.FILE": "File",
+    "dna.dataLineage.edgeType.DIRECT": "Direct Reference",
+    "dna.dataLineage.edgeType.ETL": "ETL Transform",
+    "dna.dataLineage.edgeType.DERIVED": "Derived",
+    "dna.dataLineage.edgeType.COPY": "Copy",
+    "dna.dataLineage.edgeType.AGGREGATION": "Aggregation",
+    "dna.dataLineage.edgeType.FILTER": "Filter",
+    "dna.dataLineage.edgeType.JOIN": "Join"
   },
   "dna-data-assets": {
     "dna.dataAssets.entity.title": "Data Asset",

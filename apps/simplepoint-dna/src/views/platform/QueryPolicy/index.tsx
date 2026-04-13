@@ -48,7 +48,7 @@ const App = () => {
   }, [loadDataSources]);
 
   const formSchemaTransform = useCallback((schema: any) => {
-    const nextSchema = JSON.parse(JSON.stringify(schema ?? {}));
+    const nextSchema = structuredClone(schema ?? {});
     const properties = nextSchema?.properties ?? {};
     if (properties.catalogId) {
       properties.catalogId.title = '数据源';

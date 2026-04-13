@@ -1095,7 +1095,21 @@
     "dna.dataLineage.placeholder.sourceNode": "选择源节点",
     "dna.dataLineage.placeholder.targetNode": "选择目标节点",
     "dna.dataLineage.placeholder.transformDesc": "描述数据转换逻辑（可选）",
-    "dna.dataLineage.alert.noDataSources": "当前没有可用的数据源，请先新增并启用数据源。"
+    "dna.dataLineage.alert.noDataSources": "当前没有可用的数据源，请先新增并启用数据源。",
+    "dna.dataLineage.nodeType.TABLE": "表 (TABLE)",
+    "dna.dataLineage.nodeType.VIEW": "视图 (VIEW)",
+    "dna.dataLineage.nodeType.COLUMN": "列 (COLUMN)",
+    "dna.dataLineage.nodeType.ETL": "ETL 任务",
+    "dna.dataLineage.nodeType.STREAM": "数据流 (STREAM)",
+    "dna.dataLineage.nodeType.API": "接口 (API)",
+    "dna.dataLineage.nodeType.FILE": "文件 (FILE)",
+    "dna.dataLineage.edgeType.DIRECT": "直接引用",
+    "dna.dataLineage.edgeType.ETL": "ETL 转换",
+    "dna.dataLineage.edgeType.DERIVED": "派生",
+    "dna.dataLineage.edgeType.COPY": "复制",
+    "dna.dataLineage.edgeType.AGGREGATION": "聚合",
+    "dna.dataLineage.edgeType.FILTER": "过滤",
+    "dna.dataLineage.edgeType.JOIN": "关联"
   },
   "dna-data-assets": {
     "dna.dataAssets.entity.title": "数据资产",

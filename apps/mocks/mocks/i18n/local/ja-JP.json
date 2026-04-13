@@ -1072,7 +1072,21 @@
     "dna.dataLineage.placeholder.sourceNode": "ソースノードを選択",
     "dna.dataLineage.placeholder.targetNode": "ターゲットノードを選択",
     "dna.dataLineage.placeholder.transformDesc": "データ変換ロジックの説明（任意）",
-    "dna.dataLineage.alert.noDataSources": "利用可能なデータソースがありません。先にデータソースを追加して有効にしてください。"
+    "dna.dataLineage.alert.noDataSources": "利用可能なデータソースがありません。先にデータソースを追加して有効にしてください。",
+    "dna.dataLineage.nodeType.TABLE": "テーブル",
+    "dna.dataLineage.nodeType.VIEW": "ビュー",
+    "dna.dataLineage.nodeType.COLUMN": "カラム",
+    "dna.dataLineage.nodeType.ETL": "ETL ジョブ",
+    "dna.dataLineage.nodeType.STREAM": "ストリーム",
+    "dna.dataLineage.nodeType.API": "API",
+    "dna.dataLineage.nodeType.FILE": "ファイル",
+    "dna.dataLineage.edgeType.DIRECT": "直接参照",
+    "dna.dataLineage.edgeType.ETL": "ETL 変換",
+    "dna.dataLineage.edgeType.DERIVED": "派生",
+    "dna.dataLineage.edgeType.COPY": "コピー",
+    "dna.dataLineage.edgeType.AGGREGATION": "集約",
+    "dna.dataLineage.edgeType.FILTER": "フィルタ",
+    "dna.dataLineage.edgeType.JOIN": "結合"
   },
   "dna-data-assets": {
     "dna.dataAssets.entity.title": "データ資産",

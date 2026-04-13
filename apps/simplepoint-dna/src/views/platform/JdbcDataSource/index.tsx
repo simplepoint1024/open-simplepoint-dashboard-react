@@ -78,7 +78,7 @@ const App = () => {
   }, [loadDrivers, t]);
 
   const formSchemaTransform = useCallback((schema: any) => {
-    const nextSchema = JSON.parse(JSON.stringify(schema ?? {}));
+    const nextSchema = structuredClone(schema ?? {});
     const properties = nextSchema?.properties ?? {};
     if (properties.driverId) {
       properties.driverId.title = t('dna.dataSources.title.driverId', '驱动');

@@ -48,25 +48,8 @@ type LineageGraph = {
   rootNodeId: string;
 };
 
-const NODE_TYPES = [
-  {const: 'TABLE', title: '表 (TABLE)'},
-  {const: 'VIEW', title: '视图 (VIEW)'},
-  {const: 'COLUMN', title: '列 (COLUMN)'},
-  {const: 'ETL', title: 'ETL 任务'},
-  {const: 'STREAM', title: '数据流 (STREAM)'},
-  {const: 'API', title: '接口 (API)'},
-  {const: 'FILE', title: '文件 (FILE)'},
-];
-
-const EDGE_TYPES = [
-  {const: 'DIRECT', title: '直接引用'},
-  {const: 'ETL', title: 'ETL 转换'},
-  {const: 'DERIVED', title: '派生'},
-  {const: 'COPY', title: '复制'},
-  {const: 'AGGREGATION', title: '聚合'},
-  {const: 'FILTER', title: '过滤'},
-  {const: 'JOIN', title: '关联'},
-];
+const NODE_TYPE_KEYS = ['TABLE', 'VIEW', 'COLUMN', 'ETL', 'STREAM', 'API', 'FILE'] as const;
+const EDGE_TYPE_KEYS = ['DIRECT', 'ETL', 'DERIVED', 'COPY', 'AGGREGATION', 'FILTER', 'JOIN'] as const;
 
 const NODE_COLORS: Record<string, string> = {
   TABLE: 'blue',
@@ -92,6 +75,16 @@ const App = () => {
   const [allNodes, setAllNodes] = useState<LineageNode[]>([]);
   const [newEdge, setNewEdge] = useState({sourceNodeId: '', targetNodeId: '', edgeType: 'DIRECT', transformDescription: ''});
 
+  const nodeTypes = useMemo(() => NODE_TYPE_KEYS.map((key) => ({
+    const: key,
+    title: t(`dna.dataLineage.nodeType.${key}`, key),
+  })), [t]);
+
+  const edgeTypes = useMemo(() => EDGE_TYPE_KEYS.map((key) => ({
+    const: key,
+    title: t(`dna.dataLineage.edgeType.${key}`, key),
+  })), [t]);
+
   useEffect(() => {
     void ensure([...nodesConfig.i18nNamespaces, ...edgesConfig.i18nNamespaces, ...dataSourceConfig.i18nNamespaces]);
   }, [ensure, locale]);
@@ -115,7 +108,9 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    void loadAllNodes().catch(() => {/* ignore */});
+    void loadAllNodes().catch((err) => {
+      console.warn('Failed to load lineage nodes for edge form', err);
+    });
   }, [loadAllNodes]);
 
   const loadGraph = useCallback(async (nodeId: string) => {
@@ -165,7 +160,7 @@ const App = () => {
   }, [selectedNodeId, loadGraph]);
 
   const formSchemaTransform = useCallback((schema: any) => {
-    const nextSchema = JSON.parse(JSON.stringify(schema ?? {}));
+    const nextSchema = structuredClone(schema ?? {});
     const properties = nextSchema?.properties ?? {};
     if (properties.catalogId) {
       properties.catalogId.title = t('dna.dataLineage.title.catalogId', 'Data Source');
@@ -175,11 +170,11 @@ const App = () => {
       }));
     }
     if (properties.nodeType) {
-      properties.nodeType.oneOf = NODE_TYPES;
+      properties.nodeType.oneOf = nodeTypes;
     }
     delete properties.catalogName;
     return nextSchema;
-  }, [dataSources, t]);
+  }, [dataSources, nodeTypes, t]);
 
   const columnOverrides = useMemo(() => ({
     catalogId: {
@@ -394,7 +389,7 @@ const App = () => {
               style={{width: '100%'}}
               value={newEdge.edgeType}
               onChange={(v) => setNewEdge({...newEdge, edgeType: v})}
-              options={EDGE_TYPES.map((et) => ({value: et.const, label: et.title}))}
+              options={edgeTypes.map((et) => ({value: et.const, label: et.title}))}
             />
           </div>
           <div>
