@@ -44,7 +44,7 @@ const App = (props: SimpleTableProps<any>) => {
   );
 
   return (
-    <div>
+    <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
       {bootLoading ? (
         <div style={{ padding: 16 }}>
           <Skeleton active paragraph={{ rows: 1 }} />
@@ -60,9 +60,9 @@ const App = (props: SimpleTableProps<any>) => {
           {renderPageError()}
         </div>
       ) : (
-        <div>
+        <div style={{flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column'}}>
           {showPageWarning ? (
-            <div style={{ padding: '0 0 16px 0' }}>
+            <div style={{ padding: '0 0 16px 0', flexShrink: 0 }}>
               {renderPageError()}
             </div>
           ) : null}
@@ -74,6 +74,7 @@ const App = (props: SimpleTableProps<any>) => {
             schema={schemaData?.schema ?? []}
             columnOverrides={props.columnOverrides}
             filters={filters}
+            sorter={controller.table.sorter}
             onChange={controller.table.onChange}
             onFilterChange={controller.table.onFilterChange}
             onButtonEvents={{

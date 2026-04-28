@@ -4,7 +4,8 @@ import 'antd/dist/reset.css';
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {HashRouter, Routes} from 'react-router-dom';
-import {App as AntApp, ConfigProvider, theme} from 'antd';
+import {App as AntApp, ConfigProvider, Modal, Table as AntTable, theme} from 'antd';
+import {QuestionCircleOutlined} from '@ant-design/icons';
 
 import NavigateBar from '@/layouts/navigation-bar';
 
@@ -31,6 +32,34 @@ import {renderRoutes} from "@/components/RouteRenderer.tsx";
 const App: React.FC = () => {
     const {globalSize} = useGlobalSize();
     const {resolvedTheme} = useThemeMode();
+
+    const [shortcutsOpen, setShortcutsOpen] = useState(false);
+
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) => {
+            if (e.key === '?' && !e.ctrlKey && !e.metaKey && !(e.target instanceof HTMLInputElement) && !(e.target instanceof HTMLTextAreaElement)) {
+                setShortcutsOpen(prev => !prev);
+            }
+        };
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
+    }, []);
+
+    useEffect(() => {
+        const handler = () => setShortcutsOpen(prev => !prev);
+        window.addEventListener('sp-open-shortcuts', handler);
+        return () => window.removeEventListener('sp-open-shortcuts', handler);
+    }, []);
+
+    const shortcuts = [
+        {key: 'Ctrl + K', desc: '打开菜单搜索'},
+        {key: '?', desc: '显示/隐藏快捷键'},
+        {key: 'Ctrl + B', desc: '折叠/展开侧边栏（预留）'},
+        {key: 'Ctrl + D', desc: '切换深色/浅色模式（预留）'},
+        {key: 'Ctrl + W', desc: '关闭当前标签页（预留）'},
+        {key: 'F11', desc: '全屏/退出全屏'},
+        {key: 'Alt + ←', desc: '返回上一页（浏览器）'},
+    ];
 
     const {t, locale, ready: i18nReady, loading: i18nLoading} = useI18n();
     const currentLocale = useLocaleLoader(locale);
@@ -116,7 +145,23 @@ const App: React.FC = () => {
                 componentSize={globalSize}
                 theme={{
                     algorithm: resolvedTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
-                    token: {colorPrimary: '#1677FF'}
+                    token: {
+                        colorPrimary: '#1677FF',
+                        borderRadius: 4,
+                        colorLink: '#1677FF',
+                        colorLinkHover: '#4096ff',
+                        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                    },
+                    components: {
+                        Table: {
+                            cellFontSize: 13,
+                            cellPaddingBlock: 10,
+                            cellPaddingInline: 12,
+                            cellPaddingBlockSM: 6,
+                            cellPaddingInlineSM: 8,
+                            headerBorderRadius: 0,
+                        },
+                    }
                 }}>
                 <AntApp>
                     <HashRouter>
@@ -127,6 +172,24 @@ const App: React.FC = () => {
                             </Routes>
                         </NavigateBar>
                     </HashRouter>
+                    <Modal
+                        title={<><QuestionCircleOutlined style={{marginRight: 6}}/>快捷键</>}
+                        open={shortcutsOpen}
+                        onCancel={() => setShortcutsOpen(false)}
+                        footer={null}
+                        width={400}
+                    >
+                        <AntTable
+                            dataSource={shortcuts}
+                            pagination={false}
+                            size="small"
+                            rowKey="key"
+                            columns={[
+                                {title: '快捷键', dataIndex: 'key', width: 160, render: (v: string) => <kbd style={{background:'rgba(0,0,0,0.06)',border:'1px solid rgba(0,0,0,0.12)',borderRadius:4,padding:'2px 8px',fontFamily:'monospace',fontSize:12}}>{v}</kbd>},
+                                {title: '说明', dataIndex: 'desc'},
+                            ]}
+                        />
+                    </Modal>
                 </AntApp>
             </ConfigProvider>
         </div>

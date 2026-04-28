@@ -15,6 +15,8 @@ const microapps = [
 const routes = {
     "content": [
         {
+            "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde001",
+            "authority": "dashboard.view",
             "label": "Dashboard",
             "title": "menu.dashboard",
             "icon": "DashboardOutlined",
@@ -25,6 +27,8 @@ const routes = {
             "children": []
         },
         {
+            "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde002",
+            "authority": "test.view",
             "label": "Test",
             "title": "menu.test",
             "icon": "DashboardOutlined",
@@ -35,6 +39,8 @@ const routes = {
             "children": []
         },
         {
+            "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde003",
+            "authority": "system.view",
             "label": "系统配置",
             "title": "menu.system",
             "icon": "SettingOutlined",
@@ -44,6 +50,8 @@ const routes = {
             "disabled": false,
             "children": [
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde011",
+                    "authority": "system.user.view",
                     "label": "用户管理",
                     "title": "menu.system.user",
                     "icon": "UserOutlined",
@@ -55,6 +63,8 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde012",
+                    "authority": "system.menu.view",
                     "label": "菜单管理",
                     "title": "menu.system.menu",
                     "icon": "MenuOutlined",
@@ -66,6 +76,8 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde013",
+                    "authority": "system.role.view",
                     "label": "角色管理",
                     "title": "menu.system.role",
                     "icon": "UsergroupAddOutlined",
@@ -77,6 +89,8 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde014",
+                    "authority": "system.permission.view",
                     "label": "权限管理",
                     "title": "menu.system.permission",
                     "icon": "SafetyCertificateOutlined",
@@ -88,6 +102,8 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde015",
+                    "authority": "system.oauth-client.view",
                     "label": "客户端管理",
                     "title": "menu.system.oauthClient",
                     "icon": "ApiOutlined",
@@ -101,6 +117,8 @@ const routes = {
             ]
         },
         {
+            "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde004",
+            "authority": "i18n.view",
             "label": "国际化管理",
             "title": "menu.i18n",
             "icon": "GlobalOutlined",
@@ -110,6 +128,8 @@ const routes = {
             "disabled": false,
             "children": [
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde021",
+                    "authority": "i18n.countries.view",
                     "label": "国家管理",
                     "title": "menu.i18n.countries",
                     "icon": "GlobalOutlined",
@@ -121,6 +141,8 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde022",
+                    "authority": "i18n.regions.view",
                     "label": "区域管理",
                     "title": "menu.i18n.regions",
                     "icon": "CompassOutlined",
@@ -132,6 +154,8 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde023",
+                    "authority": "i18n.timezones.view",
                     "label": "时区管理",
                     "title": "menu.i18n.timezones",
                     "icon": "ClockCircleOutlined",
@@ -142,6 +166,8 @@ const routes = {
                     "disabled": false,
                     "children": []
                 }, {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde024",
+                    "authority": "i18n.languages.view",
                     "label": "语言管理",
                     "title": "menu.i18n.languages",
                     "icon": "TranslationOutlined",
@@ -153,6 +179,8 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde025",
+                    "authority": "i18n.namespace.view",
                     "label": "国际化命名空间",
                     "title": "menu.i18n.namespace",
                     "icon": "FolderOpenOutlined",
@@ -164,6 +192,8 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde026",
+                    "authority": "i18n.message.view",
                     "label": "国际化消息",
                     "title": "menu.i18n.message",
                     "icon": "CommentOutlined",
@@ -177,6 +207,8 @@ const routes = {
             ]
         },
         {
+            "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde005",
+            "authority": "ops.view",
             "label": "系统维护",
             "title": "menu.ops",
             "icon": "ClusterOutlined",
@@ -185,6 +217,8 @@ const routes = {
             "disabled": false,
             "children": [
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde031",
+                    "authority": "ops.micro-plugin.view",
                     "label": "插件市场",
                     "title": "menu.ops.microPlugin",
                     "icon": "BuildOutlined",
@@ -194,6 +228,8 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde032",
+                    "authority": "ops.microapp.view",
                     "label": "微应用管理",
                     "title": "menu.ops.microapps",
                     "icon": "DropboxOutlined",
@@ -204,6 +240,8 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde033",
+                    "authority": "ops.micro-service.view",
                     "label": "微服务管理",
                     "title": "menu.ops.microService",
                     "icon": "QrcodeOutlined",
@@ -215,6 +253,7 @@ const routes = {
             ]
         },
         {
+            "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde006",
             "label": "监控审计",
             "title": "menu.monitoring",
             "icon": "EyeOutlined",
@@ -224,6 +263,7 @@ const routes = {
             "disabled": false,
             "children": [
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde041",
                     "label": "登录日志",
                     "title": "menu.monitoring.loginLog",
                     "icon": "SendOutlined",
@@ -236,6 +276,7 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde042",
                     "label": "权限变更记录",
                     "title": "menu.monitoring.permissionChangeLog",
                     "icon": "SafetyCertificateOutlined",
@@ -248,6 +289,7 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde043",
                     "label": "错误日志",
                     "title": "menu.monitoring.errorLog",
                     "icon": "WarningOutlined",
@@ -260,6 +302,7 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde044",
                     "label": "服务限流",
                     "title": "menu.monitoring.serviceRateLimit",
                     "icon": "CloudServerOutlined",
@@ -272,6 +315,7 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde045",
                     "label": "接口限流",
                     "title": "menu.monitoring.endpointRateLimit",
                     "icon": "ApiOutlined",
@@ -284,6 +328,7 @@ const routes = {
                     "children": []
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde046",
                     "label": "Redis管理",
                     "title": "menu.monitoring.redis",
                     "icon": "DatabaseOutlined",
@@ -298,6 +343,7 @@ const routes = {
             ]
         },
         {
+            "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde007",
             "label": "平台管理",
             "title": "menu.platform",
             "icon": "ApartmentOutlined",
@@ -316,6 +362,7 @@ const routes = {
             ],
             "children": [
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde051",
                     "label": "租户管理",
                     "title": "menu.platform.tenants",
                     "icon": "TeamOutlined",
@@ -353,6 +400,7 @@ const routes = {
                     ]
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde052",
                     "label": "套餐包管理",
                     "title": "menu.platform.packages",
                     "icon": "AppstoreOutlined",
@@ -390,6 +438,7 @@ const routes = {
                     ]
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde053",
                     "label": "应用管理",
                     "title": "menu.platform.applications",
                     "icon": "AppstoreOutlined",
@@ -427,6 +476,7 @@ const routes = {
                     ]
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde054",
                     "label": "功能管理",
                     "title": "menu.platform.features",
                     "icon": "FunctionOutlined",
@@ -464,6 +514,7 @@ const routes = {
                     ]
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde055",
                     "label": "字典管理",
                     "title": "menu.platform.dictionaries",
                     "icon": "BookOutlined",
@@ -507,6 +558,7 @@ const routes = {
                     ]
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde056",
                     "label": "组织机构管理",
                     "title": "menu.platform.organizations",
                     "icon": "ApartmentOutlined",
@@ -544,6 +596,7 @@ const routes = {
                     ]
                 },
                 {
+                    "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde057",
                     "label": "对象存储",
                     "title": "menu.platform.objectStorage",
                     "icon": "CloudUploadOutlined",
@@ -601,6 +654,9 @@ const routes = {
             ]
         },
         {
+            "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde008",
+            "authority": "external.baidu.view",
+            "disabled": false,
             "label": "外部链接",
             "title": "menu.externalLink",
             "icon": "LinkOutlined",
@@ -608,6 +664,9 @@ const routes = {
             "component": "iframe:https://www.baidu.com",
         },
         {
+            "id": "c1a2b3c4-d5e6-4f70-8900-aabbccdde009",
+            "authority": "external.ant-design.view",
+            "disabled": false,
             "label": "AntDesign 官网",
             "parent": "91639c9d-86b1-44cd-8539-1297df4f6218",
             "icon": "LinkOutlined",
@@ -626,7 +685,8 @@ const routes = {
 
 const serviceRoutes = {
     "services": microapps,
-    "routes": routes.content
+    "routes": routes.content,
+    "entryPoint": "/mf/mf-manifest.json"
 }
 
 export default [

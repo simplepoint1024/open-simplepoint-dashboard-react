@@ -8,19 +8,42 @@ import {
   VerticalLeftOutlined,
   VerticalRightOutlined
 } from '@ant-design/icons';
-import {Button, Dropdown, Layout, Menu, Skeleton, Tabs} from 'antd';
+import {Breadcrumb, Button, Dropdown, Layout, Menu, Skeleton, Tabs} from 'antd';
+import type {TabsProps} from 'antd';
+import {DndContext, PointerSensor, useSensor, closestCenter} from '@dnd-kit/core';
+import type {DragEndEvent} from '@dnd-kit/core';
+import {SortableContext, horizontalListSortingStrategy, useSortable, arrayMove} from '@dnd-kit/sortable';
+import {CSS} from '@dnd-kit/utilities';
 import {createIcon} from '@simplepoint/shared/types/icon.ts';
 import {useSideNavigation} from "@/hooks/routes";
 import {useLocation, useNavigate} from "react-router-dom";
 import {findMenuChainByPath, flattenMenus, getMenuKey, MenuInfo} from "@/store/routes";
-import {aboutMeItem, logoItem, toolsSwitcherGroupItem} from "@/layouts/navigation-bar/top-bar.tsx";
+import {aboutMeItem, HeaderLogo, HeaderSearchBar, TenantSwitcherTop, toolsSwitcherGroupItem} from "@/layouts/navigation-bar/top-bar.tsx";
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import MenuSearchModal from "@/layouts/navigation-bar/menu-search-modal.tsx";
 
 const {Header, Content, Footer, Sider} = Layout;
 
+interface DraggableTabNodeProps extends React.HTMLAttributes<HTMLDivElement> {
+  'data-node-key': string;
+}
+
+const DraggableTabNode: React.FC<DraggableTabNodeProps> = ({className, ...props}) => {
+  const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({
+    id: props['data-node-key'],
+  });
+  const style: React.CSSProperties = {
+    ...props.style,
+    transform: CSS.Translate.toString(transform),
+    transition,
+    zIndex: isDragging ? 1 : 0,
+    cursor: isDragging ? 'grabbing' : 'grab',
+  };
+  return <div ref={setNodeRef} style={style} {...attributes} {...listeners} {...props} className={className} />;
+};
+
 const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInfo> }> = ({children, data}) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => window.innerWidth < 768);
   const navigate = useNavigate();
   const location = useLocation();
   const {t} = useI18n();
@@ -36,14 +59,19 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   // Ctrl+K 菜单搜索
   const [searchOpen, setSearchOpen] = useState(false);
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
+    const onKeydown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
         setSearchOpen(prev => !prev);
       }
     };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    const onOpenSearch = () => setSearchOpen(true);
+    window.addEventListener('keydown', onKeydown);
+    window.addEventListener('sp-open-search', onOpenSearch);
+    return () => {
+      window.removeEventListener('keydown', onKeydown);
+      window.removeEventListener('sp-open-search', onOpenSearch);
+    };
   }, []);
 
   const STORAGE_KEY = 'sp.nav.tabs';
@@ -252,6 +280,46 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
 
   const activeKey = getCurrentPath();
   const activeMenuChain = useMemo(() => findMenuChainByPath(data || [], activeKey), [data, activeKey]);
+
+  // 面包屑 items：放在 Header Logo 后面，只显示菜单路径链（无首页图标）
+  const breadcrumbItems = useMemo(() => {
+    if (!activeMenuChain || activeMenuChain.length === 0) return [];
+    return activeMenuChain.map(menu => ({
+      title: t(menu.title || '', menu.label || menu.title || ''),
+    }));
+  }, [activeMenuChain, t]);
+
+  // Tab 拖拽排序
+  const tabDndSensor = useSensor(PointerSensor, {activationConstraint: {distance: 8}});
+  const handleTabDragEnd = useCallback(({active, over}: DragEndEvent) => {
+    if (!over || active.id === over.id) return;
+    setTabs(prev => {
+      const oldIdx = prev.findIndex(t => t.key === String(active.id));
+      const newIdx = prev.findIndex(t => t.key === String(over.id));
+      if (oldIdx < 0 || newIdx < 0) return prev;
+      // dashboard 固定在首位，不允许拖到其前面
+      if (newIdx === 0) return prev;
+      const next = arrayMove(prev, oldIdx, newIdx);
+      persistTabs(next);
+      return next;
+    });
+  }, [persistTabs]);
+
+  const renderTabBar: TabsProps['renderTabBar'] = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (tabBarProps: any, DefaultTabBar: any) => (
+      <DndContext sensors={[tabDndSensor]} onDragEnd={handleTabDragEnd} collisionDetection={closestCenter}>
+        <SortableContext items={tabs.map(t => t.key)} strategy={horizontalListSortingStrategy}>
+          <DefaultTabBar {...tabBarProps}>
+            {(node: React.ReactElement) => (
+              <DraggableTabNode {...(node.props as DraggableTabNodeProps)} key={node.key ?? undefined} />
+            )}
+          </DefaultTabBar>
+        </SortableContext>
+      </DndContext>
+    ),
+    [tabDndSensor, handleTabDragEnd, tabs]
+  );
   const selectedMenuKeys = useMemo(() => {
     const current = activeMenuChain[activeMenuChain.length - 1];
     const key = getMenuKey(current);
@@ -368,29 +436,37 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
     onClick: onContextMenuClick,
   }), [onContextMenuClick, t]);
 
-  // 顶部菜单 items 缓存
-  const topMenuItems = useMemo(() => [
-    logoItem(navigate),
-    {
-      key: 'spacer',
-      label: '',
-      style: {marginLeft: 'auto', pointerEvents: 'none' as const},
-    },
-    toolsSwitcherGroupItem(),
-    aboutMeItem(navigate)
-  ], [navigate, t]);
+  // 顶部菜单 items 缓存（右：工具+头像）
+  const topRightItems = useMemo(() => [toolsSwitcherGroupItem(), aboutMeItem(navigate)], [navigate]);
 
   return (
     <Layout className={`nb-root ${themeMode === 'dark' ? 'theme-dark' : 'theme-light'}`} style={{ minHeight: '100vh' }}>
       <Header className="nb-header">
+        {/* 左：Logo（独立组件，不受 AntD Menu overflow 检测影响）*/}
+        <HeaderLogo navigate={navigate} />
+        {/* Logo 后面的面包屑，显示当前菜单路径 */}
+        {breadcrumbItems.length > 0 && (
+          <div className="nb-header-breadcrumb">
+            <Breadcrumb items={breadcrumbItems} />
+          </div>
+        )}
+        {/* 中：搜索条，flex: 1 自动撑开 */}
+        <div className="nb-header-search">
+          <HeaderSearchBar onOpen={() => setSearchOpen(true)} />
+        </div>
+        {/* 租户选择器，搜索栏与工具按钮之间 */}
+        <div className="nb-header-tenant">
+          <TenantSwitcherTop />
+        </div>
+        {/* 右：工具组 + 头像 */}
         <Menu
           mode="horizontal"
-          items={topMenuItems}
-          className="top-nav-menu nb-top-menu"
+          items={topRightItems}
+          className="nb-top-menu nb-top-menu-right"
         />
       </Header>
       <Layout style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-        <Sider width={200} trigger={null} collapsible collapsed={collapsed} style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <Sider width={180} trigger={null} collapsible collapsed={collapsed} style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           {(!sideMenuItems || sideMenuItems.length === 0) ? (
             <div style={{ padding: collapsed ? 8 : 16 }}>
               <Skeleton active paragraph={{ rows: 6 }} title={false} />
@@ -411,7 +487,10 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
             icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
             onClick={() => setCollapsed(!collapsed)}
             className="nb-sider-toggle"
-          />
+            style={collapsed ? {justifyContent: 'center', padding: '0'} : undefined}
+          >
+            {!collapsed && <span>{t('nav.collapse', '收起')}</span>}
+          </Button>
         </Sider>
         <Layout className="nb-inner-layout">
           <Content className="nb-content-wrapper">
@@ -426,6 +505,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
                   onChange={onTabChange}
                   onEdit={onTabEdit as any}
                   tabBarGutter={6}
+                  renderTabBar={renderTabBar}
                 />
               </div>
             </Dropdown>

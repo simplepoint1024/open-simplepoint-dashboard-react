@@ -67,12 +67,15 @@ export type Sort = {
  * @param page Pageable 对象
  */
 export function toPagination(page: Page<any>) {
-    const {size,number,totalElements} = page.page
+    const {size, number, totalElements} = page.page
     return {
         total: totalElements ?? 0,
-        pageSize: size ?? 10,
+        pageSize: size ?? 20,
         current: (number ?? 0) + 1,
         showSizeChanger: true,
+        showQuickJumper: true,
+        pageSizeOptions: ['10', '20', '50', '100'],
+        showTotal: (total: number) => `共 ${total} 条`,
     }
 }
 

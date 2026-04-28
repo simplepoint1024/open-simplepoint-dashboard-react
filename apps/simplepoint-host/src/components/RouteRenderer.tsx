@@ -6,7 +6,8 @@ import {parseComponent} from '@/utils/parseComponent';
 import {getLazyComponent} from '@/utils/lazyComponent';
 import {Profile} from '@/layouts/profile';
 import {Settings} from '@/layouts/settings';
-import {Result} from 'antd';
+import {NotFound} from '@/views/errors/NotFound';
+import {Dashboard} from '@/views/dashboard';
 
 export interface RouteItem {
     key: string;
@@ -36,9 +37,10 @@ export function renderRoutes(
     // 1. 静态路由（结构统一）
     const staticRoutes: RouteItem[] = [
         {key: 'root', path: '/', element: <Navigate to="/dashboard" replace/>},
+        {key: 'dashboard', path: '/dashboard', element: <Dashboard/>},
         {key: 'profile', path: '/profile', element: <Profile/>},
         {key: 'settings', path: '/settings', element: <Settings/>},
-        {key: '404', path: '*', element: <Result status="404" title={t('error.404', '页面不存在')}/>}
+        {key: '404', path: '*', element: <NotFound/>}
     ];
 
     // 2. 动态路由（转换成统一结构）

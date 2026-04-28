@@ -1,6 +1,6 @@
 import type {ItemType} from "antd/es/menu/interface";
-import {Avatar, Button, Dropdown, MenuProps, Tooltip, Popconfirm, message} from "antd";
-import {CreditCardOutlined, FontSizeOutlined, GlobalOutlined, LogoutOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined, DesktopOutlined, DeleteOutlined, FullscreenOutlined, FullscreenExitOutlined, SwapOutlined} from "@ant-design/icons";
+import {Avatar, Badge, Button, Drawer, Dropdown, List, MenuProps, Tooltip, Popconfirm, message} from "antd";
+import {BellOutlined, CreditCardOutlined, FontSizeOutlined, GithubOutlined, GlobalOutlined, LogoutOutlined, QuestionCircleOutlined, SearchOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined, DesktopOutlined, DeleteOutlined, FullscreenOutlined, FullscreenExitOutlined, SwapOutlined} from "@ant-design/icons";
 import React, {useEffect, useRef, useState} from 'react';
 import {post} from "@simplepoint/shared/api/methods";
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
@@ -37,7 +37,7 @@ const LogoTitle: React.FC = () => {
 /**
  * 顶部栏左侧：租户切换（显示在“平台”旁边）
  */
-const TenantSwitcherTop: React.FC = () => {
+export const TenantSwitcherTop: React.FC = () => {
   const { t } = useI18n();
   const { data, isFetching, refetch } = useCurrentTenants();
   const [tenantId, setTenantIdState] = useState<string | undefined>(() => getTenantId());
@@ -92,7 +92,7 @@ const TenantSwitcherTop: React.FC = () => {
     <Dropdown
       menu={menu}
       trigger={['click']}
-      placement="bottomLeft"
+      placement="bottomRight"
       destroyOnHidden
       onOpenChange={(open) => {
         if (open) {
@@ -148,6 +148,22 @@ export const logoItem = (navigate: (path: string) => void): ItemType => {
   }
 }
 
+/**
+ * Header Logo 独立组件（不依赖 AntD Menu，避免溢出检测折叠）
+ */
+export const HeaderLogo: React.FC<{ navigate: (path: string) => void }> = ({ navigate }) => (
+  <div
+    className="nb-header-logo"
+    onClick={() => navigate('/')}
+    role="button"
+    tabIndex={0}
+    onKeyDown={e => e.key === 'Enter' && navigate('/')}
+  >
+    <img src="/svg.svg" alt="Logo" style={{ height: '32px', display: 'block', flexShrink: 0 }} />
+    <LogoTitle />
+  </div>
+);
+
 function getGreetingKeyByTime() {
   const hour = new Date().getHours();
   if (hour < 6) return 'greeting.early';
@@ -192,7 +208,7 @@ const SizeButton = React.memo<{ type?: 'text'|'default' }>(({ type = 'default' }
   return (
     <Tooltip title={<span>{t('tooltip.size','切换全局尺寸(小/中/大)')} · <a href="https://github.com/simplepoint1024/open-simplepoint-dashboard-react" target="_blank" rel="noopener noreferrer">GitHub</a></span>}>
       <Button type={type} size="small" icon={<FontSizeOutlined/>} onClick={onToggleSize}
-              style={{width:28,height:28,padding:0,borderRadius:6,margin: type==='text'?0:'0 8px'}}/>
+              style={{width:28,height:28,padding:0,borderRadius:4,margin: type==='text'?0:'0 8px'}}/>
     </Tooltip>
   );
 });
@@ -225,7 +241,7 @@ const ClearCacheButton = React.memo<{ type?: 'text'|'default' }>(({ type = 'defa
       disabled={loading}
     >
       <Button type={type} size="small" icon={<DeleteOutlined/>} loading={loading}
-              style={{width:28,height:28,padding:0,borderRadius:6,margin: type==='text'?0:'0 4px'}}/>
+              style={{width:28,height:28,padding:0,borderRadius:4,margin: type==='text'?0:'0 4px'}}/>
     </Popconfirm>
   );
 });
@@ -254,7 +270,7 @@ const ThemeButton = React.memo<{ compact?: boolean }>(({ compact }) => {
   return (
     <Tooltip title={tip}>
       <Button aria-label="toggle-theme" type={compact ? 'text' : 'default'} size="small" icon={<Icon/>} onClick={toggle}
-              style={{width:28,height:28,padding:0,borderRadius:6,margin: compact ? 0 : '0 4px'}}/>
+              style={{width:28,height:28,padding:0,borderRadius:4,margin: compact ? 0 : '0 4px'}}/>
     </Tooltip>
   );
 });
@@ -293,7 +309,7 @@ const FullscreenButton = React.memo<{ type?: 'text'|'default' }>(({ type = 'defa
   return (
     <Tooltip title={tip}>
       <Button type={type} size="small" icon={<Icon/>} onClick={toggle}
-              style={{width:28,height:28,padding:0,borderRadius:6,margin: type==='text'?0:'0 4px'}}/>
+              style={{width:28,height:28,padding:0,borderRadius:4,margin: type==='text'?0:'0 4px'}}/>
     </Tooltip>
   );
 });
@@ -364,8 +380,101 @@ const LanguageButton: React.FC<{ compact?: boolean }> = ({ compact }) => {
          <Button type={compact ? 'text' : 'default'} size="small" icon={<GlobalOutlined/>}
                  disabled={!hasLanguages}
                  loading={switching}
-                 style={{width: 28, height: 28, padding: 0, borderRadius: 6, margin: compact ? 0 : '0 4px'}}/>
+                 style={{width: 28, height: 28, padding: 0, borderRadius: 4, margin: compact ? 0 : '0 4px'}}/>
       </Dropdown>
+    </Tooltip>
+  );
+};
+
+/**
+ * Header 搜索条（独立组件，直接挂到 Header flex 布局中）
+ */
+export const HeaderSearchBar: React.FC<{ onOpen: () => void }> = ({ onOpen }) => {
+  const { t } = useI18n();
+  const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/i.test(navigator.platform);
+  return (
+    <div className="nb-search-bar" onClick={onOpen} role="button" tabIndex={0}
+      onKeyDown={e => e.key === 'Enter' && onOpen()}
+      aria-label={t('menu.search.placeholder', '搜索菜单…')}
+    >
+      <SearchOutlined className="nb-search-bar-icon" />
+      <span className="nb-search-bar-placeholder">{t('menu.search.placeholder', '搜索菜单…')}</span>
+      <kbd className="nb-search-bar-kbd">{isMac ? '⌘K' : 'Ctrl+K'}</kbd>
+    </div>
+  );
+};
+
+const mockNotifications = [
+  {id: 1, title: '系统更新', desc: 'SimplePoint v2.1.0 已发布', time: '5分钟前', read: false},
+  {id: 2, title: '新用户注册', desc: '有3位新用户待审批', time: '1小时前', read: false},
+  {id: 3, title: '任务完成', desc: '数据同步任务已完成', time: '2小时前', read: true},
+];
+
+const NotificationButton: React.FC = () => {
+  const {t} = useI18n();
+  const [open, setOpen] = useState(false);
+  const [notifications, setNotifications] = useState(mockNotifications);
+  const unread = notifications.filter(n => !n.read).length;
+
+  const markAllRead = () => setNotifications(prev => prev.map(n => ({...n, read: true})));
+
+  return (
+    <>
+      <Tooltip title={t('nav.notifications', '通知')}>
+        <Badge count={unread} size="small" offset={[-2, 2]}>
+          <Button type="text" icon={<BellOutlined />} onClick={() => setOpen(true)} />
+        </Badge>
+      </Tooltip>
+      <Drawer
+        title={
+          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+            <span>{t('nav.notifications','通知中心')}</span>
+            {unread > 0 && (
+              <Button type="link" size="small" onClick={markAllRead}>
+                {t('nav.markAllRead','全部已读')}
+              </Button>
+            )}
+          </div>
+        }
+        open={open}
+        onClose={() => setOpen(false)}
+        width={360}
+        styles={{body: {padding: 0}}}
+      >
+        <List
+          dataSource={notifications}
+          renderItem={item => (
+            <List.Item
+              style={{
+                padding: '12px 16px',
+                background: item.read ? 'transparent' : 'rgba(22,119,255,0.04)',
+                borderLeft: item.read ? '3px solid transparent' : '3px solid #1677ff',
+                cursor: 'pointer',
+              }}
+              onClick={() => setNotifications(prev => prev.map(n => n.id === item.id ? {...n, read: true} : n))}
+            >
+              <List.Item.Meta
+                title={<span style={{fontSize:13, fontWeight: item.read ? 400 : 600}}>{item.title}</span>}
+                description={
+                  <div>
+                    <div style={{fontSize:12, color:'rgba(0,0,0,0.65)'}}>{item.desc}</div>
+                    <div style={{fontSize:11, color:'rgba(0,0,0,0.35)', marginTop:2}}>{item.time}</div>
+                  </div>
+                }
+              />
+            </List.Item>
+          )}
+        />
+      </Drawer>
+    </>
+  );
+};
+
+const ShortcutsButton: React.FC = () => {
+  const {t} = useI18n();
+  return (
+    <Tooltip title={t('nav.shortcuts', '快捷键 (?)')}>
+      <Button type="text" icon={<QuestionCircleOutlined />} onClick={() => window.dispatchEvent(new CustomEvent('sp-open-shortcuts'))} />
     </Tooltip>
   );
 };
@@ -379,6 +488,15 @@ export const toolsSwitcherGroupItem = (): ItemType => {
     style: { paddingInline: 4, minWidth: 120, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' },
     label: (
       <div className="nb-tools-item">
+        <NotificationButton />
+        <ShortcutsButton />
+        <Tooltip title="GitHub">
+          <Button
+            type="text"
+            icon={<GithubOutlined />}
+            onClick={() => window.open('https://github.com/simplepoint1024/open-simplepoint-dashboard', '_blank', 'noopener,noreferrer')}
+          />
+        </Tooltip>
         <LanguageButton compact/>
         <ThemeButton compact/>
         <SizeButton type='text'/>

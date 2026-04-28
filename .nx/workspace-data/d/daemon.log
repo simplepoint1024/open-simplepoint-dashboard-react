@@ -1,0 +1,1821 @@
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.587Z - Started listening on: /tmp/9333a73d1b2eb9be5d59/d.sock
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.588Z - [WATCHER]: Subscribed to changes within: /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react (native)
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.591Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.591Z - Established a connection. Number of open connections: 2
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.592Z - Closed a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.592Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.599Z - Time taken for 'loadSpecifiedNxPlugins' 0.49884199999999623ms
+Time for 'plugin worker 329573 code loading' 2.1969079999999988
+Time for 'plugin worker 329574 code loading' 2.0808230000000005
+Time for 'plugin worker 329575 code loading' 2.019202
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.670Z - Time taken for 'Load Nx Plugin: /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/src/plugins/package-json' 77.648849ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.675Z - Time taken for 'Load Nx Plugin: /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/src/plugins/js' 82.178899ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.677Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.677Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.677Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.678Z - No files changed, but no in-memory cached project graph found. Recomputing it...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.681Z - Time taken for 'loadDefaultNxPlugins' 84.308828ms
+Time for 'nx/core/project-json:createNodes' 0.1343999999999994
+Time for 'nx/core/package-json:createNodes' 13.85637100000001
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 27.77070300000001
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.720Z - Time taken for 'build-project-configs' 33.60421699999998ms
+Time for 'build typescript dependencies' 1.5352749999999844
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.728Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.730Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.730Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.730Z - Time taken for 'total for creating and serializing project graph' 137.632763ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.730Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.731Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 138. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.733Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.733Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.733Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.733Z - Time taken for 'preTasksExecution' 0.17733599999999683ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.771Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.772Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 336.788µs - processed 1 tasks (setup: 322.65µs, parallel_planning: 12.261µs)
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Adding "7663861978715868291" (".gitignore") to hash
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Adding "5264400301757922765" ("nx.json") to hash
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Hash Value: "10678209182613987231"
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 930.757µs - processed 1 plans (setup: 73.646µs, hashing: 856.092µs, assembly: 27.818µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.775Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.775Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.775Z - Handled HASH_TASKS. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:29.775Z - Time taken for 'write cache' 0.9905709999999885ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:32.700Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:32.700Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:32.700Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.761Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.863Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.863Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.863Z - Handled RECORD_OUTPUTS_HASH. Handling time: 8. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.877Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.877Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.877Z - Handled RECORD_TASK_RUNS. Handling time: 11. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.878Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.878Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.878Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+Was not able to require.resolve module nx/src/utils/app-root from the following paths: /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules. This may be expected.
+Was not able to require.resolve module nx/src/tasks-runner/process-metrics-service from the following paths: /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules. This may be expected.
+Was not able to require.resolve module nx/src/tasks-runner/task-io-service from the following paths: /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules. This may be expected.
+Was not able to require.resolve module nx/src/utils/app-root from the following paths: /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/node_modules,/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules. This may be expected.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.945Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.945Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.945Z - Handled PROCESS_IN_BACKGROUND. Handling time: 56. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.945Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.945Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.946Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/host:build"
+]
+
+(node:329456) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.971Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.971Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.971Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.971Z - Time taken for 'postTasksExecution' 0.07576699999935954ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:34.976Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.260Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.261Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.262Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.263Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.263Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.264Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.264Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.265Z - Time taken for 'total for creating and serializing project graph' 1.4651399999993373ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.265Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.265Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.267Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.267Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.267Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.267Z - Time taken for 'preTasksExecution' 0.043153999999958614ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.277Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.278Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 354.268µs - processed 1 tasks (setup: 341.946µs, parallel_planning: 10.86µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 643.471µs - processed 1 plans (setup: 72.769µs, hashing: 569.636µs, assembly: 19.167µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.279Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.279Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.279Z - Handled HASH_TASKS. Handling time: 2. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.279Z - Time taken for 'write cache' 0.959632999999485ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.400Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.400Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.400Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 1. Response time: 0.
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:35.450Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:37.220Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:38.837Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:38.889Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.169Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.233Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.498Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.626Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.626Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.626Z - Handled RECORD_OUTPUTS_HASH. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.637Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.637Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.637Z - Handled RECORD_TASK_RUNS. Handling time: 9. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.638Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.638Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.638Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.654Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.654Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.654Z - Handled PROCESS_IN_BACKGROUND. Handling time: 7. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.655Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.655Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.655Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/common:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.658Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.658Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.658Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.658Z - Time taken for 'postTasksExecution' 0.06937400000060734ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.664Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.942Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.942Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.943Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.943Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.943Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.945Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.945Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.945Z - Time taken for 'total for creating and serializing project graph' 1.741559000000052ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.946Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.946Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.948Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.948Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.948Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.948Z - Time taken for 'preTasksExecution' 0.04169300000103249ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.958Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.959Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 359.034µs - processed 1 tasks (setup: 344.547µs, parallel_planning: 12.638µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 326.146µs - processed 1 plans (setup: 69.331µs, hashing: 255.012µs, assembly: 20.97µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.960Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.960Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.960Z - Handled HASH_TASKS. Handling time: 2. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:40.960Z - Time taken for 'write cache' 0.9607750000013766ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:41.063Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:41.063Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:41.063Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 1. Response time: 0.
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:41.136Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:42.338Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:43.621Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:43.674Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:44.684Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:44.741Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:44.973Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.078Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.078Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.078Z - Handled RECORD_OUTPUTS_HASH. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.086Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.086Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.086Z - Handled RECORD_TASK_RUNS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.086Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.087Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.087Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.101Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.101Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.101Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.102Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.102Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.102Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/audit:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.105Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.105Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.105Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.105Z - Time taken for 'postTasksExecution' 0.07407299999977113ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.110Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.381Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.382Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.382Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.383Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.383Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.384Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.384Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.384Z - Time taken for 'total for creating and serializing project graph' 1.2037559999989753ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.388Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.388Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 4.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.390Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.390Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.390Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.390Z - Time taken for 'preTasksExecution' 0.04583199999979115ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.400Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.401Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 442.054µs - processed 1 tasks (setup: 428.167µs, parallel_planning: 12.215µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 495.502µs - processed 1 plans (setup: 78.47µs, hashing: 415.949µs, assembly: 20.909µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.402Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.402Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.402Z - Handled HASH_TASKS. Handling time: 2. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.402Z - Time taken for 'write cache' 1.0142290000003413ms
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.441Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.503Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.503Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:45.503Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:46.776Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:48.381Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:48.432Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:49.637Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:49.698Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:49.947Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.071Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.071Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.072Z - Handled RECORD_OUTPUTS_HASH. Handling time: 4. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.079Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.079Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.079Z - Handled RECORD_TASK_RUNS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.079Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.079Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.079Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.096Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.096Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.096Z - Handled PROCESS_IN_BACKGROUND. Handling time: 7. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.097Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.097Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.097Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/dna:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.100Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.100Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.100Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.100Z - Time taken for 'postTasksExecution' 0.1877569999996922ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.105Z - Closed a connection. Number of open connections: 0
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:48:50.441Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:48.739Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:48.739Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:48.839Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:48.839Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:48.839Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:48.841Z - Time taken for 'hash changed files from watcher' 0.1784449999977369ms
+Time for 'nx/core/project-json:createNodes' 0.0922430000064196
+Time for 'nx/core/package-json:createNodes' 1.1529659999941941
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.2499920000118436
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:48.846Z - Time taken for 'build-project-configs' 3.4198539999924833ms
+Time for 'build typescript dependencies' 0.43909899999562185
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:48.851Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:48.851Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:48.851Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:48.851Z - Time taken for 'total execution time for createProjectGraph()' 6.583804000008968ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:54.959Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:54.959Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:55.159Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:55.159Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:55.159Z - [REQUEST]: 
+Time for 'nx/core/project-json:createNodes' 0.056104000002960674
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:55.160Z - Time taken for 'hash changed files from watcher' 0.16202800000610296ms
+Time for 'nx/core/package-json:createNodes' 1.0718550000019604
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.2349110000068322
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:55.166Z - Time taken for 'build-project-configs' 3.276350000000093ms
+Time for 'build typescript dependencies' 0.3876250000030268
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:55.170Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:55.171Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:55.171Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:49:55.171Z - Time taken for 'total execution time for createProjectGraph()' 6.477343000005931ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:01.060Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:01.060Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:01.460Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:01.460Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:01.460Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:01.462Z - Time taken for 'hash changed files from watcher' 0.1559889999916777ms
+Time for 'nx/core/project-json:createNodes' 0.0545259999926202
+Time for 'nx/core/package-json:createNodes' 0.9604850000032457
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.3796049999946263
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:01.466Z - Time taken for 'build-project-configs' 3.1072540000022855ms
+Time for 'build typescript dependencies' 0.37030499998945743
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:01.470Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:01.471Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:01.471Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:01.471Z - Time taken for 'total execution time for createProjectGraph()' 5.076721999997972ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:43.128Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:43.128Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:43.929Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:43.929Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:43.929Z - [REQUEST]: 
+Time for 'nx/core/project-json:createNodes' 0.03814200000488199
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:43.931Z - Time taken for 'hash changed files from watcher' 0.2309079999977257ms
+Time for 'nx/core/package-json:createNodes' 0.9300430000002962
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.3271249999816064
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:43.936Z - Time taken for 'build-project-configs' 3.3438010000099894ms
+Time for 'build typescript dependencies' 0.9896189999999478
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:43.942Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:43.942Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:43.942Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:50:43.942Z - Time taken for 'total execution time for createProjectGraph()' 7.001764999993611ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:32.070Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:32.070Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:33.670Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:33.670Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:33.670Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:33.672Z - Time taken for 'hash changed files from watcher' 0.1577019999967888ms
+Time for 'nx/core/project-json:createNodes' 0.045366000005742535
+Time for 'nx/core/package-json:createNodes' 0.845590999990236
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1920690000115428
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:33.676Z - Time taken for 'build-project-configs' 2.661118999996688ms
+Time for 'build typescript dependencies' 0.3878079999994952
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:33.681Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:33.681Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:33.681Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:33.681Z - Time taken for 'total execution time for createProjectGraph()' 5.8954199999861885ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:44.866Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:44.866Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:48.067Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:48.067Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:48.067Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:48.068Z - Time taken for 'hash changed files from watcher' 0.1591259999840986ms
+Time for 'nx/core/project-json:createNodes' 0.04697900000610389
+Time for 'nx/core/package-json:createNodes' 1.227627999993274
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.3007809999980964
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:48.073Z - Time taken for 'build-project-configs' 2.9777590000012424ms
+Time for 'build typescript dependencies' 0.37730500000179745
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:48.078Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:48.078Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:48.078Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:48.078Z - Time taken for 'total execution time for createProjectGraph()' 6.074655000003986ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:57.209Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:51:57.209Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:03.610Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:03.610Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:03.610Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:03.611Z - Time taken for 'hash changed files from watcher' 0.15642499999376014ms
+Time for 'nx/core/project-json:createNodes' 0.05254400000558235
+Time for 'nx/core/package-json:createNodes' 0.7754440000280738
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.282459000009112
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:03.616Z - Time taken for 'build-project-configs' 2.8697160000156146ms
+Time for 'build typescript dependencies' 1.1177000000025146
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:03.622Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:03.622Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:03.622Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:03.622Z - Time taken for 'total execution time for createProjectGraph()' 7.478632000013022ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:08.839Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:08.839Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:15.239Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:15.239Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:15.239Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:15.241Z - Time taken for 'hash changed files from watcher' 0.16973999998299405ms
+Time for 'nx/core/project-json:createNodes' 0.0420940000039991
+Time for 'nx/core/package-json:createNodes' 0.827692000020761
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1692629999888595
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:15.245Z - Time taken for 'build-project-configs' 2.776215999998385ms
+Time for 'build typescript dependencies' 0.38847000000532717
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:15.251Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:15.251Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:15.251Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:15.251Z - Time taken for 'total execution time for createProjectGraph()' 6.126322000025539ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:20.786Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:20.786Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:27.187Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:27.188Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:27.188Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:27.189Z - Time taken for 'hash changed files from watcher' 0.15229600001475774ms
+Time for 'nx/core/project-json:createNodes' 0.04268600000068545
+Time for 'nx/core/package-json:createNodes' 0.8733140000258572
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.26161200000206
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:27.194Z - Time taken for 'build-project-configs' 3.0672150000173133ms
+Time for 'build typescript dependencies' 0.6615750000055414
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:27.199Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:27.199Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:27.199Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:27.199Z - Time taken for 'total execution time for createProjectGraph()' 5.979997999995248ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:31.828Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:31.829Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:37.570Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:37.570Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:38.229Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:38.229Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:38.229Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:38.231Z - Time taken for 'hash changed files from watcher' 0.18989000000874512ms
+Time for 'nx/core/project-json:createNodes' 0.04555100001743995
+Time for 'nx/core/package-json:createNodes' 1.4097080000210553
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.6825860000099055
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:38.237Z - Time taken for 'build-project-configs' 3.8652120000042487ms
+Time for 'build typescript dependencies' 0.3481020000181161
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:38.241Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:38.241Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:38.241Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:38.241Z - Time taken for 'total execution time for createProjectGraph()' 5.66220799999428ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:55.384Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:52:55.385Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:01.785Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:01.785Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:01.785Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:01.787Z - Time taken for 'hash changed files from watcher' 0.3253360000089742ms
+Time for 'nx/core/project-json:createNodes' 0.05153599998448044
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.3430710000102408
+Time for 'nx/core/package-json:createNodes' 1.5107030000071973
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:01.791Z - Time taken for 'build-project-configs' 3.0026480000233278ms
+Time for 'build typescript dependencies' 0.8046580000082031
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:01.795Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:01.795Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:01.795Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:01.796Z - Time taken for 'total execution time for createProjectGraph()' 4.829988999990746ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:06.571Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:06.571Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:12.972Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:12.972Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:12.972Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:12.974Z - Time taken for 'hash changed files from watcher' 0.2724729999899864ms
+Time for 'nx/core/project-json:createNodes' 0.04157499998109415
+Time for 'nx/core/package-json:createNodes' 1.5592969999997877
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.6776630000094883
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:12.981Z - Time taken for 'build-project-configs' 4.480298999988008ms
+Time for 'build typescript dependencies' 0.5269919999991544
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:12.986Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:12.986Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:12.986Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:12.986Z - Time taken for 'total execution time for createProjectGraph()' 6.871123999997508ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:13.357Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:13.357Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:18.967Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:18.967Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:19.756Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:19.756Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:19.756Z - [REQUEST]: 
+Time for 'nx/core/project-json:createNodes' 0.04494599997997284
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:19.758Z - Time taken for 'hash changed files from watcher' 0.2043239999911748ms
+Time for 'nx/core/package-json:createNodes' 1.3812310000066645
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.778619000047911
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:19.764Z - Time taken for 'build-project-configs' 4.107114000013098ms
+Time for 'build typescript dependencies' 1.1827760000014678
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:19.769Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:19.769Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:19.769Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:19.769Z - Time taken for 'total execution time for createProjectGraph()' 6.956880000012461ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:24.695Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:24.696Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:31.096Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:31.096Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:31.096Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:31.097Z - Time taken for 'hash changed files from watcher' 0.29849999997531995ms
+Time for 'nx/core/project-json:createNodes' 0.04414100002031773
+Time for 'nx/core/package-json:createNodes' 1.365691999963019
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.6825729999691248
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:31.103Z - Time taken for 'build-project-configs' 3.8050379999913275ms
+Time for 'build typescript dependencies' 0.35401999996975064
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:31.107Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:31.107Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:31.107Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:31.107Z - Time taken for 'total execution time for createProjectGraph()' 5.055961999983992ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:31.176Z - [WATCHER]: apps/simplepoint-host/src/fetches/user.ts was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:31.176Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:37.575Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:37.575Z - [REQUEST]: apps/simplepoint-host/src/fetches/user.ts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:37.575Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:37.576Z - Time taken for 'hash changed files from watcher' 0.15608500002417713ms
+Time for 'nx/core/project-json:createNodes' 0.04183800000464544
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.170105000026524
+Time for 'nx/core/package-json:createNodes' 1.2685819999896921
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:37.580Z - Time taken for 'build-project-configs' 2.801608000008855ms
+Time for 'build typescript dependencies' 0.3291650000028312
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:37.585Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:37.585Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:37.585Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:37.585Z - Time taken for 'total execution time for createProjectGraph()' 5.64346300001489ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:42.817Z - [WATCHER]: apps/simplepoint-host/src/fetches/user.ts was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:42.817Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:49.218Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:49.218Z - [REQUEST]: apps/simplepoint-host/src/fetches/user.ts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:49.218Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:49.220Z - Time taken for 'hash changed files from watcher' 0.14581999997608364ms
+Time for 'nx/core/project-json:createNodes' 0.04199900000821799
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.154500000004191
+Time for 'nx/core/package-json:createNodes' 1.5289479999919422
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:49.224Z - Time taken for 'build-project-configs' 2.6531369999866ms
+Time for 'build typescript dependencies' 0.35011699999449775
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:49.228Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:49.228Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:49.228Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:49.228Z - Time taken for 'total execution time for createProjectGraph()' 5.538199000002351ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:54.046Z - [WATCHER]: apps/simplepoint-host/src/fetches/user.ts was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:53:54.046Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:00.446Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:00.446Z - [REQUEST]: apps/simplepoint-host/src/fetches/user.ts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:00.446Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:00.447Z - Time taken for 'hash changed files from watcher' 0.1890770000172779ms
+Time for 'nx/core/project-json:createNodes' 0.04263300000457093
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.2329630000167526
+Time for 'nx/core/package-json:createNodes' 1.3884269999689423
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:00.452Z - Time taken for 'build-project-configs' 3.3563239999930374ms
+Time for 'build typescript dependencies' 0.538875000027474
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:00.457Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:00.457Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:00.457Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:00.457Z - Time taken for 'total execution time for createProjectGraph()' 5.374720000021625ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:06.257Z - [WATCHER]: apps/simplepoint-host/src/fetches/user.ts was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:06.257Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:11.955Z - [WATCHER]: apps/simplepoint-host/src/fetches/tenants.ts was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:11.955Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:12.657Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:12.658Z - [REQUEST]: apps/simplepoint-host/src/fetches/user.ts,apps/simplepoint-host/src/fetches/tenants.ts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:12.658Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:12.659Z - Time taken for 'hash changed files from watcher' 0.3555540000088513ms
+Time for 'nx/core/project-json:createNodes' 0.03969800000777468
+Time for 'nx/core/package-json:createNodes' 1.3851729999878444
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.9388779999571852
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:12.665Z - Time taken for 'build-project-configs' 4.289173999975901ms
+Time for 'build typescript dependencies' 0.883507999998983
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:12.670Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:12.671Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:12.671Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:12.671Z - Time taken for 'total execution time for createProjectGraph()' 6.541731000004802ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:23.864Z - [WATCHER]: apps/simplepoint-host/src/fetches/tenants.ts was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:23.864Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:30.121Z - [WATCHER]: apps/simplepoint-host/src/fetches/tenants.ts was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:30.121Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:30.265Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:30.265Z - [REQUEST]: apps/simplepoint-host/src/fetches/tenants.ts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:30.265Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:30.266Z - Time taken for 'hash changed files from watcher' 0.1926439999951981ms
+Time for 'nx/core/project-json:createNodes' 0.04336099995998666
+Time for 'nx/core/package-json:createNodes' 1.2789169999887235
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.6726840000483207
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:30.271Z - Time taken for 'build-project-configs' 3.816446000011638ms
+Time for 'build typescript dependencies' 0.4365690000122413
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:30.277Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:30.277Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:30.277Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:54:30.277Z - Time taken for 'total execution time for createProjectGraph()' 5.9838330000056885ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:55:16.466Z - [WATCHER]: apps/simplepoint-host/src/components/ErrorBoundary.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:55:16.466Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:55:22.867Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:55:22.867Z - [REQUEST]: apps/simplepoint-host/src/components/ErrorBoundary.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:55:22.867Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:55:22.868Z - Time taken for 'hash changed files from watcher' 0.16531999997096136ms
+Time for 'nx/core/project-json:createNodes' 0.04140599997481331
+Time for 'nx/core/package-json:createNodes' 1.3421180000295863
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.2161859999760054
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:55:22.873Z - Time taken for 'build-project-configs' 3.6106889999937266ms
+Time for 'build typescript dependencies' 0.7852369999745861
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:55:22.877Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:55:22.877Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:55:22.877Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:55:22.877Z - Time taken for 'total execution time for createProjectGraph()' 4.5860930000199005ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:00.289Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:00.290Z - [WATCHER]: apps/simplepoint-host/src/utils/parseComponent.ts was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:06.690Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:06.690Z - [REQUEST]: apps/simplepoint-host/src/utils/parseComponent.ts
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:06.690Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:06.692Z - Time taken for 'hash changed files from watcher' 0.1555200000293553ms
+Time for 'nx/core/project-json:createNodes' 0.040151999972295016
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1518249999498948
+Time for 'nx/core/package-json:createNodes' 1.4709070000099018
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:06.697Z - Time taken for 'build-project-configs' 3.091705000028014ms
+Time for 'build typescript dependencies' 0.4337550000054762
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:06.703Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:06.703Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:06.703Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:06.703Z - Time taken for 'total execution time for createProjectGraph()' 7.278196000028402ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:08.948Z - [WATCHER]: apps/simplepoint-host/src/components/withBoundaryAndSuspense.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:08.948Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:15.349Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:15.349Z - [REQUEST]: apps/simplepoint-host/src/components/withBoundaryAndSuspense.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:15.349Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:15.351Z - Time taken for 'hash changed files from watcher' 0.15201499999966472ms
+Time for 'nx/core/project-json:createNodes' 0.049630000023171306
+Time for 'nx/core/package-json:createNodes' 1.4203520000446588
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.7908380000153556
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:15.356Z - Time taken for 'build-project-configs' 3.3657250000396743ms
+Time for 'build typescript dependencies' 0.6779220000025816
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:15.359Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:15.360Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:15.360Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:15.360Z - Time taken for 'total execution time for createProjectGraph()' 4.555238000000827ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:20.002Z - [WATCHER]: apps/simplepoint-host/src/components/RouteRenderer.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:20.002Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:26.401Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:26.401Z - [REQUEST]: apps/simplepoint-host/src/components/RouteRenderer.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:26.401Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:26.403Z - Time taken for 'hash changed files from watcher' 0.14580499997828156ms
+Time for 'nx/core/project-json:createNodes' 0.05836900003487244
+Time for 'nx/core/package-json:createNodes' 0.7128009999869391
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1380370000260882
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:26.406Z - Time taken for 'build-project-configs' 2.593981999962125ms
+Time for 'build typescript dependencies' 0.3137880000285804
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:26.410Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:26.410Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:26.410Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:26.410Z - Time taken for 'total execution time for createProjectGraph()' 4.442734999989625ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:27.381Z - [WATCHER]: apps/simplepoint-host/src/components/RouteRenderer.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:27.381Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:33.781Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:33.781Z - [REQUEST]: apps/simplepoint-host/src/components/RouteRenderer.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:33.781Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:33.782Z - Time taken for 'hash changed files from watcher' 0.15211700001964346ms
+Time for 'nx/core/project-json:createNodes' 0.03977199998917058
+Time for 'nx/core/package-json:createNodes' 0.7849549999809824
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1732800000463612
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:33.786Z - Time taken for 'build-project-configs' 2.766711000003852ms
+Time for 'build typescript dependencies' 0.7511320000048727
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:33.790Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:33.790Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:33.790Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:33.790Z - Time taken for 'total execution time for createProjectGraph()' 4.363194000034127ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:46.423Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:46.424Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:52.824Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:52.824Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:52.824Z - [REQUEST]: 
+Time for 'nx/core/project-json:createNodes' 0.03001899999799207
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:52.826Z - Time taken for 'hash changed files from watcher' 0.16216499998699874ms
+Time for 'nx/core/package-json:createNodes' 0.6651409999467432
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.173512999957893
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:52.830Z - Time taken for 'build-project-configs' 2.6856840000255033ms
+Time for 'build typescript dependencies' 0.32321000000229105
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:52.834Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:52.834Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:52.834Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:52.834Z - Time taken for 'total execution time for createProjectGraph()' 5.289461000007577ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:58.492Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:56:58.492Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:04.346Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:04.346Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:04.892Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:04.892Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:04.892Z - [REQUEST]: 
+Time for 'nx/core/project-json:createNodes' 0.040084000036586076
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:04.894Z - Time taken for 'hash changed files from watcher' 0.19227699999464676ms
+Time for 'nx/core/package-json:createNodes' 0.8611600000294857
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1808429999509826
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:04.898Z - Time taken for 'build-project-configs' 2.6686550000449643ms
+Time for 'build typescript dependencies' 0.6445499999681488
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:04.902Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:04.902Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:04.902Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:04.902Z - Time taken for 'total execution time for createProjectGraph()' 5.111495000019204ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:16.119Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:16.120Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:22.521Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:22.521Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:22.521Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:22.523Z - Time taken for 'hash changed files from watcher' 0.15833900007419288ms
+Time for 'nx/core/project-json:createNodes' 0.03609299997333437
+Time for 'nx/core/package-json:createNodes' 0.6454219999723136
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.3411489999853075
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:22.528Z - Time taken for 'build-project-configs' 3.021515999920666ms
+Time for 'build typescript dependencies' 0.3316449999110773
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:22.532Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:22.533Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:22.533Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:22.533Z - Time taken for 'total execution time for createProjectGraph()' 5.596350000007078ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:29.721Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:29.721Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:36.122Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:36.122Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:36.122Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:36.123Z - Time taken for 'hash changed files from watcher' 0.16026900010183454ms
+Time for 'nx/core/project-json:createNodes' 0.02879200002644211
+Time for 'nx/core/package-json:createNodes' 1.2089449999621138
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.2031829999759793
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:36.127Z - Time taken for 'build-project-configs' 2.6513609999092296ms
+Time for 'build typescript dependencies' 0.4763570000650361
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:36.131Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:36.131Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:36.131Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:36.131Z - Time taken for 'total execution time for createProjectGraph()' 4.713504999992438ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:43.373Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:43.373Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:49.774Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:49.774Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:49.774Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:49.776Z - Time taken for 'hash changed files from watcher' 0.15020999999251217ms
+Time for 'nx/core/project-json:createNodes' 0.031136999954469502
+Time for 'nx/core/package-json:createNodes' 1.1441170000471175
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1820499999448657
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:49.780Z - Time taken for 'build-project-configs' 2.9959190000081435ms
+Time for 'build typescript dependencies' 0.32985900004860014
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:49.784Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:49.784Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:49.784Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:49.784Z - Time taken for 'total execution time for createProjectGraph()' 4.8326060000108555ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:56.343Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:57:56.343Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:02.582Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:02.583Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:02.743Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:02.743Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:02.743Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:02.745Z - Time taken for 'hash changed files from watcher' 0.15032100002281368ms
+Time for 'nx/core/project-json:createNodes' 0.04326099995523691
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1534969999920577
+Time for 'nx/core/package-json:createNodes' 1.207116000005044
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:02.749Z - Time taken for 'build-project-configs' 2.769861999899149ms
+Time for 'build typescript dependencies' 0.7930540000088513
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:02.754Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:02.754Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:02.754Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:02.754Z - Time taken for 'total execution time for createProjectGraph()' 5.077545000007376ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:14.290Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:14.290Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:20.691Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:20.691Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:20.691Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:20.692Z - Time taken for 'hash changed files from watcher' 0.17376799997873604ms
+Time for 'nx/core/project-json:createNodes' 0.04064400005154312
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1529459999874234
+Time for 'nx/core/package-json:createNodes' 1.3933970000362024
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:20.696Z - Time taken for 'build-project-configs' 2.554158000042662ms
+Time for 'build typescript dependencies' 0.3173279999755323
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:20.700Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:20.700Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:20.700Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:20.701Z - Time taken for 'total execution time for createProjectGraph()' 5.6484599999384955ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:35.603Z - [WATCHER]: apps/simplepoint-host/src/components/RouteRenderer.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:35.603Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:42.003Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:42.003Z - [REQUEST]: apps/simplepoint-host/src/components/RouteRenderer.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:42.003Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:42.004Z - Time taken for 'hash changed files from watcher' 0.15477800008375198ms
+Time for 'nx/core/project-json:createNodes' 0.04214100004173815
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.142039000056684
+Time for 'nx/core/package-json:createNodes' 1.2170870000263676
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:42.009Z - Time taken for 'build-project-configs' 3.0565829999977723ms
+Time for 'build typescript dependencies' 0.7559650000184774
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:42.012Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:42.012Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:42.012Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:58:42.012Z - Time taken for 'total execution time for createProjectGraph()' 4.530206999974325ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:59:23.754Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:59:23.754Z - [WATCHER]: apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:59:30.155Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:59:30.155Z - [REQUEST]: apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:59:30.155Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:59:30.157Z - Time taken for 'hash changed files from watcher' 0.1589200000744313ms
+Time for 'nx/core/project-json:createNodes' 0.05958499992266297
+Time for 'nx/core/package-json:createNodes' 0.6759730000048876
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.147687999997288
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:59:30.161Z - Time taken for 'build-project-configs' 2.5131169999949634ms
+Time for 'build typescript dependencies' 0.3210289999842644
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:59:30.165Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:59:30.165Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:59:30.165Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T09:59:30.165Z - Time taken for 'total execution time for createProjectGraph()' 4.504408000037074ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:31.005Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:31.005Z - [WATCHER]: 0 file(s) created or restored, 2 file(s) modified, 0 file(s) deleted
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:37.405Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:37.405Z - [REQUEST]: apps/simplepoint-host/src/i18n/Text.tsx,apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:37.405Z - [REQUEST]: 
+Time for 'nx/core/project-json:createNodes' 0.04124299995601177
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:37.407Z - Time taken for 'hash changed files from watcher' 0.3392349999630824ms
+Time for 'nx/core/package-json:createNodes' 0.6753299999982119
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1653789998963475
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:37.410Z - Time taken for 'build-project-configs' 2.6750089999986812ms
+Time for 'build typescript dependencies' 0.7635749999899417
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:37.415Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:37.415Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:37.415Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:37.415Z - Time taken for 'total execution time for createProjectGraph()' 5.289529999950901ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:42.757Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:42.757Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:49.157Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:49.157Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:49.157Z - [REQUEST]: 
+Time for 'nx/core/project-json:createNodes' 0.039262000005692244
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:49.159Z - Time taken for 'hash changed files from watcher' 0.1382320000557229ms
+Time for 'nx/core/package-json:createNodes' 0.6550979999592528
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1818379999604076
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:49.162Z - Time taken for 'build-project-configs' 2.7134369999403134ms
+Time for 'build typescript dependencies' 0.29955899994820356
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:49.167Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:49.167Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:49.167Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:49.167Z - Time taken for 'total execution time for createProjectGraph()' 5.534265000023879ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:53.027Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:53.027Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:59.429Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:59.429Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:59.429Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:59.430Z - Time taken for 'hash changed files from watcher' 0.15619600005447865ms
+Time for 'nx/core/project-json:createNodes' 0.039228999987244606
+Time for 'nx/core/package-json:createNodes' 0.957524000084959
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1670259999809787
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:59.434Z - Time taken for 'build-project-configs' 2.5487459999276325ms
+Time for 'build typescript dependencies' 0.6237180000171065
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:59.438Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:59.438Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:59.438Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:00:59.438Z - Time taken for 'total execution time for createProjectGraph()' 4.996596000040881ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:02.713Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:02.713Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:09.114Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:09.114Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:09.114Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:09.116Z - Time taken for 'hash changed files from watcher' 0.15547200001310557ms
+Time for 'nx/core/project-json:createNodes' 0.041305000078864396
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1474269999889657
+Time for 'nx/core/package-json:createNodes' 1.4178460000548512
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:09.120Z - Time taken for 'build-project-configs' 2.780919999931939ms
+Time for 'build typescript dependencies' 0.30332399997860193
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:09.124Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:09.124Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:09.124Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:09.124Z - Time taken for 'total execution time for createProjectGraph()' 5.285553999943659ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:18.999Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:18.999Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:25.399Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:25.399Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:25.399Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:25.400Z - Time taken for 'hash changed files from watcher' 0.14813700004015118ms
+Time for 'nx/core/project-json:createNodes' 0.04473399999551475
+Time for 'nx/core/package-json:createNodes' 1.1714350000256673
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.882482000044547
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:25.407Z - Time taken for 'build-project-configs' 4.087713000015356ms
+Time for 'build typescript dependencies' 0.9180880000349134
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:25.413Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:25.413Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:25.413Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:01:25.413Z - Time taken for 'total execution time for createProjectGraph()' 7.231688000028953ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.588Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.589Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.590Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.590Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.590Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.591Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.591Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.592Z - Time taken for 'total for creating and serializing project graph' 1.1232780000427738ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.592Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.592Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.594Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.594Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.594Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.594Z - Time taken for 'preTasksExecution' 0.033767999964766204ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.604Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.605Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 343.557µs - processed 1 tasks (setup: 330.303µs, parallel_planning: 11.678µs)
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Adding "7663861978715868291" (".gitignore") to hash
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Adding "5264400301757922765" ("nx.json") to hash
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Hash Value: "10678209182613987231"
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 464.525µs - processed 1 plans (setup: 73.118µs, hashing: 390.044µs, assembly: 16.89µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.607Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.607Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.607Z - Handled HASH_TASKS. Handling time: 3. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.607Z - Time taken for 'write cache' 0.9437380000017583ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.708Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.708Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:11.708Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.387Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.494Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.494Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.494Z - Handled RECORD_OUTPUTS_HASH. Handling time: 8. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.502Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.502Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.502Z - Handled RECORD_TASK_RUNS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.503Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.503Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.503Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.520Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.521Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.521Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.522Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.522Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.522Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/host:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.526Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.526Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.526Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.526Z - Time taken for 'postTasksExecution' 0.06132199999410659ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.532Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.815Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.815Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.816Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.816Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.816Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.817Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.818Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.818Z - Time taken for 'total for creating and serializing project graph' 1.167206000071019ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.818Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.818Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.820Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.820Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.820Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.820Z - Time taken for 'preTasksExecution' 0.03482199995778501ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.830Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.831Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 444.319µs - processed 1 tasks (setup: 428.934µs, parallel_planning: 13.136µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 347.674µs - processed 1 plans (setup: 72.888µs, hashing: 273.838µs, assembly: 19.058µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.832Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.832Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.832Z - Handled HASH_TASKS. Handling time: 2. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.832Z - Time taken for 'write cache' 1.019882999942638ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.949Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.949Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:13.949Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:14.014Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:15.208Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:16.807Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:16.862Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.102Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.167Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.425Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.553Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.553Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.554Z - Handled RECORD_OUTPUTS_HASH. Handling time: 6. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.561Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.561Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.561Z - Handled RECORD_TASK_RUNS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.562Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.562Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.562Z - Handled GET_FLAKY_TASKS. Handling time: 1. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.578Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.578Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.578Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.580Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.580Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.580Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/common:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.583Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.583Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.583Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.583Z - Time taken for 'postTasksExecution' 0.05462199996691197ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.589Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.868Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.869Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.870Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.870Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.870Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.871Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.871Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.872Z - Time taken for 'total for creating and serializing project graph' 1.0970720000332221ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.872Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.872Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.874Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.874Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.874Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.874Z - Time taken for 'preTasksExecution' 0.04152299999259412ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.884Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.885Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 398.108µs - processed 1 tasks (setup: 384.098µs, parallel_planning: 12.224µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 421.734µs - processed 1 plans (setup: 73.849µs, hashing: 347.095µs, assembly: 23.119µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.886Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.886Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.886Z - Handled HASH_TASKS. Handling time: 2. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.886Z - Time taken for 'write cache' 0.9360679999226704ms
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.901Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.989Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.989Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:18.989Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:20.184Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:21.475Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:21.546Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:22.666Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:22.722Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:22.957Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.070Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.070Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.070Z - Handled RECORD_OUTPUTS_HASH. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.078Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.078Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.078Z - Handled RECORD_TASK_RUNS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.078Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.078Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.078Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.095Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.095Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.095Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.096Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.097Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.097Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/audit:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.100Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.100Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.100Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.100Z - Time taken for 'postTasksExecution' 0.03410499996971339ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.105Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.398Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.399Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.399Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.400Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.400Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.401Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.401Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.401Z - Time taken for 'total for creating and serializing project graph' 1.3039140000473708ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.402Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.402Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.404Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.404Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.404Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.404Z - Time taken for 'preTasksExecution' 0.033949000062420964ms
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.407Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.413Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.414Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 382.564µs - processed 1 tasks (setup: 368.729µs, parallel_planning: 11.732µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 609.405µs - processed 1 plans (setup: 71.109µs, hashing: 537.253µs, assembly: 26.802µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.416Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.416Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.416Z - Handled HASH_TASKS. Handling time: 3. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.416Z - Time taken for 'write cache' 0.9839609999908134ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.515Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.515Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:23.515Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:24.741Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:26.439Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:26.492Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:27.579Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:27.643Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:27.889Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.008Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.008Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.008Z - Handled RECORD_OUTPUTS_HASH. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.016Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.016Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.016Z - Handled RECORD_TASK_RUNS. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.016Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.016Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.016Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.033Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.033Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.033Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.035Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.035Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.035Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/dna:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.038Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.038Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.038Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.038Z - Time taken for 'postTasksExecution' 0.04163200000766665ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.042Z - Closed a connection. Number of open connections: 0
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:03:28.322Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:19.672Z - [WATCHER]: apps/simplepoint-host/src/store/routes/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:19.672Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:19.773Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:19.773Z - [REQUEST]: apps/simplepoint-host/src/store/routes/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:19.773Z - [REQUEST]: 
+Time for 'nx/core/project-json:createNodes' 0.030399000039324164
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:19.775Z - Time taken for 'hash changed files from watcher' 0.1505989998113364ms
+Time for 'nx/core/package-json:createNodes' 0.643714000005275
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.6859130000229925
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:19.780Z - Time taken for 'build-project-configs' 3.7327199999708682ms
+Time for 'build typescript dependencies' 0.331787999952212
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:19.785Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:19.785Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:19.785Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:19.785Z - Time taken for 'total execution time for createProjectGraph()' 5.728405999951065ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:43.629Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:43.629Z - [WATCHER]: apps/simplepoint-host/src/hooks/routes/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:43.830Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:43.830Z - [REQUEST]: apps/simplepoint-host/src/hooks/routes/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:43.830Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:43.831Z - Time taken for 'hash changed files from watcher' 0.20752599998377264ms
+Time for 'nx/core/project-json:createNodes' 0.032909000059589744
+Time for 'nx/core/package-json:createNodes' 0.6791329998522997
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.6541959999594837
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:43.836Z - Time taken for 'build-project-configs' 3.4029960001353174ms
+Time for 'build typescript dependencies' 0.8893770000431687
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:43.842Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:43.842Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:43.842Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:12:43.842Z - Time taken for 'total execution time for createProjectGraph()' 6.458546000067145ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:11.909Z - [WATCHER]: apps/simplepoint-host/src/hooks/routes/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:11.909Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:12.309Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:12.309Z - [REQUEST]: apps/simplepoint-host/src/hooks/routes/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:12.309Z - [REQUEST]: 
+Time for 'nx/core/project-json:createNodes' 0.03681900002993643
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:12.311Z - Time taken for 'hash changed files from watcher' 0.15112200006842613ms
+Time for 'nx/core/package-json:createNodes' 0.7874409998767078
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1944049999583513
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:12.315Z - Time taken for 'build-project-configs' 2.780995999928564ms
+Time for 'build typescript dependencies' 0.3143209998961538
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:12.319Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:12.319Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:12.319Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:12.319Z - Time taken for 'total execution time for createProjectGraph()' 5.453237999929115ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:47.731Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:47.731Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:48.531Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:48.531Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:48.531Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:48.532Z - Time taken for 'hash changed files from watcher' 0.1519450000487268ms
+Time for 'nx/core/project-json:createNodes' 0.03109599999152124
+Time for 'nx/core/package-json:createNodes' 0.6072839999105781
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.8928929998073727
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:48.538Z - Time taken for 'build-project-configs' 4.350654999958351ms
+Time for 'build typescript dependencies' 0.6303429999388754
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:48.543Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:48.543Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:48.543Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:13:48.544Z - Time taken for 'total execution time for createProjectGraph()' 5.887468999950215ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:14:40.286Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:14:40.286Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:14:41.887Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:14:41.887Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:14:41.887Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:14:41.888Z - Time taken for 'hash changed files from watcher' 0.145873999921605ms
+Time for 'nx/core/project-json:createNodes' 0.03569700010120869
+Time for 'nx/core/package-json:createNodes' 0.6508240001276135
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.6653720000758767
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:14:41.893Z - Time taken for 'build-project-configs' 3.8864559999201447ms
+Time for 'build typescript dependencies' 0.32568600005470216
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:14:41.897Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:14:41.897Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:14:41.897Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:14:41.897Z - Time taken for 'total execution time for createProjectGraph()' 4.4416040000505745ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:02.824Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:02.824Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:06.023Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:06.023Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:06.023Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:06.024Z - Time taken for 'hash changed files from watcher' 0.15745899989269674ms
+Time for 'nx/core/project-json:createNodes' 0.030330999987199903
+Time for 'nx/core/package-json:createNodes' 0.6707929999101907
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1776809999719262
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:06.029Z - Time taken for 'build-project-configs' 2.763697999995202ms
+Time for 'build typescript dependencies' 0.6351029998622835
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:06.033Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:06.033Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:06.033Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:06.033Z - Time taken for 'total execution time for createProjectGraph()' 5.224088000133634ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:16.518Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:16.518Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:22.917Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:22.917Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:22.918Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:22.918Z - Time taken for 'hash changed files from watcher' 0.1867670000065118ms
+Time for 'nx/core/project-json:createNodes' 0.030895000090822577
+Time for 'nx/core/package-json:createNodes' 1.1484219999983907
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1405080000404269
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:22.923Z - Time taken for 'build-project-configs' 3.26218600012362ms
+Time for 'build typescript dependencies' 0.33847799990326166
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:22.928Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:22.928Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:22.928Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:15:22.928Z - Time taken for 'total execution time for createProjectGraph()' 5.529167999979109ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:34.310Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:34.310Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:40.711Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:40.711Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:40.711Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:40.713Z - Time taken for 'hash changed files from watcher' 0.15481900004670024ms
+Time for 'nx/core/project-json:createNodes' 0.03854399989359081
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1717159999534488
+Time for 'nx/core/package-json:createNodes' 1.2897960001137108
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:40.717Z - Time taken for 'build-project-configs' 3.0005289998371154ms
+Time for 'build typescript dependencies' 0.6938569999765605
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:40.721Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:40.721Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:40.721Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:40.721Z - Time taken for 'total execution time for createProjectGraph()' 4.694393999874592ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:42.460Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:42.461Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:48.861Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:48.861Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:48.861Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:48.862Z - Time taken for 'hash changed files from watcher' 0.1627269999589771ms
+Time for 'nx/core/project-json:createNodes' 0.039314999943599105
+Time for 'nx/core/package-json:createNodes' 1.1664119998458773
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1665949998423457
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:48.867Z - Time taken for 'build-project-configs' 3.2308100000955164ms
+Time for 'build typescript dependencies' 0.4600730000529438
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:48.873Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:48.873Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:48.873Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:16:48.873Z - Time taken for 'total execution time for createProjectGraph()' 6.849675999954343ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:11.339Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/menu-search-modal.tsx was created or restored
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:11.339Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:11.439Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:11.439Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/menu-search-modal.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:11.439Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:11.441Z - Time taken for 'hash changed files from watcher' 0.25990800000727177ms
+Time for 'nx/core/project-json:createNodes' 0.04437600006349385
+Time for 'nx/core/package-json:createNodes' 1.1813489999622107
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.2254780000075698
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:11.446Z - Time taken for 'build-project-configs' 2.9076469999272376ms
+Time for 'build typescript dependencies' 0.8533110001590103
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:11.450Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:11.450Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:11.450Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:11.450Z - Time taken for 'total execution time for createProjectGraph()' 5.461522999918088ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:19.646Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:19.647Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:19.847Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:19.847Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:19.847Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:19.848Z - Time taken for 'hash changed files from watcher' 0.1506779999472201ms
+Time for 'nx/core/project-json:createNodes' 0.04085400002077222
+Time for 'nx/core/package-json:createNodes' 1.0844119999092072
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1582759998273104
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:19.853Z - Time taken for 'build-project-configs' 3.5182990001048893ms
+Time for 'build typescript dependencies' 0.32142799999564886
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:19.857Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:19.857Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:19.857Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:19.857Z - Time taken for 'total execution time for createProjectGraph()' 4.449588000075892ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:46.966Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:46.966Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:47.366Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:47.366Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:47.366Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:47.367Z - Time taken for 'hash changed files from watcher' 0.15243300003930926ms
+Time for 'nx/core/project-json:createNodes' 0.03899499983526766
+Time for 'nx/core/package-json:createNodes' 1.1189619998913258
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.195968999993056
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:47.372Z - Time taken for 'build-project-configs' 2.661613999865949ms
+Time for 'build typescript dependencies' 0.6404700002167374
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:47.376Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:47.376Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:47.376Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:47.376Z - Time taken for 'total execution time for createProjectGraph()' 5.467431999975815ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:56.725Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:56.725Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:57.526Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:57.526Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:57.526Z - [REQUEST]: 
+Time for 'nx/core/project-json:createNodes' 0.0409429999999702
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:57.527Z - Time taken for 'hash changed files from watcher' 0.15228300006128848ms
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.196682000067085
+Time for 'nx/core/package-json:createNodes' 1.404700999846682
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:57.531Z - Time taken for 'build-project-configs' 2.809328000061214ms
+Time for 'build typescript dependencies' 0.30971599998883903
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:57.536Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:57.536Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:57.536Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:21:57.536Z - Time taken for 'total execution time for createProjectGraph()' 5.328377000056207ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:10.061Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:10.061Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:11.662Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:11.662Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:11.662Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:11.663Z - Time taken for 'hash changed files from watcher' 0.1488290000706911ms
+Time for 'nx/core/project-json:createNodes' 0.036871999967843294
+Time for 'nx/core/package-json:createNodes' 0.6087199999019504
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.731536999810487
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:11.669Z - Time taken for 'build-project-configs' 3.971028999891132ms
+Time for 'build typescript dependencies' 0.6486990000121295
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:11.673Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:11.673Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:11.673Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:11.673Z - Time taken for 'total execution time for createProjectGraph()' 4.817597999703139ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:15.250Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:15.250Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:18.450Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:18.451Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:18.451Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:18.452Z - Time taken for 'hash changed files from watcher' 0.1504649999551475ms
+Time for 'nx/core/project-json:createNodes' 0.030085999984294176
+Time for 'nx/core/package-json:createNodes' 0.673369999974966
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1538510001264513
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:18.456Z - Time taken for 'build-project-configs' 2.7073989999480546ms
+Time for 'build typescript dependencies' 0.30376499984413385
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:18.460Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:18.460Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:18.460Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:18.460Z - Time taken for 'total execution time for createProjectGraph()' 4.386574000120163ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:20.576Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:20.577Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:25.506Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:25.507Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:26.976Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:26.976Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:26.976Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:26.977Z - Time taken for 'hash changed files from watcher' 0.15140300011262298ms
+Time for 'nx/core/project-json:createNodes' 0.03370200004428625
+Time for 'nx/core/package-json:createNodes' 0.6206380003131926
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.189706000033766
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:26.981Z - Time taken for 'build-project-configs' 2.748355000279844ms
+Time for 'build typescript dependencies' 0.746286999899894
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:26.985Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:26.986Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:26.986Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:26.986Z - Time taken for 'total execution time for createProjectGraph()' 4.717395999934524ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:31.429Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:31.429Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:37.830Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:37.830Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/index.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:37.830Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:37.831Z - Time taken for 'hash changed files from watcher' 0.15019600000232458ms
+Time for 'nx/core/project-json:createNodes' 0.031107000075280666
+Time for 'nx/core/package-json:createNodes' 0.617147000040859
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.2256559999659657
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:37.835Z - Time taken for 'build-project-configs' 2.8321050000377ms
+Time for 'build typescript dependencies' 0.4789129998534918
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:37.839Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:37.839Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:37.839Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:37:37.839Z - Time taken for 'total execution time for createProjectGraph()' 4.586645999923348ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:45.559Z - [WATCHER]: libs/shared/hooks/useI18n.ts was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:45.559Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:51.806Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:51.806Z - [WATCHER]: apps/simplepoint-host/src/types/i18n.d.ts was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:51.959Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:51.959Z - [REQUEST]: libs/shared/hooks/useI18n.ts,apps/simplepoint-host/src/types/i18n.d.ts
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:51.959Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:51.960Z - Time taken for 'hash changed files from watcher' 0.39082800038158894ms
+Time for 'nx/core/project-json:createNodes' 0.042212999891489744
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1400259998627007
+Time for 'nx/core/package-json:createNodes' 1.2877169996500015
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:51.964Z - Time taken for 'build-project-configs' 2.792335999663919ms
+Time for 'build typescript dependencies' 0.7694580000825226
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:51.969Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:51.971Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:51.971Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:51:51.971Z - Time taken for 'total execution time for createProjectGraph()' 5.415540999732912ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:21.934Z - [WATCHER]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:21.935Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:28.335Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:28.335Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:28.335Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:28.336Z - Time taken for 'hash changed files from watcher' 0.16055600019171834ms
+Time for 'nx/core/project-json:createNodes' 0.04037100030109286
+Time for 'nx/core/package-json:createNodes' 0.6038860003463924
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1347640003077686
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:28.341Z - Time taken for 'build-project-configs' 2.9949929998256266ms
+Time for 'build typescript dependencies' 0.33694599987939
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:28.345Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:28.346Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:28.346Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:28.346Z - Time taken for 'total execution time for createProjectGraph()' 5.758014000020921ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:46.368Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:46.368Z - [WATCHER]: apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:52.769Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:52.769Z - [REQUEST]: apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:52.769Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:52.771Z - Time taken for 'hash changed files from watcher' 0.2049839999526739ms
+Time for 'nx/core/project-json:createNodes' 0.0400479999370873
+Time for 'nx/core/package-json:createNodes' 0.6192890000529587
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1691180001944304
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:52.775Z - Time taken for 'build-project-configs' 2.8311840002425015ms
+Time for 'build typescript dependencies' 0.652367000002414
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:52.779Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:52.779Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:52.779Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:52.779Z - Time taken for 'total execution time for createProjectGraph()' 4.682971999980509ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:52.929Z - [WATCHER]: apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:52.929Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:58.875Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:58.876Z - [WATCHER]: apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:59.330Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:59.330Z - [REQUEST]: apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:59.330Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:59.332Z - Time taken for 'hash changed files from watcher' 0.14962100004777312ms
+Time for 'nx/core/project-json:createNodes' 0.04133300017565489
+Time for 'nx/core/package-json:createNodes' 1.1720909997820854
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.672133999876678
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:59.337Z - Time taken for 'build-project-configs' 3.5008539999835193ms
+Time for 'build typescript dependencies' 0.33462500013411045
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:59.341Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:59.341Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:59.341Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:52:59.341Z - Time taken for 'total execution time for createProjectGraph()' 4.529546999838203ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:53:22.081Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:53:22.081Z - [WATCHER]: apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx was modified
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:53:28.482Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:53:28.482Z - [REQUEST]: apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:53:28.482Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:53:28.484Z - Time taken for 'hash changed files from watcher' 0.15271800011396408ms
+Time for 'nx/core/project-json:createNodes' 0.04609399987384677
+Time for 'nx/core/package-json:createNodes' 1.1366369999013841
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1815160000696778
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:53:28.488Z - Time taken for 'build-project-configs' 3.0257979999296367ms
+Time for 'build typescript dependencies' 0.7381759998388588
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:53:28.493Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:53:28.493Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:53:28.493Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T10:53:28.493Z - Time taken for 'total execution time for createProjectGraph()' 5.664835999719799ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.293Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.293Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.294Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.294Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.294Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.295Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.295Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.296Z - Time taken for 'total for creating and serializing project graph' 1.0643849996849895ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.296Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.296Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.298Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.298Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.298Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.298Z - Time taken for 'preTasksExecution' 0.03555599972605705ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.308Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.309Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 334.252µs - processed 1 tasks (setup: 320.641µs, parallel_planning: 12.157µs)
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Adding "7663861978715868291" (".gitignore") to hash
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Adding "5264400301757922765" ("nx.json") to hash
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Hash Value: "10678209182613987231"
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 901.027µs - processed 1 plans (setup: 69.914µs, hashing: 830.161µs, assembly: 34.619µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.312Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.312Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.312Z - Handled HASH_TASKS. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:43.312Z - Time taken for 'write cache' 0.9286749996244907ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:44.388Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:44.389Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:44.389Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.069Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.121Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.178Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.178Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.179Z - Handled RECORD_OUTPUTS_HASH. Handling time: 8. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.189Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.189Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.189Z - Handled RECORD_TASK_RUNS. Handling time: 8. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.189Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.189Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.189Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.209Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.209Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.209Z - Handled PROCESS_IN_BACKGROUND. Handling time: 7. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.210Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.210Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.210Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/host:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.213Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.213Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.214Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.214Z - Time taken for 'postTasksExecution' 0.06510300002992153ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.219Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.494Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.495Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.495Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.496Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.496Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.498Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.498Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.498Z - Time taken for 'total for creating and serializing project graph' 1.8520689997822046ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.498Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.498Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.500Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.500Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.500Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.500Z - Time taken for 'preTasksExecution' 0.034059999510645866ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.510Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.511Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 384.225µs - processed 1 tasks (setup: 370.481µs, parallel_planning: 12.078µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 585.573µs - processed 1 plans (setup: 73.08µs, hashing: 511.341µs, assembly: 18.87µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.512Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.512Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.512Z - Handled HASH_TASKS. Handling time: 2. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.512Z - Time taken for 'write cache' 0.930468000471592ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.619Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.619Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.619Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 1. Response time: 0.
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:46.780Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:47.830Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:49.421Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:49.479Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:50.651Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:50.716Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:50.965Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.085Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.085Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.085Z - Handled RECORD_OUTPUTS_HASH. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.093Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.093Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.093Z - Handled RECORD_TASK_RUNS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.093Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.093Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.093Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.110Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.110Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.110Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.111Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.111Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.111Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/common:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.114Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.114Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.114Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.114Z - Time taken for 'postTasksExecution' 0.06135299988090992ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.121Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.392Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.393Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.393Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.394Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.394Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.395Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.395Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.396Z - Time taken for 'total for creating and serializing project graph' 1.7104960000142455ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.396Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.396Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.398Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.398Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.398Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.398Z - Time taken for 'preTasksExecution' 0.03318700008094311ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.408Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.409Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 389.572µs - processed 1 tasks (setup: 373.126µs, parallel_planning: 15.057µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 481.382µs - processed 1 plans (setup: 74.815µs, hashing: 404.561µs, assembly: 19.078µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.410Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.410Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.410Z - Handled HASH_TASKS. Handling time: 2. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.410Z - Time taken for 'write cache' 0.9306179992854595ms
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.466Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.510Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.510Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:51.510Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:52.708Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:53.973Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:54.029Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.071Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.129Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.367Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.474Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.474Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.474Z - Handled RECORD_OUTPUTS_HASH. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.482Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.482Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.482Z - Handled RECORD_TASK_RUNS. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.483Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.483Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.483Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.498Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.498Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.498Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.500Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.500Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.500Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/audit:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.502Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.502Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.502Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.502Z - Time taken for 'postTasksExecution' 0.04653899930417538ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.509Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.783Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.784Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.784Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.785Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.785Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.786Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.786Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.786Z - Time taken for 'total for creating and serializing project graph' 1.2528920006006956ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.787Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.787Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.789Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.789Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.789Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.789Z - Time taken for 'preTasksExecution' 0.032438999973237514ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.798Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.799Z - Wrote project graph cache to /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 375.693µs - processed 1 tasks (setup: 360.89µs, parallel_planning: 13.226µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 598.912µs - processed 1 plans (setup: 71.994µs, hashing: 525.958µs, assembly: 15.371µs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.800Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.800Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.801Z - Handled HASH_TASKS. Handling time: 2. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.801Z - Time taken for 'write cache' 0.9421240007504821ms
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.869Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.901Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.901Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:55.901Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 1. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:57.101Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:58.702Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:59.865Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:18:59.929Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.176Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.294Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.294Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.294Z - Handled RECORD_OUTPUTS_HASH. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.301Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.301Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.301Z - Handled RECORD_TASK_RUNS. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.302Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.302Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.302Z - Handled GET_FLAKY_TASKS. Handling time: 1. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.319Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.319Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.319Z - Handled PROCESS_IN_BACKGROUND. Handling time: 7. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.319Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.320Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.320Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/dna:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.322Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.322Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.322Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.322Z - Time taken for 'postTasksExecution' 0.03457199968397617ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.328Z - Closed a connection. Number of open connections: 0
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:19:00.682Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.08.10/lib/daemon/process-run-end.js:1:826572)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:03.471Z - [WATCHER]: 4 file(s) created or restored, 0 file(s) modified, 0 file(s) deleted
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:03.471Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:03.572Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:03.572Z - [REQUEST]: apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx,apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx,libs/shared/hooks/useI18n.ts,apps/simplepoint-host/src/types/i18n.d.ts
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:03.572Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:03.574Z - Time taken for 'hash changed files from watcher' 0.36802500020712614ms
+Time for 'nx/core/project-json:createNodes' 0.032267999835312366
+Time for 'nx/core/package-json:createNodes' 0.7924640001729131
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.3289630003273487
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:03.578Z - Time taken for 'build-project-configs' 2.815223000012338ms
+Time for 'build typescript dependencies' 0.35385899990797043
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:03.583Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:03.583Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:03.583Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:03.583Z - Time taken for 'total execution time for createProjectGraph()' 5.723451000638306ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:08.566Z - [WATCHER]: 2 file(s) created or restored, 0 file(s) modified, 0 file(s) deleted
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:08.566Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:08.667Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:08.667Z - [REQUEST]: apps/mocks/mocks/platform/object-storage.ts,apps/mocks/mocks/system/user.ts
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:08.667Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:08.668Z - Time taken for 'hash changed files from watcher' 0.4117530006915331ms
+Time for 'nx/core/project-json:createNodes' 0.03134999983012676
+Time for 'nx/core/package-json:createNodes' 0.6894309995695949
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.1821070006117225
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:08.673Z - Time taken for 'build-project-configs' 2.5165630001574755ms
+Time for 'build typescript dependencies' 0.006821000017225742
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:08.676Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:08.677Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:08.677Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-13T11:38:08.677Z - Time taken for 'total execution time for createProjectGraph()' 4.97256899997592ms
+[NX v21.6.10 Daemon Server] - 2026-04-13T14:38:08.567Z - [WATCHER]: Stopping the watcher for /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react (sources)
+[NX v21.6.10 Daemon Server] - 2026-04-13T14:38:08.567Z - [WATCHER]: Stopping the watcher for /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react (outputs)
+[NX v21.6.10 Daemon Server] - 2026-04-13T14:38:08.575Z - Server stopped because: "10800000ms of inactivity"

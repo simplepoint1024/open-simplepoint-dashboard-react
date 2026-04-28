@@ -31,8 +31,9 @@ export type SimpleTableController<T> = {
   table: {
     data: any;
     filters: Record<string, string>;
+    sorter: string | undefined;
     buttons: TableButtonProps[];
-    onChange: (pagination: any) => void;
+    onChange: (pagination: any, _tableFilters: any, sorter?: any) => void;
     onFilterChange: (filters: Record<string, string>) => void;
     refresh: () => void;
     refreshDisabled: boolean;
@@ -54,8 +55,9 @@ export function useSimpleTableController<T = any>(props: SimpleTableProps<T>): S
   const { t, ensure, locale, ready } = useI18n();
   const [i18nReady, setI18nReady] = useState(false);
   const [page, setPage] = useState<number>(1);
-  const [size, setSize] = useState<number>(10);
+  const [size, setSize] = useState<number>(20);
   const [filters, setFilters] = useState<Record<string, string>>(props.initialFilters ?? {});
+  const [sort, setSort] = useState<string | undefined>(undefined);
   const [tenantId, setTenantId] = useState<string>(() => getStoredTenantId() ?? '');
   const [contextId, setContextId] = useState<string>(() => getStoredContextId(getStoredTenantId()) ?? '');
   const [innerDrawerOpen, setInnerDrawerOpen] = useState(false);
@@ -124,10 +126,11 @@ export function useSimpleTableController<T = any>(props: SimpleTableProps<T>): S
       page: page - 1,
       size,
       ...filters,
+      ...(sort ? {sort} : {}),
     });
 
   const { data: pageData, isLoading: pageLoading, error: pageError, refetch: refetchPage } = usePage(
-    [props.name, tenantId, contextId, page, size, filters],
+    [props.name, tenantId, contextId, page, size, filters, sort],
     fetchPage
   );
 
@@ -177,9 +180,15 @@ export function useSimpleTableController<T = any>(props: SimpleTableProps<T>): S
     await Promise.allSettled(tasks);
   };
 
-  const handleTableChange = (pagination: any) => {
+  const handleTableChange = (pagination: any, _tableFilters: any, sorter: any) => {
     setPage(pagination?.current ?? 1);
     setSize(pagination?.pageSize ?? size);
+    // AntD sorter: { field: string | string[], order: 'ascend'|'descend'|undefined }
+    const field = Array.isArray(sorter?.field)
+      ? (sorter.field as string[]).join('.')
+      : (sorter?.field as string | undefined);
+    const dir = sorter?.order === 'ascend' ? 'asc' : sorter?.order === 'descend' ? 'desc' : undefined;
+    setSort(field && dir ? `${field},${dir}` : undefined);
     void refetchPage();
   };
 
@@ -312,6 +321,7 @@ export function useSimpleTableController<T = any>(props: SimpleTableProps<T>): S
     table: {
       data: pageData,
       filters,
+      sorter: sort,
       buttons: mergedButtons,
       onChange: handleTableChange,
       onFilterChange: handleFilterChange,

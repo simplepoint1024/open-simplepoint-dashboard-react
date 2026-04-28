@@ -1,5 +1,97 @@
 import {http, HttpResponse} from 'msw';
 
+// ─── 用户 mock 数据生成 ───────────────────────────────────────────────────────
+
+const FAMILY_NAMES = ['王', '李', '张', '刘', '陈', '杨', '赵', '黄', '周', '吴',
+    '徐', '孙', '胡', '朱', '高', '林', '何', '郭', '马', '罗'];
+const GIVEN_NAMES = ['伟', '芳', '娜', '秀英', '敏', '静', '丽', '强', '磊', '军',
+    '洋', '勇', '艳', '杰', '涛', '明', '超', '秀兰', '霞', '平',
+    '建国', '志强', '丹', '玲', '亮', '刚', '健', '燕', '桂英', '凯',
+    '文', '彬', '浩', '宇', '晨', '辉', '鹏', '思远', '佳明', '雪'];
+const NICKNAMES = ['极客达人', '代码狂人', '云端行者', '数字游侠', '技术大拿', '键盘侠',
+    '全栈战士', '架构师兄', '晨曦', '星河', '破晓', '夜雨', '青衫', '白鹿',
+    '追风者', '独行客', '低调的人', '简单快乐', '咖啡续命', '代码诗人'];
+const LOCALES = ['zh_CN', 'zh_TW', 'en_US', 'ja_JP', 'ko_KR'];
+const ZONES = ['Asia/Shanghai', 'Asia/Taipei', 'America/New_York', 'Europe/London', 'Asia/Tokyo'];
+
+function snowflakeId(index: number): string {
+    return String(BigInt('1941503407424671744') + BigInt(index));
+}
+
+function isoDate(daysAgo: number): string {
+    const d = new Date('2025-10-01T00:00:00Z');
+    d.setDate(d.getDate() - daysAgo);
+    return d.toISOString().replace('Z', 'Z');
+}
+
+function phone(i: number): string {
+    const prefix = ['138', '139', '150', '151', '158', '182', '186', '188', '176', '177'];
+    return `${prefix[i % prefix.length]}${String(10000000 + i).padStart(8, '0')}`;
+}
+
+const ALL_USERS = (() => {
+    const users = [
+        {
+            id: '1941503407424671744',
+            createdBy: null, updatedBy: null, createdAt: null,
+            updatedAt: '2025-07-05T14:24:18.395521Z',
+            username: 'system', email: 'system@simplepoint.org',
+            address: null, birthdate: null, emailVerified: true,
+            familyName: null, gender: null, givenName: null,
+            locale: 'zh_CN', middleName: 'System', name: '系统管理员',
+            nickname: '系统账户', twoFactorEnabled: true, picture: null,
+            phoneNumber: '18288888888', phoneNumberVerified: true,
+            preferredUsername: 'system', profile: null,
+            website: 'http://127.0.0.1', zoneinfo: 'Asia/Shanghai',
+            enabled: true, accountNonExpired: true, accountNonLocked: true,
+            credentialsNonExpired: true, superAdmin: true, authorities: null,
+        },
+    ];
+    for (let i = 1; i < 100; i++) {
+        const fi = i % FAMILY_NAMES.length;
+        const gi = (i * 3) % GIVEN_NAMES.length;
+        const familyName = FAMILY_NAMES[fi];
+        const givenName = GIVEN_NAMES[gi];
+        const name = `${familyName}${givenName}`;
+        const username = `user${String(i).padStart(3, '0')}`;
+        const localeIdx = i % LOCALES.length;
+        users.push({
+            id: snowflakeId(i),
+            createdBy: 'system',
+            updatedBy: i % 5 === 0 ? 'system' : null,
+            createdAt: isoDate(200 - i),
+            updatedAt: isoDate(100 - (i % 90)),
+            username,
+            email: `${username}@example.com`,
+            address: i % 7 === 0 ? `北京市朝阳区建国路${90 + i}号` : null,
+            birthdate: i % 3 === 0 ? `${1985 + (i % 20)}-${String((i % 12) + 1).padStart(2, '0')}-${String((i % 28) + 1).padStart(2, '0')}` : null,
+            emailVerified: i % 4 !== 0,
+            familyName,
+            gender: i % 3 === 0 ? 'male' : i % 3 === 1 ? 'female' : null,
+            givenName,
+            locale: LOCALES[localeIdx],
+            middleName: null,
+            name,
+            nickname: NICKNAMES[i % NICKNAMES.length],
+            twoFactorEnabled: i % 10 === 0,
+            picture: null,
+            phoneNumber: i % 6 === 0 ? null : phone(i),
+            phoneNumberVerified: i % 6 !== 0,
+            preferredUsername: username,
+            profile: i % 8 === 0 ? `${name}，${['后端工程师', '前端工程师', '全栈工程师', '架构师', '产品经理', 'DevOps'][i % 6]}` : null,
+            website: null,
+            zoneinfo: ZONES[localeIdx],
+            enabled: i % 15 !== 0,
+            accountNonExpired: true,
+            accountNonLocked: i % 20 !== 0,
+            credentialsNonExpired: true,
+            superAdmin: false,
+            authorities: null,
+        });
+    }
+    return users;
+})();
+
 export default [
     http.get('/common/users/schema', () => {
         return HttpResponse.json(
@@ -193,44 +285,40 @@ export default [
             }
         )
     }),
-    http.get('/common/users', () => {
-        return HttpResponse.json(
-            {
-                "content": [{
-                    "id": 1941503407424671744,
-                    "createdBy": null,
-                    "updatedBy": null,
-                    "createdAt": null,
-                    "updatedAt": "2025-07-05T14:24:18.395521Z",
-                    "username": "system",
-                    "email": null,
-                    "address": 18,
-                    "birthdate": null,
-                    "emailVerified": null,
-                    "familyName": null,
-                    "gender": null,
-                    "givenName": null,
-                    "locale": "zh_CN",
-                    "middleName": "System",
-                    "name": null,
-                    "nickname": null,
-                    "twoFactorEnabled": true,
-                    "picture": null,
-                    "phoneNumber": null,
-                    "phoneNumberVerified": null,
-                    "preferredUsername": null,
-                    "profile": null,
-                    "website": "http://127.0.0.1",
-                    "zoneinfo": null,
-                    "enabled": true,
-                    "accountNonExpired": true,
-                    "accountNonLocked": true,
-                    "credentialsNonExpired": true,
-                    "superAdmin": true,
-                    "authorities": null
-                }], "page": {"size": 20, "number": 0, "totalElements": 1, "totalPages": 1}
-            }
-        )
+    http.get('/common/users', ({request}) => {
+        const url = new URL(request.url);
+        const page = Math.max(0, parseInt(url.searchParams.get('page') ?? '0', 10));
+        const size = Math.max(1, parseInt(url.searchParams.get('size') ?? '20', 10));
+        const keyword = (url.searchParams.get('keyword') ?? '').toLowerCase();
+        const sortParam = url.searchParams.get('sort') ?? '';
+        const sortIdx = sortParam.lastIndexOf(',');
+        const sortField = sortIdx === -1 ? (sortParam || undefined) : sortParam.slice(0, sortIdx);
+        const sortDir = sortIdx === -1 ? 'asc' : sortParam.slice(sortIdx + 1);
+
+        let result = keyword
+            ? ALL_USERS.filter(u =>
+                u.username.includes(keyword) ||
+                (u.name ?? '').includes(keyword) ||
+                (u.nickname ?? '').includes(keyword) ||
+                (u.email ?? '').includes(keyword))
+            : [...ALL_USERS];
+
+        if (sortField) {
+            result.sort((a: any, b: any) => {
+                const av = a[sortField] ?? '';
+                const bv = b[sortField] ?? '';
+                const cmp = String(av).localeCompare(String(bv), 'zh-CN', {numeric: true, sensitivity: 'base'});
+                return sortDir === 'desc' ? -cmp : cmp;
+            });
+        }
+
+        const totalElements = result.length;
+        const totalPages = Math.ceil(totalElements / size);
+        const content = result.slice(page * size, page * size + size);
+        return HttpResponse.json({
+            content,
+            page: {size, number: page, totalElements, totalPages},
+        });
     }),
     http.get('/common/users/authorized', () => {
         return HttpResponse.json(["1"])

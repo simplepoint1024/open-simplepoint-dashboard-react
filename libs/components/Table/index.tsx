@@ -1,14 +1,17 @@
-import React, {MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {MouseEventHandler, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import type {TableRowSelection} from 'antd/es/table/interface';
-import {Button, Checkbox, Col, Popover, Row, Space, Table as AntTable} from 'antd';
-import {SearchOutlined, SettingOutlined} from '@ant-design/icons';
+import {Button, Col, Row, Space, Table as AntTable, Tag, Tooltip} from 'antd';
+import {FilterFilled, FilterOutlined, ReloadOutlined, SettingOutlined} from '@ant-design/icons';
 import type {ColumnType, ColumnsType} from 'antd/es/table';
+import {Resizable} from 'react-resizable';
+import 'react-resizable/css/styles.css';
 import {RJSFSchema} from '@rjsf/utils';
 import {Page, toPagination} from '@simplepoint/shared/types/request';
 import {ButtonProps} from "antd/es/button/button";
 import {createIcon} from '@simplepoint/shared/types/icon';
 import {useI18n} from '@simplepoint/shared/hooks/useI18n';
-import ColumnFilter from './ColumnFilter';
+import ColumnFilter, {ColumnFilterType} from './ColumnFilter';
+import ColumnSettings, {ColumnFixed, ColumnSetting} from './ColumnSettings';
 
 export type TableButtonProps = ButtonProps & {
   key: string;
@@ -29,6 +32,7 @@ export interface TableProps<T> {
   columnOverrides?: Record<string, Partial<ColumnType<T>> & { order?: number }>;
   filters?: Record<string, string>;
   onFilterChange?: (filters: Record<string, string>) => void;
+  sorter?: string; // Spring format: "field,asc" or "field,desc"
   onChange?: (pagination: any, filters?: any, sorter?: any, extra?: any) => void;
   rowSelection?: { selectedKeys?: React.Key[] };
   onSelectionChange?: (selectedRowKeys: React.Key[], selectedRows: T[]) => void;
@@ -108,9 +112,58 @@ const resolveOptionLabel = (schemaDef: any, value: any): string | undefined => {
   return resolveI18nLabel(matched.title ?? matched.label ?? matched.const ?? value);
 };
 
+const ResizableTitle = (props: React.HTMLAttributes<HTMLTableCellElement> & { onResize?: (e: React.SyntheticEvent, data: { size: { width: number; height: number } }) => void; width?: number }) => {
+  const {onResize, width, ...restProps} = props;
+  if (!width) return <th {...restProps} />;
+  return (
+    <Resizable
+      width={width}
+      height={0}
+      handle={<span className="react-resizable-handle" onClick={e => e.stopPropagation()} />}
+      onResize={onResize as any}
+      draggableOpts={{enableUserSelectHack: false}}
+    >
+      <th {...restProps} />
+    </Resizable>
+  );
+};
+
 const App = <T extends object = any>(props: TableProps<T>) => {
   const {t, locale} = useI18n();
   const [filters, setFilters] = useState<Record<string, string>>(props.filters ?? {});
+
+  // ── 列配置持久化类型 ───────────────────────────────────────────────────────
+  type StoredColConfig = { visible: boolean; fixed?: ColumnFixed; order?: number };
+
+  // 解析外部传入的排序状态，用于给对应列设置 sortOrder
+  const [sortField, sortDir] = useMemo(() => {
+    const s = props.sorter ?? '';
+    const idx = s.lastIndexOf(',');
+    if (!s) return [undefined, undefined];
+    if (idx === -1) return [s, 'asc'];
+    return [s.slice(0, idx), s.slice(idx + 1)];
+  }, [props.sorter]);
+
+  // ── 动态计算表格体可滚动高度 ─────────────────────────────────────────────────
+  const containerRef = useRef<HTMLDivElement>(null);
+  const toolbarRef   = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY] = useState<number>(400);
+
+  useLayoutEffect(() => {
+    const update = () => {
+      const ct = containerRef.current;
+      const tb = toolbarRef.current;
+      if (!ct) return;
+      const containerH = ct.getBoundingClientRect().height;
+      const toolbarH   = tb ? tb.getBoundingClientRect().height + 16 /* margin-bottom */ : 54;
+      // AntD table: thead ≈ 39px；pagination bar ≈ 56px (32px + 24px margin)
+      setScrollY(Math.max(160, containerH - toolbarH - 39 - 56));
+    };
+    const ro = new ResizeObserver(update);
+    if (containerRef.current) ro.observe(containerRef.current);
+    update();
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     setFilters(props.filters ?? {});
@@ -131,51 +184,96 @@ const App = <T extends object = any>(props: TableProps<T>) => {
   const visibleKeys = useMemo(() => computeVisibleKeys(properties), [properties]);
 
   const storageKey = useMemo(() => (props.storageKey ? `sp.table.cols.${props.storageKey}` : undefined), [props.storageKey]);
-  const [visibleCols, setVisibleCols] = useState<Record<string, boolean>>({});
+  const [colConfigs, setColConfigs] = useState<Record<string, StoredColConfig>>({});
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
+  // Load from localStorage (with migration from old boolean format)
   useEffect(() => {
-    setVisibleCols((prev) => {
-      const base: Record<string, boolean> = {};
+    setColConfigs((prev) => {
+      const base: Record<string, StoredColConfig> = {};
       visibleKeys.forEach((k) => {
-        base[k] = k in prev ? prev[k] : true;
+        base[k] = prev[k] ?? {visible: true};
       });
       try {
         if (storageKey) {
           const raw = localStorage.getItem(storageKey);
           if (raw) {
-            const saved = JSON.parse(raw) as Record<string, boolean>;
+            const saved = JSON.parse(raw) as Record<string, any>;
+            const firstVal = saved[Object.keys(saved)[0]];
+            const isOldFormat = typeof firstVal === 'boolean';
             visibleKeys.forEach((k) => {
-              if (typeof saved[k] === 'boolean') base[k] = saved[k];
+              if (isOldFormat) {
+                if (typeof saved[k] === 'boolean') base[k] = {visible: saved[k]};
+              } else if (saved[k] && typeof saved[k] === 'object') {
+                base[k] = saved[k] as StoredColConfig;
+              }
             });
           }
         }
-      } catch {
-      }
+      } catch { /* ignore */ }
       return base;
     });
   }, [visibleKeys, storageKey]);
 
+  // Persist to localStorage whenever configs change
   useEffect(() => {
     try {
-      if (storageKey && Object.keys(visibleCols).length) {
-        const payload: Record<string, boolean> = {};
+      if (storageKey && Object.keys(colConfigs).length) {
+        const payload: Record<string, StoredColConfig> = {};
         visibleKeys.forEach((k) => {
-          if (typeof visibleCols[k] === 'boolean') payload[k] = visibleCols[k];
+          if (colConfigs[k]) payload[k] = colConfigs[k];
         });
         localStorage.setItem(storageKey, JSON.stringify(payload));
       }
-    } catch {
-    }
-  }, [visibleCols, visibleKeys, storageKey]);
+    } catch { /* ignore */ }
+  }, [colConfigs, visibleKeys, storageKey]);
 
-  const toggleCol = (key: string, checked: boolean) => {
-    setVisibleCols((prev) => ({...prev, [key]: checked}));
-  };
+  // Build ColumnSetting[] for the settings drawer (sorted by user order)
+  const settingsItems = useMemo<ColumnSetting[]>(() => {
+    const entries = visibleKeys.map((key, schemaIdx) => {
+      const sd: any = properties[key] || {};
+      const rawLabel = sd.title ?? key;
+      const cfg = colConfigs[key];
+      return {
+        key,
+        label: resolveI18nLabel(rawLabel),
+        visible: cfg?.visible ?? true,
+        fixed: cfg?.fixed as ColumnFixed,
+        _order: typeof cfg?.order === 'number' ? cfg.order : schemaIdx,
+      };
+    });
+    entries.sort((a, b) => a._order - b._order);
+    return entries.map(({_order: _, ...rest}) => rest);
+  }, [visibleKeys, properties, colConfigs]);
+
+  const handleSettingsSave = useCallback((items: ColumnSetting[]) => {
+    const next: Record<string, StoredColConfig> = {};
+    items.forEach((item, idx) => {
+      next[item.key] = {visible: item.visible, fixed: item.fixed, order: idx};
+    });
+    setColConfigs(next);
+  }, []);
+
+  const handleSettingsReset = useCallback(() => {
+    try { if (storageKey) localStorage.removeItem(storageKey); } catch { /* ignore */ }
+    const next: Record<string, StoredColConfig> = {};
+    visibleKeys.forEach((k) => { next[k] = {visible: true}; });
+    setColConfigs(next);
+  }, [storageKey, visibleKeys]);
+
+  const [colWidths, setColWidths] = useState<Record<string, number>>({});
+
+  const handleResize = useCallback((key: string) => (_: React.SyntheticEvent, {size}: {size: {width: number; height: number}}) => {
+    setColWidths(prev => ({...prev, [key]: size.width}));
+  }, []);
 
   const columns = useMemo<ColumnsType<T>>(() => {
     const entries = Object.entries(properties);
     const generated: Array<{ order: number; column: ColumnType<T> }> = entries
-      .filter(([key]) => (visibleCols[key] ?? visibleKeys.includes(key)))
+      .filter(([key]) => {
+        const cfg = colConfigs[key];
+        return cfg ? cfg.visible : visibleKeys.includes(key);
+      })
       .map(([key, schemaDef]) => {
         const baseTitle = (schemaDef as any)?.title ?? key;
         const isBoolean = (schemaDef as any)?.type === 'boolean';
@@ -184,12 +282,17 @@ const App = <T extends object = any>(props: TableProps<T>) => {
         const hasOptions = Array.isArray((schemaDef as any)?.oneOf) || Array.isArray((schemaDef as any)?.anyOf);
 
         const renderCell = isBoolean
-          ? (val: any) => (
-            <span
-              style={{display: 'inline-block', width: '100%', textAlign: 'center', color: val ? '#52c41a' : '#999'}}>
-              {val ? '√' : '×'}
-            </span>
-          )
+          ? (val: any) => {
+            const active = val === true || val === 1 || val === 'true' || val === '1';
+            return (
+              <Tag
+                color={active ? 'success' : 'default'}
+                style={{margin: 0, fontSize: 11, lineHeight: '18px', padding: '0 6px', borderRadius: 3}}
+              >
+                {active ? '是' : '否'}
+              </Tag>
+            );
+          }
           : key === 'icon'
             ? (val: any) => (
               <span style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%'}}>
@@ -200,11 +303,59 @@ const App = <T extends object = any>(props: TableProps<T>) => {
               ? (val: any) => resolveOptionLabel(schemaDef, val) ?? val
              : undefined;
 
+        const textEllipsisRender = (!isBoolean && key !== 'icon' && !hasOptions)
+          ? (val: any) => {
+              if (val === null || val === undefined || val === '') return null;
+              const str = String(val);
+              if (str.length <= 30) return str;
+              return (
+                <Tooltip title={str} placement="topLeft">
+                  <span style={{display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%'}}>
+                    {str}
+                  </span>
+                </Tooltip>
+              );
+            }
+          : undefined;
+
+        // 推断列类型，传给 ColumnFilter 以决定操作符分组
+        const schemaType = (schemaDef as any)?.type;
+        const columnFilterType: ColumnFilterType = (() => {
+          if (schemaType === 'number') return 'number';
+          if (schemaType === 'integer') return 'integer';
+          if (schemaType === 'boolean') return 'boolean';
+          if ((schemaDef as any)?.format === 'date-time' || (schemaDef as any)?.format === 'date') return 'date';
+          if (typeof schemaType === 'string') return 'string';
+          if (Array.isArray(schemaType)) {
+            const nonNull = schemaType.find((t: string) => t !== 'null');
+            if (nonNull === 'number' || nonNull === 'integer') return nonNull as ColumnFilterType;
+            if (nonNull === 'boolean') return 'boolean';
+            if (nonNull === 'string') return 'string';
+          }
+          return 'unknown';
+        })();
+
+        const isActive = Boolean(filters[key]);
+
+        const defaultWidth = isBoolean || key === 'icon' ? 80 : isNumber ? 120 : 150;
+
         const column: ColumnType<T> = {
           title: baseTitle,
           dataIndex: key,
           key,
           align,
+          sorter: true,
+          showSorterTooltip: false,
+          sortOrder: key === sortField
+            ? (sortDir === 'asc' ? 'ascend' : 'descend')
+            : null,
+          width: colWidths[key] ?? defaultWidth,
+          onHeaderCell: (col: ColumnType<T>) => ({
+            width: col.width,
+            onResize: handleResize(key),
+          }),
+          ...((!isBoolean && key !== 'icon') ? {ellipsis: true} : {}),
+          ...((!isBoolean && key !== 'icon') ? {onCell: () => ({style: {maxWidth: 200}})} : {}),
         };
 
         (column as any).filterDropdown = ({close}: any) => (
@@ -213,35 +364,46 @@ const App = <T extends object = any>(props: TableProps<T>) => {
             <ColumnFilter
               initialOp={parseOp(filters[key])}
               initialText={parseText(filters[key])}
+              columnType={columnFilterType}
+              columnLabel={typeof baseTitle === 'string' ? baseTitle : key}
               onChange={(op: string, text: string) => {
-                const value = text ? `${op}:${text}` : '';
+                // is:null / is:not:null 不需要 text
+                const isNullOp = op === 'is:null' || op === 'is:not:null';
+                const value = (isNullOp || text) ? `${op}${text ? `:${text}` : ''}` : '';
                 const next = {...filters};
                 if (value) next[key] = value; else delete next[key];
                 setFilters(next);
                 props.onFilterChange?.(next);
                 props.refresh();
-                try {
-                  close?.();
-                } catch {
-                }
+                try { close?.(); } catch { /* ignore */ }
               }}
             />
           </div>
         );
-        (column as any).filterIcon = () => <SearchOutlined style={{color: filters[key] ? '#1677ff' : undefined}}/>;
 
-        if (renderCell) {
-          column.render = renderCell as ColumnType<T>['render'];
-        }
+        // 激活时换成实心图标 + 主色，未激活时细线图标 + 半透明
+        (column as any).filterIcon = () => isActive
+          ? <FilterFilled style={{color: '#1677ff', fontSize: 13}}/>
+          : <FilterOutlined style={{opacity: 0.4, fontSize: 12}}/>;
+
+        column.render = (renderCell ?? textEllipsisRender) as ColumnType<T>['render'];
 
         const override = props.columnOverrides?.[key] as (Partial<ColumnType<T>> & { order?: number }) | undefined;
-        const {order, ...overrideRest} = override || {};
+        const {order: overrideOrder, ...overrideRest} = override || {};
+
+        // User config order takes precedence over schema/override order
+        const userOrder = colConfigs[key]?.order;
+        const userFixed = colConfigs[key]?.fixed;
+        const finalOrder = typeof userOrder === 'number'
+          ? userOrder
+          : typeof overrideOrder === 'number' ? overrideOrder : Number.MAX_SAFE_INTEGER;
 
         return {
-          order: typeof order === 'number' ? order : Number.MAX_SAFE_INTEGER,
+          order: finalOrder,
           column: {
             ...column,
             ...overrideRest,
+            ...(userFixed !== undefined ? {fixed: userFixed} : {}),
             key,
             dataIndex: key,
           },
@@ -251,7 +413,7 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     return generated
       .sort((left, right) => left.order - right.order)
       .map((item) => item.column);
-  }, [properties, visibleCols, visibleKeys, filters, props.onFilterChange, props.refresh, props.columnOverrides, t, locale])
+  }, [properties, colConfigs, visibleKeys, filters, sortField, sortDir, colWidths, handleResize, props.onFilterChange, props.refresh, props.columnOverrides, t, locale])
 
   const dataSource = props.pageable?.content ?? [];
 
@@ -308,52 +470,6 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     return typeof argumentMaxSize === 'number' && argumentMaxSize !== -1 && size > argumentMaxSize;
   };
 
-  const settingsContent = (
-    <div style={{maxHeight: 320, overflow: 'auto', padding: 8}}>
-      <Checkbox
-        checked={visibleKeys.length > 0 && visibleKeys.every((key) => (visibleCols[key] ?? true))}
-        indeterminate={
-          visibleKeys.some((key) => (visibleCols[key] ?? true)) && !visibleKeys.every((key) => (visibleCols[key] ?? true))
-        }
-        onChange={(e) => {
-          const checked = e.target.checked;
-          const next: Record<string, boolean> = {};
-          visibleKeys.forEach((k) => (next[k] = checked));
-          setVisibleCols(next);
-        }}
-        style={{marginBottom: 8}}
-      >
-        {t('table.selectAll', '全选')}
-      </Checkbox>
-      <div>
-        {visibleKeys.map((key) => {
-          const sd: any = (properties as any)[key] || {};
-          const label = (sd as any)?.title ?? key;
-          return (
-            <div key={key} style={{padding: '4px 0'}}>
-              <Checkbox checked={visibleCols[key] ?? true} onChange={(e) => toggleCol(key, e.target.checked)}>
-                {label}
-              </Checkbox>
-            </div>
-          );
-        })}
-      </div>
-      {storageKey ? (
-        <div style={{marginTop: 8, textAlign: 'right'}}>
-          <Button type="link" size="small" onClick={() => {
-            try {
-              if (storageKey) localStorage.removeItem(storageKey);
-            } catch {
-            }
-            const next: Record<string, boolean> = {};
-            visibleKeys.forEach((k) => next[k] = true);
-            setVisibleCols(next);
-          }}>{t('table.resetColumns', '重置列')}</Button>
-        </div>
-      ) : null}
-    </div>
-  );
-
   const rowSelection: TableRowSelection<T> = {
     selectedRowKeys,
     onChange: (keys: React.Key[], rows: T[]) => onSelectChange(keys, rows),
@@ -402,42 +518,64 @@ const App = <T extends object = any>(props: TableProps<T>) => {
     });
   };
 
+  const emptyText = useMemo(() => (
+    <div style={{padding: '32px 0', textAlign: 'center'}}>
+      <div style={{fontSize: 40, marginBottom: 8, opacity: 0.3}}>📭</div>
+      <div style={{color: 'rgba(0,0,0,0.45)', fontSize: 13}}>暂无数据</div>
+    </div>
+  ), []);
+
   return (
-    <div>
-      <Row justify="space-between" style={{marginBottom: 16}}>
-        <Col>
-          <Space>
-            {renderButtons(props.buttons)}
-          </Space>
-        </Col>
-        <Col>
-          <Button
-            className="button-col"
-            type="text"
-            icon={<SearchOutlined/>}
-            onClick={() => props.refresh()}
-            loading={props.loading}
-            disabled={props.refreshDisabled}
-          />
-          <Popover placement="bottomRight" content={settingsContent} trigger="click">
-            <Button icon={<SettingOutlined/>} type="text" style={{marginLeft: 8}}/>
-          </Popover>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={24}>
-          <AntTable<T>
-            bordered
-            columns={columns}
-            dataSource={dataSource}
-            loading={props.loading}
-            pagination={pagination}
-            rowKey={keyOfRecord}
-            onChange={props.onChange}
-            rowSelection={rowSelection}
-          />
-        </Col>
-      </Row>
+    <div ref={containerRef} style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+      <div ref={toolbarRef}>
+        <Row justify="space-between" style={{marginBottom: 16}}>
+          <Col>
+            <Space>
+              {renderButtons(props.buttons)}
+            </Space>
+          </Col>
+          <Col>
+            <Button
+              className="button-col"
+              type="text"
+              icon={<ReloadOutlined/>}
+              onClick={() => props.refresh()}
+              loading={props.loading}
+              disabled={props.refreshDisabled}
+            />
+            <Tooltip title="列设置">
+              <Button
+                icon={<SettingOutlined/>}
+                type="text"
+                style={{marginLeft: 8}}
+                onClick={() => setSettingsOpen(true)}
+              />
+            </Tooltip>
+          </Col>
+        </Row>
+      </div>
+      <div style={{flex: 1, minHeight: 0}}>
+        <AntTable<T>
+          bordered
+          columns={columns}
+          dataSource={dataSource}
+          loading={props.loading}
+          pagination={pagination}
+          rowKey={keyOfRecord}
+          onChange={props.onChange}
+          rowSelection={rowSelection}
+          scroll={{y: scrollY, x: 'max-content'}}
+          locale={{emptyText}}
+          components={{header: {cell: ResizableTitle}}}
+        />
+      </div>
+      <ColumnSettings
+        open={settingsOpen}
+        settings={settingsItems}
+        onSave={handleSettingsSave}
+        onClose={() => setSettingsOpen(false)}
+        onReset={handleSettingsReset}
+      />
     </div>
   );
 };
