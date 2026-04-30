@@ -10,6 +10,8 @@ import {Page, toPagination} from '@simplepoint/shared/types/request';
 import {ButtonProps} from "antd/es/button/button";
 import {createIcon} from '@simplepoint/shared/types/icon';
 import {useI18n} from '@simplepoint/shared/hooks/useI18n';
+import {get, put} from '@simplepoint/shared/api/methods';
+import {request} from '@simplepoint/shared/api/client';
 import ColumnFilter, {ColumnFilterType} from './ColumnFilter';
 import ColumnSettings, {ColumnFixed, ColumnSetting} from './ColumnSettings';
 
@@ -112,6 +114,19 @@ const resolveOptionLabel = (schemaDef: any, value: any): string | undefined => {
   return resolveI18nLabel(matched.title ?? matched.label ?? matched.const ?? value);
 };
 
+/** Read a stable user identifier from the session cache written by useUserInfo(). */
+function getUserId(): string {
+  try {
+    const raw = sessionStorage.getItem('sp.userinfo');
+    if (raw) {
+      const info = JSON.parse(raw) as Record<string, unknown>;
+      const id = info?.sub ?? info?.id ?? info?.username ?? info?.preferred_username;
+      if (id != null) return String(id);
+    }
+  } catch { /* ignore */ }
+  return 'anonymous';
+}
+
 const ResizableTitle = (props: React.HTMLAttributes<HTMLTableCellElement> & { onResize?: (e: React.SyntheticEvent, data: { size: { width: number; height: number } }) => void; width?: number }) => {
   const {onResize, width, ...restProps} = props;
   if (!width) return <th {...restProps} />;
@@ -183,50 +198,100 @@ const App = <T extends object = any>(props: TableProps<T>) => {
 
   const visibleKeys = useMemo(() => computeVisibleKeys(properties), [properties]);
 
-  const storageKey = useMemo(() => (props.storageKey ? `sp.table.cols.${props.storageKey}` : undefined), [props.storageKey]);
+  // Keys are scoped by userId so each user gets independent settings on the same browser.
+  const storageKey = useMemo(() => {
+    if (!props.storageKey) return undefined;
+    return `sp.table.cols.${getUserId()}.${props.storageKey}`;
+  }, [props.storageKey]);
+
+  const widthStorageKey = useMemo(() => {
+    if (!props.storageKey) return undefined;
+    return `sp.table.widths.${getUserId()}.${props.storageKey}`;
+  }, [props.storageKey]);
+
+  // Backend preference keys (userId is implicit — the server scopes by JWT sub)
+  const apiColsKey = props.storageKey ? `sp.table.cols.${props.storageKey}` : undefined;
+  const apiWidthsKey = props.storageKey ? `sp.table.widths.${props.storageKey}` : undefined;
+
   const [colConfigs, setColConfigs] = useState<Record<string, StoredColConfig>>({});
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  // Load from localStorage (with migration from old boolean format)
-  useEffect(() => {
-    setColConfigs((prev) => {
-      const base: Record<string, StoredColConfig> = {};
-      visibleKeys.forEach((k) => {
-        base[k] = prev[k] ?? {visible: true};
-      });
-      try {
-        if (storageKey) {
-          const raw = localStorage.getItem(storageKey);
-          if (raw) {
-            const saved = JSON.parse(raw) as Record<string, any>;
-            const firstVal = saved[Object.keys(saved)[0]];
-            const isOldFormat = typeof firstVal === 'boolean';
-            visibleKeys.forEach((k) => {
-              if (isOldFormat) {
-                if (typeof saved[k] === 'boolean') base[k] = {visible: saved[k]};
-              } else if (saved[k] && typeof saved[k] === 'object') {
-                base[k] = saved[k] as StoredColConfig;
-              }
-            });
-          }
-        }
-      } catch { /* ignore */ }
-      return base;
-    });
-  }, [visibleKeys, storageKey]);
+  // Debounce timers for backend saves
+  const colSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const widthSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Skip initial-load triggers
+  const colConfigsInitialized = useRef(false);
+  const colWidthsInitialized = useRef(false);
 
-  // Persist to localStorage whenever configs change
+  // Load from localStorage first (instant), then fetch backend (async override)
   useEffect(() => {
+    colConfigsInitialized.current = false;
+    const base: Record<string, StoredColConfig> = {};
+    visibleKeys.forEach((k) => { base[k] = {visible: true}; });
+    try {
+      if (storageKey) {
+        const raw = localStorage.getItem(storageKey);
+        if (raw) {
+          const saved = JSON.parse(raw) as Record<string, any>;
+          const firstVal = saved[Object.keys(saved)[0]];
+          const isOldFormat = typeof firstVal === 'boolean';
+          visibleKeys.forEach((k) => {
+            if (isOldFormat) {
+              if (typeof saved[k] === 'boolean') base[k] = {visible: saved[k]};
+            } else if (saved[k] && typeof saved[k] === 'object') {
+              base[k] = saved[k] as StoredColConfig;
+            }
+          });
+        }
+      }
+    } catch { /* ignore */ }
+    setColConfigs(base);
+
+    // Async override from backend
+    if (apiColsKey) {
+      get<{data?: string}>(`/common/users/preferences/${encodeURIComponent(apiColsKey)}`)
+        .then(res => {
+          const raw = res?.data;
+          if (!raw) return;
+          const saved = JSON.parse(raw) as Record<string, any>;
+          setColConfigs(prev => {
+            const next = {...prev};
+            visibleKeys.forEach((k) => {
+              if (saved[k] && typeof saved[k] === 'object') next[k] = saved[k] as StoredColConfig;
+            });
+            return next;
+          });
+          if (storageKey) {
+            try { localStorage.setItem(storageKey, raw); } catch { /* ignore */ }
+          }
+        })
+        .catch(() => { /* silently ignore — use localStorage fallback */ })
+        .finally(() => { colConfigsInitialized.current = true; });
+    } else {
+      colConfigsInitialized.current = true;
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visibleKeys, storageKey, apiColsKey]);
+
+  // Persist to localStorage + debounce backend save whenever configs change
+  useEffect(() => {
+    if (!colConfigsInitialized.current) return;
     try {
       if (storageKey && Object.keys(colConfigs).length) {
         const payload: Record<string, StoredColConfig> = {};
-        visibleKeys.forEach((k) => {
-          if (colConfigs[k]) payload[k] = colConfigs[k];
-        });
-        localStorage.setItem(storageKey, JSON.stringify(payload));
+        visibleKeys.forEach((k) => { if (colConfigs[k]) payload[k] = colConfigs[k]; });
+        const json = JSON.stringify(payload);
+        localStorage.setItem(storageKey, json);
+        if (apiColsKey) {
+          if (colSaveTimer.current) clearTimeout(colSaveTimer.current);
+          colSaveTimer.current = setTimeout(() => {
+            put(`/common/users/preferences/${encodeURIComponent(apiColsKey)}`, {value: json})
+              .catch(() => { /* ignore */ });
+          }, 800);
+        }
       }
     } catch { /* ignore */ }
-  }, [colConfigs, visibleKeys, storageKey]);
+  }, [colConfigs, visibleKeys, storageKey, apiColsKey]);
 
   // Build ColumnSetting[] for the settings drawer (sorted by user order)
   const settingsItems = useMemo<ColumnSetting[]>(() => {
@@ -255,17 +320,71 @@ const App = <T extends object = any>(props: TableProps<T>) => {
   }, []);
 
   const handleSettingsReset = useCallback(() => {
-    try { if (storageKey) localStorage.removeItem(storageKey); } catch { /* ignore */ }
+    try {
+      if (storageKey) localStorage.removeItem(storageKey);
+      if (widthStorageKey) localStorage.removeItem(widthStorageKey);
+    } catch { /* ignore */ }
+    if (apiColsKey) {
+      request(`/common/users/preferences/${encodeURIComponent(apiColsKey)}`, {method: 'DELETE'})
+        .catch(() => { /* ignore */ });
+    }
+    if (apiWidthsKey) {
+      request(`/common/users/preferences/${encodeURIComponent(apiWidthsKey)}`, {method: 'DELETE'})
+        .catch(() => { /* ignore */ });
+    }
     const next: Record<string, StoredColConfig> = {};
     visibleKeys.forEach((k) => { next[k] = {visible: true}; });
     setColConfigs(next);
-  }, [storageKey, visibleKeys]);
+    setColWidths({});
+  }, [storageKey, widthStorageKey, apiColsKey, apiWidthsKey, visibleKeys]);
 
-  const [colWidths, setColWidths] = useState<Record<string, number>>({});
+  const [colWidths, setColWidths] = useState<Record<string, number>>(() => {
+    if (!props.storageKey) return {};
+    try {
+      const key = `sp.table.widths.${getUserId()}.${props.storageKey}`;
+      const raw = localStorage.getItem(key);
+      return raw ? (JSON.parse(raw) as Record<string, number>) : {};
+    } catch { return {}; }
+  });
 
   const handleResize = useCallback((key: string) => (_: React.SyntheticEvent, {size}: {size: {width: number; height: number}}) => {
     setColWidths(prev => ({...prev, [key]: size.width}));
   }, []);
+
+  // Async load column widths from backend (overrides localStorage if server has newer data)
+  useEffect(() => {
+    colWidthsInitialized.current = false;
+    if (!apiWidthsKey) { colWidthsInitialized.current = true; return; }
+    get<{data?: string}>(`/common/users/preferences/${encodeURIComponent(apiWidthsKey)}`)
+      .then(res => {
+        const raw = res?.data;
+        if (!raw) return;
+        const saved = JSON.parse(raw) as Record<string, number>;
+        setColWidths(saved);
+        if (widthStorageKey) {
+          try { localStorage.setItem(widthStorageKey, raw); } catch { /* ignore */ }
+        }
+      })
+      .catch(() => { /* silently ignore */ })
+      .finally(() => { colWidthsInitialized.current = true; });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiWidthsKey, widthStorageKey]);
+
+  // Persist column widths whenever they change
+  useEffect(() => {
+    if (!colWidthsInitialized.current) return;
+    if (!Object.keys(colWidths).length) return;
+    try {
+      if (widthStorageKey) localStorage.setItem(widthStorageKey, JSON.stringify(colWidths));
+    } catch { /* ignore */ }
+    if (apiWidthsKey) {
+      if (widthSaveTimer.current) clearTimeout(widthSaveTimer.current);
+      widthSaveTimer.current = setTimeout(() => {
+        put(`/common/users/preferences/${encodeURIComponent(apiWidthsKey)}`, {value: JSON.stringify(colWidths)})
+          .catch(() => { /* ignore */ });
+      }, 800);
+    }
+  }, [colWidths, widthStorageKey, apiWidthsKey]);
 
   const columns = useMemo<ColumnsType<T>>(() => {
     const entries = Object.entries(properties);
@@ -530,8 +649,18 @@ const App = <T extends object = any>(props: TableProps<T>) => {
       <div ref={toolbarRef}>
         <Row justify="space-between" style={{marginBottom: 16}}>
           <Col>
-            <Space>
+            <Space wrap>
               {renderButtons(props.buttons)}
+              {selectedRowKeys.length > 0 && (
+                <Tag
+                  color="blue"
+                  closable
+                  onClose={() => { setSelectedRowKeys([]); setSelectedRows([]); props.onSelectionChange?.([], []); }}
+                  style={{margin: 0, fontSize: 13, padding: '2px 8px'}}
+                >
+                  {t('table.selectedCount', '已选 {count} 条', {count: selectedRowKeys.length})}
+                </Tag>
+              )}
             </Space>
           </Col>
           <Col>

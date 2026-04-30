@@ -9,6 +9,10 @@ const microapps = [
     {
          name: 'auditing',
          entry: 'http://127.0.0.1:3002/auditing/mf/mf-manifest.json'
+    },
+    {
+         name: 'dna',
+         entry: 'http://127.0.0.1:3003/dna/mf/mf-manifest.json'
     }
 ]
 
@@ -650,6 +654,239 @@ const routes = {
                             "description": "允许删除租户对象存储配额"
                         }
                     ]
+                }
+            ]
+        },
+        {
+            "id": "dna00000-0000-0000-0000-000000000001",
+            "authority": "dna.view",
+            "disabled": false,
+            "label": "DNA工作台",
+            "title": "menu.dna",
+            "icon": "DatabaseOutlined",
+            "path": "/dna",
+            "sort": 5,
+            "children": [
+                {
+                    "id": "dna00000-0000-0000-0000-000000000002",
+                    "authority": "dna.dashboard.view",
+                    "disabled": false,
+                    "label": "仪表盘",
+                    "title": "menu.dna.dashboard",
+                    "parent": "dna00000-0000-0000-0000-000000000001",
+                    "icon": "DashboardOutlined",
+                    "path": "/dna/dashboard",
+                    "type": "item",
+                    "component": "dna/platform/Dashboard",
+                    "children": []
+                },
+                {
+                    "id": "dna00000-0000-0000-0000-000000000003",
+                    "authority": "dna.drivers.view",
+                    "disabled": false,
+                    "label": "驱动管理",
+                    "title": "menu.dna.drivers",
+                    "parent": "dna00000-0000-0000-0000-000000000001",
+                    "icon": "CloudDownloadOutlined",
+                    "path": "/dna/drivers",
+                    "type": "item",
+                    "component": "dna/platform/JdbcDriver",
+                    "children": []
+                },
+                {
+                    "id": "dna00000-0000-0000-0000-000000000004",
+                    "authority": "dna.dataSources.view",
+                    "disabled": false,
+                    "label": "数据源管理",
+                    "title": "menu.dna.dataSources",
+                    "parent": "dna00000-0000-0000-0000-000000000001",
+                    "icon": "ApiOutlined",
+                    "path": "/dna/data-sources",
+                    "type": "item",
+                    "component": "dna/platform/JdbcDataSource",
+                    "children": []
+                },
+                {
+                    "id": "dna00000-0000-0000-0000-000000000005",
+                    "authority": "dna.metadata.view",
+                    "disabled": false,
+                    "label": "元数据管理",
+                    "title": "menu.dna.metadata",
+                    "parent": "dna00000-0000-0000-0000-000000000001",
+                    "icon": "ApartmentOutlined",
+                    "path": "/dna/metadata",
+                    "type": "item",
+                    "component": "dna/platform/JdbcMetadata",
+                    "children": []
+                },
+                {
+                    "id": "dna00000-0000-0000-0000-000000000006",
+                    "authority": "dna.dialects.view",
+                    "disabled": false,
+                    "label": "数据库方言管理",
+                    "title": "menu.dna.dialects",
+                    "parent": "dna00000-0000-0000-0000-000000000001",
+                    "icon": "DeploymentUnitOutlined",
+                    "path": "/dna/dialects",
+                    "type": "item",
+                    "component": "dna/platform/JdbcDialect",
+                    "children": []
+                },
+                {
+                    "id": "dna00000-0000-0000-0000-000000000010",
+                    "authority": "dna.federation.view",
+                    "disabled": false,
+                    "label": "数据源查询",
+                    "title": "menu.dna.federation",
+                    "parent": "dna00000-0000-0000-0000-000000000001",
+                    "icon": "PartitionOutlined",
+                    "path": "/dna/federation",
+                    "sort": 5,
+                    "children": [
+                        {
+                            "id": "dna00000-0000-0000-0000-000000000011",
+                            "authority": "dna.federation.dataCatalogs.view",
+                            "disabled": false,
+                            "label": "数据目录",
+                            "title": "menu.dna.federation.dataCatalogs",
+                            "parent": "dna00000-0000-0000-0000-000000000010",
+                            "icon": "FolderOpenOutlined",
+                            "path": "/dna/federation/data-catalogs",
+                            "type": "item",
+                            "component": "dna/platform/DataCatalog",
+                            "children": []
+                        },
+                        {
+                            "id": "dna00000-0000-0000-0000-000000000012",
+                            "authority": "dna.federation.jdbcUsers.view",
+                            "disabled": false,
+                            "label": "JDBC连接用户",
+                            "title": "menu.dna.federation.jdbcUsers",
+                            "parent": "dna00000-0000-0000-0000-000000000010",
+                            "icon": "UserSwitchOutlined",
+                            "path": "/dna/federation/jdbc-users",
+                            "type": "item",
+                            "component": "dna/platform/FederationJdbcUser",
+                            "children": []
+                        },
+                        {
+                            "id": "dna00000-0000-0000-0000-000000000013",
+                            "authority": "dna.federation.sqlConsole.view",
+                            "disabled": false,
+                            "label": "SQL 控制台",
+                            "title": "menu.dna.federation.sqlConsole",
+                            "parent": "dna00000-0000-0000-0000-000000000010",
+                            "icon": "CodeOutlined",
+                            "path": "/dna/federation/sql-console",
+                            "type": "item",
+                            "component": "dna/platform/SqlConsole",
+                            "children": []
+                        },
+                        {
+                            "id": "dna00000-0000-0000-0000-000000000014",
+                            "authority": "dna.federation.queryPolicies.view",
+                            "disabled": false,
+                            "label": "查询策略",
+                            "title": "menu.dna.federation.queryPolicies",
+                            "parent": "dna00000-0000-0000-0000-000000000010",
+                            "icon": "SafetyOutlined",
+                            "path": "/dna/federation/query-policies",
+                            "type": "item",
+                            "component": "dna/platform/QueryPolicy",
+                            "children": []
+                        },
+                        {
+                            "id": "dna00000-0000-0000-0000-000000000015",
+                            "authority": "dna.federation.queryAudits.view",
+                            "disabled": false,
+                            "label": "查询审计",
+                            "title": "menu.dna.federation.queryAudits",
+                            "parent": "dna00000-0000-0000-0000-000000000010",
+                            "icon": "AuditOutlined",
+                            "path": "/dna/federation/query-audits",
+                            "type": "item",
+                            "component": "dna/platform/QueryAudit",
+                            "children": []
+                        },
+                        {
+                            "id": "dna00000-0000-0000-0000-000000000016",
+                            "authority": "dna.federation.queryTemplates.view",
+                            "disabled": false,
+                            "label": "查询模板",
+                            "title": "menu.dna.federation.queryTemplates",
+                            "parent": "dna00000-0000-0000-0000-000000000010",
+                            "icon": "FileTextOutlined",
+                            "path": "/dna/federation/query-templates",
+                            "type": "item",
+                            "component": "dna/platform/QueryTemplate",
+                            "children": []
+                        },
+                        {
+                            "id": "dna00000-0000-0000-0000-000000000017",
+                            "authority": "dna.federation.views.view",
+                            "disabled": false,
+                            "label": "联邦视图",
+                            "title": "menu.dna.federation.views",
+                            "parent": "dna00000-0000-0000-0000-000000000010",
+                            "icon": "EyeOutlined",
+                            "path": "/dna/federation/views",
+                            "type": "item",
+                            "component": "dna/platform/FederationView",
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "id": "dna00000-0000-0000-0000-000000000020",
+                    "authority": "dna.health.view",
+                    "disabled": false,
+                    "label": "健康监控",
+                    "title": "menu.dna.health",
+                    "parent": "dna00000-0000-0000-0000-000000000001",
+                    "icon": "HeartOutlined",
+                    "path": "/dna/health",
+                    "type": "item",
+                    "component": "dna/platform/HealthMonitor",
+                    "children": []
+                },
+                {
+                    "id": "dna00000-0000-0000-0000-000000000021",
+                    "authority": "dna.dataAssets.view",
+                    "disabled": false,
+                    "label": "数据资产",
+                    "title": "menu.dna.dataAssets",
+                    "parent": "dna00000-0000-0000-0000-000000000001",
+                    "icon": "GoldOutlined",
+                    "path": "/dna/data-assets",
+                    "type": "item",
+                    "component": "dna/platform/DataAsset",
+                    "children": []
+                },
+                {
+                    "id": "dna00000-0000-0000-0000-000000000022",
+                    "authority": "dna.dataQuality.view",
+                    "disabled": false,
+                    "label": "数据质量",
+                    "title": "menu.dna.dataQuality",
+                    "parent": "dna00000-0000-0000-0000-000000000001",
+                    "icon": "CheckCircleOutlined",
+                    "path": "/dna/data-quality",
+                    "type": "item",
+                    "component": "dna/platform/DataQuality",
+                    "children": []
+                },
+                {
+                    "id": "dna00000-0000-0000-0000-000000000023",
+                    "authority": "dna.dataLineage.view",
+                    "disabled": false,
+                    "label": "数据血缘",
+                    "title": "menu.dna.dataLineage",
+                    "parent": "dna00000-0000-0000-0000-000000000001",
+                    "icon": "ApartmentOutlined",
+                    "path": "/dna/data-lineage",
+                    "type": "item",
+                    "component": "dna/platform/DataLineage",
+                    "children": []
                 }
             ]
         },

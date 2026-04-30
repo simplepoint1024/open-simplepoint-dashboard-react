@@ -111,3 +111,24 @@ export async function redirectToLogin() {
   }
 }
 
+export async function redirectToLogout() {
+  await clearBrowserCaches();
+
+  const form = document.createElement('form');
+  form.method = 'post';
+  form.action = '/logout';
+  form.style.display = 'none';
+
+  try {
+    (document.body ?? document.documentElement).appendChild(form);
+  } catch {
+    document.documentElement.appendChild(form);
+  }
+
+  try {
+    form.requestSubmit();
+  } catch {
+    form.submit();
+  }
+}
+

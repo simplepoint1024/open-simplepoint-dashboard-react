@@ -15,9 +15,10 @@ import {
   Tag,
   Typography
 } from "antd";
-import {EditOutlined, ReloadOutlined, SaveOutlined, UserOutlined} from "@ant-design/icons";
+import {EditOutlined, LockOutlined, ReloadOutlined, SaveOutlined, UserOutlined} from "@ant-design/icons";
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import {useUserInfo} from '@/fetches/user.ts';
+import {post} from '@simplepoint/shared/api/methods';
 import './index.css'
 
 export const Profile: React.FC = () => {
@@ -79,6 +80,32 @@ export const Profile: React.FC = () => {
       // ignore
     } finally {
       setSaving(false);
+    }
+  };
+
+  const [pwdSaving, setPwdSaving] = useState(false);
+  const [pwdForm] = Form.useForm();
+
+  const onChangePassword = async () => {
+    try {
+      const values = await pwdForm.validateFields();
+      if (values.newPassword !== values.confirmPassword) {
+        pwdForm.setFields([{ name: 'confirmPassword', errors: [t('rule.passwordMismatch', '两次输入的密码不一致')] }]);
+        return;
+      }
+      setPwdSaving(true);
+      await post('/common/users/change-password', {
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword,
+        confirmPassword: values.confirmPassword,
+      });
+      message.success(t('profile.passwordChanged', '密码修改成功'));
+      pwdForm.resetFields();
+    } catch (e: any) {
+      if (e?.errorFields) return;
+      message.error(e?.message ?? t('profile.passwordChangeFailed', '密码修改失败'));
+    } finally {
+      setPwdSaving(false);
     }
   };
 
@@ -203,6 +230,46 @@ export const Profile: React.FC = () => {
                 </Form.Item>
               </Form>
             )}
+          </Card>
+        </Col>
+      </Row>
+      <Row gutter={[16, 16]} style={{marginTop: 0}}>
+        <Col xs={24} md={{span: 16, offset: 8}}>
+          <Card
+            className="profile-card"
+            title={<span><LockOutlined style={{marginRight: 6}}/>{t('profile.changePassword', '修改密码')}</span>}
+          >
+            <Form layout="vertical" form={pwdForm} style={{maxWidth: 400}}>
+              <Form.Item
+                name="currentPassword"
+                label={t('field.currentPassword', '当前密码')}
+                rules={[{required: true, message: t('rule.currentPassword', '请输入当前密码')}]}
+              >
+                <Input.Password maxLength={64} placeholder={t('ph.currentPassword', '请输入当前密码')}/>
+              </Form.Item>
+              <Form.Item
+                name="newPassword"
+                label={t('field.newPassword', '新密码')}
+                rules={[
+                  {required: true, message: t('rule.newPassword', '请输入新密码')},
+                  {min: 6, message: t('rule.passwordLength', '密码长度至少 6 位')},
+                ]}
+              >
+                <Input.Password maxLength={64} placeholder={t('ph.newPassword', '请输入新密码')}/>
+              </Form.Item>
+              <Form.Item
+                name="confirmPassword"
+                label={t('field.confirmPassword', '确认新密码')}
+                rules={[{required: true, message: t('rule.confirmPassword', '请再次输入新密码')}]}
+              >
+                <Input.Password maxLength={64} placeholder={t('ph.confirmPassword', '请再次输入新密码')}/>
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" icon={<LockOutlined/>} loading={pwdSaving} onClick={onChangePassword}>
+                  {t('action.changePassword', '修改密码')}
+                </Button>
+              </Form.Item>
+            </Form>
           </Card>
         </Col>
       </Row>

@@ -14,19 +14,19 @@ export default defineConfig({
   ],
   output: {
     distPath: {
-      root: './dist',
-      js: './assets/js',
-      css: './assets/css',
-      assets: './assets',
-      svg: './assets/svg',
-      font: './assets/fonts',
-      image: './assets/images',
-      media: './assets/media',
+      root: '../../../simplepoint-services/simplepoint-service-host/src/main/resources/static',
+      js: 'assets/js',
+      css: 'assets/css',
+      assets: 'assets',
+      svg: 'assets/svg',
+      font: 'assets/fonts',
+      image: 'assets/images',
+      media: 'assets/media',
     },
   },
   server: {
     publicDir: {
-      copyOnBuild: false,
+      copyOnBuild: true,
     }
   }
 });

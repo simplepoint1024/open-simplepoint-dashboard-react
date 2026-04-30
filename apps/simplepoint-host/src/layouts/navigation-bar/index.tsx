@@ -48,6 +48,60 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
   const location = useLocation();
   const {t} = useI18n();
 
+  // 侧边栏宽度拖动调整，按用户隔离持久化
+  const SIDER_MIN = 140;
+  const SIDER_MAX = 480;
+  const SIDER_DEFAULT = 180;
+  const getSiderStorageKey = () => {
+    try {
+      const raw = sessionStorage.getItem('sp.userinfo');
+      if (raw) {
+        const info = JSON.parse(raw) as Record<string, unknown>;
+        const id = info?.sub ?? info?.id ?? info?.username ?? info?.preferred_username;
+        if (id != null) return `sp.sider.width.${String(id)}`;
+      }
+    } catch { /* ignore */ }
+    return 'sp.sider.width.anonymous';
+  };
+  const [siderWidth, setSiderWidth] = useState<number>(() => {
+    try {
+      const v = Number(localStorage.getItem(getSiderStorageKey()));
+      if (v >= SIDER_MIN && v <= SIDER_MAX) return v;
+    } catch { /* ignore */ }
+    return SIDER_DEFAULT;
+  });
+  const isResizingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startWidthRef = useRef(siderWidth);
+
+  const onResizeHandleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    isResizingRef.current = true;
+    startXRef.current = e.clientX;
+    startWidthRef.current = siderWidth;
+
+    const onMouseMove = (ev: MouseEvent) => {
+      if (!isResizingRef.current) return;
+      const next = Math.min(SIDER_MAX, Math.max(SIDER_MIN, startWidthRef.current + ev.clientX - startXRef.current));
+      setSiderWidth(next);
+    };
+    const onMouseUp = (ev: MouseEvent) => {
+      if (!isResizingRef.current) return;
+      isResizingRef.current = false;
+      const final = Math.min(SIDER_MAX, Math.max(SIDER_MIN, startWidthRef.current + ev.clientX - startXRef.current));
+      setSiderWidth(final);
+      try { localStorage.setItem(getSiderStorageKey(), String(final)); } catch { /* ignore */ }
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  }, [siderWidth]);
+
   // 监听全局主题模式，驱动侧边菜单明暗样式
   const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => (localStorage.getItem('sp.theme') as 'light' | 'dark') || 'light');
   useEffect(() => {
@@ -466,7 +520,7 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
         />
       </Header>
       <Layout style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
-        <Sider width={180} trigger={null} collapsible collapsed={collapsed} style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <Sider width={collapsed ? 80 : siderWidth} trigger={null} collapsible collapsed={collapsed} style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
           {(!sideMenuItems || sideMenuItems.length === 0) ? (
             <div style={{ padding: collapsed ? 8 : 16 }}>
               <Skeleton active paragraph={{ rows: 6 }} title={false} />
@@ -491,6 +545,9 @@ const NavigateBar: React.FC<{ children?: React.ReactElement, data: Array<MenuInf
           >
             {!collapsed && <span>{t('nav.collapse', '收起')}</span>}
           </Button>
+          {!collapsed && (
+            <div className="nb-sider-resize-handle" onMouseDown={onResizeHandleMouseDown} />
+          )}
         </Sider>
         <Layout className="nb-inner-layout">
           <Content className="nb-content-wrapper">

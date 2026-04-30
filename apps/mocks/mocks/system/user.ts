@@ -322,6 +322,19 @@ export default [
     }),
     http.get('/common/users/authorized', () => {
         return HttpResponse.json(["1"])
-    })
+    }),
+    http.post('/common/users/change-password', async ({ request }) => {
+        const body = await request.json() as any;
+        if (!body?.currentPassword || !body?.newPassword || !body?.confirmPassword) {
+            return HttpResponse.json({ message: '参数不完整' }, { status: 400 });
+        }
+        if (body.newPassword !== body.confirmPassword) {
+            return HttpResponse.json({ message: '新密码与确认密码不一致' }, { status: 400 });
+        }
+        if (body.currentPassword === 'wrong') {
+            return HttpResponse.json({ message: '当前密码不正确' }, { status: 403 });
+        }
+        return HttpResponse.json(null, { status: 200 });
+    }),
 ];
 

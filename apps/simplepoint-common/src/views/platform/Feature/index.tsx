@@ -56,7 +56,7 @@ const App = () => {
     <div>
       <SimpleTable {...baseConfig} customButtonEvents={customButtonEvents}/>
       <Drawer
-        title={t('table.button.config.permission', '配置权限')}
+        title={t('features.button.config.permission', '配置权限')}
         open={openPermissionConfig}
         onClose={() => {
           setOpenPermissionConfig(false);

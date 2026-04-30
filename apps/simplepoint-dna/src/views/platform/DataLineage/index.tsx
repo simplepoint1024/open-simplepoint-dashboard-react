@@ -3,63 +3,17 @@ import SimpleTable from '@simplepoint/components/SimpleTable';
 import {get} from '@simplepoint/shared/api/methods';
 import {useI18n} from '@simplepoint/shared/hooks/useI18n';
 import type {Page} from '@simplepoint/shared/types/request';
-import {Alert, Button, Card, Col, Empty, Row, Tag, message, Modal, Input, Select, Space, Descriptions, Badge} from 'antd';
-import {ApartmentOutlined, PlusOutlined, DeleteOutlined} from '@ant-design/icons';
+import {Alert, Button, Card, Empty, Spin, Tag, message, Modal, Input, Select, Space, Descriptions} from 'antd';
+import {ApartmentOutlined, PlusOutlined} from '@ant-design/icons';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {resolveErrorMessage} from '../shared';
+import {LineageGraphView} from './LineageGraphView';
+import type {DataSourceOption, LineageGraph, LineageNode} from './types';
+import {NODE_TYPE_KEYS, EDGE_TYPE_KEYS, NODE_TAG_COLORS} from './types';
 
 const nodesConfig = api['platform.dna-data-lineage-nodes'];
 const edgesConfig = api['platform.dna-data-lineage-edges'];
 const dataSourceConfig = api['platform.dna-data-sources'];
-
-type DataSourceOption = {
-  id: string;
-  code?: string;
-  name?: string;
-  enabled?: boolean;
-};
-
-type LineageNode = {
-  id: string;
-  name: string;
-  catalogId: string;
-  catalogName?: string;
-  nodeType: string;
-  schemaName?: string;
-  tableName: string;
-  columnName?: string;
-  tags?: string;
-  description?: string;
-};
-
-type LineageEdge = {
-  id: string;
-  sourceNodeId: string;
-  sourceNodeName?: string;
-  targetNodeId: string;
-  targetNodeName?: string;
-  edgeType: string;
-  transformDescription?: string;
-};
-
-type LineageGraph = {
-  nodes: LineageNode[];
-  edges: LineageEdge[];
-  rootNodeId: string;
-};
-
-const NODE_TYPE_KEYS = ['TABLE', 'VIEW', 'COLUMN', 'ETL', 'STREAM', 'API', 'FILE'] as const;
-const EDGE_TYPE_KEYS = ['DIRECT', 'ETL', 'DERIVED', 'COPY', 'AGGREGATION', 'FILTER', 'JOIN'] as const;
-
-const NODE_COLORS: Record<string, string> = {
-  TABLE: 'blue',
-  VIEW: 'purple',
-  COLUMN: 'cyan',
-  ETL: 'orange',
-  STREAM: 'green',
-  API: 'geekblue',
-  FILE: 'gold',
-};
 
 const App = () => {
   const {t, ensure, locale} = useI18n();
@@ -187,131 +141,78 @@ const App = () => {
       title: t('dna.dataLineage.title.nodeType', 'Node Type'),
       width: 110,
       render: (value?: string) => (
-        <Tag color={NODE_COLORS[value ?? ''] ?? 'default'}>{value || '-'}</Tag>
+        <Tag color={NODE_TAG_COLORS[value ?? ''] ?? 'default'}>{value || '-'}</Tag>
       ),
     },
   }), [t]);
 
   const renderGraph = () => {
     if (graphLoading) {
-      return <Card><div style={{textAlign: 'center', padding: 40}}>{t('dna.dataLineage.loading', 'Loading...')}</div></Card>;
+      return (
+        <Card>
+          <div style={{textAlign: 'center', padding: 60}}>
+            <Spin size="large" tip={t('dna.dataLineage.loading', 'Loading...')} />
+          </div>
+        </Card>
+      );
     }
     if (!graph || graph.nodes.length === 0) {
       return <Card><Empty description={t('dna.dataLineage.empty.noData', 'No lineage data available')} /></Card>;
     }
 
     const rootNode = graph.nodes.find((n) => n.id === graph.rootNodeId);
-    const upstreamEdges = graph.edges.filter((e) => e.targetNodeId === graph.rootNodeId);
-    const downstreamEdges = graph.edges.filter((e) => e.sourceNodeId === graph.rootNodeId);
-    const otherEdges = graph.edges.filter(
-      (e) => e.sourceNodeId !== graph.rootNodeId && e.targetNodeId !== graph.rootNodeId
-    );
 
     return (
       <div>
-        <div style={{marginBottom: 16, display: 'flex', justifyContent: 'space-between'}}>
-          <Button onClick={() => setActiveTab('nodes')}>{t('dna.dataLineage.button.backToNodes', '← Back to node list')}</Button>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => {
-            void loadAllNodes();
-            setEdgeModalVisible(true);
-          }}>
+        {/* Toolbar */}
+        <div style={{marginBottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <Button onClick={() => setActiveTab('nodes')}>
+            {t('dna.dataLineage.button.backToNodes', '← Back to node list')}
+          </Button>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              void loadAllNodes();
+              setEdgeModalVisible(true);
+            }}
+          >
             {t('dna.dataLineage.button.addEdge', 'Add Lineage Relationship')}
           </Button>
         </div>
 
+        {/* Root node metadata */}
         {rootNode && (
-          <Card title={t('dna.dataLineage.card.currentNode', 'Current Node')} size="small" style={{marginBottom: 16}}>
+          <Card size="small" style={{marginBottom: 12}}>
             <Descriptions size="small" column={3}>
               <Descriptions.Item label={t('dna.dataLineage.label.name', 'Name')}>{rootNode.name}</Descriptions.Item>
               <Descriptions.Item label={t('dna.dataLineage.label.type', 'Type')}>
-                <Tag color={NODE_COLORS[rootNode.nodeType]}>{rootNode.nodeType}</Tag>
+                <Tag color={NODE_TAG_COLORS[rootNode.nodeType]}>{rootNode.nodeType}</Tag>
               </Descriptions.Item>
-              <Descriptions.Item label={t('dna.dataLineage.label.dataSource', 'Data Source')}>{rootNode.catalogName || '-'}</Descriptions.Item>
-              <Descriptions.Item label={t('dna.dataLineage.label.schema', 'Schema')}>{rootNode.schemaName || '-'}</Descriptions.Item>
-              <Descriptions.Item label={t('dna.dataLineage.label.tableName', 'Table Name')}>{rootNode.tableName}</Descriptions.Item>
-              <Descriptions.Item label={t('dna.dataLineage.label.columnName', 'Column Name')}>{rootNode.columnName || '-'}</Descriptions.Item>
+              <Descriptions.Item label={t('dna.dataLineage.label.dataSource', 'Data Source')}>
+                {rootNode.catalogName || '-'}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('dna.dataLineage.label.schema', 'Schema')}>
+                {rootNode.schemaName || '-'}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('dna.dataLineage.label.tableName', 'Table Name')}>
+                {rootNode.tableName}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('dna.dataLineage.label.columnName', 'Column Name')}>
+                {rootNode.columnName || '-'}
+              </Descriptions.Item>
             </Descriptions>
           </Card>
         )}
 
-        <Row gutter={16}>
-          <Col span={12}>
-            <Card title={<><Badge status="processing" /> {t('dna.dataLineage.graph.upstream', 'Upstream Sources')} ({upstreamEdges.length})</>} size="small">
-              {upstreamEdges.length === 0 ? <Empty description={t('dna.dataLineage.graph.noUpstream', 'No upstream')} image={Empty.PRESENTED_IMAGE_SIMPLE} /> : (
-                upstreamEdges.map((edge) => {
-                  const sourceNode = graph.nodes.find((n) => n.id === edge.sourceNodeId);
-                  return (
-                    <Card key={edge.id} size="small" style={{marginBottom: 8}}
-                      extra={
-                        <Button type="link" size="small" danger icon={<DeleteOutlined />}
-                          onClick={() => handleDeleteEdge(edge.id)} />
-                      }
-                    >
-                      <div>
-                        <Tag color={NODE_COLORS[sourceNode?.nodeType ?? '']}>{sourceNode?.nodeType}</Tag>
-                        <strong>{sourceNode?.name || edge.sourceNodeName || edge.sourceNodeId}</strong>
-                      </div>
-                      <div style={{fontSize: 12, color: '#888', marginTop: 4}}>
-                        {t('dna.dataLineage.graph.relation', 'Relation:')} <Tag>{edge.edgeType}</Tag>
-                        {edge.transformDescription && <span>| {edge.transformDescription}</span>}
-                      </div>
-                      {sourceNode && (
-                        <Button type="link" size="small" onClick={() => handleViewGraph(sourceNode.id)}>
-                          {t('dna.dataLineage.button.viewLineage', 'View Lineage →')}
-                        </Button>
-                      )}
-                    </Card>
-                  );
-                })
-              )}
-            </Card>
-          </Col>
-          <Col span={12}>
-            <Card title={<><Badge status="success" /> {t('dna.dataLineage.graph.downstream', 'Downstream Targets')} ({downstreamEdges.length})</>} size="small">
-              {downstreamEdges.length === 0 ? <Empty description={t('dna.dataLineage.graph.noDownstream', 'No downstream')} image={Empty.PRESENTED_IMAGE_SIMPLE} /> : (
-                downstreamEdges.map((edge) => {
-                  const targetNode = graph.nodes.find((n) => n.id === edge.targetNodeId);
-                  return (
-                    <Card key={edge.id} size="small" style={{marginBottom: 8}}
-                      extra={
-                        <Button type="link" size="small" danger icon={<DeleteOutlined />}
-                          onClick={() => handleDeleteEdge(edge.id)} />
-                      }
-                    >
-                      <div>
-                        <Tag color={NODE_COLORS[targetNode?.nodeType ?? '']}>{targetNode?.nodeType}</Tag>
-                        <strong>{targetNode?.name || edge.targetNodeName || edge.targetNodeId}</strong>
-                      </div>
-                      <div style={{fontSize: 12, color: '#888', marginTop: 4}}>
-                        {t('dna.dataLineage.graph.relation', 'Relation:')} <Tag>{edge.edgeType}</Tag>
-                        {edge.transformDescription && <span>| {edge.transformDescription}</span>}
-                      </div>
-                      {targetNode && (
-                        <Button type="link" size="small" onClick={() => handleViewGraph(targetNode.id)}>
-                          {t('dna.dataLineage.button.viewLineage', 'View Lineage →')}
-                        </Button>
-                      )}
-                    </Card>
-                  );
-                })
-              )}
-            </Card>
-          </Col>
-        </Row>
-
-        {otherEdges.length > 0 && (
-          <Card title={t('dna.dataLineage.card.otherRelations', 'Other Relations')} size="small" style={{marginTop: 16}}>
-            {otherEdges.map((edge) => (
-              <div key={edge.id} style={{marginBottom: 4}}>
-                <Tag>{edge.sourceNodeName || edge.sourceNodeId}</Tag>
-                → <Tag color="blue">{edge.edgeType}</Tag> →
-                <Tag>{edge.targetNodeName || edge.targetNodeId}</Tag>
-                <Button type="link" size="small" danger icon={<DeleteOutlined />}
-                  onClick={() => handleDeleteEdge(edge.id)} />
-              </div>
-            ))}
-          </Card>
-        )}
+        {/* React Flow lineage graph */}
+        <div style={{height: 520, borderRadius: 8, overflow: 'hidden', border: '1px solid #e8e8e8'}}>
+          <LineageGraphView
+            graph={graph}
+            onNavigate={handleViewGraph}
+            onDeleteEdge={handleDeleteEdge}
+          />
+        </div>
       </div>
     );
   };

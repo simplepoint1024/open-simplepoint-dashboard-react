@@ -2,14 +2,13 @@ import type {ItemType} from "antd/es/menu/interface";
 import {Avatar, Badge, Button, Drawer, Dropdown, List, MenuProps, Tooltip, Popconfirm, message} from "antd";
 import {BellOutlined, CreditCardOutlined, FontSizeOutlined, GithubOutlined, GlobalOutlined, LogoutOutlined, QuestionCircleOutlined, SearchOutlined, SettingOutlined, UserOutlined, MoonOutlined, SunOutlined, DesktopOutlined, DeleteOutlined, FullscreenOutlined, FullscreenExitOutlined, SwapOutlined} from "@ant-design/icons";
 import React, {useEffect, useRef, useState} from 'react';
-import {post} from "@simplepoint/shared/api/methods";
 import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import { useUserInfo } from '@/fetches/user';
 import { useCurrentTenants } from '@/fetches/tenants';
 import { getTenantId, setTenantId } from '@/store/tenant';
 import { setContextId } from '@/store/contextId';
 import { ensureContextId } from '@simplepoint/shared/api/contextId';
-import { clearClientCaches, redirectToLogin } from '@simplepoint/shared/api/session';
+import { clearClientCaches, redirectToLogout } from '@simplepoint/shared/api/session';
 
 // 为主题切换提供短暂的全局颜色过渡动画
 function startThemeTransition(duration = 240) {
@@ -549,8 +548,7 @@ export const avatarConfig = (navigate: (path: string) => void): MenuProps => {
         label: <I18nText k='menu.logout' fallback='退出登录'/> as any,
         icon: <LogoutOutlined/>,
         onClick: async () => {
-          try { await post<any>('/logout', {}); } catch (e) { console.warn('[auth] Logout request failed:', e); }
-          await redirectToLogin();
+          await redirectToLogout();
         }
       },
     ]

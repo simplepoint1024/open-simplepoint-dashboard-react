@@ -150,6 +150,23 @@ body {
     overflow-x: hidden;
 }
 
+/* 侧边栏右侧拖动调整宽度的拖柄 */
+.nb-sider-resize-handle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 10;
+    background: transparent;
+    transition: background 0.15s;
+}
+.nb-sider-resize-handle:hover,
+.nb-sider-resize-handle:active {
+    background: rgba(22, 119, 255, 0.35);
+}
+
 /* 主题切换全局颜色过渡动画 */
 html.theme-transition, html.theme-transition body, html.theme-transition * {
     transition-property: background-color, color, border-color, box-shadow, fill, stroke;

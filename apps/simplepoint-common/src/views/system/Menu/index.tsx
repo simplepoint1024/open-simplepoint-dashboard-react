@@ -2,9 +2,29 @@ import React, {useEffect, useState, useCallback} from 'react';
 import SimpleTable from "@simplepoint/components/SimpleTable";
 import api from '@/api/index';
 import {useI18n} from '@simplepoint/shared/hooks/useI18n';
-import {Drawer} from "antd";
+import {Drawer, Tag} from "antd";
 import PermissionConfig from "@/views/system/Menu/config/permission";
+import type {SimpleTableColumnOverride} from "@simplepoint/components/SimpleTable/types";
+
 const baseConfig = api['rbac-menus'];
+
+const MENU_TYPE_CONFIG: Record<string, { color: string; label: string }> = {
+  item:    {color: 'blue',    label: '菜单项'},
+  submenu: {color: 'green',   label: '子菜单'},
+  group:   {color: 'purple',  label: '分组'},
+  divider: {color: 'default', label: '分隔符'},
+};
+
+const menuColumnOverrides: Record<string, SimpleTableColumnOverride<any>> = {
+  type: {
+    render: (value: string) => {
+      if (!value) return <Tag color="default">-</Tag>;
+      const cfg = MENU_TYPE_CONFIG[value];
+      if (cfg) return <Tag color={cfg.color}>{cfg.label}</Tag>;
+      return <Tag color="warning">{value}</Tag>;
+    },
+  },
+};
 
 const App = () => {
   // 受控抽屉与编辑数据
@@ -74,6 +94,7 @@ const App = () => {
         onEditingRecordChange={setEditingRecord}
         initialValues={initialValues}
         customButtonEvents={customButtonEvents}
+        columnOverrides={menuColumnOverrides}
       />
       <Drawer
         title={t("menus.config.permission", "功能配置")}

@@ -133,6 +133,7 @@ export default [
               "description": "i18n:menus.description.type",
               "minLength": 1,
               "maxLength": 32,
+              "enum": ["item", "submenu", "group", "divider"],
               "x-order": 2,
               "x-ui": {
                 "x-list-visible": "true"
@@ -209,6 +210,7 @@ export default [
             "label": "系统维护",
             "icon": "SettingOutlined",
             "path": "/ops",
+            "type": "submenu",
             "children": [
               {
                 "id": "718ae0a1-de9f-4788-a698-d86fa0142560",
@@ -271,6 +273,7 @@ export default [
             "label": "国际化多语言",
             "icon": "GlobalOutlined",
             "path": "/locale",
+            "type": "submenu",
             "children": [
               {
                 "id": "11177141-c56b-4c6d-b1e7-a1be3714f43f",
@@ -334,8 +337,7 @@ export default [
             "label": "平台管理",
             "icon": "KeyOutlined",
             "path": "/system",
-            "type": "item",
-            "component": "common/ac/Client",
+            "type": "submenu",
             "children": [
               {
                 "id": "abc5e586-3919-4e6b-be46-adddf9b79035",
@@ -437,7 +439,8 @@ export default [
             "disabled": false,
             "label": "访问控制",
             "icon": "SecurityScanOutlined",
-            "path": "/system",
+            "path": "/ac",
+            "type": "group",
             "children": []
           }
         ],
