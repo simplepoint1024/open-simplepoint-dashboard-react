@@ -14,7 +14,7 @@ export default defineConfig({
   ],
   output: {
     distPath: {
-      root: '../../../simplepoint-services/simplepoint-service-host/src/main/resources/static',
+      root: './dist',
       js: 'assets/js',
       css: 'assets/css',
       assets: 'assets',
