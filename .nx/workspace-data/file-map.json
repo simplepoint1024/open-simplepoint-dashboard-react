@@ -6,108 +6,56 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": ".idea/modules.xml",
-        "hash": "12302795918027602440"
-      },
-      {
-        "file": "apps/mocks/mocks/i18n/messages.ts",
-        "hash": "4627292504342310312"
-      },
-      {
-        "file": "apps/mocks/hooks/useMocks.ts",
-        "hash": "3616339723475781923"
-      },
-      {
-        "file": "apps/mocks/mocks/routes.ts",
-        "hash": "15713621182698145659"
-      },
-      {
-        "file": "apps/mocks/mocks/monitoring/permission-change-logs.ts",
-        "hash": "5053045624376988710"
-      },
-      {
-        "file": "docs/simpletable-refactor-plan.md",
-        "hash": "547931632052936634"
-      },
-      {
-        "file": "pnpm-lock.yaml",
-        "hash": "13993591076452917687"
-      },
-      {
-        "file": "scripts/shell/builder.sh",
-        "hash": "10701662829585022597"
-      },
-      {
-        "file": "apps/mocks/mocks/system/clients.ts",
-        "hash": "15310757422524912052"
-      },
-      {
-        "file": "apps/mocks/mocks/system/menu.ts",
-        "hash": "8450533959038444754"
-      },
-      {
-        "file": "nx.json",
-        "hash": "5264400301757922765"
-      },
-      {
-        "file": "apps/mocks/mocks/platform/object-storage.ts",
-        "hash": "9098967053349701319"
-      },
-      {
-        "file": "apps/mocks/mocks/i18n/regions.ts",
-        "hash": "10659987636069902446"
-      },
-      {
-        "file": "apps/mocks/mocks/i18n/countries.ts",
-        "hash": "5524925354087607700"
+        "file": ".github/workflows/ci.yml",
+        "hash": "13449723845220990254"
       },
       {
         "file": ".gitignore",
         "hash": "7663861978715868291"
       },
       {
-        "file": "apps/mocks/index.ts",
-        "hash": "14913635134407500522"
+        "file": ".idea/.gitignore",
+        "hash": "2389750024481521079"
       },
       {
-        "file": "apps/mocks/mocks/monitoring/redis.ts",
-        "hash": "14411615586986179804"
+        "file": ".idea/copilot.data.migration.ask2agent.xml",
+        "hash": "9363609885849824614"
       },
       {
-        "file": "apps/mocks/mocks/platform/packages.ts",
-        "hash": "6250254065324653335"
+        "file": ".idea/modules.xml",
+        "hash": "12302795918027602440"
       },
       {
-        "file": "apps/mocks/mocks/system/permissions.ts",
-        "hash": "9638108041851592228"
-      },
-      {
-        "file": "package.json",
-        "hash": "11539051861889838308"
-      },
-      {
-        "file": "README.md",
-        "hash": "8653967142121267209"
-      },
-      {
-        "file": "apps/mocks/mocks/i18n/local/zh-CN.json",
-        "hash": "14828395229130777331"
-      },
-      {
-        "file": "apps/mocks/mocks/ops/microapp.ts",
-        "hash": "15702386839042801668"
+        "file": ".idea/open-simplepoint-dashboard-react.iml",
+        "hash": "11872286644273118759"
       },
       {
         "file": ".idea/vcs.xml",
         "hash": "14600148892634157659"
       },
       {
-        "file": "apps/mocks/mocks/platform/tenants.ts",
-        "hash": "3312880218064220942"
+        "file": "README.md",
+        "hash": "8653967142121267209"
       },
       {
-        "file": ".idea/.gitignore",
-        "hash": "2389750024481521079"
+        "file": "apps/mocks/hooks/useMocks.ts",
+        "hash": "3616339723475781923"
+      },
+      {
+        "file": "apps/mocks/index.ts",
+        "hash": "14913635134407500522"
+      },
+      {
+        "file": "apps/mocks/mocks/i18n/countries.ts",
+        "hash": "5524925354087607700"
+      },
+      {
+        "file": "apps/mocks/mocks/i18n/i18n.ts",
+        "hash": "8063495082658666565"
+      },
+      {
+        "file": "apps/mocks/mocks/i18n/languages.ts",
+        "hash": "12427483470015867055"
       },
       {
         "file": "apps/mocks/mocks/i18n/local/en-US.json",
@@ -118,296 +66,183 @@
         "hash": "13237081410272249582"
       },
       {
-        "file": "apps/mocks/tsconfig.json",
-        "hash": "3749031186676148765"
+        "file": "apps/mocks/mocks/i18n/local/zh-CN.json",
+        "hash": "14828395229130777331"
       },
       {
-        "file": "public/mockServiceWorker.js",
-        "hash": "6230576160660698549"
-      },
-      {
-        "file": "apps/mocks/mocks/platform/dictionaries.ts",
-        "hash": "9200998741283009476"
-      },
-      {
-        "file": ".idea/open-simplepoint-dashboard-react.iml",
-        "hash": "11872286644273118759"
-      },
-      {
-        "file": "apps/mocks/mocks/i18n/timezones.ts",
-        "hash": "1852572384663210934"
-      },
-      {
-        "file": "apps/mocks/mocks/platform/features.ts",
-        "hash": "4041766544961188156"
-      },
-      {
-        "file": "apps/mocks/mocks/platform/applications.ts",
-        "hash": "17629450219328362866"
-      },
-      {
-        "file": "apps/mocks/mocks/system/user.ts",
-        "hash": "3782557314400925722"
-      },
-      {
-        "file": "pnpm-workspace.yaml",
-        "hash": "9824291567866430923"
-      },
-      {
-        "file": ".idea/copilot.data.migration.ask2agent.xml",
-        "hash": "9363609885849824614"
-      },
-      {
-        "file": "apps/mocks/mocks/monitoring/login-logs.ts",
-        "hash": "11768971244470356871"
-      },
-      {
-        "file": "apps/mocks/mocks/tenants.ts",
-        "hash": "14795770886861691555"
-      },
-      {
-        "file": "apps/mocks/mocks/i18n/i18n.ts",
-        "hash": "8063495082658666565"
-      },
-      {
-        "file": "apps/mocks/mocks/monitoring/error-logs.ts",
-        "hash": "13868694926496923316"
+        "file": "apps/mocks/mocks/i18n/messages.ts",
+        "hash": "4627292504342310312"
       },
       {
         "file": "apps/mocks/mocks/i18n/namespaces.ts",
         "hash": "15795712961055510805"
       },
       {
+        "file": "apps/mocks/mocks/i18n/regions.ts",
+        "hash": "10659987636069902446"
+      },
+      {
+        "file": "apps/mocks/mocks/i18n/timezones.ts",
+        "hash": "1852572384663210934"
+      },
+      {
+        "file": "apps/mocks/mocks/monitoring/error-logs.ts",
+        "hash": "13868694926496923316"
+      },
+      {
+        "file": "apps/mocks/mocks/monitoring/login-logs.ts",
+        "hash": "11768971244470356871"
+      },
+      {
+        "file": "apps/mocks/mocks/monitoring/permission-change-logs.ts",
+        "hash": "5053045624376988710"
+      },
+      {
+        "file": "apps/mocks/mocks/monitoring/redis.ts",
+        "hash": "14411615586986179804"
+      },
+      {
+        "file": "apps/mocks/mocks/ops/microapp.ts",
+        "hash": "15702386839042801668"
+      },
+      {
+        "file": "apps/mocks/mocks/platform/applications.ts",
+        "hash": "17629450219328362866"
+      },
+      {
+        "file": "apps/mocks/mocks/platform/dictionaries.ts",
+        "hash": "9200998741283009476"
+      },
+      {
+        "file": "apps/mocks/mocks/platform/features.ts",
+        "hash": "4041766544961188156"
+      },
+      {
+        "file": "apps/mocks/mocks/platform/object-storage.ts",
+        "hash": "9098967053349701319"
+      },
+      {
         "file": "apps/mocks/mocks/platform/organizations.ts",
         "hash": "17988704416480398049"
       },
       {
-        "file": "apps/mocks/mocks/i18n/languages.ts",
-        "hash": "12427483470015867055"
+        "file": "apps/mocks/mocks/platform/packages.ts",
+        "hash": "6250254065324653335"
+      },
+      {
+        "file": "apps/mocks/mocks/platform/tenants.ts",
+        "hash": "3312880218064220942"
+      },
+      {
+        "file": "apps/mocks/mocks/routes.ts",
+        "hash": "15713621182698145659"
+      },
+      {
+        "file": "apps/mocks/mocks/system/clients.ts",
+        "hash": "15310757422524912052"
+      },
+      {
+        "file": "apps/mocks/mocks/system/menu.ts",
+        "hash": "8450533959038444754"
+      },
+      {
+        "file": "apps/mocks/mocks/system/permissions.ts",
+        "hash": "9638108041851592228"
       },
       {
         "file": "apps/mocks/mocks/system/role.ts",
         "hash": "13140289501225292442"
       },
       {
-        "file": ".github/workflows/ci.yml",
-        "hash": "13449723845220990254"
+        "file": "apps/mocks/mocks/system/user.ts",
+        "hash": "3782557314400925722"
+      },
+      {
+        "file": "apps/mocks/mocks/tenants.ts",
+        "hash": "14795770886861691555"
+      },
+      {
+        "file": "apps/mocks/tsconfig.json",
+        "hash": "3749031186676148765"
+      },
+      {
+        "file": "docs/simpletable-refactor-plan.md",
+        "hash": "547931632052936634"
+      },
+      {
+        "file": "nx.json",
+        "hash": "5264400301757922765"
+      },
+      {
+        "file": "package.json",
+        "hash": "11539051861889838308"
+      },
+      {
+        "file": "pnpm-lock.yaml",
+        "hash": "13993591076452917687"
+      },
+      {
+        "file": "pnpm-workspace.yaml",
+        "hash": "9824291567866430923"
+      },
+      {
+        "file": "public/mockServiceWorker.js",
+        "hash": "6230576160660698549"
+      },
+      {
+        "file": "scripts/shell/builder.sh",
+        "hash": "10701662829585022597"
       }
     ],
     "projectFileMap": {
-      "@simplepoint/components": [
+      "@simplepoint/shared": [
         {
-          "file": "libs/components/ButtonDisabledRules.tsx",
-          "hash": "1856709322906948654"
+          "file": "libs/shared/api/client.ts",
+          "hash": "13117638036232175322"
         },
         {
-          "file": "libs/components/ButtonEvents.tsx",
-          "hash": "16897080509659144865"
+          "file": "libs/shared/api/contextId.ts",
+          "hash": "16065674771455033184"
         },
         {
-          "file": "libs/components/SForm/index.css",
-          "hash": "13112944566416750658"
+          "file": "libs/shared/api/methods.ts",
+          "hash": "13576130692350986880"
         },
         {
-          "file": "libs/components/SForm/index.tsx",
-          "hash": "16507731422996468393"
+          "file": "libs/shared/api/session.test.ts",
+          "hash": "18142252864891026544"
         },
         {
-          "file": "libs/components/SForm/widgets/IconPicker.tsx",
-          "hash": "17345745503453937803"
+          "file": "libs/shared/api/session.ts",
+          "hash": "17198763373737883894"
         },
         {
-          "file": "libs/components/STableTransfer/index.tsx",
-          "hash": "7588076181302285850"
+          "file": "libs/shared/hooks/useI18n.ts",
+          "hash": "14262307041739132640"
         },
         {
-          "file": "libs/components/SimpleTable/index.css",
-          "hash": "7765268463196204066"
+          "file": "libs/shared/hooks/useSchema.ts",
+          "hash": "10060380071994135174"
         },
         {
-          "file": "libs/components/SimpleTable/index.tsx",
-          "hash": "836988148703736051"
+          "file": "libs/shared/i18n/fallbacks.ts",
+          "hash": "4767501875250921773"
         },
         {
-          "file": "libs/components/SimpleTable/types.ts",
-          "hash": "4647755032521245242"
+          "file": "libs/shared/package.json",
+          "hash": "8230939057603367034"
         },
         {
-          "file": "libs/components/SimpleTable/useSimpleTableController.ts",
-          "hash": "912023292384188642"
+          "file": "libs/shared/types/icon.ts",
+          "hash": "9458021010759749432"
         },
         {
-          "file": "libs/components/Simplepoint.css",
-          "hash": "1999377333614340398"
+          "file": "libs/shared/types/module.shared.ts",
+          "hash": "680549975583136110"
         },
         {
-          "file": "libs/components/Table/ColumnFilter.tsx",
-          "hash": "15577695719710233924"
-        },
-        {
-          "file": "libs/components/Table/ColumnSettings.tsx",
-          "hash": "14828781895605704135"
-        },
-        {
-          "file": "libs/components/Table/index.tsx",
-          "hash": "12924317631657178497"
-        },
-        {
-          "file": "libs/components/package.json",
-          "hash": "7039549679733173846",
-          "deps": [
-            "@simplepoint/shared"
-          ]
-        },
-        {
-          "file": "libs/components/tsconfig.json",
-          "hash": "762985378261965989"
-        }
-      ],
-      "@simplepoint/dna": [
-        {
-          "file": "apps/simplepoint-dna/.gitignore",
-          "hash": "11161116713178592113"
-        },
-        {
-          "file": "apps/simplepoint-dna/README.md",
-          "hash": "10622524197591964275"
-        },
-        {
-          "file": "apps/simplepoint-dna/module.exposes.ts",
-          "hash": "7226298424800316044"
-        },
-        {
-          "file": "apps/simplepoint-dna/package.json",
-          "hash": "14853692853497922020",
-          "deps": [
-            "@simplepoint/shared",
-            "@simplepoint/components"
-          ]
-        },
-        {
-          "file": "apps/simplepoint-dna/rslib.config.ts",
-          "hash": "17700310374736454334"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/api/index.ts",
-          "hash": "8437041123179815573"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/api/jdbcUsers.ts",
-          "hash": "15336660303656684858"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/index.d.ts",
-          "hash": "4595979742548113990"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/index.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/services.ts",
-          "hash": "7460327056677646512"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/Dashboard/index.tsx",
-          "hash": "13836256181484829032"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataAsset/index.tsx",
-          "hash": "9625613481041538484"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataCatalog/index.tsx",
-          "hash": "6904296856976176359"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/LineageGraphView.tsx",
-          "hash": "14903900128295929639"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/index.tsx",
-          "hash": "3884004261811126006"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/types.ts",
-          "hash": "14366882111921442036"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataQuality/index.tsx",
-          "hash": "10162131049702115722"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/FederationJdbcUser/config/dataSource/index.tsx",
-          "hash": "2355229623426684753"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/FederationJdbcUser/index.tsx",
-          "hash": "14541795564988438816"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/FederationView/index.tsx",
-          "hash": "7128795432595244687"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/HealthMonitor/index.tsx",
-          "hash": "17562165818843326241"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/JdbcDataSource/index.tsx",
-          "hash": "10454897113586081805"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/JdbcDialect/index.tsx",
-          "hash": "9462725752218196346"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/JdbcDriver/index.tsx",
-          "hash": "14462212673744823984"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/JdbcMetadata/index.tsx",
-          "hash": "10328175663733822010"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/QueryAudit/index.tsx",
-          "hash": "237037224839845511"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/QueryPolicy/index.tsx",
-          "hash": "374249006950507871"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/QueryTemplate/index.tsx",
-          "hash": "3505749779389192893"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/SqlEditor.tsx",
-          "hash": "11301380809588758041"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/index.css",
-          "hash": "8870489684236835317"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/index.tsx",
-          "hash": "16283754814919991751"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/metadataTree.tsx",
-          "hash": "15782814755627471454"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/shared.ts",
-          "hash": "11311977802379203527"
-        },
-        {
-          "file": "apps/simplepoint-dna/tsconfig.build.json",
-          "hash": "12391958789690648811"
-        },
-        {
-          "file": "apps/simplepoint-dna/tsconfig.json",
-          "hash": "8165424422883715881"
+          "file": "libs/shared/types/request.ts",
+          "hash": "5966176646229953357"
         }
       ],
       "@simplepoint/common": [
@@ -437,7 +272,7 @@
         },
         {
           "file": "apps/simplepoint-common/src/api/index.ts",
-          "hash": "15129917163636183930"
+          "hash": "15657285052969788669"
         },
         {
           "file": "apps/simplepoint-common/src/api/platform/application.ts",
@@ -454,6 +289,10 @@
         {
           "file": "apps/simplepoint-common/src/api/platform/tenant.ts",
           "hash": "11103206649667453573"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/system/field-scope.ts",
+          "hash": "329869583223130847"
         },
         {
           "file": "apps/simplepoint-common/src/api/system/menu.ts",
@@ -572,6 +411,18 @@
           "hash": "6000192121724220891"
         },
         {
+          "file": "apps/simplepoint-common/src/views/system/DataScope/index.tsx",
+          "hash": "17089810986599415870"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/FieldScope/config/entries/index.tsx",
+          "hash": "1531704051391625909"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/FieldScope/index.tsx",
+          "hash": "12076966180261441735"
+        },
+        {
           "file": "apps/simplepoint-common/src/views/system/Menu/config/permission/index.tsx",
           "hash": "4026221525861609769"
         },
@@ -610,130 +461,6 @@
         {
           "file": "apps/simplepoint-common/tsconfig.json",
           "hash": "8165424422883715881"
-        }
-      ],
-      "@simplepoint/audit": [
-        {
-          "file": "apps/simplepoint-audit/.gitignore",
-          "hash": "11161116713178592113"
-        },
-        {
-          "file": "apps/simplepoint-audit/README.md",
-          "hash": "10622524197591964275"
-        },
-        {
-          "file": "apps/simplepoint-audit/module.exposes.ts",
-          "hash": "7226298424800316044"
-        },
-        {
-          "file": "apps/simplepoint-audit/package.json",
-          "hash": "17042489476593665769",
-          "deps": [
-            "@simplepoint/shared",
-            "@simplepoint/components"
-          ]
-        },
-        {
-          "file": "apps/simplepoint-audit/rslib.config.ts",
-          "hash": "10416765102130860500"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/api/index.ts",
-          "hash": "3077006813008852906"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/index.d.ts",
-          "hash": "4595979742548113990"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/index.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/services.ts",
-          "hash": "15814996313686691099"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/EndpointRateLimitRule/index.tsx",
-          "hash": "12293980760980101582"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/ErrorLog/index.tsx",
-          "hash": "17470085412441074245"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/LoginLog/index.tsx",
-          "hash": "1973469753763812233"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/PermissionChangeLog/index.tsx",
-          "hash": "7925942639260897915"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/Redis/index.tsx",
-          "hash": "13151601236317972852"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/ServiceRateLimitRule/index.tsx",
-          "hash": "4245329241296530560"
-        },
-        {
-          "file": "apps/simplepoint-audit/tsconfig.build.json",
-          "hash": "12391958789690648811"
-        },
-        {
-          "file": "apps/simplepoint-audit/tsconfig.json",
-          "hash": "8165424422883715881"
-        }
-      ],
-      "@simplepoint/shared": [
-        {
-          "file": "libs/shared/api/client.ts",
-          "hash": "13117638036232175322"
-        },
-        {
-          "file": "libs/shared/api/contextId.ts",
-          "hash": "16065674771455033184"
-        },
-        {
-          "file": "libs/shared/api/methods.ts",
-          "hash": "13576130692350986880"
-        },
-        {
-          "file": "libs/shared/api/session.test.ts",
-          "hash": "18142252864891026544"
-        },
-        {
-          "file": "libs/shared/api/session.ts",
-          "hash": "17198763373737883894"
-        },
-        {
-          "file": "libs/shared/hooks/useI18n.ts",
-          "hash": "14262307041739132640"
-        },
-        {
-          "file": "libs/shared/hooks/useSchema.ts",
-          "hash": "10060380071994135174"
-        },
-        {
-          "file": "libs/shared/i18n/fallbacks.ts",
-          "hash": "4767501875250921773"
-        },
-        {
-          "file": "libs/shared/package.json",
-          "hash": "8230939057603367034"
-        },
-        {
-          "file": "libs/shared/types/icon.ts",
-          "hash": "9458021010759749432"
-        },
-        {
-          "file": "libs/shared/types/module.shared.ts",
-          "hash": "680549975583136110"
-        },
-        {
-          "file": "libs/shared/types/request.ts",
-          "hash": "5966176646229953357"
         }
       ],
       "@simplepoint/host": [
@@ -969,6 +696,295 @@
         {
           "file": "apps/simplepoint-host/tsconfig.json",
           "hash": "1996395625590441307"
+        }
+      ],
+      "@simplepoint/audit": [
+        {
+          "file": "apps/simplepoint-audit/.gitignore",
+          "hash": "11161116713178592113"
+        },
+        {
+          "file": "apps/simplepoint-audit/README.md",
+          "hash": "10622524197591964275"
+        },
+        {
+          "file": "apps/simplepoint-audit/module.exposes.ts",
+          "hash": "7226298424800316044"
+        },
+        {
+          "file": "apps/simplepoint-audit/package.json",
+          "hash": "17042489476593665769",
+          "deps": [
+            "@simplepoint/shared",
+            "@simplepoint/components"
+          ]
+        },
+        {
+          "file": "apps/simplepoint-audit/rslib.config.ts",
+          "hash": "10416765102130860500"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/api/index.ts",
+          "hash": "3077006813008852906"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/index.d.ts",
+          "hash": "4595979742548113990"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/index.tsx",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/services.ts",
+          "hash": "15814996313686691099"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/EndpointRateLimitRule/index.tsx",
+          "hash": "12293980760980101582"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/ErrorLog/index.tsx",
+          "hash": "17470085412441074245"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/LoginLog/index.tsx",
+          "hash": "1973469753763812233"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/PermissionChangeLog/index.tsx",
+          "hash": "7925942639260897915"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/Redis/index.tsx",
+          "hash": "13151601236317972852"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/ServiceRateLimitRule/index.tsx",
+          "hash": "4245329241296530560"
+        },
+        {
+          "file": "apps/simplepoint-audit/tsconfig.build.json",
+          "hash": "12391958789690648811"
+        },
+        {
+          "file": "apps/simplepoint-audit/tsconfig.json",
+          "hash": "8165424422883715881"
+        }
+      ],
+      "@simplepoint/components": [
+        {
+          "file": "libs/components/ButtonDisabledRules.tsx",
+          "hash": "1856709322906948654"
+        },
+        {
+          "file": "libs/components/ButtonEvents.tsx",
+          "hash": "16897080509659144865"
+        },
+        {
+          "file": "libs/components/SForm/index.css",
+          "hash": "13112944566416750658"
+        },
+        {
+          "file": "libs/components/SForm/index.tsx",
+          "hash": "16507731422996468393"
+        },
+        {
+          "file": "libs/components/SForm/widgets/IconPicker.tsx",
+          "hash": "17345745503453937803"
+        },
+        {
+          "file": "libs/components/STableTransfer/index.tsx",
+          "hash": "7588076181302285850"
+        },
+        {
+          "file": "libs/components/SimpleTable/index.css",
+          "hash": "7765268463196204066"
+        },
+        {
+          "file": "libs/components/SimpleTable/index.tsx",
+          "hash": "836988148703736051"
+        },
+        {
+          "file": "libs/components/SimpleTable/types.ts",
+          "hash": "4647755032521245242"
+        },
+        {
+          "file": "libs/components/SimpleTable/useSimpleTableController.ts",
+          "hash": "912023292384188642"
+        },
+        {
+          "file": "libs/components/Simplepoint.css",
+          "hash": "1999377333614340398"
+        },
+        {
+          "file": "libs/components/Table/ColumnFilter.tsx",
+          "hash": "15577695719710233924"
+        },
+        {
+          "file": "libs/components/Table/ColumnSettings.tsx",
+          "hash": "14828781895605704135"
+        },
+        {
+          "file": "libs/components/Table/index.tsx",
+          "hash": "12924317631657178497"
+        },
+        {
+          "file": "libs/components/package.json",
+          "hash": "7039549679733173846",
+          "deps": [
+            "@simplepoint/shared"
+          ]
+        },
+        {
+          "file": "libs/components/tsconfig.json",
+          "hash": "762985378261965989"
+        }
+      ],
+      "@simplepoint/dna": [
+        {
+          "file": "apps/simplepoint-dna/.gitignore",
+          "hash": "11161116713178592113"
+        },
+        {
+          "file": "apps/simplepoint-dna/README.md",
+          "hash": "10622524197591964275"
+        },
+        {
+          "file": "apps/simplepoint-dna/module.exposes.ts",
+          "hash": "7226298424800316044"
+        },
+        {
+          "file": "apps/simplepoint-dna/package.json",
+          "hash": "14853692853497922020",
+          "deps": [
+            "@simplepoint/shared",
+            "@simplepoint/components"
+          ]
+        },
+        {
+          "file": "apps/simplepoint-dna/rslib.config.ts",
+          "hash": "17700310374736454334"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/api/index.ts",
+          "hash": "8437041123179815573"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/api/jdbcUsers.ts",
+          "hash": "15336660303656684858"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/index.d.ts",
+          "hash": "4595979742548113990"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/index.tsx",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/services.ts",
+          "hash": "7460327056677646512"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/Dashboard/index.tsx",
+          "hash": "13836256181484829032"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataAsset/index.tsx",
+          "hash": "9625613481041538484"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataCatalog/index.tsx",
+          "hash": "6904296856976176359"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/LineageGraphView.tsx",
+          "hash": "14903900128295929639"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/index.tsx",
+          "hash": "3884004261811126006"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/types.ts",
+          "hash": "14366882111921442036"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataQuality/index.tsx",
+          "hash": "10162131049702115722"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/FederationJdbcUser/config/dataSource/index.tsx",
+          "hash": "2355229623426684753"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/FederationJdbcUser/index.tsx",
+          "hash": "14541795564988438816"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/FederationView/index.tsx",
+          "hash": "7128795432595244687"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/HealthMonitor/index.tsx",
+          "hash": "17562165818843326241"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/JdbcDataSource/index.tsx",
+          "hash": "10454897113586081805"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/JdbcDialect/index.tsx",
+          "hash": "9462725752218196346"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/JdbcDriver/index.tsx",
+          "hash": "14462212673744823984"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/JdbcMetadata/index.tsx",
+          "hash": "10328175663733822010"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/QueryAudit/index.tsx",
+          "hash": "237037224839845511"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/QueryPolicy/index.tsx",
+          "hash": "374249006950507871"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/QueryTemplate/index.tsx",
+          "hash": "3505749779389192893"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/SqlEditor.tsx",
+          "hash": "11301380809588758041"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/index.css",
+          "hash": "8870489684236835317"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/index.tsx",
+          "hash": "16283754814919991751"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/metadataTree.tsx",
+          "hash": "15782814755627471454"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/shared.ts",
+          "hash": "11311977802379203527"
+        },
+        {
+          "file": "apps/simplepoint-dna/tsconfig.build.json",
+          "hash": "12391958789690648811"
+        },
+        {
+          "file": "apps/simplepoint-dna/tsconfig.json",
+          "hash": "8165424422883715881"
         }
       ]
     }

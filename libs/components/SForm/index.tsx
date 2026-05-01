@@ -6,6 +6,7 @@ import validator from "@rjsf/validator-ajv8";
 import {RJSFValidationError, SubmitButtonProps} from "@rjsf/utils";
 import {memo, useMemo} from "react";
 import IconPicker from "./widgets/IconPicker";
+import OrgTreeMultiSelect from "./widgets/OrgTreeMultiSelect";
 
 type SFormProps = Omit<FormProps, "validator">& {
   i18nNamespaces?: string[];
@@ -31,7 +32,7 @@ const formTemplates = {
   },
 };
 
-const defaultWidgets = {IconPicker} as const;
+const defaultWidgets = {IconPicker, OrgTreeMultiSelect} as const;
 
 // 抽离 textarea 的 autosize 常量，避免重复创建对象
 const TEXTAREA_AUTOSIZE = { minRows: 4, maxRows: 16 } as const;

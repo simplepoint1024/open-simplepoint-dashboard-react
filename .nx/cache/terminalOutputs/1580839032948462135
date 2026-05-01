@@ -6,14 +6,14 @@
 [39m[22m
 [ Module Federation Rsbuild Plugin ] Detect devServer.headers is empty, mf modern plugin will add default cors header: devServer.headers["Access-Control-Allow-Headers"] = "*". It is recommended to specify an allowlist of trusted origins instead.
 View https://module-federation.io/guide/troubleshooting/other.html#cors-warn for more details.
-[1m[36mstart  [39m[22m generating declaration files... [90m(esm)[39m
 [1m[36mstart  [39m[22m generating declaration files... [90m(cjs)[39m
-[1m[32mready  [39m[22m declaration files generated in [1m1.19[22m s [90m(esm)[39m
-[1m[32mready  [39m[22m declaration files generated in [1m1.20[22m s [90m(cjs)[39m
+[1m[36mstart  [39m[22m generating declaration files... [90m(esm)[39m
+[1m[32mready  [39m[22m declaration files generated in [1m1.20[22m s [90m(esm)[39m
+[1m[32mready  [39m[22m declaration files generated in [1m1.22[22m s [90m(cjs)[39m
 [ Module Federation DTS ] Federated types created correctly
-[1m[32mready  [39m[22m built in [1m2.85[22m s[90m (mf)[39m
-[1m[32mready  [39m[22m built in [1m0.11[22m s[90m (esm)[39m
-[1m[32mready  [39m[22m built in [1m0.11[22m s[90m (cjs)[39m
+[1m[32mready  [39m[22m built in [1m2.94[22m s[90m (mf)[39m
+[1m[32mready  [39m[22m built in [1m0.07[22m s[90m (esm)[39m
+[1m[32mready  [39m[22m built in [1m0.07[22m s[90m (cjs)[39m
 
 [34mFile (esm)          Size      [39m
 [2mdist/esm/[22m[36mindex.js[39m   0.00 kB

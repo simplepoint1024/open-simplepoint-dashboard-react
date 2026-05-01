@@ -1,10 +1,18 @@
 import { useI18n } from '@simplepoint/shared/hooks/useI18n';
 import { useEffect, useMemo, useState } from 'react';
-import { GetProp, TableColumnsType, TableProps, TransferProps } from 'antd';
+import { GetProp, Select, Space, TableColumnsType, TableProps, TransferProps } from 'antd';
 import STableTransfer from '@simplepoint/components/STableTransfer';
 import { useData, usePage } from '@simplepoint/shared/api/methods';
 import { fetchItems, fetchSelectedItems, PermissionRelevantVo } from '@/api/system/permission.ts';
-import { fetchAuthorize, fetchAuthorized, fetchUnauthorized } from '@/api/system/role.ts';
+import {
+    fetchAuthorize,
+    fetchAuthorized,
+    fetchScopeAssignment,
+    fetchUnauthorized,
+    updateScopeAssignment,
+} from '@/api/system/role.ts';
+import { fetchItems as fetchDataScopeItems, DataScopeRelevantVo } from '@/api/system/data-scope.ts';
+import { fetchItems as fetchFieldScopeItems, FieldScopeRelevantVo } from '@/api/system/field-scope.ts';
 
 type TransferItem = GetProp<TransferProps, 'dataSource'>[number];
 
@@ -23,6 +31,9 @@ const App = ({ roleId }: RoleSelectProps) => {
 
     const [leftPage, setLeftPage] = useState({ current: 1, pageSize: 10 });
     const [rightPage, setRightPage] = useState({ current: 1, pageSize: 10 });
+
+    const [dataScopeId, setDataScopeId] = useState<string | null>(null);
+    const [fieldScopeId, setFieldScopeId] = useState<string | null>(null);
 
     /** 1. 获取权限列表 */
     const { data: page } = usePage(['fetchItems', leftPage.current, leftPage.pageSize], () =>
@@ -70,7 +81,42 @@ const App = ({ roleId }: RoleSelectProps) => {
         { enabled: !!roleId && selectedAuthorities.length > 0 }
     );
 
-    /** 5. 切换角色时清空状态 */
+    /** 5. 获取当前角色的数据权限/字段权限分配 */
+    const { data: scopeAssignment } = useData(
+        roleId ? ['fetchScopeAssignment', roleId] : '',
+        () => fetchScopeAssignment(roleId),
+        { enabled: !!roleId }
+    );
+
+    /** 6. 获取数据权限下拉列表 */
+    const { data: dataScopePage } = useData(
+        ['fetchDataScopeItems'],
+        () => fetchDataScopeItems()
+    );
+    const dataScopeOptions = useMemo<{ label: string; value: string }[]>(
+        () =>
+            (dataScopePage?.content ?? []).map((item: DataScopeRelevantVo) => ({
+                label: item.name,
+                value: item.id,
+            })),
+        [dataScopePage]
+    );
+
+    /** 7. 获取字段权限下拉列表 */
+    const { data: fieldScopePage } = useData(
+        ['fetchFieldScopeItems'],
+        () => fetchFieldScopeItems()
+    );
+    const fieldScopeOptions = useMemo<{ label: string; value: string }[]>(
+        () =>
+            (fieldScopePage?.content ?? []).map((item: FieldScopeRelevantVo) => ({
+                label: item.name,
+                value: item.id,
+            })),
+        [fieldScopePage]
+    );
+
+    /** 8. 切换角色时清空状态 */
     useEffect(() => {
         setTargetKeys([]);
         setSelectedItems([]);
@@ -78,7 +124,7 @@ const App = ({ roleId }: RoleSelectProps) => {
         setRightPage((prev) => ({ ...prev, current: 1 }));
     }, [roleId]);
 
-    /** 6. 初始化/更新已分配权限 */
+    /** 9. 初始化/更新已分配权限 */
     useEffect(() => {
         if (authorized) {
             setTargetKeys(authorized);
@@ -99,6 +145,14 @@ const App = ({ roleId }: RoleSelectProps) => {
             );
         }
     }, [selectedAuthorities, selectedDetails]);
+
+    /** 10. 初始化范围选择 */
+    useEffect(() => {
+        if (scopeAssignment) {
+            setDataScopeId(scopeAssignment.dataScopeId ?? null);
+            setFieldScopeId(scopeAssignment.fieldScopeId ?? null);
+        }
+    }, [scopeAssignment]);
 
     const dataSource = useMemo(() => {
         const map = new Map<string, PermissionRelevantVo>();
@@ -129,7 +183,22 @@ const App = ({ roleId }: RoleSelectProps) => {
         },
     };
 
-    /** 7. 穿梭框变更事件 */
+    /** 11. 权限范围变更 */
+    const handleDataScopeChange = (value: string | null) => {
+        setDataScopeId(value);
+        if (roleId) {
+            updateScopeAssignment({ roleId, dataScopeId: value, fieldScopeId });
+        }
+    };
+
+    const handleFieldScopeChange = (value: string | null) => {
+        setFieldScopeId(value);
+        if (roleId) {
+            updateScopeAssignment({ roleId, dataScopeId, fieldScopeId: value });
+        }
+    };
+
+    /** 12. 穿梭框变更事件 */
     const onChange: TableTransferProps['onChange'] = (
         nextTargetKeys,
         direction,
@@ -153,6 +222,8 @@ const App = ({ roleId }: RoleSelectProps) => {
             fetchAuthorize({
                 roleId,
                 permissionAuthority: moveKeys as string[],
+                dataScopeId,
+                fieldScopeId,
             });
         } else {
             fetchUnauthorized({
@@ -162,13 +233,33 @@ const App = ({ roleId }: RoleSelectProps) => {
         }
     };
 
-    /** 8. roleId 为空时不渲染穿梭框（避免内部 DOM 计算报错） */
+    /** 13. roleId 为空时不渲染穿梭框（避免内部 DOM 计算报错） */
     if (!roleId) {
         return <div style={{ flex: 1, minHeight: 0 }} />;
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, gap: 8 }}>
+            <Space wrap style={{ flexShrink: 0 }}>
+                <span>{t('data-scopes.title.name')}:</span>
+                <Select
+                    allowClear
+                    style={{ minWidth: 200 }}
+                    placeholder={t('data-scopes.title.name')}
+                    value={dataScopeId}
+                    options={dataScopeOptions}
+                    onChange={handleDataScopeChange}
+                />
+                <span>{t('field-scopes.title.name')}:</span>
+                <Select
+                    allowClear
+                    style={{ minWidth: 200 }}
+                    placeholder={t('field-scopes.title.name')}
+                    value={fieldScopeId}
+                    options={fieldScopeOptions}
+                    onChange={handleFieldScopeChange}
+                />
+            </Space>
             <div style={{ flex: 1, minHeight: 0 }}>
                 <STableTransfer
                     dataSource={dataSource}

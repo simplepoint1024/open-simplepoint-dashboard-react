@@ -8,12 +8,12 @@
 View https://module-federation.io/guide/troubleshooting/other.html#cors-warn for more details.
 [1m[36mstart  [39m[22m generating declaration files... [90m(cjs)[39m
 [1m[36mstart  [39m[22m generating declaration files... [90m(esm)[39m
-[1m[32mready  [39m[22m declaration files generated in [1m1.62[22m s [90m(cjs)[39m
-[1m[32mready  [39m[22m declaration files generated in [1m1.63[22m s [90m(esm)[39m
+[1m[32mready  [39m[22m declaration files generated in [1m1.63[22m s [90m(cjs)[39m
+[1m[32mready  [39m[22m declaration files generated in [1m1.64[22m s [90m(esm)[39m
 [ Module Federation DTS ] Federated types created correctly
-[1m[32mready  [39m[22m built in [1m3.55[22m s[90m (mf)[39m
-[1m[32mready  [39m[22m built in [1m0.09[22m s[90m (esm)[39m
-[1m[32mready  [39m[22m built in [1m0.09[22m s[90m (cjs)[39m
+[1m[32mready  [39m[22m built in [1m3.39[22m s[90m (mf)[39m
+[1m[32mready  [39m[22m built in [1m0.10[22m s[90m (esm)[39m
+[1m[32mready  [39m[22m built in [1m0.10[22m s[90m (cjs)[39m
 
 [34mFile (esm)          Size      [39m
 [2mdist/esm/[22m[36mindex.js[39m   0.00 kB
@@ -49,7 +49,7 @@ View https://module-federation.io/guide/troubleshooting/other.html#cors-warn for
 [2mdist/mf/[22m[36m__federation_expose_platform__FederationJdbcUser.js[39m                       15.9 kB      [32m4.1 kB[39m
 [2mdist/mf/[22m[36m121.js[39m                                                                    16.4 kB      [32m4.7 kB[39m
 [2mdist/mf/[22m[36m__federation_expose_platform__JdbcDriver.js[39m                               16.9 kB      [32m3.7 kB[39m
-[2mdist/mf/[22m[35mmf-stats.json[39m                                                             17.9 kB      [32m1.4 kB[39m
+[2mdist/mf/[22m[35mmf-stats.json[39m                                                             17.9 kB      [32m1.5 kB[39m
 [2mdist/mf/[22m[36m__federation_expose_platform__DataLineage.js[39m                              18.3 kB      [32m5.0 kB[39m
 [2mdist/mf/[22m[33m__federation_expose_platform__DataLineage.css[39m                             19.7 kB      [32m3.4 kB[39m
 [2mdist/mf/[22m[36m__federation_expose_platform__JdbcDialect.js[39m                              21.2 kB      [32m3.9 kB[39m

@@ -5,7 +5,7 @@
 [1m[36mRsbuild v1.6.9
 [39m[22m
 [1m[36minfo   [39m[22m build started...
-[1m[32mready  [39m[22m built in [1m1.20[22m s
+[1m[32mready  [39m[22m built in [1m1.16[22m s
 
 [34mFile (web)                              Size        Gzip   [39m
 [2mdist/assets/js/async/[22m[36m958.f3f27e93.js[39m    0.09 kB     [32m0.09 kB[39m

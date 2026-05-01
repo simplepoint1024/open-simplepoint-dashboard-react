@@ -1,4 +1,4 @@
-import {get, post} from "@simplepoint/shared/api/methods";
+import {get, post, put} from "@simplepoint/shared/api/methods";
 import {Page} from "@simplepoint/shared/types/request"
 import api from "@/api";
 
@@ -21,6 +21,19 @@ export interface RolePermissionRelevantDto {
   roleId: string | null;
   // 权限列表
   permissionAuthority?: string[];
+  // 数据权限ID（可选）
+  dataScopeId?: string | null;
+  // 字段权限ID（可选）
+  fieldScopeId?: string | null;
+}
+
+/**
+ * 角色数据/字段权限分配 VO
+ */
+export interface RoleScopeAssignmentVo {
+  roleId: string;
+  dataScopeId?: string | null;
+  fieldScopeId?: string | null;
 }
 
 /**
@@ -52,4 +65,18 @@ export async function fetchUnauthorized(data: RolePermissionRelevantDto) {
  */
 export async function fetchAuthorize(data: RolePermissionRelevantDto) {
   return await post<RolePermissionRelevantDto>(`${baseUrl}/authorize`, data);
+}
+
+/**
+ * 查询角色的数据权限和字段权限分配
+ */
+export async function fetchScopeAssignment(roleId: string) {
+  return await get<RoleScopeAssignmentVo>(`${baseUrl}/scope-assignment?roleId=${encodeURIComponent(roleId)}`);
+}
+
+/**
+ * 更新角色的数据权限和字段权限分配
+ */
+export async function updateScopeAssignment(vo: RoleScopeAssignmentVo) {
+  return await put<void>(`${baseUrl}/scope-assignment`, vo);
 }
