@@ -101,4 +101,14 @@ export default {
     i18nNamespaces: ['applications'],
     name: 'applications'
   },
+  'rbac-data-scopes': {
+    baseUrl: `${contextPath}/data-scopes`,
+    i18nNamespaces: ['data-scopes'],
+    name: 'data-scopes',
+  },
+  'rbac-field-scopes': {
+    baseUrl: `${contextPath}/field-scopes`,
+    i18nNamespaces: ['field-scopes'],
+    name: 'field-scopes',
+  },
 }

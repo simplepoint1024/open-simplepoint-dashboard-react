@@ -1819,3 +1819,1013 @@ Time for 'build typescript dependencies' 0.006821000017225742
 [NX v21.6.10 Daemon Server] - 2026-04-13T14:38:08.567Z - [WATCHER]: Stopping the watcher for /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react (sources)
 [NX v21.6.10 Daemon Server] - 2026-04-13T14:38:08.567Z - [WATCHER]: Stopping the watcher for /home/ymsl/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react (outputs)
 [NX v21.6.10 Daemon Server] - 2026-04-13T14:38:08.575Z - Server stopped because: "10800000ms of inactivity"
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.794Z - Started listening on: /tmp/59fcbe7867c9468bad7f/d.sock
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.794Z - [WATCHER]: Subscribed to changes within: /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react (native)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.796Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.796Z - Established a connection. Number of open connections: 2
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.797Z - Closed a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.797Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.804Z - Time taken for 'loadSpecifiedNxPlugins' 0.5055299999999932ms
+Time for 'plugin worker 156560 code loading' 2.0384770000000003
+Time for 'plugin worker 156561 code loading' 3.0428630000000005
+Time for 'plugin worker 156562 code loading' 3.023173
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.873Z - Time taken for 'Load Nx Plugin: /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/src/plugins/package-json' 75.301762ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.877Z - Time taken for 'Load Nx Plugin: /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/src/plugins/js' 78.888908ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.880Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.880Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.880Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.880Z - No files changed, but no in-memory cached project graph found. Recomputing it...
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.884Z - Time taken for 'loadDefaultNxPlugins' 81.658012ms
+Time for 'nx/core/project-json:createNodes' 0.10059900000000255
+Time for 'nx/core/package-json:createNodes' 9.548085
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 27.367474
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.924Z - Time taken for 'build-project-configs' 33.30947599999999ms
+Time for 'build typescript dependencies' 2.438871000000006
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.938Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.941Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.941Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.941Z - Time taken for 'total for creating and serializing project graph' 143.276429ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.941Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.941Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 144. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.945Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.945Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.945Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.945Z - Time taken for 'preTasksExecution' 0.18232600000001753ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.955Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.958Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 364.692µs - processed 1 tasks (setup: 348.042µs, parallel_planning: 14.704µs)
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Adding "7663861978715868291" (".gitignore") to hash
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Adding "5264400301757922765" ("nx.json") to hash
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Hash Value: "10678209182613987231"
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 798.687µs - processed 1 plans (setup: 81.782µs, hashing: 716.007µs, assembly: 22.594µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.961Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.961Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.961Z - Handled HASH_TASKS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:12.961Z - Time taken for 'write cache' 2.6574440000000266ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:19.079Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:19.079Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:19.079Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.866Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.866Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.867Z - Handled RECORD_OUTPUTS_HASH. Handling time: 8. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.879Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.879Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.879Z - Handled RECORD_TASK_RUNS. Handling time: 10. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.880Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.880Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.880Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+Was not able to require.resolve module nx/src/utils/app-root from the following paths: /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules. This may be expected.
+Was not able to require.resolve module nx/src/tasks-runner/process-metrics-service from the following paths: /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules. This may be expected.
+Was not able to require.resolve module nx/src/tasks-runner/task-io-service from the following paths: /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules. This may be expected.
+Was not able to require.resolve module nx/src/utils/app-root from the following paths: /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules/nx/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/nx@21.6.10/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules/.pnpm/node_modules,/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/node_modules. This may be expected.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.952Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.952Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.952Z - Handled PROCESS_IN_BACKGROUND. Handling time: 60. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.952Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.952Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.952Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/host:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.972Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.972Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.972Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.972Z - Time taken for 'postTasksExecution' 0.05693199999950593ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:20.978Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.260Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.260Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.260Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.261Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.261Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.263Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.264Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.264Z - Time taken for 'total for creating and serializing project graph' 2.5483949999998003ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.264Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.264Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 3. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.266Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.266Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.266Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.266Z - Time taken for 'preTasksExecution' 0.04111100000045553ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.276Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.278Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 378.566µs - processed 1 tasks (setup: 364.5µs, parallel_planning: 12.435µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 680.002µs - processed 1 plans (setup: 73.975µs, hashing: 605.299µs, assembly: 13.662µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.280Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.280Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.280Z - Handled HASH_TASKS. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.280Z - Time taken for 'write cache' 2.1240040000011504ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.402Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.402Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:21.402Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 1. Response time: 0.
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:22.262Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:22.662Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:24.368Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:24.457Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:25.658Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:25.710Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:25.962Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.077Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.077Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.077Z - Handled RECORD_OUTPUTS_HASH. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.085Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.085Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.085Z - Handled RECORD_TASK_RUNS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.086Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.086Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.086Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.104Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.104Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.104Z - Handled PROCESS_IN_BACKGROUND. Handling time: 7. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.104Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.104Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.104Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/common:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.108Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.108Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.108Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.108Z - Time taken for 'postTasksExecution' 0.04472399999940535ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.114Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.389Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.389Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.389Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.390Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.390Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.393Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.393Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.393Z - Time taken for 'total for creating and serializing project graph' 2.946998999999778ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.394Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.394Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 3. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.396Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.396Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.396Z - Handled PRE_TASKS_EXECUTION. Handling time: 1. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.396Z - Time taken for 'preTasksExecution' 0.037498000001505716ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.405Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.408Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 391.363µs - processed 1 tasks (setup: 375.582µs, parallel_planning: 14.043µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 383.955µs - processed 1 plans (setup: 73.64µs, hashing: 309.477µs, assembly: 13.444µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.409Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.409Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.409Z - Handled HASH_TASKS. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.409Z - Time taken for 'write cache' 2.5229030000009516ms
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.409Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.527Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.527Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:26.527Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:27.767Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:29.149Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:29.201Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.230Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.290Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.522Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.630Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.630Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.630Z - Handled RECORD_OUTPUTS_HASH. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.638Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.638Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.638Z - Handled RECORD_TASK_RUNS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.638Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.638Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.638Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.654Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.654Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.654Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.655Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.655Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.655Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/audit:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.659Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.659Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.659Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.659Z - Time taken for 'postTasksExecution' 0.046336999999766704ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.664Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.938Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.939Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.939Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.940Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.940Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.942Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.943Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.943Z - Time taken for 'total for creating and serializing project graph' 2.8812460000008286ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.943Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.943Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 3. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.945Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.945Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.945Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.945Z - Time taken for 'preTasksExecution' 0.04035899999871617ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.955Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.957Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 394.81µs - processed 1 tasks (setup: 380.266µs, parallel_planning: 13.147µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 409.32µs - processed 1 plans (setup: 76.25µs, hashing: 332.175µs, assembly: 13.584µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.958Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.958Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.958Z - Handled HASH_TASKS. Handling time: 3. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.958Z - Time taken for 'write cache' 2.2387239999989106ms
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:30.995Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:31.083Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:31.083Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:31.083Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 1. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:32.744Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:34.783Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:34.848Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.042Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.111Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.372Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.496Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.496Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.496Z - Handled RECORD_OUTPUTS_HASH. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.509Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.509Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.509Z - Handled RECORD_TASK_RUNS. Handling time: 11. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.509Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.509Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.509Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.526Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.526Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.526Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.528Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.528Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.528Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/dna:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.530Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.530Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.530Z - Handled POST_TASKS_EXECUTION. Handling time: 1. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.530Z - Time taken for 'postTasksExecution' 0.03890799999862793ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:36.534Z - Closed a connection. Number of open connections: 0
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:44:38.042Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.299Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.299Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.300Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.301Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.301Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.304Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.304Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.304Z - Time taken for 'total for creating and serializing project graph' 3.317035999993095ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.305Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.305Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 3. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.307Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.307Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.307Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.307Z - Time taken for 'preTasksExecution' 0.040452999994158745ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.316Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.319Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 369.578µs - processed 1 tasks (setup: 354.974µs, parallel_planning: 13.196µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 370.622µs - processed 1 plans (setup: 74.209µs, hashing: 295.657µs, assembly: 23.945µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.320Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.320Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.320Z - Handled HASH_TASKS. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.320Z - Time taken for 'write cache' 2.537512999988394ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.448Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.448Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:06.448Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.222Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.222Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.222Z - Handled RECORD_OUTPUTS_HASH. Handling time: 3. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.229Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.229Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.229Z - Handled RECORD_TASK_RUNS. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.229Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.229Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.229Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.247Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.247Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.247Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.248Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.248Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.248Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/host:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.252Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.252Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.252Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.252Z - Time taken for 'postTasksExecution' 0.06291100001544692ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.257Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.533Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.533Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.534Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.534Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.535Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.537Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.537Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.537Z - Time taken for 'total for creating and serializing project graph' 2.6622459999925923ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.538Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.538Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 3. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.540Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.540Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.540Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.540Z - Time taken for 'preTasksExecution' 0.03922000000602566ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.549Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.551Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 402.415µs - processed 1 tasks (setup: 388.963µs, parallel_planning: 11.762µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 378.862µs - processed 1 plans (setup: 71.428µs, hashing: 306.598µs, assembly: 19.232µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.552Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.553Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.553Z - Handled HASH_TASKS. Handling time: 3. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.553Z - Time taken for 'write cache' 2.069736000004923ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.672Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.672Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:08.672Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:09.475Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:09.893Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:11.613Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:11.691Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:12.784Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:12.848Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.115Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.230Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.230Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.230Z - Handled RECORD_OUTPUTS_HASH. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.237Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.237Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.237Z - Handled RECORD_TASK_RUNS. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.237Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.237Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.237Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.252Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.253Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.253Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.254Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.254Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.254Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/common:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.257Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.257Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.257Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.257Z - Time taken for 'postTasksExecution' 0.04575499999918975ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.261Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.542Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.543Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.543Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.544Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.544Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.546Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.546Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.547Z - Time taken for 'total for creating and serializing project graph' 2.6558249999943655ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.547Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.547Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.549Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.549Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.549Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.549Z - Time taken for 'preTasksExecution' 0.03545199998188764ms
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.558Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.559Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.561Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 393.545µs - processed 1 tasks (setup: 380.248µs, parallel_planning: 11.42µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 465.125µs - processed 1 plans (setup: 75.187µs, hashing: 389.058µs, assembly: 16.632µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.562Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.562Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.562Z - Handled HASH_TASKS. Handling time: 3. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.562Z - Time taken for 'write cache' 2.0043580000055954ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.683Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.683Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:13.683Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:14.912Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:16.329Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.465Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.520Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.760Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.864Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.864Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.864Z - Handled RECORD_OUTPUTS_HASH. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.870Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.870Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.870Z - Handled RECORD_TASK_RUNS. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.871Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.871Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.871Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.886Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.886Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.886Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.888Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.888Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.888Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/audit:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.890Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.890Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.890Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.890Z - Time taken for 'postTasksExecution' 0.03907599998638034ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:17.896Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.165Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.166Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.166Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.167Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.167Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.169Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.169Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.170Z - Time taken for 'total for creating and serializing project graph' 2.4252329999872018ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.171Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.171Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 2.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.173Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.173Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.173Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.173Z - Time taken for 'preTasksExecution' 0.04078300000401214ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.183Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.185Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 382.934µs - processed 1 tasks (setup: 367.569µs, parallel_planning: 13.82µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 393.755µs - processed 1 plans (setup: 73.399µs, hashing: 319.535µs, assembly: 20.849µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.186Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.186Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.186Z - Handled HASH_TASKS. Handling time: 3. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.186Z - Time taken for 'write cache' 2.135757999989437ms
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.246Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.318Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.318Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:18.318Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:19.561Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:21.439Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:21.547Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:22.648Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:22.718Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:22.976Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.088Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.088Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.088Z - Handled RECORD_OUTPUTS_HASH. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.096Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.096Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.096Z - Handled RECORD_TASK_RUNS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.097Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.097Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.097Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.114Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.114Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.114Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.116Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.116Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.116Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/dna:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.118Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.118Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.118Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.118Z - Time taken for 'postTasksExecution' 0.04334400000516325ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.122Z - Closed a connection. Number of open connections: 0
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:48:23.439Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.373Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.374Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.374Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.375Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.375Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.378Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.378Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.378Z - Time taken for 'total for creating and serializing project graph' 3.3431979999877512ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.379Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.379Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 3. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.382Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.382Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.382Z - Handled PRE_TASKS_EXECUTION. Handling time: 1. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.382Z - Time taken for 'preTasksExecution' 0.07550899998750538ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.396Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.398Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 391.185µs - processed 1 tasks (setup: 375.236µs, parallel_planning: 14.416µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 382.008µs - processed 1 plans (setup: 76.074µs, hashing: 305.243µs, assembly: 26.325µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.399Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.399Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.399Z - Handled HASH_TASKS. Handling time: 3. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.399Z - Time taken for 'write cache' 2.327567000000272ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.521Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.521Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:02.521Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.263Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.264Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.264Z - Handled RECORD_OUTPUTS_HASH. Handling time: 2. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.271Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.271Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.271Z - Handled RECORD_TASK_RUNS. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.272Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.272Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.272Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.290Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.290Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.290Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.291Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.291Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.291Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/host:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.294Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.294Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.294Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.294Z - Time taken for 'postTasksExecution' 0.03925899998284876ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:04.298Z - Closed a connection. Number of open connections: 0
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:49:05.863Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:13.778Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:13.778Z - [WATCHER]: apps/simplepoint-host/rsbuild.config.ts was modified
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:13.879Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:13.879Z - [REQUEST]: apps/simplepoint-host/rsbuild.config.ts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:13.879Z - [REQUEST]: 
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:13.881Z - Time taken for 'hash changed files from watcher' 0.2210829999530688ms
+Time for 'nx/core/project-json:createNodes' 0.06886499997926876
+Time for 'nx/core/package-json:createNodes' 1.1300199999823235
+Time for 'nx/js/dependencies-and-lockfile:createNodes' 1.5658650000113994
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:13.886Z - Time taken for 'build-project-configs' 3.4452259999816306ms
+Time for 'build typescript dependencies' 0.6047559999860823
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:13.892Z - [SYNC]: collect registered sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:13.892Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:13.892Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:13.892Z - Time taken for 'total execution time for createProjectGraph()' 7.606293999997433ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.293Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.294Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.294Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.295Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.295Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.297Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.297Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.298Z - Time taken for 'total for creating and serializing project graph' 2.77958699996816ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.299Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.299Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 2.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.301Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.301Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.301Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.301Z - Time taken for 'preTasksExecution' 0.03965799999423325ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.311Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.313Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 346.361µs - processed 1 tasks (setup: 331.01µs, parallel_planning: 13.873µs)
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Adding "7663861978715868291" (".gitignore") to hash
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Adding "5264400301757922765" ("nx.json") to hash
+DEBUG nx::native::tasks::hashers::hash_workspace_files: Hashing workspace fileset{cache_key="nx.json,.gitignore,.nxignore"}: Hash Value: "10678209182613987231"
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 610.94µs - processed 1 plans (setup: 77.438µs, hashing: 532.631µs, assembly: 27.098µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.316Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.316Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.316Z - Handled HASH_TASKS. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.316Z - Time taken for 'write cache' 2.4262180000077933ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.434Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.434Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:19.434Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:20.020Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.186Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.275Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.276Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.276Z - Handled RECORD_OUTPUTS_HASH. Handling time: 7. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.283Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.283Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.283Z - Handled RECORD_TASK_RUNS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.283Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.283Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.283Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.300Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.301Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.301Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.302Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.302Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.302Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/host:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.304Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.304Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.304Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.304Z - Time taken for 'postTasksExecution' 0.037468999973498285ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:21.308Z - Closed a connection. Number of open connections: 0
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:22.818Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.273Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.274Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.274Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.275Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.275Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.277Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.277Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.277Z - Time taken for 'total for creating and serializing project graph' 2.1271270000142977ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.277Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.277Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.279Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.280Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.280Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.280Z - Time taken for 'preTasksExecution' 0.033709999988786876ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.289Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.292Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 371.005µs - processed 1 tasks (setup: 353.87µs, parallel_planning: 15.69µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 464.488µs - processed 1 plans (setup: 74.401µs, hashing: 389.244µs, assembly: 18.737µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.293Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.293Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.293Z - Handled HASH_TASKS. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.293Z - Time taken for 'write cache' 2.4244119999930263ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.412Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.412Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.412Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:29.932Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.113Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.205Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.205Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.205Z - Handled RECORD_OUTPUTS_HASH. Handling time: 7. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.214Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.214Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.214Z - Handled RECORD_TASK_RUNS. Handling time: 7. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.214Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.215Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.215Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.233Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.233Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.233Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.235Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.235Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.235Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/host:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.236Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.237Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.237Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.237Z - Time taken for 'postTasksExecution' 0.03406400000676513ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.240Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.531Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.531Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.531Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.532Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.532Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.535Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.535Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.536Z - Time taken for 'total for creating and serializing project graph' 3.2133429999812506ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.536Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.536Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 3. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.538Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.538Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.538Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.539Z - Time taken for 'preTasksExecution' 0.047212000004947186ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.548Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.550Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 377.224µs - processed 1 tasks (setup: 363.016µs, parallel_planning: 12.258µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 660.249µs - processed 1 plans (setup: 74.324µs, hashing: 585.225µs, assembly: 13.694µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.552Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.552Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.552Z - Handled HASH_TASKS. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.552Z - Time taken for 'write cache' 2.030318000004627ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.671Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.671Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:31.671Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:32.544Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:32.888Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:34.579Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:34.644Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:34.695Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:35.784Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:35.845Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.095Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.209Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.209Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.209Z - Handled RECORD_OUTPUTS_HASH. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.217Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.217Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.217Z - Handled RECORD_TASK_RUNS. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.217Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.217Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.217Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.233Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.233Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.233Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.235Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.235Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.235Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/common:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.236Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.236Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.236Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.236Z - Time taken for 'postTasksExecution' 0.04769699997268617ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.240Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.521Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.522Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.522Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.523Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.523Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.525Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.526Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.526Z - Time taken for 'total for creating and serializing project graph' 2.6723450000281446ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.526Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.526Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 3. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.528Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.528Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.528Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.528Z - Time taken for 'preTasksExecution' 0.03365900000790134ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.538Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.541Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 436.409µs - processed 1 tasks (setup: 420.961µs, parallel_planning: 13.578µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 427.186µs - processed 1 plans (setup: 75.204µs, hashing: 351.293µs, assembly: 20.907µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.542Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.542Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.542Z - Handled HASH_TASKS. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.542Z - Time taken for 'write cache' 2.847042999987025ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.664Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.664Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.664Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 1. Response time: 0.
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:36.695Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:37.900Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:39.284Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.330Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.386Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.624Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.739Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.739Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.739Z - Handled RECORD_OUTPUTS_HASH. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.745Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.745Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.745Z - Handled RECORD_TASK_RUNS. Handling time: 4. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.746Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.746Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.746Z - Handled GET_FLAKY_TASKS. Handling time: 1. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.761Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.761Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.761Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.762Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.762Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.762Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/audit:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.766Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.766Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.766Z - Handled POST_TASKS_EXECUTION. Handling time: 1. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.766Z - Time taken for 'postTasksExecution' 0.03866800002288073ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:40.769Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.046Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.047Z - Closed a connection. Number of open connections: 0
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.047Z - Established a connection. Number of open connections: 1
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.048Z - [REQUEST]: Client Request for Project Graph Received
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.048Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.050Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.050Z - [REQUEST]: Responding to the client. project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.050Z - Time taken for 'total for creating and serializing project graph' 2.396299000014551ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.051Z - Done responding to the client project-graph
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.051Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2. Response time: 1.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.053Z - [REQUEST]: Responding to the client. handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.053Z - Done responding to the client handleRunPreTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.053Z - Handled PRE_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.053Z - Time taken for 'preTasksExecution' 0.03290800005197525ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.063Z - Reusing in-memory cached project graph because no files changed.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.065Z - Wrote project graph cache to /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/workspace-data/project-graph.json
+DEBUG nx::native::tasks::hash_planner: get_plans_internal COMPLETED in 381.154µs - processed 1 tasks (setup: 360.253µs, parallel_planning: 19.309µs)
+DEBUG nx::native::tasks::task_hasher: hash_plans COMPLETED in 430.489µs - processed 1 plans (setup: 74.522µs, hashing: 355.226µs, assembly: 18.715µs)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.066Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.066Z - Done responding to the client handleHashTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.066Z - Handled HASH_TASKS. Handling time: 3. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.066Z - Time taken for 'write cache' 2.4680560000124387ms
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.100Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.194Z - [REQUEST]: Responding to the client. handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.194Z - Done responding to the client handleGetEstimatedTaskTimings
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:41.194Z - Handled GET_ESTIMATED_TASK_TIMINGS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:42.441Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:44.246Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:44.298Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:45.498Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:45.582Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:45.881Z - [WATCHER]: Processing file changes in outputs
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:45.996Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:45.996Z - Done responding to the client recordOutputsHash
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:45.996Z - Handled RECORD_OUTPUTS_HASH. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.003Z - [REQUEST]: Responding to the client. handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.003Z - Done responding to the client handleRecordTaskRuns
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.003Z - Handled RECORD_TASK_RUNS. Handling time: 5. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.004Z - [REQUEST]: Responding to the client. handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.004Z - Done responding to the client handleGetFlakyTasks
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.004Z - Handled GET_FLAKY_TASKS. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.020Z - [REQUEST]: Responding to the client. PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.020Z - Done responding to the client PROCESS_IN_BACKGROUND
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.020Z - Handled PROCESS_IN_BACKGROUND. Handling time: 6. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.021Z - Uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.021Z - Done uploading file artifacts
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.021Z - Sending EndRun request
+[Nx Cloud Debug] Attempting to acquire filesystem lock with path:  /tmp/client-instance-id.lock
+[Nx Cloud Debug] Failed to create folder lock at path: /tmp/client-instance-id.lock
+[Nx Cloud] Unable to detect a VCS context from the environment.
+
+ NX   RunEnd. Completed tasks
+
+
+[
+  "@simplepoint/dna:build"
+]
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.023Z - [REQUEST]: Responding to the client. handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.023Z - Done responding to the client handleRunPostTasksExecution
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.023Z - Handled POST_TASKS_EXECUTION. Handling time: 0. Response time: 0.
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.023Z - Time taken for 'postTasksExecution' 0.036801000009290874ms
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.027Z - Closed a connection. Number of open connections: 0
+
+ NX   Connection to Nx Cloud failed with status code 401
+
+This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app.
+
+[NX v21.6.10 Daemon Server] - 2026-04-30T16:50:46.477Z - Error when sending EndRun
+Error: This workspace is more than three days old and is not connected. Workspaces must be connected within 3 days of creation. Claim your workspace at https://cloud.nx.app
+    at Timeout._onTimeout (/home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/.nx/cache/cloud/2604.29.7/lib/daemon/process-run-end.js:1:781531)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
