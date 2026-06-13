@@ -63,6 +63,7 @@ const App = () => {
           setPackageCode('');
         }}
         placement="bottom"
+        maskClosable={false}
         height={drawerHeight}
         destroyOnHidden
         styles={{body: {position: 'relative', paddingTop: 12}}}
@@ -71,7 +72,8 @@ const App = () => {
           style={{position: 'absolute', top: 0, left: 0, right: 0, height: 8, cursor: 'ns-resize', zIndex: 10}}
           onMouseDown={startResize}
         />
-        <ApplicationConfig key={packageCode || 'none'} packageCode={packageCode}/>
+        {/* 不使用 key 强制重建，避免闪退；组件内部通过 useEffect([packageCode]) 重置状态 */}
+        {packageCode && <ApplicationConfig packageCode={packageCode}/>}
       </Drawer>
     </div>
   );

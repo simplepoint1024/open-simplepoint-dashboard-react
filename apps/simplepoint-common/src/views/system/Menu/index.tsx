@@ -103,6 +103,7 @@ const App = () => {
         height={permDrawerHeight}
         onClose={() => { setOpenRoleConfig(false); setMenuId(null); }}
         placement={"bottom"}
+        maskClosable={false}
         destroyOnHidden
         styles={{ body: { position: 'relative', paddingTop: 12 } }}
       >
@@ -110,8 +111,8 @@ const App = () => {
           style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 8, cursor: 'ns-resize', zIndex: 10 }}
           onMouseDown={startResize}
         />
-        {/* 使用 key 强制在 authority 变化时重建组件，避免内部状态残留 */}
-        <PermissionConfig key={menuId || 'none'} menuId={menuId}/>
+        {/* 不使用 key 强制重建，避免闪退；组件内部通过 useEffect([menuId]) 重置状态 */}
+        {menuId && <PermissionConfig menuId={menuId}/>}
       </Drawer>
     </div>
   );

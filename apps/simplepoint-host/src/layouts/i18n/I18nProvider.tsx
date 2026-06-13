@@ -33,6 +33,9 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
     const [languages, setLanguages] = useState<Language[]>([]);
     const [messages, setMessages] = useState<Messages>(readStoredMessages(initialLocale) || {});
     const [loading, setLoading] = useState<boolean>(false);
+    const [initialLoadSettled, setInitialLoadSettled] = useState<boolean>(
+        () => Object.keys(readStoredMessages(initialLocale) || {}).length > 0
+    );
 
     const cache = useRef(new Map<string, Messages>());
     const loadSeqRef = useRef(0);
@@ -56,6 +59,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
         const initial = readStoredMessages(initialLocale);
         if (initial && Object.keys(initial).length > 0) {
             cache.current.set(initialLocale, initial);
+            setInitialLoadSettled(true);
             window.spI18n = {t: mkT(initial), locale: initialLocale, setLocale, messages: initial, ensure};
         }
     }, []);
@@ -279,9 +283,9 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
         t,
         loading,
         refresh,
-        ready: !loading && Object.keys(messages || {}).length > 0,
+        ready: !loading && (initialLoadSettled || Object.keys(messages || {}).length > 0),
         ensure,
-    }), [locale, setLocale, languages, messages, t, loading, refresh, ensure]);
+    }), [locale, setLocale, languages, messages, t, loading, refresh, initialLoadSettled, ensure]);
 
     useEffect(() => {
         window.spI18n = {t: mkT(messages), locale, setLocale, messages, ensure};
@@ -289,6 +293,7 @@ export const I18nProvider: React.FC<{ children?: React.ReactNode }> = ({children
 
     useEffect(() => {
         void loadMessages(locale).then(() => {
+            setInitialLoadSettled(true);
             if (!hasCompletedInitialLoadRef.current) {
                 hasCompletedInitialLoadRef.current = true;
                 return;

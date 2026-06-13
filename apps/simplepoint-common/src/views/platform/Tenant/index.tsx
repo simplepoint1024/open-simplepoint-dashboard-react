@@ -149,6 +149,7 @@ const App = () => {
           setTenantOwnerId('');
         }}
         placement="bottom"
+        maskClosable={false}
         height={drawerHeight}
         destroyOnHidden
         styles={{body: {position: 'relative', paddingTop: 12}}}
@@ -157,7 +158,8 @@ const App = () => {
           style={{position: 'absolute', top: 0, left: 0, right: 0, height: 8, cursor: 'ns-resize', zIndex: 10}}
           onMouseDown={startResize}
         />
-        <PackageConfig key={tenantId || 'none'} tenantId={tenantId}/>
+        {/* 不使用 key 强制重建，避免闪退；组件内部通过 useEffect([tenantId]) 重置状态 */}
+        {tenantId && <PackageConfig tenantId={tenantId}/>}
       </Drawer>
       <Drawer
         title={t('table.button.config.user', '配置成员')}
@@ -168,6 +170,7 @@ const App = () => {
           setTenantOwnerId('');
         }}
         placement="bottom"
+        maskClosable={false}
         height={drawerHeight}
         destroyOnHidden
         styles={{body: {position: 'relative', paddingTop: 12}}}
@@ -176,7 +179,8 @@ const App = () => {
           style={{position: 'absolute', top: 0, left: 0, right: 0, height: 8, cursor: 'ns-resize', zIndex: 10}}
           onMouseDown={startResize}
         />
-        <UserConfig key={`${tenantId || 'none'}:${tenantOwnerId || 'none'}`} tenantId={tenantId} ownerId={tenantOwnerId}/>
+        {/* 不使用 key 强制重建，避免闪退；组件内部通过 useEffect([tenantId]) 重置状态 */}
+        {tenantId && <UserConfig tenantId={tenantId} ownerId={tenantOwnerId}/>}
       </Drawer>
     </div>
   );

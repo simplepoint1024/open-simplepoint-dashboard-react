@@ -4,6 +4,812 @@
   "pathMappings": {},
   "nxJsonPlugins": [],
   "fileMap": {
+    "projectFileMap": {
+      "@simplepoint/shared": [
+        {
+          "file": "libs/shared/api/client.ts",
+          "hash": "342018239786561749"
+        },
+        {
+          "file": "libs/shared/api/contextId.ts",
+          "hash": "7667563409153287156"
+        },
+        {
+          "file": "libs/shared/api/methods.ts",
+          "hash": "13576130692350986880"
+        },
+        {
+          "file": "libs/shared/api/session.test.ts",
+          "hash": "18142252864891026544"
+        },
+        {
+          "file": "libs/shared/api/session.ts",
+          "hash": "8384670446037803405"
+        },
+        {
+          "file": "libs/shared/hooks/useI18n.ts",
+          "hash": "14262307041739132640"
+        },
+        {
+          "file": "libs/shared/hooks/useSchema.ts",
+          "hash": "4512433262959541542"
+        },
+        {
+          "file": "libs/shared/i18n/fallbacks.ts",
+          "hash": "4767501875250921773"
+        },
+        {
+          "file": "libs/shared/package.json",
+          "hash": "8230939057603367034"
+        },
+        {
+          "file": "libs/shared/types/icon.ts",
+          "hash": "9458021010759749432"
+        },
+        {
+          "file": "libs/shared/types/module.shared.ts",
+          "hash": "680549975583136110"
+        },
+        {
+          "file": "libs/shared/types/request.ts",
+          "hash": "5966176646229953357"
+        }
+      ],
+      "@simplepoint/components": [
+        {
+          "file": "libs/components/ButtonDisabledRules.tsx",
+          "hash": "1856709322906948654"
+        },
+        {
+          "file": "libs/components/ButtonEvents.tsx",
+          "hash": "16897080509659144865"
+        },
+        {
+          "file": "libs/components/SForm/index.css",
+          "hash": "13112944566416750658"
+        },
+        {
+          "file": "libs/components/SForm/index.tsx",
+          "hash": "1171113980436432352"
+        },
+        {
+          "file": "libs/components/SForm/widgets/IconPicker.tsx",
+          "hash": "17345745503453937803"
+        },
+        {
+          "file": "libs/components/SForm/widgets/OrgTreeMultiSelect.tsx",
+          "hash": "18380727240049112368"
+        },
+        {
+          "file": "libs/components/STableTransfer/index.tsx",
+          "hash": "7588076181302285850"
+        },
+        {
+          "file": "libs/components/SimpleTable/index.css",
+          "hash": "7765268463196204066"
+        },
+        {
+          "file": "libs/components/SimpleTable/index.tsx",
+          "hash": "836988148703736051"
+        },
+        {
+          "file": "libs/components/SimpleTable/types.ts",
+          "hash": "4647755032521245242"
+        },
+        {
+          "file": "libs/components/SimpleTable/useSimpleTableController.ts",
+          "hash": "11251102387713903041"
+        },
+        {
+          "file": "libs/components/Simplepoint.css",
+          "hash": "1999377333614340398"
+        },
+        {
+          "file": "libs/components/Table/ColumnFilter.tsx",
+          "hash": "15577695719710233924"
+        },
+        {
+          "file": "libs/components/Table/ColumnSettings.tsx",
+          "hash": "14828781895605704135"
+        },
+        {
+          "file": "libs/components/Table/index.tsx",
+          "hash": "12924317631657178497"
+        },
+        {
+          "file": "libs/components/package.json",
+          "hash": "7039549679733173846",
+          "deps": [
+            "@simplepoint/shared"
+          ]
+        },
+        {
+          "file": "libs/components/tsconfig.json",
+          "hash": "762985378261965989"
+        }
+      ],
+      "@simplepoint/common": [
+        {
+          "file": "apps/simplepoint-common/.gitignore",
+          "hash": "11161116713178592113"
+        },
+        {
+          "file": "apps/simplepoint-common/README.md",
+          "hash": "10622524197591964275"
+        },
+        {
+          "file": "apps/simplepoint-common/module.exposes.ts",
+          "hash": "7226298424800316044"
+        },
+        {
+          "file": "apps/simplepoint-common/package.json",
+          "hash": "8540817481913729197",
+          "deps": [
+            "@simplepoint/shared",
+            "@simplepoint/components"
+          ]
+        },
+        {
+          "file": "apps/simplepoint-common/rslib.config.ts",
+          "hash": "18107472090751352439"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/index.ts",
+          "hash": "15657285052969788669"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/platform/application.ts",
+          "hash": "1850124818113163134"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/platform/feature.ts",
+          "hash": "12245832312940226849"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/platform/package.ts",
+          "hash": "8919746640439442543"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/platform/tenant.ts",
+          "hash": "11103206649667453573"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/system/data-scope.ts",
+          "hash": "16619385254852093226"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/system/field-scope.ts",
+          "hash": "192670651723015737"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/system/menu.ts",
+          "hash": "8452118512839271162"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/system/permission.ts",
+          "hash": "16218125729135525936"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/system/role.ts",
+          "hash": "13600034034401275399"
+        },
+        {
+          "file": "apps/simplepoint-common/src/api/system/user.ts",
+          "hash": "3441192132112613582"
+        },
+        {
+          "file": "apps/simplepoint-common/src/index.d.ts",
+          "hash": "4595979742548113990"
+        },
+        {
+          "file": "apps/simplepoint-common/src/index.tsx",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/simplepoint-common/src/services.ts",
+          "hash": "6416211708302109048"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/Dashboard/index.tsx",
+          "hash": "5317885129497522657"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/i18n/Countries/index.tsx",
+          "hash": "808440160442869617"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/i18n/Language/index.tsx",
+          "hash": "13223177377380011052"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/i18n/Message/index.tsx",
+          "hash": "217537753365831658"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/i18n/Namespace/index.tsx",
+          "hash": "867526386659439538"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/i18n/Region/index.tsx",
+          "hash": "18123217548827752770"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/i18n/Timezone/index.tsx",
+          "hash": "583974603889416770"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/ops/Microapp/index.tsx",
+          "hash": "12745323555377423174"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/ops/micro-service/index.tsx",
+          "hash": "3680238259831274533"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Application/config/feature/index.tsx",
+          "hash": "10126649428662196987"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Application/index.tsx",
+          "hash": "1261748611235276703"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Dictionary/config/item/index.tsx",
+          "hash": "8941265519312521714"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Dictionary/index.tsx",
+          "hash": "7207811791515981103"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Feature/config/permission/index.tsx",
+          "hash": "16881798529183914013"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Feature/index.tsx",
+          "hash": "12702616624764139131"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/ObjectStorage/index.tsx",
+          "hash": "11638624358080875062"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Organization/index.tsx",
+          "hash": "1520058179114792909"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Package/config/application/index.tsx",
+          "hash": "17093954638021307165"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Package/index.tsx",
+          "hash": "1289566714322352338"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Tenant/config/package/index.tsx",
+          "hash": "6686873762150071777"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Tenant/config/user/index.tsx",
+          "hash": "10122393013061398800"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/platform/Tenant/index.tsx",
+          "hash": "8936140018599965420"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/DataScope/index.tsx",
+          "hash": "1397840802807091797"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/FieldScope/config/entries/index.tsx",
+          "hash": "1531704051391625909"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/FieldScope/index.tsx",
+          "hash": "12076966180261441735"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/Menu/config/permission/index.tsx",
+          "hash": "4026221525861609769"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/Menu/index.tsx",
+          "hash": "8165215837887914046"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/OAuthClient/index.tsx",
+          "hash": "4752269050592028524"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/Permission/index.tsx",
+          "hash": "15207114467406185656"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/Role/config/permission/index.tsx",
+          "hash": "9187187634558742007"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/Role/index.tsx",
+          "hash": "15847969058465390808"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/User/config/role/index.tsx",
+          "hash": "17700329674871532905"
+        },
+        {
+          "file": "apps/simplepoint-common/src/views/system/User/index.tsx",
+          "hash": "1091487036516873972"
+        },
+        {
+          "file": "apps/simplepoint-common/tsconfig.build.json",
+          "hash": "12391958789690648811"
+        },
+        {
+          "file": "apps/simplepoint-common/tsconfig.json",
+          "hash": "8165424422883715881"
+        }
+      ],
+      "@simplepoint/host": [
+        {
+          "file": "apps/simplepoint-host/.gitignore",
+          "hash": "11161116713178592113"
+        },
+        {
+          "file": "apps/simplepoint-host/README.md",
+          "hash": "10622524197591964275"
+        },
+        {
+          "file": "apps/simplepoint-host/package.json",
+          "hash": "11547804062724598370",
+          "deps": [
+            "npm:@module-federation/runtime@0.21.6",
+            "@simplepoint/components",
+            "@simplepoint/shared"
+          ]
+        },
+        {
+          "file": "apps/simplepoint-host/public/favicon.ico",
+          "hash": "17394367917625524967"
+        },
+        {
+          "file": "apps/simplepoint-host/public/mockServiceWorker.js",
+          "hash": "7225327533356737253"
+        },
+        {
+          "file": "apps/simplepoint-host/public/svg.svg",
+          "hash": "3198896905510256249"
+        },
+        {
+          "file": "apps/simplepoint-host/rsbuild.config.ts",
+          "hash": "1916283573012833689"
+        },
+        {
+          "file": "apps/simplepoint-host/src/App.css",
+          "hash": "9347331952652151527"
+        },
+        {
+          "file": "apps/simplepoint-host/src/App.tsx",
+          "hash": "6805594976427463472"
+        },
+        {
+          "file": "apps/simplepoint-host/src/components/ErrorBoundary.tsx",
+          "hash": "12925859223204997464"
+        },
+        {
+          "file": "apps/simplepoint-host/src/components/GlobalLoading.tsx",
+          "hash": "6644081717275301557"
+        },
+        {
+          "file": "apps/simplepoint-host/src/components/IframeView.tsx",
+          "hash": "1479806447718491242"
+        },
+        {
+          "file": "apps/simplepoint-host/src/components/RouteRenderer.tsx",
+          "hash": "743931240798247717"
+        },
+        {
+          "file": "apps/simplepoint-host/src/components/TitleSync.tsx",
+          "hash": "3844740449951381951"
+        },
+        {
+          "file": "apps/simplepoint-host/src/components/withBoundaryAndSuspense.tsx",
+          "hash": "3849376381158617996"
+        },
+        {
+          "file": "apps/simplepoint-host/src/env.d.ts",
+          "hash": "13953027048254192583"
+        },
+        {
+          "file": "apps/simplepoint-host/src/fetches/i18n.ts",
+          "hash": "8450788978099628558"
+        },
+        {
+          "file": "apps/simplepoint-host/src/fetches/index.ts",
+          "hash": "3371129043512924687"
+        },
+        {
+          "file": "apps/simplepoint-host/src/fetches/routes.ts",
+          "hash": "9117012581176620652"
+        },
+        {
+          "file": "apps/simplepoint-host/src/fetches/tenants.ts",
+          "hash": "11702932233849201782"
+        },
+        {
+          "file": "apps/simplepoint-host/src/fetches/user.ts",
+          "hash": "6922924379732587616"
+        },
+        {
+          "file": "apps/simplepoint-host/src/hooks/routes/index.tsx",
+          "hash": "15427791150589966988"
+        },
+        {
+          "file": "apps/simplepoint-host/src/hooks/useGlobalLoading.ts",
+          "hash": "8821379699792038632"
+        },
+        {
+          "file": "apps/simplepoint-host/src/hooks/useGlobalSize.ts",
+          "hash": "14928690386698338999"
+        },
+        {
+          "file": "apps/simplepoint-host/src/hooks/useLeafRoutes.ts",
+          "hash": "6945982400485629055"
+        },
+        {
+          "file": "apps/simplepoint-host/src/hooks/useLocaleLoader.ts",
+          "hash": "11445439136807180132"
+        },
+        {
+          "file": "apps/simplepoint-host/src/hooks/useRefreshKeyMap.ts",
+          "hash": "746898852481823799"
+        },
+        {
+          "file": "apps/simplepoint-host/src/hooks/useRegisterRemotes.ts",
+          "hash": "17292317164002294527"
+        },
+        {
+          "file": "apps/simplepoint-host/src/hooks/useThemeMode.ts",
+          "hash": "12599771896872137709"
+        },
+        {
+          "file": "apps/simplepoint-host/src/i18n/Text.tsx",
+          "hash": "5166212213139030995"
+        },
+        {
+          "file": "apps/simplepoint-host/src/i18n/locale.ts",
+          "hash": "6096182179255461137"
+        },
+        {
+          "file": "apps/simplepoint-host/src/index.tsx",
+          "hash": "12554715160202579305"
+        },
+        {
+          "file": "apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx",
+          "hash": "5390148313286062750"
+        },
+        {
+          "file": "apps/simplepoint-host/src/layouts/i18n/useI18n.ts",
+          "hash": "9578156474717590696"
+        },
+        {
+          "file": "apps/simplepoint-host/src/layouts/navigation-bar/index.tsx",
+          "hash": "13287227926495051742"
+        },
+        {
+          "file": "apps/simplepoint-host/src/layouts/navigation-bar/menu-search-modal.tsx",
+          "hash": "11199722116878423064"
+        },
+        {
+          "file": "apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx",
+          "hash": "6643502999504627463"
+        },
+        {
+          "file": "apps/simplepoint-host/src/layouts/profile/index.css",
+          "hash": "2536451194435936193"
+        },
+        {
+          "file": "apps/simplepoint-host/src/layouts/profile/index.tsx",
+          "hash": "2847666828497100550"
+        },
+        {
+          "file": "apps/simplepoint-host/src/layouts/settings/index.css",
+          "hash": "10249707574139814555"
+        },
+        {
+          "file": "apps/simplepoint-host/src/layouts/settings/index.tsx",
+          "hash": "12487930711088752911"
+        },
+        {
+          "file": "apps/simplepoint-host/src/store/contextId.ts",
+          "hash": "7861175559658063514"
+        },
+        {
+          "file": "apps/simplepoint-host/src/store/routes/index.tsx",
+          "hash": "1536710046229939465"
+        },
+        {
+          "file": "apps/simplepoint-host/src/store/tenant.ts",
+          "hash": "9112881690779157033"
+        },
+        {
+          "file": "apps/simplepoint-host/src/types/i18n.d.ts",
+          "hash": "7475882779651036607"
+        },
+        {
+          "file": "apps/simplepoint-host/src/utils/MfRoutes.ts",
+          "hash": "545702126461874875"
+        },
+        {
+          "file": "apps/simplepoint-host/src/utils/i18nCache.ts",
+          "hash": "3222925133631034407"
+        },
+        {
+          "file": "apps/simplepoint-host/src/utils/i18nEvents.ts",
+          "hash": "3908088773778887981"
+        },
+        {
+          "file": "apps/simplepoint-host/src/utils/i18nUtils.ts",
+          "hash": "13963455530104888917"
+        },
+        {
+          "file": "apps/simplepoint-host/src/utils/initHtmlAttributes.ts",
+          "hash": "5727775906398430174"
+        },
+        {
+          "file": "apps/simplepoint-host/src/utils/lazyComponent.tsx",
+          "hash": "16245224186937666414"
+        },
+        {
+          "file": "apps/simplepoint-host/src/utils/parseComponent.ts",
+          "hash": "9796733748096735182"
+        },
+        {
+          "file": "apps/simplepoint-host/src/views/dashboard/index.tsx",
+          "hash": "5009587597487814852"
+        },
+        {
+          "file": "apps/simplepoint-host/src/views/errors/Forbidden.tsx",
+          "hash": "16683285323123146522"
+        },
+        {
+          "file": "apps/simplepoint-host/src/views/errors/NotFound.tsx",
+          "hash": "4908950925627256162"
+        },
+        {
+          "file": "apps/simplepoint-host/src/views/errors/OrgTenantRequired.tsx",
+          "hash": "2653287223367728641"
+        },
+        {
+          "file": "apps/simplepoint-host/tsconfig.build.json",
+          "hash": "11405622155231668752"
+        },
+        {
+          "file": "apps/simplepoint-host/tsconfig.json",
+          "hash": "1996395625590441307"
+        }
+      ],
+      "@simplepoint/dna": [
+        {
+          "file": "apps/simplepoint-dna/.gitignore",
+          "hash": "11161116713178592113"
+        },
+        {
+          "file": "apps/simplepoint-dna/README.md",
+          "hash": "10622524197591964275"
+        },
+        {
+          "file": "apps/simplepoint-dna/module.exposes.ts",
+          "hash": "7226298424800316044"
+        },
+        {
+          "file": "apps/simplepoint-dna/package.json",
+          "hash": "14853692853497922020",
+          "deps": [
+            "@simplepoint/shared",
+            "@simplepoint/components"
+          ]
+        },
+        {
+          "file": "apps/simplepoint-dna/rslib.config.ts",
+          "hash": "17700310374736454334"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/api/index.ts",
+          "hash": "8437041123179815573"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/api/jdbcUsers.ts",
+          "hash": "15336660303656684858"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/index.d.ts",
+          "hash": "4595979742548113990"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/index.tsx",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/services.ts",
+          "hash": "7460327056677646512"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/Dashboard/index.tsx",
+          "hash": "13836256181484829032"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataAsset/index.tsx",
+          "hash": "9625613481041538484"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataCatalog/index.tsx",
+          "hash": "6904296856976176359"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/LineageGraphView.tsx",
+          "hash": "14903900128295929639"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/index.tsx",
+          "hash": "3884004261811126006"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/types.ts",
+          "hash": "14366882111921442036"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/DataQuality/index.tsx",
+          "hash": "10162131049702115722"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/FederationJdbcUser/config/dataSource/index.tsx",
+          "hash": "2355229623426684753"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/FederationJdbcUser/index.tsx",
+          "hash": "14541795564988438816"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/FederationView/index.tsx",
+          "hash": "7128795432595244687"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/HealthMonitor/index.tsx",
+          "hash": "17562165818843326241"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/JdbcDataSource/index.tsx",
+          "hash": "10454897113586081805"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/JdbcDialect/index.tsx",
+          "hash": "9462725752218196346"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/JdbcDriver/index.tsx",
+          "hash": "14462212673744823984"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/JdbcMetadata/index.tsx",
+          "hash": "10328175663733822010"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/QueryAudit/index.tsx",
+          "hash": "237037224839845511"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/QueryPolicy/index.tsx",
+          "hash": "374249006950507871"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/QueryTemplate/index.tsx",
+          "hash": "3505749779389192893"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/SqlEditor.tsx",
+          "hash": "11301380809588758041"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/index.css",
+          "hash": "8870489684236835317"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/index.tsx",
+          "hash": "16283754814919991751"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/metadataTree.tsx",
+          "hash": "15782814755627471454"
+        },
+        {
+          "file": "apps/simplepoint-dna/src/views/platform/shared.ts",
+          "hash": "11311977802379203527"
+        },
+        {
+          "file": "apps/simplepoint-dna/tsconfig.build.json",
+          "hash": "12391958789690648811"
+        },
+        {
+          "file": "apps/simplepoint-dna/tsconfig.json",
+          "hash": "8165424422883715881"
+        }
+      ],
+      "@simplepoint/audit": [
+        {
+          "file": "apps/simplepoint-audit/.gitignore",
+          "hash": "11161116713178592113"
+        },
+        {
+          "file": "apps/simplepoint-audit/README.md",
+          "hash": "10622524197591964275"
+        },
+        {
+          "file": "apps/simplepoint-audit/module.exposes.ts",
+          "hash": "7226298424800316044"
+        },
+        {
+          "file": "apps/simplepoint-audit/package.json",
+          "hash": "17042489476593665769",
+          "deps": [
+            "@simplepoint/shared",
+            "@simplepoint/components"
+          ]
+        },
+        {
+          "file": "apps/simplepoint-audit/rslib.config.ts",
+          "hash": "10416765102130860500"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/api/index.ts",
+          "hash": "3077006813008852906"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/index.d.ts",
+          "hash": "4595979742548113990"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/index.tsx",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/services.ts",
+          "hash": "15814996313686691099"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/EndpointRateLimitRule/index.tsx",
+          "hash": "12293980760980101582"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/ErrorLog/index.tsx",
+          "hash": "17470085412441074245"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/LoginLog/index.tsx",
+          "hash": "1973469753763812233"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/PermissionChangeLog/index.tsx",
+          "hash": "7925942639260897915"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/Redis/index.tsx",
+          "hash": "13151601236317972852"
+        },
+        {
+          "file": "apps/simplepoint-audit/src/views/monitoring/ServiceRateLimitRule/index.tsx",
+          "hash": "4245329241296530560"
+        },
+        {
+          "file": "apps/simplepoint-audit/tsconfig.build.json",
+          "hash": "12391958789690648811"
+        },
+        {
+          "file": "apps/simplepoint-audit/tsconfig.json",
+          "hash": "8165424422883715881"
+        }
+      ]
+    },
     "nonProjectFiles": [
       {
         "file": ".github/workflows/ci.yml",
@@ -193,801 +999,7 @@
         "file": "scripts/shell/builder.sh",
         "hash": "10701662829585022597"
       }
-    ],
-    "projectFileMap": {
-      "@simplepoint/shared": [
-        {
-          "file": "libs/shared/api/client.ts",
-          "hash": "13117638036232175322"
-        },
-        {
-          "file": "libs/shared/api/contextId.ts",
-          "hash": "16065674771455033184"
-        },
-        {
-          "file": "libs/shared/api/methods.ts",
-          "hash": "13576130692350986880"
-        },
-        {
-          "file": "libs/shared/api/session.test.ts",
-          "hash": "18142252864891026544"
-        },
-        {
-          "file": "libs/shared/api/session.ts",
-          "hash": "17198763373737883894"
-        },
-        {
-          "file": "libs/shared/hooks/useI18n.ts",
-          "hash": "14262307041739132640"
-        },
-        {
-          "file": "libs/shared/hooks/useSchema.ts",
-          "hash": "10060380071994135174"
-        },
-        {
-          "file": "libs/shared/i18n/fallbacks.ts",
-          "hash": "4767501875250921773"
-        },
-        {
-          "file": "libs/shared/package.json",
-          "hash": "8230939057603367034"
-        },
-        {
-          "file": "libs/shared/types/icon.ts",
-          "hash": "9458021010759749432"
-        },
-        {
-          "file": "libs/shared/types/module.shared.ts",
-          "hash": "680549975583136110"
-        },
-        {
-          "file": "libs/shared/types/request.ts",
-          "hash": "5966176646229953357"
-        }
-      ],
-      "@simplepoint/common": [
-        {
-          "file": "apps/simplepoint-common/.gitignore",
-          "hash": "11161116713178592113"
-        },
-        {
-          "file": "apps/simplepoint-common/README.md",
-          "hash": "10622524197591964275"
-        },
-        {
-          "file": "apps/simplepoint-common/module.exposes.ts",
-          "hash": "7226298424800316044"
-        },
-        {
-          "file": "apps/simplepoint-common/package.json",
-          "hash": "8540817481913729197",
-          "deps": [
-            "@simplepoint/shared",
-            "@simplepoint/components"
-          ]
-        },
-        {
-          "file": "apps/simplepoint-common/rslib.config.ts",
-          "hash": "18107472090751352439"
-        },
-        {
-          "file": "apps/simplepoint-common/src/api/index.ts",
-          "hash": "15657285052969788669"
-        },
-        {
-          "file": "apps/simplepoint-common/src/api/platform/application.ts",
-          "hash": "1850124818113163134"
-        },
-        {
-          "file": "apps/simplepoint-common/src/api/platform/feature.ts",
-          "hash": "12245832312940226849"
-        },
-        {
-          "file": "apps/simplepoint-common/src/api/platform/package.ts",
-          "hash": "8919746640439442543"
-        },
-        {
-          "file": "apps/simplepoint-common/src/api/platform/tenant.ts",
-          "hash": "11103206649667453573"
-        },
-        {
-          "file": "apps/simplepoint-common/src/api/system/field-scope.ts",
-          "hash": "329869583223130847"
-        },
-        {
-          "file": "apps/simplepoint-common/src/api/system/menu.ts",
-          "hash": "8452118512839271162"
-        },
-        {
-          "file": "apps/simplepoint-common/src/api/system/permission.ts",
-          "hash": "16218125729135525936"
-        },
-        {
-          "file": "apps/simplepoint-common/src/api/system/role.ts",
-          "hash": "5601467596581370266"
-        },
-        {
-          "file": "apps/simplepoint-common/src/api/system/user.ts",
-          "hash": "17251851146497095244"
-        },
-        {
-          "file": "apps/simplepoint-common/src/index.d.ts",
-          "hash": "4595979742548113990"
-        },
-        {
-          "file": "apps/simplepoint-common/src/index.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/simplepoint-common/src/services.ts",
-          "hash": "6416211708302109048"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/Dashboard/index.tsx",
-          "hash": "5317885129497522657"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/i18n/Countries/index.tsx",
-          "hash": "808440160442869617"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/i18n/Language/index.tsx",
-          "hash": "13223177377380011052"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/i18n/Message/index.tsx",
-          "hash": "217537753365831658"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/i18n/Namespace/index.tsx",
-          "hash": "867526386659439538"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/i18n/Region/index.tsx",
-          "hash": "18123217548827752770"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/i18n/Timezone/index.tsx",
-          "hash": "583974603889416770"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/ops/Microapp/index.tsx",
-          "hash": "12745323555377423174"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/ops/micro-service/index.tsx",
-          "hash": "3680238259831274533"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Application/config/feature/index.tsx",
-          "hash": "10126649428662196987"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Application/index.tsx",
-          "hash": "3775254611945888129"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Dictionary/config/item/index.tsx",
-          "hash": "8941265519312521714"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Dictionary/index.tsx",
-          "hash": "12414720342525078091"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Feature/config/permission/index.tsx",
-          "hash": "16881798529183914013"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Feature/index.tsx",
-          "hash": "10187460399630067774"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/ObjectStorage/index.tsx",
-          "hash": "11638624358080875062"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Organization/index.tsx",
-          "hash": "1520058179114792909"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Package/config/application/index.tsx",
-          "hash": "17093954638021307165"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Package/index.tsx",
-          "hash": "9038656033071458033"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Tenant/config/package/index.tsx",
-          "hash": "6686873762150071777"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Tenant/config/user/index.tsx",
-          "hash": "10122393013061398800"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/platform/Tenant/index.tsx",
-          "hash": "6000192121724220891"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/system/DataScope/index.tsx",
-          "hash": "17089810986599415870"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/system/FieldScope/config/entries/index.tsx",
-          "hash": "1531704051391625909"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/system/FieldScope/index.tsx",
-          "hash": "12076966180261441735"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/system/Menu/config/permission/index.tsx",
-          "hash": "4026221525861609769"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/system/Menu/index.tsx",
-          "hash": "13297047356796469770"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/system/OAuthClient/index.tsx",
-          "hash": "4752269050592028524"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/system/Permission/index.tsx",
-          "hash": "15207114467406185656"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/system/Role/config/permission/index.tsx",
-          "hash": "5221084406867509364"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/system/Role/index.tsx",
-          "hash": "14217374538403714099"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/system/User/config/role/index.tsx",
-          "hash": "2621629605871879595"
-        },
-        {
-          "file": "apps/simplepoint-common/src/views/system/User/index.tsx",
-          "hash": "4975903914309257345"
-        },
-        {
-          "file": "apps/simplepoint-common/tsconfig.build.json",
-          "hash": "12391958789690648811"
-        },
-        {
-          "file": "apps/simplepoint-common/tsconfig.json",
-          "hash": "8165424422883715881"
-        }
-      ],
-      "@simplepoint/host": [
-        {
-          "file": "apps/simplepoint-host/.gitignore",
-          "hash": "11161116713178592113"
-        },
-        {
-          "file": "apps/simplepoint-host/README.md",
-          "hash": "10622524197591964275"
-        },
-        {
-          "file": "apps/simplepoint-host/package.json",
-          "hash": "11547804062724598370",
-          "deps": [
-            "npm:@module-federation/runtime@0.21.6",
-            "@simplepoint/components",
-            "@simplepoint/shared"
-          ]
-        },
-        {
-          "file": "apps/simplepoint-host/public/favicon.ico",
-          "hash": "17394367917625524967"
-        },
-        {
-          "file": "apps/simplepoint-host/public/mockServiceWorker.js",
-          "hash": "7225327533356737253"
-        },
-        {
-          "file": "apps/simplepoint-host/public/svg.svg",
-          "hash": "3198896905510256249"
-        },
-        {
-          "file": "apps/simplepoint-host/rsbuild.config.ts",
-          "hash": "1916283573012833689"
-        },
-        {
-          "file": "apps/simplepoint-host/src/App.css",
-          "hash": "9347331952652151527"
-        },
-        {
-          "file": "apps/simplepoint-host/src/App.tsx",
-          "hash": "14018640433143632012"
-        },
-        {
-          "file": "apps/simplepoint-host/src/components/ErrorBoundary.tsx",
-          "hash": "12925859223204997464"
-        },
-        {
-          "file": "apps/simplepoint-host/src/components/GlobalLoading.tsx",
-          "hash": "6644081717275301557"
-        },
-        {
-          "file": "apps/simplepoint-host/src/components/IframeView.tsx",
-          "hash": "1479806447718491242"
-        },
-        {
-          "file": "apps/simplepoint-host/src/components/RouteRenderer.tsx",
-          "hash": "12159379548696392040"
-        },
-        {
-          "file": "apps/simplepoint-host/src/components/TitleSync.tsx",
-          "hash": "3844740449951381951"
-        },
-        {
-          "file": "apps/simplepoint-host/src/components/withBoundaryAndSuspense.tsx",
-          "hash": "3849376381158617996"
-        },
-        {
-          "file": "apps/simplepoint-host/src/env.d.ts",
-          "hash": "13953027048254192583"
-        },
-        {
-          "file": "apps/simplepoint-host/src/fetches/i18n.ts",
-          "hash": "8450788978099628558"
-        },
-        {
-          "file": "apps/simplepoint-host/src/fetches/index.ts",
-          "hash": "3371129043512924687"
-        },
-        {
-          "file": "apps/simplepoint-host/src/fetches/routes.ts",
-          "hash": "15843965418640690063"
-        },
-        {
-          "file": "apps/simplepoint-host/src/fetches/tenants.ts",
-          "hash": "3622056772478681301"
-        },
-        {
-          "file": "apps/simplepoint-host/src/fetches/user.ts",
-          "hash": "6922924379732587616"
-        },
-        {
-          "file": "apps/simplepoint-host/src/hooks/routes/index.tsx",
-          "hash": "15427791150589966988"
-        },
-        {
-          "file": "apps/simplepoint-host/src/hooks/useGlobalLoading.ts",
-          "hash": "8821379699792038632"
-        },
-        {
-          "file": "apps/simplepoint-host/src/hooks/useGlobalSize.ts",
-          "hash": "14928690386698338999"
-        },
-        {
-          "file": "apps/simplepoint-host/src/hooks/useLeafRoutes.ts",
-          "hash": "6945982400485629055"
-        },
-        {
-          "file": "apps/simplepoint-host/src/hooks/useLocaleLoader.ts",
-          "hash": "11445439136807180132"
-        },
-        {
-          "file": "apps/simplepoint-host/src/hooks/useRefreshKeyMap.ts",
-          "hash": "746898852481823799"
-        },
-        {
-          "file": "apps/simplepoint-host/src/hooks/useRegisterRemotes.ts",
-          "hash": "17292317164002294527"
-        },
-        {
-          "file": "apps/simplepoint-host/src/hooks/useThemeMode.ts",
-          "hash": "12599771896872137709"
-        },
-        {
-          "file": "apps/simplepoint-host/src/i18n/Text.tsx",
-          "hash": "5166212213139030995"
-        },
-        {
-          "file": "apps/simplepoint-host/src/i18n/locale.ts",
-          "hash": "6096182179255461137"
-        },
-        {
-          "file": "apps/simplepoint-host/src/index.tsx",
-          "hash": "12554715160202579305"
-        },
-        {
-          "file": "apps/simplepoint-host/src/layouts/i18n/I18nProvider.tsx",
-          "hash": "12898648660720169762"
-        },
-        {
-          "file": "apps/simplepoint-host/src/layouts/i18n/useI18n.ts",
-          "hash": "9578156474717590696"
-        },
-        {
-          "file": "apps/simplepoint-host/src/layouts/navigation-bar/index.tsx",
-          "hash": "13287227926495051742"
-        },
-        {
-          "file": "apps/simplepoint-host/src/layouts/navigation-bar/menu-search-modal.tsx",
-          "hash": "11199722116878423064"
-        },
-        {
-          "file": "apps/simplepoint-host/src/layouts/navigation-bar/top-bar.tsx",
-          "hash": "7949396768457407503"
-        },
-        {
-          "file": "apps/simplepoint-host/src/layouts/profile/index.css",
-          "hash": "2536451194435936193"
-        },
-        {
-          "file": "apps/simplepoint-host/src/layouts/profile/index.tsx",
-          "hash": "2847666828497100550"
-        },
-        {
-          "file": "apps/simplepoint-host/src/layouts/settings/index.css",
-          "hash": "10249707574139814555"
-        },
-        {
-          "file": "apps/simplepoint-host/src/layouts/settings/index.tsx",
-          "hash": "12487930711088752911"
-        },
-        {
-          "file": "apps/simplepoint-host/src/store/contextId.ts",
-          "hash": "9601843309775851518"
-        },
-        {
-          "file": "apps/simplepoint-host/src/store/routes/index.tsx",
-          "hash": "10802718185422962996"
-        },
-        {
-          "file": "apps/simplepoint-host/src/store/tenant.ts",
-          "hash": "9112881690779157033"
-        },
-        {
-          "file": "apps/simplepoint-host/src/types/i18n.d.ts",
-          "hash": "7475882779651036607"
-        },
-        {
-          "file": "apps/simplepoint-host/src/utils/MfRoutes.ts",
-          "hash": "545702126461874875"
-        },
-        {
-          "file": "apps/simplepoint-host/src/utils/i18nCache.ts",
-          "hash": "3222925133631034407"
-        },
-        {
-          "file": "apps/simplepoint-host/src/utils/i18nEvents.ts",
-          "hash": "3908088773778887981"
-        },
-        {
-          "file": "apps/simplepoint-host/src/utils/i18nUtils.ts",
-          "hash": "13963455530104888917"
-        },
-        {
-          "file": "apps/simplepoint-host/src/utils/initHtmlAttributes.ts",
-          "hash": "5727775906398430174"
-        },
-        {
-          "file": "apps/simplepoint-host/src/utils/lazyComponent.tsx",
-          "hash": "16245224186937666414"
-        },
-        {
-          "file": "apps/simplepoint-host/src/utils/parseComponent.ts",
-          "hash": "9796733748096735182"
-        },
-        {
-          "file": "apps/simplepoint-host/src/views/dashboard/index.tsx",
-          "hash": "5009587597487814852"
-        },
-        {
-          "file": "apps/simplepoint-host/src/views/errors/Forbidden.tsx",
-          "hash": "16683285323123146522"
-        },
-        {
-          "file": "apps/simplepoint-host/src/views/errors/NotFound.tsx",
-          "hash": "4908950925627256162"
-        },
-        {
-          "file": "apps/simplepoint-host/tsconfig.build.json",
-          "hash": "11405622155231668752"
-        },
-        {
-          "file": "apps/simplepoint-host/tsconfig.json",
-          "hash": "1996395625590441307"
-        }
-      ],
-      "@simplepoint/audit": [
-        {
-          "file": "apps/simplepoint-audit/.gitignore",
-          "hash": "11161116713178592113"
-        },
-        {
-          "file": "apps/simplepoint-audit/README.md",
-          "hash": "10622524197591964275"
-        },
-        {
-          "file": "apps/simplepoint-audit/module.exposes.ts",
-          "hash": "7226298424800316044"
-        },
-        {
-          "file": "apps/simplepoint-audit/package.json",
-          "hash": "17042489476593665769",
-          "deps": [
-            "@simplepoint/shared",
-            "@simplepoint/components"
-          ]
-        },
-        {
-          "file": "apps/simplepoint-audit/rslib.config.ts",
-          "hash": "10416765102130860500"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/api/index.ts",
-          "hash": "3077006813008852906"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/index.d.ts",
-          "hash": "4595979742548113990"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/index.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/services.ts",
-          "hash": "15814996313686691099"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/EndpointRateLimitRule/index.tsx",
-          "hash": "12293980760980101582"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/ErrorLog/index.tsx",
-          "hash": "17470085412441074245"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/LoginLog/index.tsx",
-          "hash": "1973469753763812233"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/PermissionChangeLog/index.tsx",
-          "hash": "7925942639260897915"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/Redis/index.tsx",
-          "hash": "13151601236317972852"
-        },
-        {
-          "file": "apps/simplepoint-audit/src/views/monitoring/ServiceRateLimitRule/index.tsx",
-          "hash": "4245329241296530560"
-        },
-        {
-          "file": "apps/simplepoint-audit/tsconfig.build.json",
-          "hash": "12391958789690648811"
-        },
-        {
-          "file": "apps/simplepoint-audit/tsconfig.json",
-          "hash": "8165424422883715881"
-        }
-      ],
-      "@simplepoint/components": [
-        {
-          "file": "libs/components/ButtonDisabledRules.tsx",
-          "hash": "1856709322906948654"
-        },
-        {
-          "file": "libs/components/ButtonEvents.tsx",
-          "hash": "16897080509659144865"
-        },
-        {
-          "file": "libs/components/SForm/index.css",
-          "hash": "13112944566416750658"
-        },
-        {
-          "file": "libs/components/SForm/index.tsx",
-          "hash": "16507731422996468393"
-        },
-        {
-          "file": "libs/components/SForm/widgets/IconPicker.tsx",
-          "hash": "17345745503453937803"
-        },
-        {
-          "file": "libs/components/STableTransfer/index.tsx",
-          "hash": "7588076181302285850"
-        },
-        {
-          "file": "libs/components/SimpleTable/index.css",
-          "hash": "7765268463196204066"
-        },
-        {
-          "file": "libs/components/SimpleTable/index.tsx",
-          "hash": "836988148703736051"
-        },
-        {
-          "file": "libs/components/SimpleTable/types.ts",
-          "hash": "4647755032521245242"
-        },
-        {
-          "file": "libs/components/SimpleTable/useSimpleTableController.ts",
-          "hash": "912023292384188642"
-        },
-        {
-          "file": "libs/components/Simplepoint.css",
-          "hash": "1999377333614340398"
-        },
-        {
-          "file": "libs/components/Table/ColumnFilter.tsx",
-          "hash": "15577695719710233924"
-        },
-        {
-          "file": "libs/components/Table/ColumnSettings.tsx",
-          "hash": "14828781895605704135"
-        },
-        {
-          "file": "libs/components/Table/index.tsx",
-          "hash": "12924317631657178497"
-        },
-        {
-          "file": "libs/components/package.json",
-          "hash": "7039549679733173846",
-          "deps": [
-            "@simplepoint/shared"
-          ]
-        },
-        {
-          "file": "libs/components/tsconfig.json",
-          "hash": "762985378261965989"
-        }
-      ],
-      "@simplepoint/dna": [
-        {
-          "file": "apps/simplepoint-dna/.gitignore",
-          "hash": "11161116713178592113"
-        },
-        {
-          "file": "apps/simplepoint-dna/README.md",
-          "hash": "10622524197591964275"
-        },
-        {
-          "file": "apps/simplepoint-dna/module.exposes.ts",
-          "hash": "7226298424800316044"
-        },
-        {
-          "file": "apps/simplepoint-dna/package.json",
-          "hash": "14853692853497922020",
-          "deps": [
-            "@simplepoint/shared",
-            "@simplepoint/components"
-          ]
-        },
-        {
-          "file": "apps/simplepoint-dna/rslib.config.ts",
-          "hash": "17700310374736454334"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/api/index.ts",
-          "hash": "8437041123179815573"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/api/jdbcUsers.ts",
-          "hash": "15336660303656684858"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/index.d.ts",
-          "hash": "4595979742548113990"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/index.tsx",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/services.ts",
-          "hash": "7460327056677646512"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/Dashboard/index.tsx",
-          "hash": "13836256181484829032"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataAsset/index.tsx",
-          "hash": "9625613481041538484"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataCatalog/index.tsx",
-          "hash": "6904296856976176359"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/LineageGraphView.tsx",
-          "hash": "14903900128295929639"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/index.tsx",
-          "hash": "3884004261811126006"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataLineage/types.ts",
-          "hash": "14366882111921442036"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/DataQuality/index.tsx",
-          "hash": "10162131049702115722"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/FederationJdbcUser/config/dataSource/index.tsx",
-          "hash": "2355229623426684753"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/FederationJdbcUser/index.tsx",
-          "hash": "14541795564988438816"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/FederationView/index.tsx",
-          "hash": "7128795432595244687"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/HealthMonitor/index.tsx",
-          "hash": "17562165818843326241"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/JdbcDataSource/index.tsx",
-          "hash": "10454897113586081805"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/JdbcDialect/index.tsx",
-          "hash": "9462725752218196346"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/JdbcDriver/index.tsx",
-          "hash": "14462212673744823984"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/JdbcMetadata/index.tsx",
-          "hash": "10328175663733822010"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/QueryAudit/index.tsx",
-          "hash": "237037224839845511"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/QueryPolicy/index.tsx",
-          "hash": "374249006950507871"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/QueryTemplate/index.tsx",
-          "hash": "3505749779389192893"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/SqlEditor.tsx",
-          "hash": "11301380809588758041"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/index.css",
-          "hash": "8870489684236835317"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/SqlConsole/index.tsx",
-          "hash": "16283754814919991751"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/metadataTree.tsx",
-          "hash": "15782814755627471454"
-        },
-        {
-          "file": "apps/simplepoint-dna/src/views/platform/shared.ts",
-          "hash": "11311977802379203527"
-        },
-        {
-          "file": "apps/simplepoint-dna/tsconfig.build.json",
-          "hash": "12391958789690648811"
-        },
-        {
-          "file": "apps/simplepoint-dna/tsconfig.json",
-          "hash": "8165424422883715881"
-        }
-      ]
-    }
+    ]
   },
   "externalNodesHash": "12934666986344278159"
 }

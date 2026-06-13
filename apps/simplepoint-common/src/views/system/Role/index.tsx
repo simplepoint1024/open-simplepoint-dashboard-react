@@ -86,6 +86,7 @@ const App = () => {
                     setRoleId('');
                 }}
                 placement={"bottom"}
+                maskClosable={false}
                 // width 对 bottom 抽屉无效，使用 height 控制高度
                 height={drawerHeight}
                 destroyOnHidden
@@ -104,9 +105,10 @@ const App = () => {
                     }}
                     onMouseDown={startResize}
                 />
-                {openRoleConfig ? (
+                {/* 不使用 key 强制重建，避免闪退；组件内部通过 useEffect([roleId]) 重置状态 */}
+                {openRoleConfig && roleId ? (
                     <Suspense fallback={<div style={{display: 'flex', justifyContent: 'center', padding: 24}}><Spin/></div>}>
-                        <PermissionConfig key={roleId || 'none'} roleId={roleId}/>
+                        <PermissionConfig roleId={roleId}/>
                     </Suspense>
                 ) : null}
             </Drawer>

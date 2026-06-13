@@ -63,6 +63,7 @@ const App = () => {
           setDictionaryCode('');
         }}
         placement="bottom"
+        maskClosable={false}
         height={drawerHeight}
         destroyOnHidden
         styles={{body: {position: 'relative', paddingTop: 12}}}
@@ -71,7 +72,8 @@ const App = () => {
           style={{position: 'absolute', top: 0, left: 0, right: 0, height: 8, cursor: 'ns-resize', zIndex: 10}}
           onMouseDown={startResize}
         />
-        <ItemConfig key={dictionaryCode || 'none'} dictionaryCode={dictionaryCode}/>
+        {/* 不使用 key 强制重建，避免闪退；组件内部通过 useEffect([dictionaryCode]) 重置状态 */}
+        {dictionaryCode && <ItemConfig dictionaryCode={dictionaryCode}/>}
       </Drawer>
     </div>
   );

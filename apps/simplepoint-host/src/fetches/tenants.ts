@@ -6,6 +6,7 @@ import {getStoredTenantId} from '@simplepoint/shared/api/contextId';
 export type CurrentTenant = {
     tenantId: string;
     tenantName: string;
+    tenantType: 'PERSONAL' | 'ORGANIZATION';
 };
 
 /**
@@ -14,7 +15,14 @@ export type CurrentTenant = {
 export async function fetchCurrentTenants(): Promise<CurrentTenant[]> {
     const res = await get<CurrentTenant[]>('/common/tenants/current');
     // 兜底：避免后端偶发返回 null/{} 导致页面静默失败
-    return Array.isArray(res) ? res : [];
+    // 组织租户排在前面，个人租户排在最后；同类型按名称稳定排序
+    if (!Array.isArray(res)) return [];
+    return res.sort((a, b) => {
+        if (a.tenantType !== b.tenantType) {
+            return a.tenantType === 'PERSONAL' ? 1 : -1;
+        }
+        return (a.tenantName || '').localeCompare(b.tenantName || '');
+    });
 }
 
 /**
@@ -46,7 +54,7 @@ export function useCurrentTenants() {
         staleTime: 2 * 60 * 1000,
         refetchOnWindowFocus: false,
         initialData: cached,
-        initialDataUpdatedAt: cached ? Date.now() : undefined,
+        initialDataUpdatedAt: cached ? 0 : undefined,
     });
 
     useEffect(() => {

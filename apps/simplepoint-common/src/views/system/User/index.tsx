@@ -77,6 +77,7 @@ const App = () => {
                     setUserId(null);
                 }}
                 placement="bottom"
+                maskClosable={false}
                 height={drawerHeight}
                 destroyOnHidden
                 styles={{

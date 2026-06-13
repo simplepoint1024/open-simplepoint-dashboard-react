@@ -7,6 +7,7 @@ export type SessionSnapshot = {
 
 const TENANT_EVENT = 'sp-set-tenant';
 const CONTEXT_EVENT = 'sp-set-context-id';
+type ContextEventDetail = { tenantId?: string; contextId?: string };
 
 export function captureSessionSnapshot(): SessionSnapshot {
   const tenantId = getStoredTenantId();
@@ -21,7 +22,11 @@ function emitSessionEvents(snapshot: SessionSnapshot) {
     window.dispatchEvent(new CustomEvent(TENANT_EVENT, { detail: snapshot.tenantId }));
   } catch {}
   try {
-    window.dispatchEvent(new CustomEvent(CONTEXT_EVENT, { detail: snapshot.contextId }));
+    const detail: ContextEventDetail = {
+      tenantId: snapshot.tenantId,
+      contextId: snapshot.contextId,
+    };
+    window.dispatchEvent(new CustomEvent(CONTEXT_EVENT, { detail }));
   } catch {}
 }
 
@@ -131,4 +136,3 @@ export async function redirectToLogout() {
     form.submit();
   }
 }
-

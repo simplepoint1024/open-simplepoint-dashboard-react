@@ -3,8 +3,8 @@ import {useEffect, useMemo, useState} from "react";
 import {GetProp, TableColumnsType, TransferProps} from 'antd';
 import STableTransfer from "@simplepoint/components/STableTransfer";
 import {useData, usePage} from '@simplepoint/shared/api/methods';
-import {fetchItems, RoleRelevantVo} from "@/api/system/role";
-import {fetchAuthorize, fetchAuthorized, fetchUnauthorized} from "@/api/system/user";
+import {RoleRelevantVo} from "@/api/system/role";
+import {fetchAuthorize, fetchAuthorized, fetchRoleCandidates, fetchUnauthorized} from "@/api/system/user";
 
 type TransferItem = GetProp<TransferProps, 'dataSource'>[number];
 
@@ -23,8 +23,8 @@ const App = ({userId}: RoleSelectProps) => {
 
     /** 1. 加载角色列表 */
     const {data: page} = usePage(
-        'fetchItems',
-        () => fetchItems({page: '0', size: '10000000'})
+        'fetchRoleCandidates',
+        () => fetchRoleCandidates({page: '0', size: '10000000'})
     );
     const content = page?.content ?? [];
 

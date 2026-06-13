@@ -1,18 +1,18 @@
 {
   "run": {
-    "command": "nx run @simplepoint/dna:build",
-    "startTime": "2026-05-01T07:07:23.206Z",
-    "endTime": "2026-05-01T07:07:27.920Z",
+    "command": "nx run @simplepoint/host:build",
+    "startTime": "2026-06-10T06:59:14.955Z",
+    "endTime": "2026-06-10T06:59:16.923Z",
     "inner": false
   },
   "tasks": [
     {
-      "taskId": "@simplepoint/dna:build",
+      "taskId": "@simplepoint/host:build",
       "target": "build",
-      "projectName": "@simplepoint/dna",
-      "hash": "12504318412518355123",
-      "startTime": "2026-05-01T07:07:23.214Z",
-      "endTime": "2026-05-01T07:07:27.914Z",
+      "projectName": "@simplepoint/host",
+      "hash": "13485286874954821064",
+      "startTime": "2026-06-10T06:59:14.963Z",
+      "endTime": "2026-06-10T06:59:16.922Z",
       "params": "",
       "cacheStatus": "cache-miss",
       "status": 0

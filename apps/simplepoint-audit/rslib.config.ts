@@ -9,7 +9,7 @@ export default defineConfig({
     port: 3002,
   },
   source: {
-    tsconfigPath: './tsconfig.build.json',
+    tsconfigPath: './tsconfig.json',
   },
   plugins: [pluginReact()],
   lib: [

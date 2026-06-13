@@ -4,7 +4,7 @@ import { get, useData } from "../api/methods";
 import { RJSFSchema } from "@rjsf/utils";
 import { createIcon } from "../types/icon";
 import type { UseQueryOptions } from "@tanstack/react-query";
-import { getStoredContextId, getStoredTenantId } from '../api/contextId';
+import { getStoredContextId, getStoredTenantId, shouldUseTenantContext } from '../api/contextId';
 import { resolveClientI18nFallback } from '../i18n/fallbacks';
 
 export type TableSchemaProps = {
@@ -140,19 +140,33 @@ const normalizeButtonI18n = (btn: TableButtonProps): TableButtonProps => ({
 export function useSchema(
   baseUrl: string,
   options?: Omit<UseQueryOptions<TableSchemaProps, Error, TableSchemaProps, readonly unknown[]>, 'queryKey' | 'queryFn'>) {
-  const [tenantId, setTenantId] = useState(() => getStoredTenantId() ?? "");
-  const [contextId, setContextId] = useState(() => getStoredContextId(getStoredTenantId()) ?? "");
+  const useTenantContext = shouldUseTenantContext(baseUrl);
+  const [tenantId, setTenantId] = useState(() => useTenantContext ? (getStoredTenantId() ?? "") : "");
+  const [contextId, setContextId] = useState(() => useTenantContext ? (getStoredContextId(getStoredTenantId()) ?? "") : "");
 
   useEffect(() => {
+    if (!useTenantContext) {
+      setTenantId("");
+      setContextId("");
+      return;
+    }
+
     const handleTenantChange = (event: Event) => {
       const nextTenantId = (event as CustomEvent<string | undefined>).detail ?? getStoredTenantId() ?? "";
       setTenantId(nextTenantId);
       setContextId(getStoredContextId(nextTenantId) ?? "");
     };
 
-    const handleContextChange = () => {
-      const currentTenantId = getStoredTenantId() ?? "";
-      setContextId(getStoredContextId(currentTenantId) ?? "");
+    const handleContextChange = (event: Event) => {
+      const detail = (event as CustomEvent<{ tenantId?: string; contextId?: string }>).detail;
+      if (detail && typeof detail === "object") {
+        if ((detail.tenantId ?? "") !== tenantId) {
+          return;
+        }
+        setContextId(detail.contextId ?? "");
+        return;
+      }
+      setContextId(getStoredContextId(tenantId) ?? "");
     };
 
     window.addEventListener("sp-set-tenant", handleTenantChange as EventListener);
@@ -162,9 +176,9 @@ export function useSchema(
       window.removeEventListener("sp-set-tenant", handleTenantChange as EventListener);
       window.removeEventListener("sp-set-context-id", handleContextChange as EventListener);
     };
-  }, []);
+  }, [tenantId, useTenantContext]);
 
-  return useData([`${baseUrl}/schema`, tenantId, contextId], async () => {
+  return useData([`${baseUrl}/schema`, useTenantContext ? tenantId : "", useTenantContext ? contextId : ""], async () => {
     const res = await get<TableSchemaProps>(`${baseUrl}/schema`);
     if (!res) return res;
 

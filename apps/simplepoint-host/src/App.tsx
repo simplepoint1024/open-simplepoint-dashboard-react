@@ -2,7 +2,7 @@ import '@/App.css';
 import '@simplepoint/components/Simplepoint.css';
 import 'antd/dist/reset.css';
 
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {HashRouter, Routes} from 'react-router-dom';
 import {App as AntApp, ConfigProvider, Modal, Table as AntTable, theme} from 'antd';
 import {QuestionCircleOutlined} from '@ant-design/icons';
@@ -28,6 +28,15 @@ import {useThemeMode} from '@/hooks/useThemeMode';
 import {GlobalLoading} from '@/components/GlobalLoading';
 import {TitleSync} from '@/components/TitleSync';
 import {renderRoutes} from "@/components/RouteRenderer.tsx";
+
+export type RuntimeScopeContext = {
+    scopeType?: string;
+    actorRole?: string;
+    tenantId?: string;
+    userId?: string;
+};
+
+const RUNTIME_SCOPE_EVENT = 'sp-runtime-scope';
 
 const App: React.FC = () => {
     const {globalSize} = useGlobalSize();
@@ -67,6 +76,16 @@ const App: React.FC = () => {
     // 1) 租户优先：先取已存租户；没有则拉取 currentTenants 选第一个
     const [tenantId, setTenantIdState] = useState<string | undefined>(() => getTenantId());
     const {data: currentTenants, isLoading: tenantsLoading} = useCurrentTenants();
+    const selectedTenantExists = useMemo(() => {
+        if (!tenantId || !currentTenants) return false;
+        return currentTenants.some((tenant) => tenant.tenantId === tenantId);
+    }, [tenantId, currentTenants]);
+
+    // 当前选中租户的类型（用于路由鉴权：PERSONAL 租户访问 requireOrgTenant 路由时显示错误页）
+    const currentTenantType = useMemo(() => {
+        if (!tenantId || !currentTenants) return undefined;
+        return currentTenants.find(t => t.tenantId === tenantId)?.tenantType;
+    }, [tenantId, currentTenants]);
 
     useEffect(() => {
         // 同步外部 tenant 变更（例如顶部切换器）
@@ -80,29 +99,46 @@ const App: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (tenantId) return;
-        const first = currentTenants?.[0]?.tenantId;
+        if (!currentTenants) return;
+
+        if (selectedTenantExists) return;
+
+        if (tenantId) {
+            setContextId(undefined, tenantId);
+        }
+
+        const first = currentTenants[0]?.tenantId;
         if (first) {
             setTenantId(first);
             setTenantIdState(first);
+            return;
         }
-    }, [tenantId, currentTenants]);
+
+        if (tenantId) {
+            setTenantId(undefined);
+            setTenantIdState(undefined);
+            setContextId(undefined);
+        }
+    }, [tenantId, currentTenants, selectedTenantExists]);
 
     // 2) 上下文其次：tenant 确定后，优先加载/刷新 contextId
     const [contextId, setContextIdState] = useState<string | undefined>(() => getContextId());
     const [contextReady, setContextReady] = useState(false);
+    const contextRequestSeq = useRef(0);
     useEffect(() => {
         let cancelled = false;
+        const requestSeq = ++contextRequestSeq.current;
+        const activeTenantId = selectedTenantExists ? tenantId : undefined;
         const run = async () => {
             setContextReady(false);
-            setContextId(undefined);
             setContextIdState(undefined);
 
-            // tenantId 允许为空：仍然要加载 contextId（让后端按 session 决定）
-            const ctxId = await ensureContextId(tenantId, {force: true});
-            if (cancelled) return;
+            if (!activeTenantId) return;
 
-            setContextId(ctxId);
+            const ctxId = await ensureContextId(activeTenantId, {force: true});
+            if (cancelled || contextRequestSeq.current !== requestSeq || getTenantId() !== activeTenantId) return;
+
+            setContextId(ctxId, activeTenantId);
             setContextIdState(ctxId);
             setContextReady(true);
         };
@@ -110,11 +146,10 @@ const App: React.FC = () => {
         return () => {
             cancelled = true;
         };
-    }, [tenantId]);
+    }, [tenantId, selectedTenantExists]);
 
     // 3) 路由/菜单最后：必须在 contextId ready 后再加载
-    // 允许 tenantId 为空：service-routes 只强制依赖 contextId（tenantId 有则会随请求头带上）
-    const routesEnabled = contextReady;
+    const routesEnabled = Boolean(selectedTenantExists && contextReady);
     const {data: res, isLoading} = useData<ServiceMenuResult>(
         useMemo(() => ['fetchServiceRoutes', tenantId, contextId] as const, [tenantId, contextId]),
         () => {
@@ -128,6 +163,13 @@ const App: React.FC = () => {
 
     // 远程模块注册
     useRegisterRemotes(res, isLoading);
+
+    useEffect(() => {
+        const detail: RuntimeScopeContext = res?.authorizationContext || {};
+        try {
+            window.dispatchEvent(new CustomEvent(RUNTIME_SCOPE_EVENT, {detail}));
+        } catch {}
+    }, [res?.authorizationContext]);
 
     // 展平后的叶子路由
     const leafRoutes = useLeafRoutes(res?.routes);
@@ -168,7 +210,7 @@ const App: React.FC = () => {
                         <TitleSync leafRoutes={leafRoutes} t={t}/>
                         <NavigateBar data={res?.routes ?? []}>
                             <Routes>
-                                {renderRoutes(leafRoutes, refreshKeyMap, t)}
+                                {renderRoutes(leafRoutes, refreshKeyMap, t, currentTenantType)}
                             </Routes>
                         </NavigateBar>
                     </HashRouter>

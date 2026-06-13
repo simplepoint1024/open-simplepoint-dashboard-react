@@ -180,9 +180,8 @@ export const Dashboard: React.FC = () => {
       features: [
         {label: t('host.dashboard.feature.infra.boot', 'Spring Boot 4 / Spring Cloud')},
         {label: t('host.dashboard.feature.infra.consul', 'Consul 配置中心')},
-        {label: t('host.dashboard.feature.infra.vault', 'Vault 秘密管理')},
         {label: t('host.dashboard.feature.infra.redis', 'Redis WebSession / 缓存')},
-        {label: t('host.dashboard.feature.infra.amqp', 'AMQP RPC 服务间调用')},
+        {label: t('host.dashboard.feature.infra.amqp', 'Service Router 服务间调用')},
         {label: t('host.dashboard.feature.infra.docker', 'Docker Swarm 编排')},
       ],
     },
@@ -322,10 +321,9 @@ export const Dashboard: React.FC = () => {
                 ['Spring Data JPA',            '#52c41a'],
                 ['Hibernate 6',                '#52c41a'],
                 ['Apache Calcite',             '#fa8c16'],
-                ['RabbitMQ AMQP',              '#fa8c16'],
+                ['Service Router',             '#fa8c16'],
                 ['Redis',                      '#f5222d'],
                 ['Consul',                     '#13c2c2'],
-                ['Vault',                      '#13c2c2'],
                 ['Lombok',                     '#389e0d'],
                 ['Hutool',                     '#389e0d'],
                 ['Kotlin DSL',                 '#7b68ee'],
@@ -401,4 +399,3 @@ export const Dashboard: React.FC = () => {
     </div>
   );
 };
-

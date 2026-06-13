@@ -1,4 +1,10 @@
-import { ensureContextId, getStoredContextId, getStoredTenantId, shouldAutoEnsureContextId } from './contextId';
+import {
+  ensureContextId,
+  getStoredContextId,
+  getStoredTenantId,
+  shouldAutoEnsureContextId,
+  shouldUseTenantContext,
+} from './contextId';
 import { redirectToLogin } from './session';
 
 // 自定义错误类型，方便上层捕获和处理
@@ -6,12 +12,28 @@ export class HttpError extends Error {
   status: number;
   statusText: string;
   body?: string;
+  /** 面向用户的错误描述，供调用方展示在 UI 提示中 */
+  userMessage?: string;
 
   constructor(status: number, statusText: string, body?: string) {
     super(`HTTP ${status} ${statusText}`);
     this.status = status;
     this.statusText = statusText;
     this.body = body;
+  }
+}
+
+/** 从后端响应体中提取人类可读的错误信息（Spring Boot / RFC 7807 格式） */
+function extractUserMessage(body?: string): string | undefined {
+  if (!body?.trim()) return undefined;
+  try {
+    const json = JSON.parse(body);
+    return (typeof json.message === 'string' && json.message)
+      || (typeof json.detail === 'string' && json.detail)
+      || (typeof json.title === 'string' && json.title)
+      || undefined;
+  } catch {
+    return undefined;
   }
 }
 
@@ -85,9 +107,10 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
   const method = (options?.method || 'GET').toUpperCase();
   const body = options?.body;
   const isFormDataBody = typeof FormData !== 'undefined' && body instanceof FormData;
+  const useTenantContext = shouldUseTenantContext(url);
 
-  const tenantId = getStoredTenantId();
-  let contextId: string | undefined = getStoredContextId(tenantId);
+  const tenantId = getStoredTenantId()?.trim();
+  let contextId: string | undefined = useTenantContext ? getStoredContextId(tenantId) : undefined;
 
   const mergedHeaders: Record<string, any> = {
     ...(isFormDataBody ? {} : {'Content-Type': 'application/json'}),
@@ -102,8 +125,12 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
     });
   }
 
-  if (tenantId && mergedHeaders['X-Tenant-Id'] == null) {
+  if (useTenantContext && tenantId && mergedHeaders['X-Tenant-Id'] == null) {
     mergedHeaders['X-Tenant-Id'] = tenantId;
+  }
+
+  if (useTenantContext && !tenantId) {
+    throw new Error('Tenant context is required');
   }
 
   const headerContextId = mergedHeaders['X-Context-Id'];
@@ -118,7 +145,7 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
     }
   }
 
-  if (contextId && mergedHeaders['X-Context-Id'] == null) {
+  if (useTenantContext && contextId && mergedHeaders['X-Context-Id'] == null) {
     mergedHeaders['X-Context-Id'] = contextId;
   }
 
@@ -137,8 +164,19 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
   if (!response.ok) {
     const text = await response.text();
     await handleHttpStatus(method, url, response, text);
-    const err: any = new HttpError(response.status, response.statusText, text);
-    err.__notified = true;
+    const t = getI18nT();
+    const err = new HttpError(response.status, response.statusText, text);
+    if (response.status === 401) {
+      // Modal already shown by handleHttpStatus; mark as notified
+      (err as any).__notified = true;
+    } else if (response.status === 403) {
+      err.userMessage = t?.('error.forbidden', '无使用权限') ?? '无使用权限';
+    } else if (response.status >= 500) {
+      err.userMessage = t?.('error.server', '服务暂时不可用') ?? '服务暂时不可用';
+    } else {
+      // 4xx: prefer server-provided message (e.g. validation error)
+      err.userMessage = extractUserMessage(text) || (t?.('error.requestFailed', '请求失败') ?? '请求失败');
+    }
     throw err;
   }
 

@@ -6,7 +6,6 @@ import {useI18n} from "@/layouts/i18n/useI18n.ts";
 import { useUserInfo } from '@/fetches/user';
 import { useCurrentTenants } from '@/fetches/tenants';
 import { getTenantId, setTenantId } from '@/store/tenant';
-import { setContextId } from '@/store/contextId';
 import { ensureContextId } from '@simplepoint/shared/api/contextId';
 import { clearClientCaches, redirectToLogout } from '@simplepoint/shared/api/session';
 
@@ -33,6 +32,24 @@ const LogoTitle: React.FC = () => {
   );
 };
 
+type RuntimeScopeContext = {
+  scopeType?: string;
+  actorRole?: string;
+  tenantId?: string;
+  userId?: string;
+};
+
+const RUNTIME_SCOPE_EVENT = 'sp-runtime-scope';
+
+function scopeLabel(t: (key: string, fallback?: string) => string, scope?: RuntimeScopeContext) {
+  if (scope?.scopeType === 'PLATFORM') return t('scope.platform', '平台控制台');
+  if (scope?.scopeType === 'PERSONAL') return t('scope.personal', '个人空间');
+  if (scope?.actorRole === 'TENANT_OWNER') return t('scope.tenantOwner', '组织租户 · 所有者');
+  if (scope?.actorRole === 'TENANT_ADMIN') return t('scope.tenantAdmin', '组织租户 · 管理员');
+  if (scope?.scopeType === 'TENANT') return t('scope.tenant', '组织租户');
+  return t('scope.unknown', '作用域未知');
+}
+
 /**
  * 顶部栏左侧：租户切换（显示在“平台”旁边）
  */
@@ -40,6 +57,7 @@ export const TenantSwitcherTop: React.FC = () => {
   const { t } = useI18n();
   const { data, isFetching, refetch } = useCurrentTenants();
   const [tenantId, setTenantIdState] = useState<string | undefined>(() => getTenantId());
+  const [runtimeScope, setRuntimeScope] = useState<RuntimeScopeContext>({});
 
   // 同步外部切换
   useEffect(() => {
@@ -47,6 +65,16 @@ export const TenantSwitcherTop: React.FC = () => {
     try {
       window.addEventListener('sp-set-tenant', handler);
       return () => window.removeEventListener('sp-set-tenant', handler);
+    } catch {
+      return;
+    }
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: Event) => setRuntimeScope(((e as CustomEvent<RuntimeScopeContext>).detail) || {});
+    try {
+      window.addEventListener(RUNTIME_SCOPE_EVENT, handler);
+      return () => window.removeEventListener(RUNTIME_SCOPE_EVENT, handler);
     } catch {
       return;
     }
@@ -79,9 +107,8 @@ export const TenantSwitcherTop: React.FC = () => {
       setTenantId(nextId);
       setTenantIdState(nextId);
 
-      // 预热权限上下文（best-effort，不阻断切换）
-      const ctxId = await ensureContextId(nextId, { force: true });
-      setContextId(ctxId);
+      // 预热权限上下文（best-effort，不阻断切换；真正的当前态由 App 内部按最新 tenant 决定）
+      await ensureContextId(nextId, { force: true });
 
       message.success(t('tenant.switchDone', '已切换租户，后续请求将生效')).then(_ => {});
     },
@@ -114,7 +141,7 @@ export const TenantSwitcherTop: React.FC = () => {
       >
         <SwapOutlined style={{ marginRight: 6, opacity: 0.75 }} />
         <span style={{ fontSize: 12, opacity: 0.85 }}>
-          {currentName || t('tenant.unknown', '未选择')}
+          {scopeLabel(t, runtimeScope)} · {currentName || t('tenant.unknown', '未选择')}
         </span>
       </div>
     </Dropdown>
@@ -554,4 +581,3 @@ export const avatarConfig = (navigate: (path: string) => void): MenuProps => {
     ]
   };
 }
-

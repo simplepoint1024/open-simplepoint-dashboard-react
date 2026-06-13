@@ -141,9 +141,16 @@ export function useSimpleTableController<T = any>(props: SimpleTableProps<T>): S
       setContextId(getStoredContextId(nextTenantId) ?? '');
     };
 
-    const handleContextChange = () => {
-      const currentTenantId = getStoredTenantId() ?? '';
-      setContextId(getStoredContextId(currentTenantId) ?? '');
+    const handleContextChange = (event: Event) => {
+      const detail = (event as CustomEvent<{ tenantId?: string; contextId?: string }>).detail;
+      if (detail && typeof detail === 'object') {
+        if ((detail.tenantId ?? '') !== tenantId) {
+          return;
+        }
+        setContextId(detail.contextId ?? '');
+        return;
+      }
+      setContextId(getStoredContextId(tenantId) ?? '');
     };
 
     window.addEventListener('sp-set-tenant', handleTenantChange as EventListener);
@@ -153,7 +160,7 @@ export function useSimpleTableController<T = any>(props: SimpleTableProps<T>): S
       window.removeEventListener('sp-set-tenant', handleTenantChange as EventListener);
       window.removeEventListener('sp-set-context-id', handleContextChange as EventListener);
     };
-  }, []);
+  }, [tenantId]);
 
   useEffect(() => {
     setPage(1);
@@ -219,10 +226,10 @@ export function useSimpleTableController<T = any>(props: SimpleTableProps<T>): S
           message.success(t('table.deleteSuccess', '删除成功'));
           await refreshTargets(deleteRefreshTargets);
         } catch (e: any) {
-          if (e instanceof HttpError && [401, 403, 500].includes(e.status)) {
+          if (e instanceof HttpError && e.status === 401) {
             return;
           }
-          message.error(t('table.deleteFail', '删除失败: {msg}', { msg: e?.message || '' }));
+          message.error(t('table.deleteFail', '删除失败: {msg}', { msg: e?.userMessage || e?.message || '' }));
         } finally {
           setSubmitLoading(false);
         }
@@ -273,10 +280,10 @@ export function useSimpleTableController<T = any>(props: SimpleTableProps<T>): S
       setEditingRecord(null);
       await refreshTargets(submitRefreshTargets);
     } catch (e: any) {
-      if (e instanceof HttpError && [401, 403, 500].includes(e.status)) {
+      if (e instanceof HttpError && e.status === 401) {
         return;
       }
-      message.error(t('table.actionFail', '操作失败: {msg}', { msg: e?.message || '' }));
+      message.error(t('table.actionFail', '操作失败: {msg}', { msg: e?.userMessage || e?.message || '' }));
     } finally {
       setSubmitLoading(false);
     }
@@ -346,4 +353,3 @@ export function useSimpleTableController<T = any>(props: SimpleTableProps<T>): S
     },
   };
 }
-

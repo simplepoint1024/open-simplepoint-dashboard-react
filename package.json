@@ -3,12 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@9.0.0",
-  "workspaces": {
-    "packages": [
-      "libs/*",
-      "apps/*"
-    ]
-  },
   "scripts": {
     "dev:host": "nx run @simplepoint/host:dev",
     "build:host": "nx run @simplepoint/host:build",

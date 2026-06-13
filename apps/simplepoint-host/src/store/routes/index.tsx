@@ -19,6 +19,8 @@ export interface MenuInfo {
   children?: MenuInfo[];
   /** Server-side UUID (used as key in tree-structured data). */
   uuid?: string;
+  /** When true, accessing this route under a personal tenant shows an error page. */
+  requireOrgTenant?: boolean;
 }
 
 // 判断是否存在子节点

@@ -1,0 +1,105 @@
+(node:1030491) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1030531) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+> @simplepoint/common@1.0.0 build /home/ymsl/Documents/IdeaProjects/open-simplepoint-dashboard/open-simplepoint-dashboard-react/apps/simplepoint-common
+> rslib build
+
+  Rslib v0.6.9
+
+(node:1030543) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[ Module Federation Rsbuild Plugin ] Detect devServer.headers is empty, mf modern plugin will add default cors header: devServer.headers["Access-Control-Allow-Headers"] = "*". It is recommended to specify an allowlist of trusted origins instead.
+View https://module-federation.io/guide/troubleshooting/other.html#cors-warn for more details.
+(node:1030610) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+start   generating declaration files... (esm)
+(node:1030622) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+start   generating declaration files... (cjs)
+(node:1030889) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ready   declaration files generated in 1.72 s (esm)
+ready   declaration files generated in 1.82 s (cjs)
+[ Module Federation DTS ] Federated types created correctly
+ready   built in 4.01 s (mf)
+ready   built in 0.11 s (esm)
+ready   built in 0.11 s (cjs)
+
+File (esm)          Size      
+dist/esm/index.js   0.00 kB
+
+
+File (cjs)           Size      
+dist/cjs/index.cjs   0.20 kB
+
+
+File (mf)                                                               Size         Gzip   
+dist/mf/__federation_expose_ops__micro_service.js                       0.94 kB      0.47 kB
+dist/mf/__federation_expose_i18n__Message.js                            1.3 kB       0.50 kB
+dist/mf/__federation_expose_i18n__Region.js                             1.3 kB       0.50 kB
+dist/mf/__federation_expose_ops__Microapp.js                            1.3 kB       0.50 kB
+dist/mf/__federation_expose_i18n__Countries.js                          1.3 kB       0.50 kB
+dist/mf/__federation_expose_i18n__Language.js                           1.3 kB       0.50 kB
+dist/mf/__federation_expose_i18n__Timezone.js                           1.3 kB       0.50 kB
+dist/mf/__federation_expose_i18n__Namespace.js                          1.3 kB       0.50 kB
+dist/mf/__federation_expose_platform__Dictionary__config__item.js       1.3 kB       0.54 kB
+dist/mf/__federation_expose_system__OAuthClient.js                      1.3 kB       0.50 kB
+dist/mf/__federation_expose_system__Permission.js                       1.5 kB       0.61 kB
+dist/mf/__federation_expose_platform__Organization.js                   2.1 kB       0.79 kB
+dist/mf/__federation_expose_i18n__Countries.css                         2.4 kB       0.91 kB
+dist/mf/__federation_expose_i18n__Language.css                          2.4 kB       0.91 kB
+dist/mf/__federation_expose_i18n__Message.css                           2.4 kB       0.91 kB
+dist/mf/__federation_expose_i18n__Namespace.css                         2.4 kB       0.91 kB
+dist/mf/__federation_expose_i18n__Region.css                            2.4 kB       0.91 kB
+dist/mf/__federation_expose_i18n__Timezone.css                          2.4 kB       0.91 kB
+dist/mf/__federation_expose_ops__Microapp.css                           2.4 kB       0.91 kB
+dist/mf/__federation_expose_platform__Application.css                   2.4 kB       0.91 kB
+dist/mf/__federation_expose_platform__Dictionary.css                    2.4 kB       0.91 kB
+dist/mf/__federation_expose_platform__Dictionary__config__item.css      2.4 kB       0.91 kB
+dist/mf/__federation_expose_platform__Feature.css                       2.4 kB       0.91 kB
+dist/mf/__federation_expose_platform__Organization.css                  2.4 kB       0.91 kB
+dist/mf/__federation_expose_platform__Package.css                       2.4 kB       0.91 kB
+dist/mf/__federation_expose_platform__Tenant.css                        2.4 kB       0.91 kB
+dist/mf/__federation_expose_system__DataScope.css                       2.4 kB       0.91 kB
+dist/mf/__federation_expose_system__FieldScope.css                      2.4 kB       0.91 kB
+dist/mf/__federation_expose_system__Menu.css                            2.4 kB       0.91 kB
+dist/mf/__federation_expose_system__OAuthClient.css                     2.4 kB       0.91 kB
+dist/mf/__federation_expose_system__Permission.css                      2.4 kB       0.91 kB
+dist/mf/__federation_expose_system__Role.css                            2.4 kB       0.91 kB
+dist/mf/__federation_expose_system__User.css                            2.4 kB       0.91 kB
+dist/mf/__federation_expose_system__DataScope.js                        2.4 kB       0.96 kB
+dist/mf/__federation_expose_platform__Dictionary.js                     3.1 kB       1.2 kB
+dist/mf/__federation_expose_system__FieldScope.js                       3.9 kB       1.3 kB
+dist/mf/__federation_expose_system__Role.js                             4.0 kB       1.3 kB
+dist/mf/96.js                                                           5.7 kB       1.6 kB
+dist/mf/__federation_expose_system__FieldScope__config__entries.js      5.7 kB       1.6 kB
+dist/mf/__federation_expose_system__User__config__role.js               11.2 kB      3.1 kB
+dist/mf/__federation_expose_Dashboard.js                                11.7 kB      2.5 kB
+dist/mf/__federation_expose_platform__Tenant__config__user.js           12.1 kB      3.2 kB
+dist/mf/__federation_expose_system__User.js                             12.2 kB      3.7 kB
+dist/mf/__federation_expose_platform__Package__config__application.js   12.4 kB      3.1 kB
+dist/mf/__federation_expose_platform__Application__config__feature.js   12.6 kB      3.2 kB
+dist/mf/__federation_expose_platform__Tenant__config__package.js        13.0 kB      3.2 kB
+dist/mf/__federation_expose_platform__Package.js                        13.6 kB      3.7 kB
+dist/mf/__federation_expose_platform__Application.js                    13.8 kB      3.8 kB
+dist/mf/__federation_expose_system__Menu__config__permission.js         14.6 kB      3.7 kB
+dist/mf/__federation_expose_platform__Feature__config__permission.js    14.7 kB      3.7 kB
+dist/mf/__federation_expose_platform__Feature.js                        15.7 kB      4.3 kB
+dist/mf/__federation_expose_system__Menu.js                             16.7 kB      4.6 kB
+dist/mf/950.js                                                          18.1 kB      5.2 kB
+dist/mf/544.js                                                          18.6 kB      4.2 kB
+dist/mf/__federation_expose_system__Role__config__permission.js         18.6 kB      4.2 kB
+dist/mf/__federation_expose_platform__Tenant.js                         18.8 kB      4.6 kB
+dist/mf/mf-manifest.json                                                22.4 kB      1.7 kB
+dist/mf/mf-stats.json                                                   28.7 kB      2.2 kB
+dist/mf/__federation_expose_platform__ObjectStorage.js                  28.8 kB      5.3 kB
+dist/mf/@mf-types.zip                                                   31.9 kB   
+dist/mf/306.js                                                          55.1 kB      15.1 kB
+dist/mf/760.js                                                          135.2 kB     29.5 kB
+dist/mf/index.js                                                        5297.2 kB    1087.3 kB
+dist/mf/common.js                                                       5315.8 kB    1090.4 kB
+
+                                                               Total:   11255.7 kB   2360.6 kB
+

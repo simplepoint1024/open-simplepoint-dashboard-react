@@ -5,6 +5,14 @@ export type ServiceMenuResult = {
     services: ServiceEntry[];
     routes: MenuInfo[];
     entryPoint: string;
+    authorizationContext?: AuthorizationContextInfo;
+}
+
+export type AuthorizationContextInfo = {
+    scopeType?: 'PLATFORM' | 'TENANT' | 'PERSONAL' | string;
+    actorRole?: 'PLATFORM_ADMIN' | 'TENANT_ADMIN' | 'TENANT_OWNER' | 'TENANT_MEMBER' | 'PERSONAL_OWNER' | 'PERSONAL_MEMBER' | string;
+    tenantId?: string;
+    userId?: string;
 }
 
 export type ServiceEntry = {

@@ -3,6 +3,7 @@
 
 export type TenantId = string;
 export type ContextId = string;
+export type ApiScope = 'global' | 'tenant';
 
 // localStorage keys (keep backward compatible)
 const KEY_TENANT = 'sp.tenantId';
@@ -10,6 +11,25 @@ const KEY_CTX = 'sp.contextId';
 const KEY_CTX_PREFIX = 'sp.contextId:';
 
 const CTX_ENDPOINT_PATH = '/common/tenants/permission-context-id';
+const API_SCOPE_RULES: ReadonlyArray<{ scope: ApiScope; prefix: string }> = [
+  { scope: 'tenant', prefix: '/common/menus/service-routes' },
+  { scope: 'global', prefix: '/common/i18n' },
+  { scope: 'global', prefix: '/common/logging' },
+  { scope: 'global', prefix: '/common/menus' },
+  { scope: 'global', prefix: '/common/oidc/clients' },
+  { scope: 'global', prefix: '/common/ops/microapps' },
+  { scope: 'global', prefix: '/common/permissions' },
+  { scope: 'global', prefix: '/common/tenants/current' },
+  { scope: 'global', prefix: '/common/tenants/page' },
+  { scope: 'global', prefix: '/common/platform/dna' },
+  { scope: 'global', prefix: '/common/platform/applications' },
+  { scope: 'global', prefix: '/common/platform/features' },
+  { scope: 'global', prefix: '/common/platform/packages' },
+  { scope: 'global', prefix: '/common/platform/dictionaries' },
+  { scope: 'global', prefix: '/common/platform/dictionary-items' },
+  { scope: 'global', prefix: '/common/rate-limit' },
+  { scope: 'global', prefix: '/common/redis/entries' },
+];
 
 const readLS = (key: string): string | undefined => {
   try {
@@ -32,7 +52,8 @@ export function getStoredTenantId(): TenantId | undefined {
 }
 
 export function setStoredTenantId(tenantId: TenantId | undefined) {
-  writeLS(KEY_TENANT, tenantId);
+  const normalizedTenantId = tenantId?.trim();
+  writeLS(KEY_TENANT, normalizedTenantId || undefined);
 }
 
 function getContextStorageKey(tenantId?: TenantId): string {
@@ -60,6 +81,33 @@ function isContextIdEndpoint(url: string): boolean {
   }
 }
 
+function resolvePathname(url: string): string | undefined {
+  try {
+    return new URL(
+      url,
+      typeof window !== 'undefined' ? window.location.origin : 'http://localhost'
+    ).pathname;
+  } catch {
+    return undefined;
+  }
+}
+
+export function shouldUseTenantContext(url: string): boolean {
+  const pathname = resolvePathname(url);
+  if (!pathname) {
+    return resolveApiScope(url) === 'tenant';
+  }
+  return resolveApiScope(pathname) === 'tenant';
+}
+
+export function resolveApiScope(url: string): ApiScope {
+  const pathname = resolvePathname(url) ?? url;
+  const matchedRule = API_SCOPE_RULES.find(
+    ({ prefix }) => pathname === prefix || pathname.startsWith(`${prefix}/`) || url.includes(prefix)
+  );
+  return matchedRule?.scope ?? 'tenant';
+}
+
 function parseContextId(text: string, contentType: string | null): string | undefined {
   let ctx = (text || '').toString();
   const ct = contentType || '';
@@ -82,23 +130,24 @@ export async function ensureContextId(
   tenantId: TenantId | undefined,
   opts?: { force?: boolean; signal?: AbortSignal; throwOnError?: boolean }
 ): Promise<ContextId | undefined> {
-  // tenantId 允许为空：部分后端会根据 session 直接返回上下文
+  const normalizedTenantId = tenantId?.trim();
+  if (!normalizedTenantId) {
+    return undefined;
+  }
 
   // If not force, reuse stored value
   if (!opts?.force) {
-    const cached = getStoredContextId(tenantId);
+    const cached = getStoredContextId(normalizedTenantId);
     if (cached) return cached;
   }
 
-  const key = tenantId || 'default';
+  const key = normalizedTenantId;
   const existing = inflight.get(key);
   if (existing) return existing;
 
   const p = (async () => {
     try {
-      const url = tenantId
-        ? `${CTX_ENDPOINT_PATH}?tenantId=${encodeURIComponent(tenantId)}`
-        : CTX_ENDPOINT_PATH;
+      const url = `${CTX_ENDPOINT_PATH}?tenantId=${encodeURIComponent(normalizedTenantId)}`;
 
       const res = await fetch(url, {
         method: 'GET',
@@ -106,7 +155,7 @@ export async function ensureContextId(
         signal: opts?.signal,
         headers: {
           'Content-Type': 'application/json',
-          ...(tenantId ? { 'X-Tenant-Id': tenantId } : {}),
+          'X-Tenant-Id': normalizedTenantId,
         },
       });
 
@@ -116,7 +165,7 @@ export async function ensureContextId(
 
       const text = await res.text();
       const ctx = parseContextId(text, res.headers.get('content-type'));
-      if (ctx) setStoredContextId(ctx, tenantId);
+      if (ctx) setStoredContextId(ctx, normalizedTenantId);
       return ctx;
     } catch (e) {
       if (opts?.throwOnError) throw e;
@@ -131,6 +180,7 @@ export async function ensureContextId(
 }
 
 export function shouldAutoEnsureContextId(url: string, headerContextId: any) {
+  if (!shouldUseTenantContext(url)) return false;
   if (isContextIdEndpoint(url)) return false;
   return (
     headerContextId == null ||
